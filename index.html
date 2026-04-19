@@ -1,0 +1,1131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="AutoComply — Buy compliance templates, book a consultation, or get your documents generated instantly.">
+<title>AutoComply — Store & Bookings</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><polygon points='50,5 95,90 5,90' fill='%230EA5C9'/></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Instrument+Sans:wght@300;400;500;600&family=Instrument+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#080E1A;--navy2:#0C1525;--card:#0F1B2D;--card2:#142035;
+  --blue:#1A56DB;--teal:#0EA5C9;--teal2:#38BDF8;
+  --green:#10B981;--gold:#F59E0B;--red:#EF4444;--purple:#8B5CF6;
+  --white:#EFF6FF;--dim:#8BAEC8;--dim2:#4A6585;
+  --border:rgba(56,189,248,0.1);--bdr2:rgba(56,189,248,0.22);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Instrument Sans',sans-serif;background:var(--navy);color:var(--white);min-height:100vh;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;z-index:0;
+  background:radial-gradient(ellipse 90% 55% at 90% -5%,rgba(26,86,219,0.13),transparent 55%),
+             radial-gradient(ellipse 55% 45% at 5% 95%,rgba(14,165,201,0.08),transparent 55%);
+  pointer-events:none;}
+
+/* ── NAV ── */
+nav{position:sticky;top:0;z-index:200;background:rgba(8,14,26,0.94);
+  backdrop-filter:blur(20px);border-bottom:1px solid var(--border);
+  display:flex;align-items:center;padding:0 20px;height:58px;gap:12px;}
+.nav-back{color:var(--dim);text-decoration:none;font-size:13px;
+  display:flex;align-items:center;gap:6px;transition:color .15s;}
+.nav-back:hover{color:var(--teal2);}
+.nav-logo{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;
+  color:var(--white);text-decoration:none;margin-right:auto;}
+.nav-logo span{color:var(--teal2);}
+.nav-tabs{display:flex;gap:2px;}
+.ntab{background:none;border:none;padding:7px 13px;
+  font-family:'Instrument Sans',sans-serif;font-size:12px;
+  color:var(--dim);cursor:pointer;border-radius:8px;transition:all .15s;}
+.ntab:hover{background:rgba(255,255,255,0.05);color:var(--white);}
+.ntab.active{background:rgba(14,165,201,0.1);color:var(--teal2);}
+
+/* ── PAGES ── */
+.pg{display:none;position:relative;z-index:1;}
+.pg.on{display:block;}
+
+/* ── WRAP ── */
+.wrap{max-width:960px;margin:0 auto;padding:0 20px 80px;}
+
+/* ── PAGE HEADERS ── */
+.pg-hero{padding:48px 0 36px;border-bottom:1px solid var(--border);margin-bottom:36px;}
+.pg-tag{font-family:'Instrument Mono',monospace;font-size:9px;letter-spacing:3px;
+  color:var(--teal);text-transform:uppercase;margin-bottom:10px;}
+.pg-title{font-family:'Syne',sans-serif;font-size:clamp(26px,5vw,42px);
+  font-weight:800;letter-spacing:-1px;line-height:1.1;margin-bottom:10px;}
+.pg-sub{font-size:15px;color:var(--dim);line-height:1.75;max-width:520px;}
+
+/* ── FILTER TABS ── */
+.filter-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:28px;}
+.ftab{background:var(--card);border:1px solid var(--border);border-radius:20px;
+  padding:7px 16px;font-size:12px;font-family:'Instrument Mono',monospace;
+  letter-spacing:1px;color:var(--dim);cursor:pointer;transition:all .15s;}
+.ftab:hover{border-color:var(--bdr2);}
+.ftab.on{background:rgba(14,165,201,0.1);border-color:var(--teal);color:var(--teal2);}
+
+/* ── TEMPLATE GRID ── */
+.tgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;}
+.tcard{background:var(--card);border:1px solid var(--border);border-radius:18px;
+  padding:0;overflow:hidden;transition:border-color .2s,box-shadow .2s;
+  display:flex;flex-direction:column;}
+.tcard:hover{border-color:var(--bdr2);box-shadow:0 0 36px rgba(14,165,201,0.07);}
+.tc-top{padding:22px 22px 0;flex:1;}
+.tc-head{display:flex;align-items:flex-start;gap:14px;margin-bottom:14px;}
+.tc-icon{width:48px;height:48px;border-radius:12px;display:flex;
+  align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
+.tc-meta{flex:1;min-width:0;}
+.tc-name{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;
+  color:var(--white);margin-bottom:4px;line-height:1.2;}
+.tc-badges{display:flex;gap:5px;flex-wrap:wrap;}
+.badge{font-size:9px;font-family:'Instrument Mono',monospace;letter-spacing:1px;
+  padding:2px 7px;border-radius:4px;}
+.badge-pop{background:rgba(16,185,129,0.12);color:var(--green);border:1px solid rgba(16,185,129,0.2);}
+.badge-new{background:rgba(139,92,246,0.12);color:var(--purple);border:1px solid rgba(139,92,246,0.2);}
+.badge-hot{background:rgba(239,68,68,0.12);color:var(--red);border:1px solid rgba(239,68,68,0.2);}
+.badge-ai{background:rgba(14,165,201,0.12);color:var(--teal2);border:1px solid rgba(14,165,201,0.2);}
+.badge-save{background:rgba(245,158,11,0.12);color:var(--gold);border:1px solid rgba(245,158,11,0.2);}
+.tc-desc{font-size:13px;color:var(--dim);line-height:1.65;margin-bottom:14px;}
+.tc-includes{list-style:none;display:flex;flex-direction:column;gap:5px;margin-bottom:18px;}
+.tc-includes li{font-size:12px;color:var(--dim2);display:flex;gap:7px;align-items:flex-start;}
+.tc-includes li::before{content:"✓";color:var(--green);flex-shrink:0;margin-top:1px;}
+.tc-bottom{padding:16px 22px;border-top:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;gap:12px;}
+.tc-price{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:var(--teal2);}
+.tc-price-old{font-size:13px;color:var(--dim2);text-decoration:line-through;margin-right:4px;}
+.btn-buy{background:linear-gradient(135deg,var(--blue),var(--teal));border:none;
+  color:#fff;padding:10px 20px;border-radius:10px;font-family:'Syne',sans-serif;
+  font-size:13px;font-weight:700;cursor:pointer;transition:opacity .15s;white-space:nowrap;}
+.btn-buy:hover{opacity:0.85;}
+
+/* ── AI GENERATE BANNER ── */
+.ai-banner{background:linear-gradient(135deg,rgba(139,92,246,0.1),rgba(14,165,201,0.08));
+  border:1px solid rgba(139,92,246,0.25);border-radius:16px;padding:24px;
+  margin-bottom:32px;display:flex;gap:20px;align-items:center;flex-wrap:wrap;}
+.ai-banner-icon{font-size:36px;flex-shrink:0;}
+.ai-banner-info{flex:1;}
+.ai-banner-title{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;margin-bottom:6px;}
+.ai-banner-sub{font-size:13px;color:var(--dim);line-height:1.6;}
+.btn-generate{background:linear-gradient(135deg,var(--purple),var(--blue));border:none;
+  color:#fff;padding:12px 24px;border-radius:10px;font-family:'Syne',sans-serif;
+  font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0;}
+
+/* ── CONSULTATION BOOKINGS ── */
+.sessions-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px;margin-bottom:36px;}
+.session-card{background:var(--card);border:1px solid var(--border);border-radius:16px;
+  padding:22px;text-align:center;transition:border-color .2s;display:flex;flex-direction:column;}
+.session-card:hover{border-color:var(--bdr2);}
+.session-card.featured{border-color:rgba(14,165,201,0.35);
+  background:linear-gradient(135deg,rgba(14,165,201,0.06),var(--card));}
+.s-icon{font-size:28px;margin-bottom:12px;}
+.s-duration{font-family:'Instrument Mono',monospace;font-size:9px;letter-spacing:3px;
+  color:var(--teal);text-transform:uppercase;margin-bottom:8px;}
+.s-name{font-family:'Syne',sans-serif;font-size:16px;font-weight:800;margin-bottom:6px;}
+.s-desc{font-size:12px;color:var(--dim);line-height:1.6;margin-bottom:16px;flex:1;}
+.s-price{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;
+  color:var(--teal2);margin-bottom:16px;}
+.btn-book{background:linear-gradient(135deg,var(--blue),var(--teal));border:none;
+  color:#fff;padding:11px;border-radius:10px;font-family:'Syne',sans-serif;
+  font-size:13px;font-weight:700;cursor:pointer;width:100%;transition:opacity .15s;}
+.btn-book:hover{opacity:0.85;}
+.btn-book.outline{background:none;border:1px solid var(--bdr2);color:var(--teal2);}
+
+/* ── CALENDLY EMBED ── */
+.cal-wrap{background:var(--card);border:1px solid var(--border);border-radius:16px;
+  overflow:hidden;min-height:500px;display:flex;align-items:center;justify-content:center;}
+.cal-placeholder{text-align:center;padding:40px;}
+.cal-placeholder-icon{font-size:48px;margin-bottom:16px;}
+.cal-placeholder-title{font-family:'Syne',sans-serif;font-size:20px;font-weight:700;margin-bottom:8px;}
+.cal-placeholder-sub{font-size:13px;color:var(--dim);line-height:1.7;max-width:400px;margin:0 auto 24px;}
+.cal-setup-steps{background:rgba(14,165,201,0.06);border:1px solid rgba(14,165,201,0.15);
+  border-radius:12px;padding:20px;text-align:left;max-width:440px;margin:0 auto;}
+.cal-step{display:flex;gap:12px;align-items:flex-start;padding:8px 0;
+  border-bottom:1px solid rgba(255,255,255,0.04);}
+.cal-step:last-child{border-bottom:none;}
+.cal-step-num{width:22px;height:22px;border-radius:50%;
+  background:linear-gradient(135deg,var(--blue),var(--teal));
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:700;flex-shrink:0;margin-top:1px;}
+.cal-step-text{font-size:12px;color:var(--dim);line-height:1.6;}
+.cal-step-text strong{color:var(--white);}
+
+/* ── PAYFAST MODAL ── */
+.modal-overlay{display:none;position:fixed;inset:0;z-index:300;
+  background:rgba(0,0,0,0.75);backdrop-filter:blur(6px);
+  align-items:center;justify-content:center;padding:20px;}
+.modal-overlay.open{display:flex;}
+.modal{background:var(--card2);border:1px solid var(--bdr2);border-radius:22px;
+  width:100%;max-width:460px;position:relative;overflow:hidden;}
+.modal-header{background:linear-gradient(135deg,rgba(26,86,219,0.15),rgba(14,165,201,0.1));
+  padding:28px 28px 20px;border-bottom:1px solid var(--border);}
+.modal-close{position:absolute;top:16px;right:16px;background:rgba(255,255,255,0.06);
+  border:none;color:var(--dim);font-size:18px;cursor:pointer;
+  width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;
+  transition:all .15s;}
+.modal-close:hover{background:rgba(255,255,255,0.1);color:var(--white);}
+.modal-product-name{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;margin-bottom:6px;}
+.modal-product-desc{font-size:13px;color:var(--dim);margin-bottom:16px;}
+.modal-price-row{display:flex;align-items:baseline;gap:8px;}
+.modal-price{font-family:'Syne',sans-serif;font-size:38px;font-weight:800;color:var(--teal2);}
+.modal-price-note{font-size:13px;color:var(--dim);}
+.modal-body{padding:24px 28px;}
+.modal-includes{margin-bottom:20px;}
+.mi-title{font-family:'Instrument Mono',monospace;font-size:9px;letter-spacing:2px;
+  color:var(--dim);text-transform:uppercase;margin-bottom:10px;}
+.mi-list{list-style:none;display:flex;flex-direction:column;gap:7px;}
+.mi-list li{font-size:13px;color:var(--dim);display:flex;gap:8px;}
+.mi-list li::before{content:"✓";color:var(--green);flex-shrink:0;}
+
+/* Buyer form */
+.form-group{margin-bottom:14px;}
+.form-label{font-size:11px;font-family:'Instrument Mono',monospace;letter-spacing:1px;
+  color:var(--dim);text-transform:uppercase;margin-bottom:6px;display:block;}
+.form-input{width:100%;background:var(--navy2);border:1px solid var(--border);
+  border-radius:10px;padding:11px 14px;font-family:'Instrument Sans',sans-serif;
+  font-size:14px;color:var(--white);outline:none;transition:border-color .15s;}
+.form-input:focus{border-color:var(--teal);}
+.form-input::placeholder{color:var(--dim2);}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+
+.pay-btns{display:flex;flex-direction:column;gap:10px;margin-top:20px;}
+.btn-payfast{background:linear-gradient(135deg,#0077b6,#00b4d8);border:none;
+  color:#fff;padding:14px;border-radius:12px;font-family:'Syne',sans-serif;
+  font-size:14px;font-weight:700;cursor:pointer;display:flex;
+  align-items:center;justify-content:center;gap:10px;transition:opacity .15s;}
+.btn-payfast:hover{opacity:0.85;}
+.btn-eft{background:var(--card);border:1px solid var(--border);color:var(--teal2);
+  padding:14px;border-radius:12px;font-family:'Syne',sans-serif;
+  font-size:14px;font-weight:600;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:8px;transition:all .15s;}
+.btn-eft:hover{border-color:var(--bdr2);}
+.modal-disclaimer{font-size:11px;color:var(--dim2);text-align:center;
+  margin-top:14px;line-height:1.6;}
+
+/* ── AI GENERATOR MODAL ── */
+.gen-modal{max-width:540px;}
+.gen-steps{display:flex;gap:0;margin-bottom:24px;overflow-x:auto;padding-bottom:4px;}
+.gen-step-pill{display:flex;align-items:center;gap:0;flex-shrink:0;}
+.gen-step-dot{width:28px;height:28px;border-radius:50%;border:2px solid var(--dim2);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:var(--dim2);
+  transition:all .3s;flex-shrink:0;}
+.gen-step-dot.active{border-color:var(--teal);color:var(--teal2);background:rgba(14,165,201,0.1);}
+.gen-step-dot.done{border-color:var(--green);background:var(--green);color:#fff;}
+.gen-step-line{width:32px;height:2px;background:var(--border);}
+.gen-step-line.done{background:var(--green);}
+
+.gen-screen{display:none;}
+.gen-screen.active{display:block;}
+.gen-q-title{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;
+  margin-bottom:6px;margin-top:20px;}
+.gen-q-sub{font-size:13px;color:var(--dim);margin-bottom:16px;line-height:1.6;}
+
+.gen-preview{background:var(--navy2);border:1px solid var(--border);border-radius:12px;
+  padding:20px;font-size:12px;color:var(--dim);line-height:1.8;
+  min-height:200px;white-space:pre-wrap;font-family:'Instrument Mono',monospace;}
+.gen-loading{text-align:center;padding:40px;}
+.gen-spinner{width:32px;height:32px;border:3px solid var(--border);
+  border-top-color:var(--teal);border-radius:50%;
+  animation:spin 1s linear infinite;margin:0 auto 12px;}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:24px;right:24px;z-index:400;
+  background:var(--card2);border:1px solid var(--green);border-radius:12px;
+  padding:14px 18px;font-size:13px;color:var(--white);
+  transform:translateY(80px);opacity:0;transition:all .3s;max-width:320px;
+  box-shadow:0 8px 32px rgba(0,0,0,0.3);}
+.toast.show{transform:translateY(0);opacity:1;}
+.toast.error{border-color:var(--red);}
+
+/* ── HOW IT WORKS ── */
+.hiw{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:0;margin-top:28px;position:relative;}
+.hiw::before{content:'';position:absolute;top:22px;left:12%;right:12%;
+  height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);}
+.hiw-item{text-align:center;padding:0 14px;}
+.hiw-num{width:44px;height:44px;border-radius:50%;margin:0 auto 12px;
+  background:linear-gradient(135deg,var(--blue),var(--teal));
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Syne',sans-serif;font-size:16px;font-weight:800;}
+.hiw-title{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;margin-bottom:6px;}
+.hiw-desc{font-size:12px;color:var(--dim);line-height:1.6;}
+
+/* ── TRUST STRIP ── */
+.trust-strip{display:flex;gap:20px;flex-wrap:wrap;justify-content:center;
+  padding:16px;background:rgba(255,255,255,0.02);border-radius:12px;
+  border:1px solid var(--border);margin-bottom:28px;}
+.trust-item{font-size:12px;color:var(--dim);display:flex;align-items:center;gap:6px;}
+.trust-item strong{color:var(--white);}
+
+@media(max-width:600px){
+  .hiw::before{display:none;}
+  .hiw{gap:20px;}
+  .form-row{grid-template-columns:1fr;}
+  .nav-tabs{gap:0;}
+  .ntab{padding:7px 9px;font-size:11px;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-back" href="index.html">← Home</a>
+  <a class="nav-logo" href="index.html">Auto<span>Comply</span></a>
+  <div class="nav-tabs">
+    <button class="ntab active" onclick="showPg('store',this)">📥 Templates</button>
+    <button class="ntab" onclick="showPg('generate',this)">✨ Generate</button>
+    <button class="ntab" onclick="showPg('book',this)">📅 Book</button>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════════════
+     PAGE 1 — TEMPLATE STORE
+═══════════════════════════════════════ -->
+<div class="pg on" id="pg-store">
+<div class="wrap">
+
+  <div class="pg-hero">
+    <div class="pg-tag">Template Store</div>
+    <div class="pg-title">Download. Fill in. Use.<br>From R99.</div>
+    <div class="pg-sub">Professional compliance and legal templates. Instant download after payment. Or let us generate your document for you — pre-filled with your details.</div>
+  </div>
+
+  <!-- AI Banner -->
+  <div class="ai-banner">
+    <div class="ai-banner-icon">✨</div>
+    <div class="ai-banner-info">
+      <div class="ai-banner-title">Want your document pre-filled?</div>
+      <div class="ai-banner-sub">Answer 5 quick questions. We generate your completed, personalised document instantly — no blank fields, no guesswork. Your name, your company, your details. Ready to sign.</div>
+    </div>
+    <button class="btn-generate" onclick="showPg('generate',document.querySelectorAll('.ntab')[1])">✨ Generate My Document</button>
+  </div>
+
+  <!-- Filters -->
+  <div class="filter-row">
+    <button class="ftab on" onclick="filterCat('all',this)">ALL</button>
+    <button class="ftab" onclick="filterCat('compliance',this)">COMPLIANCE</button>
+    <button class="ftab" onclick="filterCat('contracts',this)">CONTRACTS</button>
+    <button class="ftab" onclick="filterCat('formation',this)">FORMATION</button>
+    <button class="ftab" onclick="filterCat('hr',this)">HR</button>
+    <button class="ftab" onclick="filterCat('bundle',this)">BUNDLES</button>
+  </div>
+
+  <!-- Trust strip -->
+  <div class="trust-strip">
+    <div class="trust-item">⚡ <strong>Instant</strong> download</div>
+    <div class="trust-item">📧 Sent to <strong>your email</strong></div>
+    <div class="trust-item">💳 Secure <strong>PayFast</strong> payment</div>
+    <div class="trust-item">🔒 <strong>SSL</strong> encrypted</div>
+    <div class="trust-item">📱 <strong>WhatsApp</strong> support</div>
+  </div>
+
+  <!-- Template grid -->
+  <div class="tgrid" id="template-grid"></div>
+
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     PAGE 2 — AI DOCUMENT GENERATOR
+═══════════════════════════════════════ -->
+<div class="pg" id="pg-generate">
+<div class="wrap">
+
+  <div class="pg-hero">
+    <div class="pg-tag">✨ AI Document Generator</div>
+    <div class="pg-title">Your document,<br>pre-filled in 60 seconds.</div>
+    <div class="pg-sub">Answer a few questions. We generate your completed, personalised document — your company name, your details, your specific situation. Download and sign.</div>
+  </div>
+
+  <!-- Doc type selector -->
+  <div style="margin-bottom:28px;">
+    <div style="font-family:'Instrument Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--dim);text-transform:uppercase;margin-bottom:14px;">Select document to generate</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;" id="gen-selector"></div>
+  </div>
+
+  <!-- Generator card -->
+  <div class="modal" style="position:relative;max-width:100%;border-radius:18px;" id="gen-card">
+    <div class="modal-header">
+      <div class="modal-product-name" id="gen-doc-name">B-BBEE Affidavit</div>
+      <div class="modal-product-desc" id="gen-doc-desc">Completed and personalised with your details</div>
+      <div class="modal-price-row">
+        <div class="modal-price" id="gen-doc-price">R199</div>
+        <div class="modal-price-note">once-off · instant download</div>
+      </div>
+    </div>
+    <div class="modal-body">
+
+      <!-- Step progress -->
+      <div class="gen-steps" id="gen-steps"></div>
+
+      <!-- Step screens -->
+      <div id="gen-screens"></div>
+
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     PAGE 3 — BOOK A CONSULTATION
+═══════════════════════════════════════ -->
+<div class="pg" id="pg-book">
+<div class="wrap">
+
+  <div class="pg-hero">
+    <div class="pg-tag">Advisory Sessions</div>
+    <div class="pg-title">Book a consultation.<br>Get clarity today.</div>
+    <div class="pg-sub">Commercial and operational advisory for South African business owners. Not legal advice — practical guidance on what to do and how to do it.</div>
+  </div>
+
+  <!-- Session cards -->
+  <div class="sessions-grid">
+    <div class="session-card">
+      <div class="s-icon">⚡</div>
+      <div class="s-duration">20 MINUTES</div>
+      <div class="s-name">Quick Question</div>
+      <div class="s-desc">One specific question. A direct, practical answer. Via Google Meet or WhatsApp call.</div>
+      <div class="s-price">R350</div>
+      <button class="btn-book outline" onclick="bookSession('Quick Question — 20min','350')">Book Now</button>
+    </div>
+    <div class="session-card featured">
+      <div class="s-icon">💬</div>
+      <div class="s-duration">60 MINUTES</div>
+      <div class="s-name">Standard Advisory</div>
+      <div class="s-desc">In-depth consultation on any commercial or compliance matter. Written follow-up note included.</div>
+      <div class="s-price">R600</div>
+      <button class="btn-book" onclick="bookSession('Standard Advisory — 60min','600')">Book Now</button>
+    </div>
+    <div class="session-card">
+      <div class="s-icon">🔍</div>
+      <div class="s-duration">90 MINUTES</div>
+      <div class="s-name">Deep Dive</div>
+      <div class="s-desc">Complex business structure, funding strategy, or full compliance review. Detailed written report included.</div>
+      <div class="s-price">R900</div>
+      <button class="btn-book outline" onclick="bookSession('Deep Dive — 90min','900')">Book Now</button>
+    </div>
+    <div class="session-card">
+      <div class="s-icon">📝</div>
+      <div class="s-duration">24 HOURS</div>
+      <div class="s-name">Written Advisory</div>
+      <div class="s-desc">Submit your question. Receive a one-page written advisory response by the next business day.</div>
+      <div class="s-price">R450</div>
+      <button class="btn-book outline" onclick="bookSession('Written Advisory — 24hr','450')">Book Now</button>
+    </div>
+  </div>
+
+  <!-- How it works -->
+  <div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px;margin-bottom:28px;">
+    <div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:700;margin-bottom:4px;">How booking works</div>
+    <div style="font-size:13px;color:var(--dim);margin-bottom:0;">Simple. Paid upfront. Confirmed instantly.</div>
+    <div class="hiw" style="margin-top:24px;">
+      <div class="hiw-item">
+        <div class="hiw-num">1</div>
+        <div class="hiw-title">Choose a session</div>
+        <div class="hiw-desc">Select the session type that fits your question or situation.</div>
+      </div>
+      <div class="hiw-item">
+        <div class="hiw-num">2</div>
+        <div class="hiw-title">Pay via PayFast</div>
+        <div class="hiw-desc">Secure card or EFT payment. Receipt and booking confirmation sent immediately.</div>
+      </div>
+      <div class="hiw-item">
+        <div class="hiw-num">3</div>
+        <div class="hiw-title">Pick your slot</div>
+        <div class="hiw-desc">After payment, choose your preferred date and time on Calendly.</div>
+      </div>
+      <div class="hiw-item">
+        <div class="hiw-num">4</div>
+        <div class="hiw-title">Get your answers</div>
+        <div class="hiw-desc">Google Meet or WhatsApp call. Follow-up note sent within 2 hours.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Calendly embed section -->
+  <div style="margin-bottom:12px;">
+    <div style="font-family:'Syne',sans-serif;font-size:18px;font-weight:700;margin-bottom:6px;">📅 Available Slots</div>
+    <div style="font-size:13px;color:var(--dim);margin-bottom:16px;">Pay above to unlock booking. Or WhatsApp us to arrange directly.</div>
+  </div>
+
+  <!-- Calendly embed — replace with your actual Calendly URL -->
+  <div class="cal-wrap" id="calendly-wrap">
+    <div class="cal-placeholder">
+      <div class="cal-placeholder-icon">📅</div>
+      <div class="cal-placeholder-title">Calendly Booking</div>
+      <div class="cal-placeholder-sub">Your live booking calendar will appear here once you connect Calendly. Free to set up — takes 10 minutes.</div>
+      <div class="cal-setup-steps">
+        <div class="cal-step">
+          <div class="cal-step-num">1</div>
+          <div class="cal-step-text"><strong>Go to calendly.com</strong> — create a free account with your Google account</div>
+        </div>
+        <div class="cal-step">
+          <div class="cal-step-num">2</div>
+          <div class="cal-step-text"><strong>Create 3 event types:</strong> Quick Question (20min), Standard Advisory (60min), Deep Dive (90min)</div>
+        </div>
+        <div class="cal-step">
+          <div class="cal-step-num">3</div>
+          <div class="cal-step-text"><strong>Set your availability</strong> — e.g. Mon–Fri 8am–5pm, Sat 8am–12pm</div>
+        </div>
+        <div class="cal-step">
+          <div class="cal-step-num">4</div>
+          <div class="cal-step-text"><strong>Copy your Calendly link</strong> — e.g. calendly.com/autocomply — and replace CALENDLY_URL below in the code</div>
+        </div>
+        <div class="cal-step">
+          <div class="cal-step-num">5</div>
+          <div class="cal-step-text"><strong>Add PayFast</strong> on Calendly paid plan (R280/mo) or use the free WhatsApp payment flow we built</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WhatsApp fallback -->
+  <div style="text-align:center;margin-top:20px;">
+    <div style="font-size:13px;color:var(--dim);margin-bottom:12px;">Prefer to book via WhatsApp?</div>
+    <a href="https://wa.me/27000000000?text=Hi%20AutoComply%2C%20I%20would%20like%20to%20book%20a%20consultation%20session."
+      target="_blank"
+      style="display:inline-flex;align-items:center;gap:8px;background:#25D366;color:#fff;text-decoration:none;padding:12px 24px;border-radius:10px;font-family:'Syne',sans-serif;font-size:14px;font-weight:700;">
+      💬 WhatsApp to Book
+    </a>
+  </div>
+
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     PURCHASE MODAL
+═══════════════════════════════════════ -->
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-header">
+      <div class="modal-product-name" id="m-name"></div>
+      <div class="modal-product-desc" id="m-desc">Instant download after payment · Sent to your email</div>
+      <div class="modal-price-row">
+        <div class="modal-price" id="m-price"></div>
+        <div class="modal-price-note" id="m-note">once-off</div>
+      </div>
+    </div>
+    <div class="modal-body">
+      <div class="modal-includes" id="m-includes-wrap">
+        <div class="mi-title">What's included</div>
+        <ul class="mi-list" id="m-includes"></ul>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">First Name</label>
+          <input class="form-input" type="text" id="f-first" placeholder="Thabo">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Last Name</label>
+          <input class="form-input" type="text" id="f-last" placeholder="Mokoena">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email address</label>
+        <input class="form-input" type="email" id="f-email" placeholder="thabo@business.co.za">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Cell number <span style="color:var(--dim2)">(optional — for WhatsApp delivery)</span></label>
+        <input class="form-input" type="tel" id="f-cell" placeholder="082 000 0000">
+      </div>
+      <div class="pay-btns">
+        <button class="btn-payfast" onclick="submitPayFast()">
+          💳 Pay with PayFast — <span id="btn-amount"></span>
+        </button>
+        <button class="btn-eft" onclick="submitEFT()">
+          🏦 Pay by EFT — Banking details via WhatsApp
+        </button>
+      </div>
+      <div class="modal-disclaimer">
+        Secure payment via PayFast · SSL encrypted · Receipt sent to your email<br>
+        Download link delivered within 60 seconds of payment confirmation
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ═══════════════════════════════════════
+// CONFIG — UPDATE THESE
+// ═══════════════════════════════════════
+const CONFIG = {
+  whatsapp:    '27000000000',           // Your number
+  email:       'info@autocomply.co.za',
+  payfast_id:  'YOUR_MERCHANT_ID',      // From payfast.co.za
+  payfast_key: 'YOUR_MERCHANT_KEY',
+  app_url:     'https://autocomply.co.za',
+  calendly:    'YOUR_CALENDLY_URL',     // e.g. https://calendly.com/autocomply
+}
+
+// ═══════════════════════════════════════
+// TEMPLATE DATA
+// ═══════════════════════════════════════
+const templates = [
+  {
+    id:1, cat:'compliance',
+    icon:'🌍', color:'rgba(16,185,129,0.15)', border:'rgba(16,185,129,0.3)',
+    name:'B-BBEE Affidavit Kit',
+    badges:['MOST POPULAR'],
+    desc:'Complete fillable affidavit for Exempted Micro Enterprises. Level 1, 2, or 4. Commissioner signing instructions and 12-month reminder included.',
+    includes:['Fillable PDF affidavit (Level 1, 2, 4)','B-BBEE level calculation guide','Commissioner of oaths instructions','12-month renewal reminder sheet','Signing locations in Lydenburg'],
+    price:149, genPrice:199,
+  },
+  {
+    id:2, cat:'compliance',
+    icon:'📅', color:'rgba(14,165,201,0.12)', border:'rgba(14,165,201,0.25)',
+    name:'Compliance Calendar 2026',
+    badges:['NEW'],
+    desc:'12-month regulatory deadline tracker for South African SMEs. All key SARS, CIPC, and labour deadlines pre-loaded. Customise for your business.',
+    includes:['Google Sheets format (editable)','16 pre-loaded obligations','SARS, CIPC, and labour deadlines','Consequence and handler columns','Instructions for customisation'],
+    price:129, genPrice:179,
+  },
+  {
+    id:3, cat:'contracts',
+    icon:'📝', color:'rgba(26,86,219,0.12)', border:'rgba(26,86,219,0.25)',
+    name:'Contract Template Pack',
+    badges:['3-IN-1','HOT'],
+    desc:'Supplier agreement, service agreement, and mutual NDA — three essential commercial contracts in one download. South African law.',
+    includes:['Supplier agreement (goods/services)','Service agreement (ongoing)','Mutual NDA (non-disclosure)','Plain-language clause explanations','Signing instructions'],
+    price:299, genPrice:399,
+  },
+  {
+    id:4, cat:'hr',
+    icon:'👔', color:'rgba(245,158,11,0.12)', border:'rgba(245,158,11,0.25)',
+    name:'Employment Contract Pack',
+    badges:['BCEA COMPLIANT'],
+    desc:'Three BCEA-compliant employment contracts covering permanent, fixed-term, and casual/part-time employees. HR quick-reference guide included.',
+    includes:['Permanent employment contract','Fixed-term contract','Casual/part-time contract','Leave and disciplinary clause guide','BCEA compliance checklist'],
+    price:249, genPrice:349,
+  },
+  {
+    id:5, cat:'formation',
+    icon:'🤝', color:'rgba(139,92,246,0.12)', border:'rgba(139,92,246,0.25)',
+    name:'Shareholder Agreement',
+    badges:['ESSENTIAL'],
+    desc:'Standard two-party shareholder agreement for South African Pty Ltd companies. Share structure, decision thresholds, exit clauses, and restraint of trade.',
+    includes:['Share structure and percentages','Decision-making thresholds','Right of first refusal clause','Buy-sell provisions (exit/death)','Restraint of trade (12 months, 50km)'],
+    price:399, genPrice:549,
+  },
+  {
+    id:6, cat:'compliance',
+    icon:'🏛️', color:'rgba(14,165,201,0.1)', border:'rgba(14,165,201,0.2)',
+    name:'CSD Registration Checklist',
+    badges:['FREE GUIDE'],
+    desc:'Step-by-step guide to registering on the National Treasury Central Supplier Database. All fields explained. Common rejection reasons and how to avoid them.',
+    includes:['Step-by-step portal walkthrough','UNSPSC code selection guide','Common rejection reasons','Document checklist','eTenders setup instructions'],
+    price:79, genPrice:null,
+  },
+  {
+    id:7, cat:'bundle',
+    icon:'⚡', color:'rgba(245,158,11,0.1)', border:'rgba(245,158,11,0.25)',
+    name:'Startup Compliance Bundle',
+    badges:['SAVE R278','BEST VALUE'],
+    desc:'B-BBEE Affidavit Kit + Compliance Calendar + Contract Template Pack + Employment Contract Pack. Everything a new business needs.',
+    includes:['B-BBEE Affidavit Kit (R149)','Compliance Calendar (R129)','Contract Template Pack (R299)','Employment Contract Pack (R249)','Single download · All 4 products'],
+    price:549, oldPrice:826, genPrice:null,
+  },
+  {
+    id:8, cat:'formation',
+    icon:'📋', color:'rgba(16,185,129,0.1)', border:'rgba(16,185,129,0.2)',
+    name:'CIPC Registration Checklist',
+    badges:['FREE GUIDE'],
+    desc:'Complete document checklist for Pty Ltd registration. Common CIPC rejection reasons. Timeline guide and next steps after registration.',
+    includes:['Document requirements per director','3 name options strategy','CIPC eServices walkthrough','Post-registration next steps','Common rejection reasons'],
+    price:49, genPrice:null,
+  },
+]
+
+// ═══════════════════════════════════════
+// AI GENERATOR DATA
+// ═══════════════════════════════════════
+const genDocs = [
+  {
+    id:'bee', name:'B-BBEE Affidavit', price:199, color:'rgba(16,185,129,0.12)',
+    steps:['Company','Ownership','Director','Review','Payment'],
+    screens:[
+      { title:'Company details', sub:'These go on your B-BBEE affidavit exactly as registered at CIPC.',
+        fields:[{id:'company_name',label:'Company name (exactly as registered)',ph:'Mashishing Trading (Pty) Ltd'},
+                {id:'reg_number',label:'CIPC Registration number',ph:'2026/123456/07'},
+                {id:'trading_name',label:'Trading name (if different)',ph:'Leave blank if same'}] },
+      { title:'B-BBEE ownership', sub:'This determines your B-BBEE level automatically.',
+        fields:[{id:'black_pct',label:'% of business owned by black South Africans',ph:'e.g. 100 or 51 or 30'},
+                {id:'turnover',label:'Estimated annual turnover (R)',ph:'e.g. 850000'}] },
+      { title:'Director information', sub:'The director who will sign the affidavit.',
+        fields:[{id:'director_name',label:'Director full name',ph:'Thabo Sipho Mokoena'},
+                {id:'director_id',label:'SA ID number',ph:'8012015234087'},
+                {id:'director_address',label:'Residential address',ph:'123 Main Street, Lydenburg, 1120'}] },
+    ]
+  },
+  {
+    id:'emp', name:'Employment Contract', price:199, color:'rgba(245,158,11,0.12)',
+    steps:['Employee','Company','Terms','Review','Payment'],
+    screens:[
+      { title:'Employee details', sub:'The person being employed.',
+        fields:[{id:'emp_name',label:'Employee full name',ph:'Nomsa Dlamini'},
+                {id:'emp_id',label:'Employee ID number',ph:'9205155234087'},
+                {id:'emp_position',label:'Job title / position',ph:'Sales Assistant'}] },
+      { title:'Employer details', sub:'Your business details.',
+        fields:[{id:'employer_name',label:'Company name',ph:'Mashishing Trading (Pty) Ltd'},
+                {id:'employer_address',label:'Business address',ph:'Shop 4, Main Street, Lydenburg'}] },
+      { title:'Employment terms', sub:'The terms of this employment.',
+        fields:[{id:'emp_type',label:'Employment type',ph:'Permanent / Fixed-term / Casual'},
+                {id:'emp_salary',label:'Monthly salary (R)',ph:'5500'},
+                {id:'emp_start',label:'Start date',ph:'1 May 2026'},
+                {id:'emp_hours',label:'Working hours per week',ph:'45'}] },
+    ]
+  },
+  {
+    id:'nda', name:'NDA — Non-Disclosure', price:149, color:'rgba(26,86,219,0.12)',
+    steps:['Party A','Party B','Terms','Review','Payment'],
+    screens:[
+      { title:'Your details (Party A)', sub:'The party disclosing confidential information.',
+        fields:[{id:'party_a_name',label:'Your full name or company name',ph:'AutoComply Advisory'},
+                {id:'party_a_rep',label:'Authorised representative name',ph:'Jacobus Pretorius'}] },
+      { title:'Other party (Party B)', sub:'The party receiving your confidential information.',
+        fields:[{id:'party_b_name',label:'Other party name or company',ph:'ABC Investments (Pty) Ltd'},
+                {id:'party_b_rep',label:'Their representative name',ph:'John Smith'}] },
+      { title:'NDA terms', sub:'What the NDA covers.',
+        fields:[{id:'nda_purpose',label:'Purpose of disclosure',ph:'Business partnership discussions'},
+                {id:'nda_duration',label:'Duration of confidentiality',ph:'3 years'},
+                {id:'nda_scope',label:'What information is confidential',ph:'Business plans, financials, client lists'}] },
+    ]
+  },
+]
+
+// ═══════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════
+let currentModal = null
+let currentGenDoc = genDocs[0]
+let genStep = 0
+let genAnswers = {}
+
+// ═══════════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════════
+function showPg(id, btn) {
+  document.querySelectorAll('.pg').forEach(p => p.classList.remove('on'))
+  document.getElementById('pg-' + id).classList.add('on')
+  document.querySelectorAll('.ntab').forEach(b => b.classList.remove('active'))
+  if (btn) btn.classList.add('active')
+  window.scrollTo(0,0)
+}
+
+// ═══════════════════════════════════════
+// TEMPLATE GRID
+// ═══════════════════════════════════════
+function renderTemplates(cat='all') {
+  const filtered = cat === 'all' ? templates : templates.filter(t => t.cat === cat)
+  document.getElementById('template-grid').innerHTML = filtered.map(t => `
+    <div class="tcard">
+      <div class="tc-top">
+        <div class="tc-head">
+          <div class="tc-icon" style="background:${t.color};border:1px solid ${t.border}">${t.icon}</div>
+          <div class="tc-meta">
+            <div class="tc-name">${t.name}</div>
+            <div class="tc-badges">
+              ${t.badges.map(b => `<span class="badge ${badgeClass(b)}">${b}</span>`).join('')}
+              ${t.genPrice ? '<span class="badge badge-ai">AI GENERATE</span>' : ''}
+            </div>
+          </div>
+        </div>
+        <div class="tc-desc">${t.desc}</div>
+        <ul class="tc-includes">${t.includes.slice(0,4).map(i => `<li>${i}</li>`).join('')}</ul>
+      </div>
+      <div class="tc-bottom">
+        <div>
+          ${t.oldPrice ? `<span class="tc-price-old">R${t.oldPrice}</span>` : ''}
+          <span class="tc-price">R${t.price}</span>
+        </div>
+        <div style="display:flex;gap:8px;">
+          ${t.genPrice ? `<button class="btn-buy" style="background:linear-gradient(135deg,var(--purple),var(--blue));" onclick="openGenForDoc('${t.id}')">✨ Generate</button>` : ''}
+          <button class="btn-buy" onclick="openModal(${t.id})">Buy Template</button>
+        </div>
+      </div>
+    </div>
+  `).join('')
+}
+
+function badgeClass(b) {
+  if (b.includes('POPULAR') || b.includes('COMPLIANT') || b.includes('ESSENTIAL')) return 'badge-pop'
+  if (b.includes('NEW')) return 'badge-new'
+  if (b.includes('HOT')) return 'badge-hot'
+  if (b.includes('SAVE') || b.includes('VALUE') || b.includes('3-IN-1')) return 'badge-save'
+  return 'badge-pop'
+}
+
+function filterCat(cat, btn) {
+  document.querySelectorAll('.ftab').forEach(b => b.classList.remove('on'))
+  btn.classList.add('on')
+  renderTemplates(cat)
+}
+
+// ═══════════════════════════════════════
+// PURCHASE MODAL
+// ═══════════════════════════════════════
+function openModal(id) {
+  const t = templates.find(x => x.id === id)
+  if (!t) return
+  currentModal = t
+  document.getElementById('m-name').textContent = t.name
+  document.getElementById('m-price').textContent = 'R' + t.price
+  document.getElementById('m-includes').innerHTML = t.includes.map(i => `<li>${i}</li>`).join('')
+  document.getElementById('btn-amount').textContent = 'R' + t.price
+  document.getElementById('modal').classList.add('open')
+}
+
+function openBookingModal(name, price) {
+  currentModal = { name, price: parseInt(price), includes:['One-on-one session via Google Meet or WhatsApp call','Written follow-up note within 2 hours','Calendly booking link sent after payment'] }
+  document.getElementById('m-name').textContent = name
+  document.getElementById('m-price').textContent = 'R' + price
+  document.getElementById('m-note').textContent = 'per session'
+  document.getElementById('m-includes').innerHTML = currentModal.includes.map(i => `<li>${i}</li>`).join('')
+  document.getElementById('btn-amount').textContent = 'R' + price
+  document.getElementById('modal').classList.add('open')
+}
+
+function closeModal() {
+  document.getElementById('modal').classList.remove('open')
+  document.getElementById('m-note').textContent = 'once-off'
+}
+
+function validateForm() {
+  const first = document.getElementById('f-first').value.trim()
+  const last  = document.getElementById('f-last').value.trim()
+  const email = document.getElementById('f-email').value.trim()
+  if (!first || !last || !email) { showToast('Please fill in your name and email address.', true); return false }
+  if (!email.includes('@')) { showToast('Please enter a valid email address.', true); return false }
+  return { first, last, email, cell: document.getElementById('f-cell').value.trim() }
+}
+
+function submitPayFast() {
+  const buyer = validateForm()
+  if (!buyer || !currentModal) return
+
+  // Build PayFast form and submit
+  const form = document.createElement('form')
+  form.method = 'POST'
+  form.action = CONFIG.payfast_id === 'YOUR_MERCHANT_ID'
+    ? 'https://sandbox.payfast.co.za/eng/process'  // sandbox until live
+    : 'https://www.payfast.co.za/eng/process'
+
+  const fields = {
+    merchant_id:      CONFIG.payfast_id,
+    merchant_key:     CONFIG.payfast_key,
+    return_url:       CONFIG.app_url + '/store.html?payment=success',
+    cancel_url:       CONFIG.app_url + '/store.html?payment=cancelled',
+    notify_url:       CONFIG.app_url + '/api/payment-notify',
+    name_first:       buyer.first,
+    name_last:        buyer.last,
+    email_address:    buyer.email,
+    amount:           currentModal.price.toFixed(2),
+    item_name:        'AutoComply — ' + currentModal.name,
+    item_description: currentModal.name + ' · autocomply.co.za',
+  }
+
+  Object.entries(fields).forEach(([k,v]) => {
+    const el = document.createElement('input')
+    el.type = 'hidden'; el.name = k; el.value = v
+    form.appendChild(el)
+  })
+
+  document.body.appendChild(form)
+  form.submit()
+}
+
+function submitEFT() {
+  const buyer = validateForm()
+  if (!buyer || !currentModal) return
+  const msg = encodeURIComponent(
+    `Hi AutoComply, I would like to purchase:\n\n` +
+    `Product: ${currentModal.name}\n` +
+    `Price: R${currentModal.price}\n` +
+    `Name: ${buyer.first} ${buyer.last}\n` +
+    `Email: ${buyer.email}\n\n` +
+    `Please send me your banking details.`
+  )
+  closeModal()
+  window.open(`https://wa.me/${CONFIG.whatsapp}?text=${msg}`, '_blank')
+}
+
+function bookSession(name, price) {
+  openBookingModal(name, price)
+}
+
+// ═══════════════════════════════════════
+// AI GENERATOR
+// ═══════════════════════════════════════
+function renderGenSelector() {
+  const el = document.getElementById('gen-selector')
+  if (!el) return
+  el.innerHTML = genDocs.map((d,i) => `
+    <div onclick="selectGenDoc(${i})" style="
+      background:${currentGenDoc.id===d.id?'rgba(14,165,201,0.08)':d.color};
+      border:1px solid ${currentGenDoc.id===d.id?'var(--teal)':'var(--border)'};
+      border-radius:12px;padding:14px;cursor:pointer;transition:all .15s;">
+      <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;margin-bottom:4px;">${d.name}</div>
+      <div style="font-family:'Instrument Mono',monospace;font-size:11px;color:var(--teal2);">R${d.price}</div>
+    </div>
+  `).join('')
+}
+
+function selectGenDoc(i) {
+  currentGenDoc = genDocs[i]
+  genStep = 0
+  genAnswers = {}
+  renderGenSelector()
+  renderGenUI()
+}
+
+function renderGenUI() {
+  const d = currentGenDoc
+  document.getElementById('gen-doc-name').textContent = d.name + ' — AI Generated'
+  document.getElementById('gen-doc-desc').textContent = 'Completed with your details · Download after payment'
+  document.getElementById('gen-doc-price').textContent = 'R' + d.price
+
+  // Steps
+  document.getElementById('gen-steps').innerHTML = d.steps.map((s,i) => `
+    <div class="gen-step-pill">
+      <div class="gen-step-dot ${i < genStep ? 'done' : i === genStep ? 'active' : ''}">${i < genStep ? '✓' : i+1}</div>
+      ${i < d.steps.length-1 ? `<div class="gen-step-line ${i < genStep ? 'done' : ''}"></div>` : ''}
+    </div>
+  `).join('')
+
+  // Screens
+  const screens = document.getElementById('gen-screens')
+  screens.innerHTML = ''
+
+  if (genStep < d.screens.length) {
+    const sc = d.screens[genStep]
+    screens.innerHTML = `
+      <div class="gen-screen active">
+        <div class="gen-q-title">${sc.title}</div>
+        <div class="gen-q-sub">${sc.sub}</div>
+        ${sc.fields.map(f => `
+          <div class="form-group">
+            <label class="form-label">${f.label}</label>
+            <input class="form-input" id="gf-${f.id}" placeholder="${f.ph}" value="${genAnswers[f.id]||''}">
+          </div>
+        `).join('')}
+        <div style="display:flex;gap:10px;margin-top:20px;">
+          ${genStep > 0 ? `<button onclick="genBack()" style="background:none;border:1px solid var(--border);color:var(--dim);padding:12px 20px;border-radius:10px;font-family:'Syne',sans-serif;font-size:13px;cursor:pointer;">← Back</button>` : ''}
+          <button onclick="genNext()" style="flex:1;background:linear-gradient(135deg,var(--blue),var(--teal));border:none;color:#fff;padding:12px 20px;border-radius:10px;font-family:'Syne',sans-serif;font-size:14px;font-weight:700;cursor:pointer;">
+            ${genStep < d.screens.length - 1 ? 'Next →' : 'Generate Preview →'}
+          </button>
+        </div>
+      </div>
+    `
+  } else if (genStep === d.screens.length) {
+    // Review / preview
+    screens.innerHTML = `
+      <div class="gen-screen active">
+        <div class="gen-q-title">Review your details</div>
+        <div class="gen-q-sub">We will generate your document with these details. Check everything is correct.</div>
+        <div style="background:var(--navy2);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:20px;">
+          ${Object.entries(genAnswers).map(([k,v]) => `
+            <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.04);font-size:13px;">
+              <span style="color:var(--dim)">${k.replace(/_/g,' ')}</span>
+              <span style="color:var(--white);font-weight:500">${v}</span>
+            </div>
+          `).join('')}
+        </div>
+        <div style="display:flex;gap:10px;">
+          <button onclick="genBack()" style="background:none;border:1px solid var(--border);color:var(--dim);padding:12px 20px;border-radius:10px;font-family:'Syne',sans-serif;font-size:13px;cursor:pointer;">← Edit</button>
+          <button onclick="genPreview()" style="flex:1;background:linear-gradient(135deg,var(--purple),var(--blue));border:none;color:#fff;padding:12px;border-radius:10px;font-family:'Syne',sans-serif;font-size:14px;font-weight:700;cursor:pointer;">✨ Generate Preview</button>
+        </div>
+      </div>
+    `
+  } else if (genStep === d.screens.length + 1) {
+    // Payment
+    currentModal = { name: d.name + ' — AI Generated', price: d.price, includes: ['Personalised with your details','Ready to sign immediately','PDF format','Signing instructions included'] }
+    document.getElementById('m-name').textContent = currentModal.name
+    document.getElementById('m-price').textContent = 'R' + d.price
+    document.getElementById('btn-amount').textContent = 'R' + d.price
+    document.getElementById('m-includes').innerHTML = currentModal.includes.map(i => `<li>${i}</li>`).join('')
+    document.getElementById('modal').classList.add('open')
+  }
+}
+
+function genNext() {
+  const d = currentGenDoc
+  if (genStep < d.screens.length) {
+    // Save answers
+    const sc = d.screens[genStep]
+    sc.fields.forEach(f => {
+      const el = document.getElementById('gf-' + f.id)
+      if (el) genAnswers[f.id] = el.value.trim()
+    })
+  }
+  genStep++
+  renderGenUI()
+}
+
+function genBack() {
+  genStep = Math.max(0, genStep - 1)
+  renderGenUI()
+}
+
+async function genPreview() {
+  const screens = document.getElementById('gen-screens')
+  screens.innerHTML = `
+    <div class="gen-loading">
+      <div class="gen-spinner"></div>
+      <div style="font-family:'Syne',sans-serif;font-size:15px;font-weight:700;margin-bottom:6px;">Generating your document...</div>
+      <div style="font-size:13px;color:var(--dim)">This takes about 10 seconds</div>
+    </div>
+  `
+
+  try {
+    const prompt = buildGenPrompt()
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    })
+    const data = await res.json()
+    const text = data.content?.[0]?.text || 'Unable to generate. Please try again.'
+
+    screens.innerHTML = `
+      <div class="gen-screen active">
+        <div class="gen-q-title">Document Preview</div>
+        <div class="gen-q-sub">Your personalised document is ready. Purchase to download the complete, signable PDF.</div>
+        <div class="gen-preview">${text}</div>
+        <div style="display:flex;gap:10px;margin-top:16px;">
+          <button onclick="genBack()" style="background:none;border:1px solid var(--border);color:var(--dim);padding:12px 20px;border-radius:10px;font-family:'Syne',sans-serif;font-size:13px;cursor:pointer;">← Edit</button>
+          <button onclick="genPurchase()" style="flex:1;background:linear-gradient(135deg,var(--purple),var(--blue));border:none;color:#fff;padding:12px;border-radius:10px;font-family:'Syne',sans-serif;font-size:14px;font-weight:700;cursor:pointer;">💳 Purchase Full Document — R${currentGenDoc.price}</button>
+        </div>
+      </div>
+    `
+  } catch(e) {
+    screens.innerHTML = `
+      <div class="gen-screen active">
+        <div style="text-align:center;padding:40px;">
+          <div style="font-size:32px;margin-bottom:12px;">⚠️</div>
+          <div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:700;margin-bottom:8px;">Connection error</div>
+          <div style="font-size:13px;color:var(--dim);margin-bottom:20px;">Unable to generate right now. Please try again or contact AutoComply via WhatsApp.</div>
+          <button onclick="genStep--;renderGenUI()" style="background:linear-gradient(135deg,var(--blue),var(--teal));border:none;color:#fff;padding:12px 24px;border-radius:10px;font-family:'Syne',sans-serif;font-size:13px;font-weight:700;cursor:pointer;">← Try Again</button>
+        </div>
+      </div>
+    `
+  }
+}
+
+function buildGenPrompt() {
+  const d = currentGenDoc
+  const ans = genAnswers
+  if (d.id === 'bee') {
+    const pct = parseInt(ans.black_pct || 0)
+    const level = pct >= 100 ? 'Level 1' : pct >= 51 ? 'Level 2' : 'Level 4'
+    return `Generate a South African B-BBEE sworn affidavit for an Exempted Micro Enterprise. This is a PREVIEW (first 30% of the document) to show the client before they purchase.
+
+Company: ${ans.company_name || '[Company Name]'}
+Registration number: ${ans.reg_number || '[Reg Number]'}
+Trading name: ${ans.trading_name || 'Same as above'}
+Director: ${ans.director_name || '[Director Name]'}
+Director ID: ${ans.director_id || '[ID Number]'}
+Address: ${ans.director_address || '[Address]'}
+Black ownership: ${ans.black_pct || '0'}% → ${level}
+Annual turnover: R${parseInt(ans.turnover||0).toLocaleString('en-ZA')}
+
+Format as a professional legal affidavit. Show the header, company details, ownership declaration, and B-BBEE level. End with "[Document continues — purchase to download complete signable PDF]". Keep it clean and professional. No markdown.`
+  }
+  if (d.id === 'emp') {
+    return `Generate a South African BCEA-compliant employment contract PREVIEW (first 40%) for:
+
+Employer: ${ans.employer_name}
+Employee: ${ans.emp_name}
+ID: ${ans.emp_id}
+Position: ${ans.emp_position}
+Type: ${ans.emp_type}
+Salary: R${parseInt(ans.emp_salary||0).toLocaleString('en-ZA')} per month
+Start date: ${ans.emp_start}
+Hours: ${ans.emp_hours} per week
+Address: ${ans.employer_address}
+
+Show the header, parties section, employment terms, remuneration, and start of working hours clause. End with "[Document continues — purchase complete contract]". No markdown.`
+  }
+  return `Generate a South African mutual NDA PREVIEW for:
+Party A: ${ans.party_a_name} (${ans.party_a_rep})
+Party B: ${ans.party_b_name} (${ans.party_b_rep})
+Purpose: ${ans.nda_purpose}
+Duration: ${ans.nda_duration}
+Scope: ${ans.nda_scope}
+
+Show header, parties, recitals, and definition of confidential information. End with "[Document continues — purchase complete NDA]". No markdown.`
+}
+
+function genPurchase() {
+  genStep = currentGenDoc.screens.length + 1
+  renderGenUI()
+}
+
+function openGenForDoc(templateId) {
+  const map = {1:'bee', 4:'emp', 3:'nda'}
+  const genId = map[templateId]
+  if (genId) {
+    const idx = genDocs.findIndex(d => d.id === genId)
+    if (idx >= 0) {
+      showPg('generate', document.querySelectorAll('.ntab')[1])
+      selectGenDoc(idx)
+    }
+  } else {
+    showPg('generate', document.querySelectorAll('.ntab')[1])
+  }
+}
+
+// ═══════════════════════════════════════
+// PAYMENT SUCCESS CHECK
+// ═══════════════════════════════════════
+function checkPaymentReturn() {
+  const params = new URLSearchParams(window.location.search)
+  if (params.get('payment') === 'success') {
+    showToast('✓ Payment received! Your document has been sent to your email address.')
+  } else if (params.get('payment') === 'cancelled') {
+    showToast('Payment was cancelled. No charge was made.', true)
+  }
+}
+
+// ═══════════════════════════════════════
+// TOAST
+// ═══════════════════════════════════════
+function showToast(msg, error=false) {
+  const t = document.getElementById('toast')
+  t.textContent = msg
+  t.classList.toggle('error', error)
+  t.style.borderColor = error ? 'var(--red)' : 'var(--green)'
+  t.classList.add('show')
+  setTimeout(() => t.classList.remove('show'), 5000)
+}
+
+// ═══════════════════════════════════════
+// CALENDLY EMBED
+// ═══════════════════════════════════════
+function loadCalendly() {
+  if (CONFIG.calendly === 'YOUR_CALENDLY_URL') return // not set up yet
+  const wrap = document.getElementById('calendly-wrap')
+  wrap.innerHTML = `<iframe src="${CONFIG.calendly}" style="width:100%;height:600px;border:none;border-radius:16px;" title="Book a consultation with AutoComply"></iframe>`
+}
+
+// ═══════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════
+window.onload = () => {
+  renderTemplates()
+  renderGenSelector()
+  renderGenUI()
+  loadCalendly()
+  checkPaymentReturn()
+}
+</script>
+</body>
+</html>

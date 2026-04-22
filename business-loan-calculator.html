@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Business Loan Calculator — AutoComply</title>
+<meta name="description" content="Free business loan calculator for South African businesses. Calculate monthly repayments, total interest and compare two loan scenarios side by side.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;700;800&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --navy:#0B1628; --navy-soft:#1A2842; --blue:#1A56DB; --blue-soft:#EEF3FF;
+  --blue-line:rgba(26,86,219,.15); --green:#059669; --green-soft:#ECFDF5;
+  --green-mid:#10B981; --amber:#D97706; --amber-soft:#FEF3C7;
+  --red:#DC2626; --red-soft:#FEE2E2; --muted:#5A6A82; --muted2:#8A96A8;
+  --border:#DDE5F0; --border-strong:#C5D1E4; --bg:#F8FAFF; --bg2:#EEF3FF;
+  --white:#fff; --sh:0 1px 4px rgba(11,22,40,.07);
+  --sh-strong:0 4px 20px rgba(11,22,40,.10);
+  --a:#1A56DB; --b:#D97706;
+  --a-soft:#EEF3FF; --b-soft:#FEF3C7;
+}
+html,body{background:var(--bg);color:var(--navy);font-family:'Outfit',sans-serif;-webkit-font-smoothing:antialiased;min-height:100vh;font-size:15px;line-height:1.5;}
+
+/* ─── TOPBAR ─── */
+.topbar{background:var(--navy);padding:14px 20px;}
+.topbar-inner{max-width:1060px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;}
+.brand{font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;color:#fff;letter-spacing:-.3px;text-decoration:none;}
+.brand span{color:#60AEFF;}
+.back{font-size:12.5px;color:rgba(255,255,255,.55);text-decoration:none;display:inline-flex;align-items:center;gap:6px;transition:color .15s;}
+.back:hover{color:#fff;}
+
+/* ─── HERO ─── */
+.hero{background:var(--navy);padding:34px 20px 58px;position:relative;overflow:hidden;}
+.hero::before{content:"";position:absolute;top:-100px;right:-100px;width:400px;height:400px;background:radial-gradient(circle,rgba(26,86,219,.15),transparent 70%);pointer-events:none;}
+.hero-inner{max-width:1060px;margin:0 auto;position:relative;z-index:1;}
+.hero-tag{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:14px;}
+.hero-h{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(26px,5vw,38px);font-weight:800;color:#fff;letter-spacing:-.6px;line-height:1.15;margin-bottom:12px;max-width:760px;}
+.hero-sub{font-size:clamp(14px,2.2vw,16px);color:rgba(255,255,255,.65);max-width:660px;line-height:1.55;}
+
+/* ─── LAYOUT ─── */
+.wrap{max-width:1060px;margin:0 auto;padding:0 20px;}
+.main{margin-top:-36px;margin-bottom:32px;position:relative;z-index:2;}
+.card{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:26px;box-shadow:var(--sh);margin-bottom:20px;}
+.card-h{font-family:'Bricolage Grotesque',sans-serif;font-size:17px;font-weight:700;color:var(--navy);margin-bottom:4px;letter-spacing:-.2px;}
+.card-sub{font-size:13px;color:var(--muted);margin-bottom:22px;line-height:1.55;}
+
+/* ─── SCENARIO GRID ─── */
+.scenarios{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+@media(max-width:720px){.scenarios{grid-template-columns:1fr;}}
+
+.scenario{background:var(--bg);border:2px solid var(--border);border-radius:12px;padding:18px 20px;}
+.scenario.a{border-color:var(--a);background:linear-gradient(135deg,rgba(26,86,219,.04) 0%,var(--bg) 100%);}
+.scenario.b{border-color:var(--b);background:linear-gradient(135deg,rgba(217,119,6,.04) 0%,var(--bg) 100%);}
+
+.scenario-header{display:flex;align-items:center;gap:10px;margin-bottom:16px;}
+.scenario-badge{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:4px 10px;border-radius:6px;}
+.scenario-badge.a{background:var(--a-soft);color:var(--a);}
+.scenario-badge.b{background:var(--b-soft);color:var(--b);}
+.scenario-name{font-size:14px;font-weight:600;color:var(--navy);letter-spacing:-.1px;}
+
+/* ─── FIELDS ─── */
+.field{margin-bottom:14px;}
+.field:last-child{margin-bottom:0;}
+.field-label{display:flex;align-items:center;justify-content:space-between;font-size:12px;font-weight:600;color:var(--navy);margin-bottom:6px;}
+.field-hint{font-size:11px;color:var(--muted2);font-weight:500;}
+.input-wrap{position:relative;}
+.input-prefix{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-family:'JetBrains Mono',monospace;font-size:12.5px;font-weight:600;color:var(--muted);pointer-events:none;}
+.input-suffix{position:absolute;right:12px;top:50%;transform:translateY(-50%);font-family:'JetBrains Mono',monospace;font-size:12.5px;font-weight:600;color:var(--muted);pointer-events:none;}
+.input{width:100%;padding:10px 12px 10px 28px;font-family:'Outfit',sans-serif;font-size:14px;font-weight:500;color:var(--navy);background:var(--white);border:1px solid var(--border);border-radius:8px;transition:all .15s;-moz-appearance:textfield;}
+.input.no-prefix{padding-left:12px;}
+.input.has-suffix{padding-right:30px;}
+.input::-webkit-outer-spin-button,.input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
+.input:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(26,86,219,.12);}
+.input::placeholder{color:var(--muted2);font-weight:400;}
+
+/* term row */
+.term-row{display:flex;gap:8px;}
+.term-input-wrap{flex:1;position:relative;}
+.term-toggle{display:flex;background:var(--bg);border:1px solid var(--border);border-radius:7px;padding:2px;overflow:hidden;flex-shrink:0;}
+.term-btn{font-family:'Outfit',sans-serif;font-size:11.5px;font-weight:600;color:var(--muted);background:transparent;border:none;padding:7px 11px;border-radius:5px;cursor:pointer;transition:all .15s;}
+.term-btn.active{background:var(--navy);color:#fff;}
+
+/* ─── RESULTS TABLE ─── */
+.results-table{width:100%;border-collapse:collapse;}
+.results-table th,.results-table td{padding:13px 14px;text-align:left;border-bottom:1px solid var(--border);}
+.results-table thead th{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1.8px;text-transform:uppercase;color:var(--muted);font-weight:600;white-space:nowrap;}
+.results-table thead th.a{color:var(--a);}
+.results-table thead th.b{color:var(--b);}
+.results-table tbody td{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;color:var(--navy);}
+.results-table tbody td.label{font-family:'Outfit',sans-serif;font-size:13px;font-weight:500;color:var(--muted);font-family:'Outfit',sans-serif;letter-spacing:0;}
+.results-table tbody td.winner-a{color:var(--a);}
+.results-table tbody td.winner-b{color:var(--b);}
+.results-table tbody tr:last-child td{border-bottom:none;}
+.results-table tbody tr:hover td{background:var(--bg);}
+.winner-badge{display:inline-flex;align-items:center;gap:4px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;padding:2px 7px;border-radius:10px;}
+.winner-badge.a{background:var(--a-soft);color:var(--a);}
+.winner-badge.b{background:var(--b-soft);color:var(--b);}
+.winner-badge.tie{background:var(--bg);color:var(--muted);}
+@media(max-width:600px){
+  .results-table th,.results-table td{padding:10px 10px;}
+  .results-table tbody td{font-size:12px;}
+}
+
+/* ─── BARS ─── */
+.bars{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+@media(max-width:720px){.bars{grid-template-columns:1fr;}}
+.bar-block{}
+.bar-block-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;display:flex;align-items:center;gap:8px;}
+.bar-block-label .dot{width:8px;height:8px;border-radius:50%;background:currentColor;flex-shrink:0;}
+.bar-block-label.a{color:var(--a);}
+.bar-block-label.b{color:var(--b);}
+
+.breakdown-bar{display:flex;height:38px;border-radius:9px;overflow:hidden;background:var(--bg);border:1px solid var(--border);}
+.breakdown-seg{display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;letter-spacing:.5px;transition:flex .35s ease;min-width:0;overflow:hidden;white-space:nowrap;padding:0 8px;}
+.seg-principal{background:var(--blue);color:#fff;}
+.seg-interest{background:var(--green-mid);color:#fff;}
+
+.bar-legend{display:flex;gap:14px;margin-top:9px;font-size:11.5px;color:var(--muted);flex-wrap:wrap;}
+.bar-legend-item{display:flex;align-items:center;gap:5px;}
+.leg-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.leg-dot.p{background:var(--blue);}
+.leg-dot.i{background:var(--green-mid);}
+
+/* ─── INSIGHTS ─── */
+.insights{display:flex;flex-direction:column;gap:10px;}
+.insight{display:flex;gap:10px;align-items:flex-start;padding:13px 14px;border-radius:10px;border:1px solid;font-size:13.5px;line-height:1.55;}
+.insight-ico{font-size:14px;line-height:1;flex-shrink:0;margin-top:1px;}
+.insight.blue{background:var(--blue-soft);color:#1E3A8A;border-color:var(--blue-line);}
+.insight.amber{background:var(--amber-soft);color:#92400E;border-color:rgba(217,119,6,.2);}
+.insight.green{background:var(--green-soft);color:#065F46;border-color:rgba(5,150,105,.2);}
+.insight strong{font-weight:700;}
+.insights-empty{text-align:center;padding:22px;color:var(--muted);font-size:13px;font-style:italic;background:var(--bg);border:1px dashed var(--border);border-radius:10px;}
+
+/* ─── SCHEDULE ─── */
+.sched-details{margin:0;}
+.sched-summary{font-family:'Bricolage Grotesque',sans-serif;font-size:16px;font-weight:700;color:var(--navy);cursor:pointer;list-style:none;display:flex;align-items:center;gap:8px;letter-spacing:-.2px;}
+.sched-summary::-webkit-details-marker{display:none;}
+.sched-summary::after{content:"+";font-family:'Outfit',sans-serif;font-size:20px;font-weight:400;color:var(--blue);margin-left:auto;}
+details[open] .sched-summary::after{content:"−";}
+.sched-body{margin-top:18px;}
+.sched-tab-row{display:flex;gap:8px;margin-bottom:14px;}
+.sched-tab{font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;padding:7px 14px;border-radius:7px;cursor:pointer;border:1px solid var(--border);background:var(--white);color:var(--muted);transition:all .15s;}
+.sched-tab.active.a{background:var(--a-soft);color:var(--a);border-color:var(--a);}
+.sched-tab.active.b{background:var(--b-soft);color:var(--b);border-color:var(--b);}
+.sched-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--border);border-radius:10px;max-height:340px;overflow-y:auto;}
+.sched-table{width:100%;border-collapse:collapse;min-width:560px;}
+.sched-table th{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);padding:10px 14px;border-bottom:1px solid var(--border);background:var(--bg);position:sticky;top:0;text-align:right;white-space:nowrap;}
+.sched-table th:first-child{text-align:left;}
+.sched-table td{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--navy);padding:9px 14px;border-bottom:1px solid var(--border);text-align:right;white-space:nowrap;}
+.sched-table td:first-child{text-align:left;color:var(--muted);}
+.sched-table tr:last-child td{border-bottom:none;}
+.sched-table tr:hover td{background:var(--bg);}
+.sched-table td.int-col{color:var(--green);}
+.sched-table td.prin-col{color:var(--blue);}
+
+/* ─── ACTIONS ─── */
+.actions{display:flex;justify-content:flex-end;gap:8px;margin-top:14px;}
+.action-btn{font-family:'Outfit',sans-serif;font-size:12.5px;font-weight:600;padding:9px 15px;border-radius:8px;cursor:pointer;border:1px solid var(--border);background:var(--white);color:var(--muted);transition:all .15s;display:inline-flex;align-items:center;gap:6px;}
+.action-btn:hover{border-color:var(--border-strong);background:var(--bg);color:var(--navy);}
+
+/* ─── CTA ─── */
+.cta-inner{background:var(--navy);border-radius:16px;padding:28px 26px;text-align:center;position:relative;overflow:hidden;}
+.cta-inner::before{content:"";position:absolute;top:-80px;left:-80px;width:240px;height:240px;background:radial-gradient(circle,rgba(26,86,219,.28),transparent 70%);pointer-events:none;}
+.cta-inner::after{content:"";position:absolute;bottom:-80px;right:-80px;width:240px;height:240px;background:radial-gradient(circle,rgba(96,174,255,.18),transparent 70%);pointer-events:none;}
+.cta-h{font-family:'Bricolage Grotesque',sans-serif;font-size:21px;font-weight:700;color:#fff;margin-bottom:8px;letter-spacing:-.3px;position:relative;z-index:1;}
+.cta-sub{font-size:14px;color:rgba(255,255,255,.65);margin-bottom:18px;max-width:500px;margin-left:auto;margin-right:auto;position:relative;z-index:1;line-height:1.55;}
+.cta-btn{display:inline-flex;align-items:center;gap:8px;background:#25D366;color:#fff;font-family:'Outfit',sans-serif;font-size:14px;font-weight:600;padding:12px 22px;border-radius:9px;text-decoration:none;position:relative;z-index:1;transition:transform .15s;}
+.cta-btn:hover{transform:translateY(-1px);}
+
+/* ─── FOOTER ─── */
+.foot{max-width:1060px;margin:20px auto 0;padding:26px 20px;text-align:center;font-size:12px;color:var(--muted2);border-top:1px solid var(--border);}
+.foot a{color:var(--muted);text-decoration:none;font-weight:600;}
+.foot .fine{font-size:11px;margin-top:8px;max-width:600px;margin-left:auto;margin-right:auto;line-height:1.55;}
+
+@media(max-width:620px){
+  .card{padding:20px 16px;}
+  .hero{padding:28px 20px 50px;}
+  .main{margin-top:-32px;}
+}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="topbar-inner">
+    <a href="https://autocomply.co.za" class="brand">Auto<span>Comply</span></a>
+    <a href="https://autocomply.co.za/#tools" class="back">← All tools</a>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-tag">Free Tool · Business Loan Calculator</div>
+    <h1 class="hero-h">See the real cost of any business loan — and compare your options.</h1>
+    <p class="hero-sub">Enter your loan amount, interest rate, and term to get your monthly repayment, total interest and total cost. Compare two scenarios side by side so you can see exactly what a better rate or shorter term saves you.</p>
+  </div>
+</section>
+
+<!-- MAIN -->
+<main class="main wrap">
+
+  <!-- SCENARIO INPUTS -->
+  <div class="card">
+    <div class="card-h">Your loan scenarios</div>
+    <div class="card-sub">Fill in Scenario A to start. Add Scenario B to compare two options — different rates, terms or amounts.</div>
+
+    <div class="scenarios">
+
+      <!-- SCENARIO A -->
+      <div class="scenario a">
+        <div class="scenario-header">
+          <span class="scenario-badge a">A</span>
+          <span class="scenario-name">First option</span>
+        </div>
+        <div class="field">
+          <label class="field-label" for="aAmount">
+            <span>Loan amount</span>
+            <span class="field-hint">principal</span>
+          </label>
+          <div class="input-wrap">
+            <span class="input-prefix">R</span>
+            <input id="aAmount" class="input" type="number" inputmode="decimal" placeholder="500 000" min="0" step="1000">
+          </div>
+        </div>
+        <div class="field">
+          <label class="field-label" for="aRate">
+            <span>Annual interest rate</span>
+            <span class="field-hint">as quoted</span>
+          </label>
+          <div class="input-wrap">
+            <input id="aRate" class="input no-prefix has-suffix" type="number" inputmode="decimal" placeholder="13.0" min="0" max="100" step="0.25">
+            <span class="input-suffix">%</span>
+          </div>
+        </div>
+        <div class="field">
+          <div class="field-label">
+            <span>Loan term</span>
+            <span class="field-hint">repayment period</span>
+          </div>
+          <div class="term-row">
+            <div class="term-input-wrap input-wrap">
+              <input id="aTerm" class="input no-prefix" type="number" inputmode="numeric" placeholder="5" min="1" max="360">
+            </div>
+            <div class="term-toggle">
+              <button class="term-btn" data-unit="months" data-scenario="a" type="button">Mo</button>
+              <button class="term-btn active" data-unit="years" data-scenario="a" type="button">Yr</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SCENARIO B -->
+      <div class="scenario b">
+        <div class="scenario-header">
+          <span class="scenario-badge b">B</span>
+          <span class="scenario-name">Alternative — compare it</span>
+        </div>
+        <div class="field">
+          <label class="field-label" for="bAmount">
+            <span>Loan amount</span>
+            <span class="field-hint">principal</span>
+          </label>
+          <div class="input-wrap">
+            <span class="input-prefix">R</span>
+            <input id="bAmount" class="input" type="number" inputmode="decimal" placeholder="500 000" min="0" step="1000">
+          </div>
+        </div>
+        <div class="field">
+          <label class="field-label" for="bRate">
+            <span>Annual interest rate</span>
+            <span class="field-hint">alternative rate</span>
+          </label>
+          <div class="input-wrap">
+            <input id="bRate" class="input no-prefix has-suffix" type="number" inputmode="decimal" placeholder="11.5" min="0" max="100" step="0.25">
+            <span class="input-suffix">%</span>
+          </div>
+        </div>
+        <div class="field">
+          <div class="field-label">
+            <span>Loan term</span>
+            <span class="field-hint">repayment period</span>
+          </div>
+          <div class="term-row">
+            <div class="term-input-wrap input-wrap">
+              <input id="bTerm" class="input no-prefix" type="number" inputmode="numeric" placeholder="5" min="1" max="360">
+            </div>
+            <div class="term-toggle">
+              <button class="term-btn" data-unit="months" data-scenario="b" type="button">Mo</button>
+              <button class="term-btn active" data-unit="years" data-scenario="b" type="button">Yr</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="action-btn" id="demoBtn" type="button">✦ Demo data</button>
+      <button class="action-btn" id="clearBtn" type="button">✕ Clear</button>
+    </div>
+  </div>
+
+  <!-- RESULTS -->
+  <div class="card" id="resultsCard">
+    <div class="card-h">Results</div>
+    <div class="card-sub" id="resultsSub">Fill in Scenario A to see your loan costs.</div>
+
+    <div style="overflow-x:auto;">
+      <table class="results-table">
+        <thead>
+          <tr>
+            <th></th>
+            <th class="a">Scenario A</th>
+            <th class="b" id="thB" style="display:none;">Scenario B</th>
+            <th id="thBetter" style="display:none;">Better</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="label">Monthly repayment</td>
+            <td id="rA-monthly">—</td>
+            <td id="rB-monthly" style="display:none;">—</td>
+            <td id="rW-monthly" style="display:none;">—</td>
+          </tr>
+          <tr>
+            <td class="label">Total repaid</td>
+            <td id="rA-total">—</td>
+            <td id="rB-total" style="display:none;">—</td>
+            <td id="rW-total" style="display:none;">—</td>
+          </tr>
+          <tr>
+            <td class="label">Total interest paid</td>
+            <td id="rA-interest">—</td>
+            <td id="rB-interest" style="display:none;">—</td>
+            <td id="rW-interest" style="display:none;">—</td>
+          </tr>
+          <tr>
+            <td class="label">Interest as % of loan</td>
+            <td id="rA-intpct">—</td>
+            <td id="rB-intpct" style="display:none;">—</td>
+            <td id="rW-intpct" style="display:none;">—</td>
+          </tr>
+          <tr>
+            <td class="label">Effective annual rate</td>
+            <td id="rA-ear">—</td>
+            <td id="rB-ear" style="display:none;">—</td>
+            <td id="rW-ear" style="display:none;">—</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Breakdown bars -->
+    <div class="bars" id="barsBlock" style="display:none;margin-top:22px;">
+      <div class="bar-block">
+        <div class="bar-block-label a"><span class="dot" style="background:var(--a)"></span>Scenario A — total repaid breakdown</div>
+        <div class="breakdown-bar">
+          <div class="breakdown-seg seg-principal" id="barA-p"></div>
+          <div class="breakdown-seg seg-interest" id="barA-i"></div>
+        </div>
+        <div class="bar-legend">
+          <div class="bar-legend-item"><span class="leg-dot p"></span><span id="legA-p">Principal</span></div>
+          <div class="bar-legend-item"><span class="leg-dot i"></span><span id="legA-i">Interest</span></div>
+        </div>
+      </div>
+      <div class="bar-block" id="barBBlock" style="display:none;">
+        <div class="bar-block-label b"><span class="dot" style="background:var(--b)"></span>Scenario B — total repaid breakdown</div>
+        <div class="breakdown-bar">
+          <div class="breakdown-seg seg-principal" id="barB-p"></div>
+          <div class="breakdown-seg seg-interest" id="barB-i"></div>
+        </div>
+        <div class="bar-legend">
+          <div class="bar-legend-item"><span class="leg-dot p"></span><span id="legB-p">Principal</span></div>
+          <div class="bar-legend-item"><span class="leg-dot i"></span><span id="legB-i">Interest</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- INSIGHTS -->
+  <div class="card">
+    <div class="card-h">What the numbers mean</div>
+    <div class="card-sub">Plain-English reads of your loan figures.</div>
+    <div id="insights" class="insights">
+      <div class="insights-empty">Enter your loan details above to see insights.</div>
+    </div>
+  </div>
+
+  <!-- AMORTISATION SCHEDULE -->
+  <div class="card">
+    <details class="sched-details">
+      <summary class="sched-summary">Repayment schedule</summary>
+      <div class="sched-body">
+        <p style="font-size:13px;color:var(--muted);margin-bottom:14px;">Month-by-month breakdown of principal and interest portions. Interest is front-loaded — the first months pay the most to the lender.</p>
+        <div class="sched-tab-row">
+          <button class="sched-tab active a" id="schedTabA" type="button">Scenario A</button>
+          <button class="sched-tab b" id="schedTabB" type="button" style="display:none;">Scenario B</button>
+        </div>
+        <div class="sched-scroll">
+          <table class="sched-table">
+            <thead>
+              <tr>
+                <th>Month</th>
+                <th>Opening</th>
+                <th>Repayment</th>
+                <th>Principal</th>
+                <th>Interest</th>
+                <th>Closing</th>
+              </tr>
+            </thead>
+            <tbody id="schedBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </details>
+  </div>
+
+</main>
+
+<!-- CTA -->
+<div class="wrap" style="margin-bottom:30px;">
+  <div class="cta-inner">
+    <div class="cta-h">Comparing loan offers from your bank?</div>
+    <p class="cta-sub">Lenders quote nominal rates that rarely tell the full story. Once you include initiation fees, monthly admin fees and compounding, the effective cost is often higher. We can help you compare the true all-in cost of competing offers.</p>
+    <a href="https://wa.me/27670113108?text=Hi%20AutoComply%2C%20I%20used%20the%20Business%20Loan%20Calculator%20and%20want%20help%20comparing%20loan%20offers." class="cta-btn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Chat on WhatsApp
+    </a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="foot">
+  AutoComply · Practical tools for South African business owners · <a href="https://autocomply.co.za">autocomply.co.za</a>
+  <div class="fine">This calculator uses standard amortisation and is for planning purposes only. Your lender's actual terms, fees and compounding conventions may differ. Always verify the final cost with your lender before signing.</div>
+</div>
+
+<script>
+(function(){
+  // ─── STATE ───
+  const S = {
+    a: { amount:null, rate:null, term:null, unit:'years' },
+    b: { amount:null, rate:null, term:null, unit:'years' }
+  };
+  let schedActive = 'a';
+
+  // ─── ELEMENTS ───
+  const $ = id => document.getElementById(id);
+
+  // ─── UTILITIES ───
+  const fmtR = n => 'R ' + Math.round(n).toLocaleString('en-ZA');
+  const fmtRc = n => 'R ' + n.toLocaleString('en-ZA',{minimumFractionDigits:2,maximumFractionDigits:2});
+  const fmtPct = n => n.toLocaleString('en-ZA',{minimumFractionDigits:2,maximumFractionDigits:2})+'%';
+  const fmtPct1 = n => n.toLocaleString('en-ZA',{minimumFractionDigits:1,maximumFractionDigits:1})+'%';
+  const num = el => { const v=parseFloat(el.value); return (isNaN(v)||v<0)?null:v; };
+
+  // ─── CORE CALC ───
+  function monthlyPayment(P, annualRate, n){
+    if(n<=0||P<0) return 0;
+    if(annualRate===0) return P/n;
+    const r = annualRate/100/12;
+    return P*(r*Math.pow(1+r,n))/(Math.pow(1+r,n)-1);
+  }
+
+  function calcScenario(s){
+    if(s.amount===null||s.rate===null||s.term===null) return null;
+    const n = s.unit==='years' ? Math.round(s.term*12) : Math.round(s.term);
+    if(n<=0||s.amount<=0) return null;
+    const M = monthlyPayment(s.amount, s.rate, n);
+    const total = M*n;
+    const interest = total - s.amount;
+    const intPct = (interest/s.amount)*100;
+    const r = s.rate/100/12;
+    const ear = s.rate===0 ? 0 : (Math.pow(1+r,12)-1)*100;
+    return { M, total, interest, intPct, ear, n, P:s.amount, rate:s.rate };
+  }
+
+  function buildSchedule(s){
+    const res = calcScenario(s);
+    if(!res) return [];
+    const { M, n, P } = res;
+    const r = s.rate/100/12;
+    const rows = [];
+    let bal = P;
+    for(let i=1;i<=n;i++){
+      const iP = bal*r;
+      const pP = M - iP;
+      const close = Math.max(0, bal-pP);
+      rows.push({ month:i, open:bal, repayment:M, principal:pP, interest:iP, close });
+      bal = close;
+    }
+    return rows;
+  }
+
+  // ─── WINNER HELPER ───
+  function winnerBadge(aVal, bVal, lowerIsBetter){
+    if(bVal===null) return '';
+    const aBetter = lowerIsBetter ? aVal<bVal : aVal>bVal;
+    const diff = Math.abs(aVal-bVal);
+    const pct = aVal>0 ? (diff/aVal*100) : 0;
+    if(Math.abs(pct)<0.01) return '<span class="winner-badge tie">Tie</span>';
+    if(aBetter) return '<span class="winner-badge a">← A better</span>';
+    return '<span class="winner-badge b">B better →</span>';
+  }
+
+  // ─── RENDER RESULTS ───
+  function showCols(show){
+    ['thB','thBetter'].forEach(id=>$(id).style.display=show?'':'none');
+    const bCells=['rB-monthly','rB-total','rB-interest','rB-intpct','rB-ear',
+                  'rW-monthly','rW-total','rW-interest','rW-intpct','rW-ear'];
+    bCells.forEach(id=>$(id).style.display=show?'':'none');
+    $('barBBlock').style.display=show?'':'none';
+  }
+
+  function updateBar(segP, segI, legP, legI, P, total){
+    if(total<=0){return;}
+    const interest = total - P;
+    const pPct = (P/total)*100;
+    const iPct = 100-pPct;
+    $(segP).style.flex = pPct;
+    $(segI).style.flex = iPct;
+    $(segP).textContent = pPct>=18 ? fmtR(P) : (pPct>=9?'•':'');
+    $(segI).textContent = iPct>=18 ? fmtR(interest) : (iPct>=9?'•':'');
+    $(legP).textContent = 'Principal '+fmtR(P)+' ('+fmtPct1(pPct)+')';
+    $(legI).textContent = 'Interest '+fmtR(interest)+' ('+fmtPct1(iPct)+')';
+  }
+
+  function render(){
+    const rA = calcScenario(S.a);
+    const rB = calcScenario(S.b);
+    const hasA = rA !== null;
+    const hasB = rB !== null;
+    const hasBoth = hasA && hasB;
+
+    // Results sub
+    if(!hasA) $('resultsSub').textContent='Fill in Scenario A to see your loan costs.';
+    else if(!hasB) $('resultsSub').textContent='Add Scenario B to compare two options side by side.';
+    else $('resultsSub').textContent='Comparing Scenario A vs Scenario B — green highlights the better option for each metric.';
+
+    showCols(hasB);
+
+    // Populate A
+    if(hasA){
+      $('rA-monthly').textContent  = fmtRc(rA.M);
+      $('rA-total').textContent    = fmtR(rA.total);
+      $('rA-interest').textContent = fmtR(rA.interest);
+      $('rA-intpct').textContent   = fmtPct1(rA.intPct);
+      $('rA-ear').textContent      = fmtPct1(rA.ear);
+    } else {
+      ['rA-monthly','rA-total','rA-interest','rA-intpct','rA-ear'].forEach(id=>$(id).textContent='—');
+    }
+
+    // Populate B + winners
+    if(hasB){
+      $('rB-monthly').textContent  = fmtRc(rB.M);
+      $('rB-total').textContent    = fmtR(rB.total);
+      $('rB-interest').textContent = fmtR(rB.interest);
+      $('rB-intpct').textContent   = fmtPct1(rB.intPct);
+      $('rB-ear').textContent      = fmtPct1(rB.ear);
+
+      $('rW-monthly').innerHTML  = winnerBadge(rA.M, rB.M, true);
+      $('rW-total').innerHTML    = winnerBadge(rA.total, rB.total, true);
+      $('rW-interest').innerHTML = winnerBadge(rA.interest, rB.interest, true);
+      $('rW-intpct').innerHTML   = winnerBadge(rA.intPct, rB.intPct, true);
+      $('rW-ear').innerHTML      = winnerBadge(rA.ear, rB.ear, true);
+    }
+
+    // Bars
+    $('barsBlock').style.display = hasA ? '' : 'none';
+    if(hasA) updateBar('barA-p','barA-i','legA-p','legA-i', rA.P, rA.total);
+    if(hasB) updateBar('barB-p','barB-i','legB-p','legB-i', rB.P, rB.total);
+
+    // Insights
+    renderInsights(rA, rB);
+
+    // Schedule tabs
+    $('schedTabB').style.display = hasB ? '' : 'none';
+    if(!hasB && schedActive==='b'){ schedActive='a'; }
+    $('schedTabA').className='sched-tab '+(schedActive==='a'?'active a':'');
+    $('schedTabB').className='sched-tab '+(schedActive==='b'?'active b':'');
+    renderSchedule(schedActive==='a' ? S.a : S.b);
+  }
+
+  // ─── INSIGHTS ───
+  function renderInsights(rA, rB){
+    const el = $('insights');
+    if(!rA){ el.innerHTML='<div class="insights-empty">Enter your loan details above to see insights.</div>'; return; }
+    const ins = [];
+
+    // Interest cost perspective
+    const intPctA = rA.intPct;
+    if(intPctA>50) ins.push({t:'amber',i:'💡',m:`<strong>High interest burden.</strong> Over the life of this loan you'll pay an additional <strong>${fmtPct1(intPctA)}</strong> of the loan value in interest — ${fmtR(rA.interest)} on top of your ${fmtR(rA.P)} principal. Consider a shorter term or negotiating the rate.`});
+    else if(intPctA>25) ins.push({t:'blue',i:'💡',m:`Over the full term you pay <strong>${fmtR(rA.interest)}</strong> in interest — ${fmtPct1(intPctA)} on top of the principal. That's the cost of access to capital at this rate and term.`});
+    else ins.push({t:'green',i:'✓',m:`Interest cost is relatively controlled at <strong>${fmtR(rA.interest)}</strong> (${fmtPct1(intPctA)} of principal). This reflects either a competitive rate, a shorter term, or both.`});
+
+    // Monthly repayment context
+    ins.push({t:'blue',i:'📅',m:`<strong>Monthly commitment: ${fmtRc(rA.M)}.</strong> Before taking the loan, stress-test this repayment against a 20% revenue drop to confirm the business can still service it in a slow month.`});
+
+    // Rate sensitivity
+    if(rA.rate>0){
+      const rA1 = { ...S.a, rate: S.a.rate + 1 };
+      const hypothetical = calcScenario(rA1);
+      if(hypothetical){
+        const extraInterest = hypothetical.interest - rA.interest;
+        ins.push({t:'blue',i:'📈',m:`<strong>1% rate sensitivity:</strong> if the rate moved up by 1 percentage point (to ${fmtPct1(rA.rate+1)}), you'd pay an additional <strong>${fmtR(extraInterest)}</strong> in total interest over the life of the loan.`});
+      }
+    }
+
+    // Comparison insight
+    if(rB){
+      const savingsInt = rA.interest - rB.interest;
+      const savingsMo  = rA.M - rB.M;
+      const aWinsTotal = savingsInt<0;
+      if(Math.abs(savingsInt)>100){
+        if(!aWinsTotal){
+          ins.push({t:'green',i:'✓',m:`<strong>Scenario B saves ${fmtR(Math.abs(savingsInt))} in total interest</strong> over the life of the loan. That's the concrete advantage of the lower rate or shorter term — real money that stays in your business.`});
+        } else {
+          ins.push({t:'green',i:'✓',m:`<strong>Scenario A is cheaper overall</strong> — it costs ${fmtR(Math.abs(savingsInt))} less in total interest. Scenario A saves more money over the full term, even if the monthly repayments differ.`});
+        }
+      }
+      if(Math.abs(savingsMo)>10){
+        const cheaper = savingsMo>0 ? 'B' : 'A';
+        const saved = Math.abs(savingsMo);
+        ins.push({t:'blue',i:'📊',m:`Scenario ${cheaper} has the lower monthly repayment by <strong>${fmtRc(saved)}/month</strong>. Over 12 months that's ${fmtR(saved*12)} in cash flow. Weigh that monthly breathing room against the total interest cost difference when choosing.`});
+      }
+    }
+
+    // High rate warning
+    if(rA.rate>25) ins.push({t:'amber',i:'⚠️',m:`<strong>Rate above 25%</strong> — this is high for a business loan. At this level the total interest cost can exceed the principal. Explore whether asset-backed or invoice finance at a lower rate is available.`});
+
+    el.innerHTML = ins.map(({t,i,m})=>`<div class="insight ${t}"><div class="insight-ico">${i}</div><div>${m}</div></div>`).join('');
+  }
+
+  // ─── SCHEDULE ───
+  function renderSchedule(s){
+    const rows = buildSchedule(s);
+    const body = $('schedBody');
+    if(rows.length===0){ body.innerHTML='<tr><td colspan="6" style="text-align:center;padding:20px;color:var(--muted);font-style:italic;">Enter loan details above to see the repayment schedule.</td></tr>'; return; }
+    body.innerHTML = rows.map(r=>`
+      <tr>
+        <td>${r.month}</td>
+        <td>${fmtRc(r.open)}</td>
+        <td>${fmtRc(r.repayment)}</td>
+        <td class="prin-col">${fmtRc(r.principal)}</td>
+        <td class="int-col">${fmtRc(r.interest)}</td>
+        <td>${fmtRc(Math.max(0,r.close))}</td>
+      </tr>
+    `).join('');
+  }
+
+  // ─── INPUT EVENTS ───
+  function bindScenario(id, key, sc){
+    $(id).addEventListener('input', ()=>{
+      const v = num($(id));
+      sc[key] = v;
+      render();
+    });
+  }
+  bindScenario('aAmount','amount',S.a);
+  bindScenario('aRate','rate',S.a);
+  bindScenario('aTerm','term',S.a);
+  bindScenario('bAmount','amount',S.b);
+  bindScenario('bRate','rate',S.b);
+  bindScenario('bTerm','term',S.b);
+
+  // Term toggles
+  document.querySelectorAll('.term-btn').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const sc = btn.dataset.scenario;
+      const unit = btn.dataset.unit;
+      btn.closest('.term-toggle').querySelectorAll('.term-btn').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      S[sc].unit = unit;
+      render();
+    });
+  });
+
+  // Schedule tabs
+  $('schedTabA').addEventListener('click',()=>{ schedActive='a'; $('schedTabA').className='sched-tab active a'; $('schedTabB').className='sched-tab b'; renderSchedule(S.a); });
+  $('schedTabB').addEventListener('click',()=>{ schedActive='b'; $('schedTabB').className='sched-tab active b'; $('schedTabA').className='sched-tab a'; renderSchedule(S.b); });
+
+  // Demo data
+  $('demoBtn').addEventListener('click',()=>{
+    $('aAmount').value=500000; $('aRate').value=13; $('aTerm').value=5;
+    $('bAmount').value=500000; $('bRate').value=11; $('bTerm').value=5;
+    S.a={amount:500000,rate:13,term:5,unit:'years'};
+    S.b={amount:500000,rate:11,term:5,unit:'years'};
+    render();
+  });
+
+  // Clear
+  $('clearBtn').addEventListener('click',()=>{
+    if(!confirm('Clear all inputs?')) return;
+    ['aAmount','aRate','aTerm','bAmount','bRate','bTerm'].forEach(id=>$(id).value='');
+    S.a={amount:null,rate:null,term:null,unit:'years'};
+    S.b={amount:null,rate:null,term:null,unit:'years'};
+    render();
+  });
+
+  // Initial
+  render();
+})();
+</script>
+</body>
+</html>

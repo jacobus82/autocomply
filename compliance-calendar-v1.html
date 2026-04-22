@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Compliance Calendar 2026 — AutoComply</title>
+<meta name="description" content="Free South African compliance calendar for 2026. Every SARS, CIPC, UIF, COIDA, and labour deadline in one place. Filter by category. Never miss a filing again.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;700;800&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --navy:#0B1628;--navy-soft:#1A2842;--blue:#1A56DB;--blue-soft:#EEF3FF;
+  --blue-line:rgba(26,86,219,.15);--green:#059669;--green-soft:#ECFDF5;
+  --amber:#D97706;--amber-soft:#FEF3C7;--red:#DC2626;--red-soft:#FEE2E2;
+  --purple:#7C3AED;--purple-soft:#EDE9FE;
+  --teal:#0891B2;--teal-soft:#E0F2FE;
+  --muted:#5A6A82;--muted2:#8A96A8;--border:#DDE5F0;--border-strong:#C5D1E4;
+  --bg:#F8FAFF;--bg2:#EEF3FF;--white:#fff;
+  --sh:0 1px 4px rgba(11,22,40,.07);--sh-strong:0 4px 20px rgba(11,22,40,.10);
+  --cat-sars:var(--blue);--cat-coida:var(--amber);--cat-labour:var(--green);
+  --cat-skills:var(--purple);--cat-cipc:var(--teal);
+}
+html,body{background:var(--bg);color:var(--navy);font-family:'Outfit',sans-serif;-webkit-font-smoothing:antialiased;min-height:100vh;font-size:15px;line-height:1.5;}
+
+/* ─── TOPBAR ─── */
+.topbar{background:var(--navy);padding:14px 20px;}
+.topbar-inner{max-width:1060px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;}
+.brand{font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;color:#fff;letter-spacing:-.3px;text-decoration:none;}
+.brand span{color:#60AEFF;}
+.back{font-size:12.5px;color:rgba(255,255,255,.55);text-decoration:none;display:inline-flex;align-items:center;gap:6px;transition:color .15s;}
+.back:hover{color:#fff;}
+
+/* ─── HERO ─── */
+.hero{background:var(--navy);padding:34px 20px 56px;position:relative;overflow:hidden;}
+.hero::before{content:"";position:absolute;top:-100px;right:-100px;width:400px;height:400px;background:radial-gradient(circle,rgba(26,86,219,.15),transparent 70%);pointer-events:none;}
+.hero-inner{max-width:1060px;margin:0 auto;position:relative;z-index:1;}
+.hero-tag{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:14px;}
+.hero-h{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(26px,5vw,38px);font-weight:800;color:#fff;letter-spacing:-.6px;line-height:1.15;margin-bottom:12px;max-width:760px;}
+.hero-sub{font-size:clamp(14px,2.2vw,16px);color:rgba(255,255,255,.65);max-width:660px;line-height:1.55;}
+
+/* ─── LAYOUT ─── */
+.wrap{max-width:1060px;margin:0 auto;padding:0 20px;}
+.main{margin-top:-30px;margin-bottom:32px;position:relative;z-index:2;}
+
+/* ─── UPCOMING STRIP ─── */
+.upcoming-strip{background:linear-gradient(135deg,var(--red) 0%,#B91C1C 100%);border-radius:14px;padding:20px 24px;margin-bottom:20px;box-shadow:var(--sh-strong);}
+.upcoming-strip.amber{background:linear-gradient(135deg,#D97706 0%,#B45309 100%);}
+.upcoming-strip.empty{background:linear-gradient(135deg,var(--green) 0%,#065F46 100%);}
+.us-tag{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,.6);margin-bottom:10px;}
+.us-h{font-family:'Bricolage Grotesque',sans-serif;font-size:17px;font-weight:700;color:#fff;margin-bottom:10px;letter-spacing:-.2px;}
+.us-items{display:flex;flex-direction:column;gap:8px;}
+.us-item{display:flex;align-items:center;justify-content:space-between;gap:12px;background:rgba(255,255,255,.1);border-radius:8px;padding:10px 14px;flex-wrap:wrap;gap:8px;}
+.us-item-left{min-width:0;}
+.us-item-title{font-size:13.5px;font-weight:600;color:#fff;}
+.us-item-date{font-family:'JetBrains Mono',monospace;font-size:11px;color:rgba(255,255,255,.7);margin-top:2px;}
+.us-badge{font-family:'JetBrains Mono',monospace;font-size:9.5px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:4px 9px;border-radius:20px;background:rgba(255,255,255,.2);color:#fff;white-space:nowrap;flex-shrink:0;}
+.us-badge.urgent{background:#fff;color:var(--red);}
+.us-badge.amber{background:#fff;color:var(--amber);}
+
+/* ─── CONTROLS ─── */
+.controls{background:var(--white);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:20px;box-shadow:var(--sh);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+.filter-chips{display:flex;gap:8px;flex-wrap:wrap;}
+.chip{font-family:'Outfit',sans-serif;font-size:12.5px;font-weight:600;padding:7px 14px;border-radius:20px;cursor:pointer;border:1.5px solid var(--border);background:var(--white);color:var(--muted);transition:all .15s;display:inline-flex;align-items:center;gap:5px;}
+.chip:hover{background:var(--bg2);border-color:var(--border-strong);}
+.chip.active{background:var(--navy);color:#fff;border-color:var(--navy);}
+.chip.sars.active{background:var(--blue);border-color:var(--blue);color:#fff;}
+.chip.coida.active{background:var(--amber);border-color:var(--amber);color:#fff;}
+.chip.labour.active{background:var(--green);border-color:var(--green);color:#fff;}
+.chip.skills.active{background:var(--purple);border-color:var(--purple);color:#fff;}
+.chip.cipc.active{background:var(--teal);border-color:var(--teal);color:#fff;}
+.chip-dot{width:7px;height:7px;border-radius:50%;}
+.chip.sars .chip-dot{background:var(--blue);}
+.chip.coida .chip-dot{background:var(--amber);}
+.chip.labour .chip-dot{background:var(--green);}
+.chip.skills .chip-dot{background:var(--purple);}
+.chip.cipc .chip-dot{background:var(--teal);}
+.chip.active .chip-dot{background:rgba(255,255,255,.7);}
+
+.controls-right{display:flex;gap:8px;flex-shrink:0;}
+.action-btn{font-family:'Outfit',sans-serif;font-size:12.5px;font-weight:600;padding:8px 14px;border-radius:8px;cursor:pointer;border:1px solid var(--border);background:var(--white);color:var(--muted);transition:all .15s;display:inline-flex;align-items:center;gap:6px;}
+.action-btn:hover{border-color:var(--border-strong);background:var(--bg);color:var(--navy);}
+
+/* ─── RECURRING CARD ─── */
+.rec-details{}
+.rec-summary{font-family:'Bricolage Grotesque',sans-serif;font-size:16px;font-weight:700;color:var(--navy);cursor:pointer;list-style:none;display:flex;align-items:center;gap:8px;letter-spacing:-.2px;padding:0;}
+.rec-summary::-webkit-details-marker{display:none;}
+.rec-summary::after{content:"+";font-family:'Outfit',sans-serif;font-size:20px;font-weight:400;color:var(--blue);margin-left:auto;}
+details[open] .rec-summary::after{content:"−";}
+.rec-body{margin-top:18px;display:flex;flex-direction:column;gap:12px;}
+.rec-item{display:flex;gap:0;border:1px solid var(--border);border-radius:10px;overflow:hidden;}
+.rec-bar{width:5px;flex-shrink:0;background:var(--blue);}
+.rec-bar.sars{background:var(--blue);}
+.rec-bar.coida{background:var(--amber);}
+.rec-content{padding:14px 16px;flex:1;min-width:0;}
+.rec-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:4px;}
+.rec-title{font-size:14px;font-weight:700;color:var(--navy);}
+.rec-freq{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:1.5px;text-transform:uppercase;padding:3px 8px;border-radius:6px;font-weight:600;flex-shrink:0;}
+.rec-freq.sars{background:var(--blue-soft);color:var(--blue);}
+.rec-when{font-size:12.5px;font-weight:600;color:var(--navy);margin-bottom:4px;}
+.rec-desc{font-size:12.5px;color:var(--muted);line-height:1.55;}
+.rec-penalty{font-size:11.5px;color:var(--red);margin-top:5px;display:flex;align-items:center;gap:5px;}
+.rec-penalty::before{content:"⚡";font-size:11px;}
+
+/* ─── TIMELINE ─── */
+.timeline{display:flex;flex-direction:column;gap:16px;}
+
+.month-block{background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden;box-shadow:var(--sh);transition:opacity .2s;}
+.month-block.past{opacity:.65;}
+.month-block.current{border-color:var(--blue);border-width:2px;}
+.month-block.future{}
+
+.month-header{padding:14px 20px;background:var(--bg);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+.month-block.current .month-header{background:var(--blue-soft);}
+.month-name{font-family:'Bricolage Grotesque',sans-serif;font-size:17px;font-weight:700;color:var(--navy);letter-spacing:-.2px;}
+.month-year{font-size:13px;color:var(--muted);font-weight:500;margin-left:6px;}
+.month-tag{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:1.5px;text-transform:uppercase;padding:3px 9px;border-radius:10px;font-weight:600;}
+.month-tag.current{background:var(--blue);color:#fff;}
+.month-tag.past{background:var(--bg2);color:var(--muted);}
+.month-tag.future{background:var(--green-soft);color:var(--green);}
+.month-emp{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);display:flex;align-items:center;gap:5px;}
+.month-emp::before{content:"📋";font-size:11px;}
+
+.month-body{padding:14px 20px;}
+.month-empty{font-size:13px;color:var(--muted2);font-style:italic;padding:4px 0;}
+
+/* ─── DEADLINE CARD ─── */
+.deadline{display:flex;gap:0;border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:10px;transition:transform .12s,box-shadow .12s;}
+.deadline:last-child{margin-bottom:0;}
+.deadline:hover{transform:translateY(-1px);box-shadow:var(--sh-strong);}
+.deadline.past{opacity:.7;}
+.deadline.urgent{border-color:var(--red);box-shadow:0 0 0 2px rgba(220,38,38,.12);}
+.deadline.soon{border-color:var(--amber);}
+
+.dl-bar{width:5px;flex-shrink:0;}
+.dl-bar.sars{background:var(--blue);}
+.dl-bar.coida{background:var(--amber);}
+.dl-bar.labour{background:var(--green);}
+.dl-bar.skills{background:var(--purple);}
+.dl-bar.cipc{background:var(--teal);}
+
+.dl-content{padding:13px 16px;flex:1;min-width:0;}
+.dl-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:5px;flex-wrap:wrap;}
+.dl-title{font-size:14px;font-weight:700;color:var(--navy);line-height:1.35;}
+.dl-badges{display:flex;align-items:center;gap:6px;flex-shrink:0;flex-wrap:wrap;}
+
+.cat-badge{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.2px;text-transform:uppercase;padding:3px 7px;border-radius:5px;font-weight:600;}
+.cat-badge.sars{background:var(--blue-soft);color:var(--blue);}
+.cat-badge.coida{background:var(--amber-soft);color:var(--amber);}
+.cat-badge.labour{background:var(--green-soft);color:var(--green);}
+.cat-badge.skills{background:var(--purple-soft);color:var(--purple);}
+.cat-badge.cipc{background:var(--teal-soft);color:var(--teal);}
+
+.status-badge{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;padding:3px 7px;border-radius:5px;font-weight:600;}
+.status-badge.past{background:var(--bg);color:var(--muted2);}
+.status-badge.urgent{background:var(--red-soft);color:var(--red);}
+.status-badge.soon{background:var(--amber-soft);color:var(--amber);}
+.status-badge.upcoming{background:var(--green-soft);color:var(--green);}
+
+.dl-date{font-family:'JetBrains Mono',monospace;font-size:11.5px;font-weight:600;color:var(--muted);margin-bottom:5px;}
+.dl-date .days{margin-left:6px;font-size:10px;padding:1px 6px;border-radius:4px;}
+.dl-date .days.urgent{background:var(--red-soft);color:var(--red);}
+.dl-date .days.soon{background:var(--amber-soft);color:var(--amber);}
+.dl-date .days.future{background:var(--green-soft);color:var(--green);}
+.dl-date .days.past{color:var(--muted2);}
+
+.dl-desc{font-size:13px;color:var(--muted);line-height:1.55;margin-bottom:5px;}
+.dl-window{font-size:12px;color:var(--blue);font-weight:600;margin-bottom:4px;}
+.dl-penalty{font-size:11.5px;color:var(--red);display:flex;align-items:flex-start;gap:5px;line-height:1.45;}
+.dl-penalty::before{content:"⚡";font-size:11px;margin-top:1px;flex-shrink:0;}
+.dl-note{font-size:11.5px;color:var(--amber);display:flex;align-items:flex-start;gap:5px;line-height:1.45;margin-top:3px;}
+.dl-note::before{content:"ℹ";font-size:11px;margin-top:1px;flex-shrink:0;}
+
+/* ─── CTA ─── */
+.cta-inner{background:var(--navy);border-radius:16px;padding:28px 26px;text-align:center;position:relative;overflow:hidden;}
+.cta-inner::before{content:"";position:absolute;top:-80px;left:-80px;width:240px;height:240px;background:radial-gradient(circle,rgba(26,86,219,.28),transparent 70%);pointer-events:none;}
+.cta-inner::after{content:"";position:absolute;bottom:-80px;right:-80px;width:240px;height:240px;background:radial-gradient(circle,rgba(96,174,255,.18),transparent 70%);pointer-events:none;}
+.cta-h{font-family:'Bricolage Grotesque',sans-serif;font-size:21px;font-weight:700;color:#fff;margin-bottom:8px;letter-spacing:-.3px;position:relative;z-index:1;}
+.cta-sub{font-size:14px;color:rgba(255,255,255,.65);margin-bottom:18px;max-width:520px;margin-left:auto;margin-right:auto;position:relative;z-index:1;line-height:1.55;}
+.cta-btn{display:inline-flex;align-items:center;gap:8px;background:#25D366;color:#fff;font-family:'Outfit',sans-serif;font-size:14px;font-weight:600;padding:12px 22px;border-radius:9px;text-decoration:none;position:relative;z-index:1;transition:transform .15s;}
+.cta-btn:hover{transform:translateY(-1px);}
+
+/* ─── FOOTER ─── */
+.foot{max-width:1060px;margin:20px auto 0;padding:26px 20px;text-align:center;font-size:12px;color:var(--muted2);border-top:1px solid var(--border);}
+.foot a{color:var(--muted);text-decoration:none;font-weight:600;}
+.foot .fine{font-size:11px;margin-top:8px;max-width:640px;margin-left:auto;margin-right:auto;line-height:1.55;}
+
+/* ─── PRINT ─── */
+@media print{
+  .topbar,.controls,.cta-inner,.foot,.back{display:none;}
+  .hero{background:#fff;padding:16px 0;border-bottom:2px solid var(--navy);}
+  .hero-h,.hero-sub,.hero-tag{color:var(--navy)!important;}
+  .hero::before{display:none;}
+  .main{margin-top:16px;}
+  body{background:#fff;}
+  .month-block.past{opacity:1;}
+  .deadline{page-break-inside:avoid;}
+  .month-block{page-break-inside:avoid;box-shadow:none;border:1px solid #ccc;}
+}
+
+@media(max-width:620px){
+  .card,.month-block{padding:0;}
+  .hero{padding:28px 20px 50px;}
+  .main{margin-top:-28px;}
+  .controls{padding:14px 16px;}
+  .upcoming-strip{padding:16px 18px;}
+}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="topbar-inner">
+    <a href="https://autocomply.co.za" class="brand">Auto<span>Comply</span></a>
+    <a href="https://autocomply.co.za/#tools" class="back">← All tools</a>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-tag">Free Tool · Compliance Calendar 2026</div>
+    <h1 class="hero-h">Every SA compliance deadline — in one place.</h1>
+    <p class="hero-sub">SARS, CIPC, COIDA, UIF, Skills Development and Labour obligations for 2026. Filter by category. See what's due next. Never miss a filing again.</p>
+  </div>
+</section>
+
+<!-- MAIN -->
+<main class="main wrap">
+
+  <!-- UPCOMING STRIP (rendered by JS) -->
+  <div id="upcomingStrip"></div>
+
+  <!-- CONTROLS -->
+  <div class="controls">
+    <div class="filter-chips" id="filterChips">
+      <button class="chip active" data-cat="all">All</button>
+      <button class="chip sars" data-cat="sars"><span class="chip-dot"></span>SARS</button>
+      <button class="chip coida" data-cat="coida"><span class="chip-dot"></span>COIDA</button>
+      <button class="chip labour" data-cat="labour"><span class="chip-dot"></span>Labour</button>
+      <button class="chip skills" data-cat="skills"><span class="chip-dot"></span>Skills</button>
+      <button class="chip cipc" data-cat="cipc"><span class="chip-dot"></span>CIPC</button>
+    </div>
+    <div class="controls-right">
+      <button class="action-btn" onclick="window.print()">🖨 Print</button>
+    </div>
+  </div>
+
+  <!-- RECURRING OBLIGATIONS -->
+  <div class="card" style="background:var(--white);border:1px solid var(--border);border-radius:14px;padding:22px 24px;box-shadow:var(--sh);margin-bottom:20px;" id="recurringCard">
+    <details class="rec-details">
+      <summary class="rec-summary">Recurring obligations — every month</summary>
+      <div class="rec-body" style="margin-top:18px;">
+        <div class="rec-item">
+          <div class="rec-bar sars"></div>
+          <div class="rec-content">
+            <div class="rec-top">
+              <div class="rec-title">EMP201 — PAYE + UIF + SDL</div>
+              <div class="rec-freq sars">Monthly</div>
+            </div>
+            <div class="rec-when">📅 Due by the 7th of every month (preceding business day if 7th falls on weekend or public holiday)</div>
+            <div class="rec-desc">Declare and pay all employees' tax (PAYE), UIF and Skills Development Levy for the preceding month via SARS eFiling or e@syFile Employer. Every employer registered for PAYE must submit — even if the values are zero.</div>
+            <div class="rec-penalty">10% of monthly liability + daily interest for late payment. Repeated non-compliance can result in criminal sanctions.</div>
+          </div>
+        </div>
+        <div class="rec-item">
+          <div class="rec-bar sars"></div>
+          <div class="rec-content">
+            <div class="rec-top">
+              <div class="rec-title">VAT201 return and payment</div>
+              <div class="rec-freq sars">Monthly / Bi-monthly</div>
+            </div>
+            <div class="rec-when">📅 25th of the month following each VAT period (manual) or last business day of the month (eFiling)</div>
+            <div class="rec-desc">Submit and pay VAT due for your VAT period. Monthly filers submit every month. Bi-monthly filers submit every 2 months (periods: Jan/Feb, Mar/Apr, May/Jun, Jul/Aug, Sep/Oct, Nov/Dec). Check your VAT category on your Notice of Registration if unsure.</div>
+            <div class="rec-penalty">10% penalty + interest on late payments. eFiling deadline is slightly later than manual — always use eFiling.</div>
+          </div>
+        </div>
+      </div>
+    </details>
+  </div>
+
+  <!-- TIMELINE (rendered by JS) -->
+  <div class="timeline" id="timeline"></div>
+
+</main>
+
+<!-- CTA -->
+<div class="wrap" style="margin-bottom:30px;">
+  <div class="cta-inner">
+    <div class="cta-h">Need help staying on top of this?</div>
+    <p class="cta-sub">Missing even one deadline can trigger penalties, interest and a blocked Tax Compliance Status PIN — which can cost you a tender or a corporate contract. We set up eFiling, structure your compliance calendar, and make sure nothing slips through.</p>
+    <a href="https://wa.me/27670113108?text=Hi%20AutoComply%2C%20I%20need%20help%20setting%20up%20my%20compliance%20calendar%20and%20staying%20on%20top%20of%20my%20SARS%20deadlines." class="cta-btn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Chat on WhatsApp
+    </a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="foot">
+  AutoComply · Practical tools for South African business owners · <a href="https://autocomply.co.za">autocomply.co.za</a>
+  <div class="fine">Deadlines verified April 2026. Some dates (SARS Filing Season, EMP501 interim open dates) are confirmed closer to the time by SARS via Government Gazette. CIPC annual returns are due within 30 business days of your company's registration anniversary — not a fixed calendar date. This calendar is a guide — always verify critical deadlines against official SARS and DoL sources.</div>
+</div>
+
+<script>
+(function(){
+  // ─── DEADLINE DATA ───
+  const TODAY = new Date('2026-04-21');
+
+  const DEADLINES = [
+    // JANUARY 2026
+    { date:'2026-01-07', cat:'sars', title:'EMP201 — December 2025 payroll', desc:'PAYE, UIF and SDL for the December 2025 pay period. First EMP201 of 2026.', penalty:'10% of monthly liability + interest for late payment' },
+
+    // FEBRUARY 2026
+    { date:'2026-02-07', cat:'sars', title:'EMP201 — January 2026 payroll', desc:'PAYE, UIF and SDL for January 2026. From this month, SARS enforces mandatory Income Tax Reference Numbers in EMP501 data — ensure all employee TRNs are in your payroll system.', penalty:'10% penalty + interest. Reconciliations without valid TRNs will be rejected.', note:'TRN enforcement starts — register any employees who do not yet have a SARS income tax number.' },
+    { date:'2026-02-27', cat:'sars', title:'Provisional tax — 2nd period (Feb 2024/25 year-end)', desc:'Second provisional tax payment for taxpayers with a February 2024/25 year-end. This closes out the previous tax year estimate.', penalty:'10% late payment penalty + interest. Underestimation penalty if estimate is too low.' },
+
+    // MARCH 2026
+    { date:'2026-03-01', cat:'labour', title:'National Minimum Wage increases to R30.23/hr', desc:'The NMW rises from R28.79 to R30.23 per hour for all workers. Farm workers and domestic workers align to the same R30.23 rate. Update payroll and employment contracts before this date.', penalty:'Back-pay claims, labour inspections and fines for non-compliance', note:'Expanded Public Works Programme workers: R16.62/hr. Learnership allowances also updated.' },
+    { date:'2026-03-07', cat:'sars', title:'EMP201 — February 2026 payroll', desc:'PAYE, UIF and SDL for February 2026 — the last month of the 2025/26 tax year.', penalty:'10% of monthly liability + interest for late payment' },
+
+    // APRIL 2026
+    { date:'2026-04-01', cat:'sars', title:'EMP501 Annual Reconciliation season OPENS', desc:'Employer Annual Declaration period opens. Reconcile your EMP201 submissions for the full 2025/26 tax year (1 March 2025 – 28 February 2026). All employees must have valid SARS Income Tax Reference Numbers — missing TRNs will cause rejection.', window:'Open 1 April – 31 May 2026', penalty:'1% of annual PAYE liability per month late, up to a maximum of 10%' },
+    { date:'2026-04-01', cat:'coida', title:'COIDA Return of Earnings season OPENS', desc:'Submit actual earnings paid from 1 March 2025 to 28 February 2026, plus provisional earnings estimate for the coming year. Needed to maintain your Letter of Good Standing. Domestic worker employers must also submit.', window:'Open 1 April – 30 June 2026', penalty:'10% penalty on assessed amount + monthly interest for late submission' },
+    { date:'2026-04-01', cat:'sars', title:'VAT registration threshold increases', desc:'Compulsory VAT registration threshold increases from R1 million to R2.3 million annual taxable turnover. Voluntary threshold rises from R50 000 to R120 000. Businesses below the new threshold may deregister if they choose.', note:'If you recently crossed R1m but are below R2.3m, review whether you still need to remain registered.' },
+    { date:'2026-04-07', cat:'sars', title:'EMP201 — March 2026 payroll', desc:'PAYE, UIF and SDL for March 2026 — first month of the new 2026/27 tax year.', penalty:'10% of monthly liability + interest for late payment' },
+    { date:'2026-04-29', cat:'sars', title:'IRP5/IT3(a) certificates to employees', desc:'Issue IRP5 certificates to all current employees within 60 days of 28 February 2026 year-end. These are essential for employees to file their personal income tax returns. IRP5s must align with your submitted EMP501.', penalty:'Administrative penalties and employee disputes if not issued on time' },
+    { date:'2026-04-30', cat:'skills', title:'WSP & ATR submission deadline — SETA skills levy', desc:'Submit your Workplace Skills Plan (WSP) and Annual Training Report (ATR) to your relevant SETA. Covers training conducted from 1 April 2025 to 31 March 2026. Only mandatory for employers who pay the Skills Development Levy (annual payroll above R500,000).', penalty:'Loss of 20% mandatory grant funding. SDL levy continues regardless.' },
+
+    // MAY 2026
+    { date:'2026-05-07', cat:'sars', title:'EMP201 — April 2026 payroll', desc:'PAYE, UIF and SDL for April 2026.', penalty:'10% of monthly liability + interest for late payment' },
+    { date:'2026-05-31', cat:'sars', title:'EMP501 Annual Reconciliation DEADLINE', desc:'Last day to submit your EMP501 for the full 2025/26 tax year. Failure results in penalties and prevents IRP5 certificates from being processed — employees cannot file their income tax returns without valid IRP5s.', window:'Season: 1 April – 31 May 2026', penalty:'1% of annual PAYE liability per month late, up to 10% maximum' },
+
+    // JUNE 2026
+    { date:'2026-06-07', cat:'sars', title:'EMP201 — May 2026 payroll', desc:'PAYE, UIF and SDL for May 2026.', penalty:'10% of monthly liability + interest for late payment' },
+    { date:'2026-06-30', cat:'coida', title:'COIDA Return of Earnings DEADLINE', desc:'Final day to submit your ROE to the Compensation Fund. After this date, penalties and interest apply. A current, accepted ROE is required to obtain or renew your Letter of Good Standing — needed for tenders, contracts and many client requirements.', window:'Season: 1 April – 30 June 2026', penalty:'10% penalty on assessed amount + monthly interest until resolved' },
+
+    // JULY 2026
+    { date:'2026-07-07', cat:'sars', title:'EMP201 — June 2026 payroll', desc:'PAYE, UIF and SDL for June 2026.', penalty:'10% of monthly liability + interest for late payment' },
+    { date:'2026-07-15', cat:'sars', title:'SARS Filing Season opens — individuals', desc:'SARS typically opens individual income tax filing season in July. Auto-assessments are issued. Directors, sole proprietors and business owners using provisional tax should check their auto-assessment and decide whether to accept or file a full return.', note:'Exact date confirmed by SARS via Government Gazette closer to July.' },
+
+    // AUGUST 2026
+    { date:'2026-08-07', cat:'sars', title:'EMP201 — July 2026 payroll', desc:'PAYE, UIF and SDL for July 2026.', penalty:'10% of monthly liability + interest for late payment' },
+    { date:'2026-08-31', cat:'sars', title:'Provisional tax — 1st period (Feb 2025/26 year-end)', desc:'First provisional tax payment for the 2026/27 tax year for taxpayers with a February year-end. Pay at least half of your estimated annual tax liability. Non-payment or significant underestimation attracts penalties and interest.', penalty:'10% late payment penalty + interest. Underestimation penalty if payment is materially too low.' },
+
+    // SEPTEMBER 2026
+    { date:'2026-09-07', cat:'sars', title:'EMP201 — August 2026 payroll', desc:'PAYE, UIF and SDL for August 2026.', penalty:'10% of monthly liability + interest for late payment' },
+    { date:'2026-09-22', cat:'sars', title:'EMP501 Interim Reconciliation season opens', desc:'The six-month interim EMP501 season opens, covering 1 March to 31 August 2026. Begin reconciling your monthly EMP201 submissions with employee payroll data.', window:'~22 September – 31 October 2026', note:'Exact open date confirmed by SARS closer to September.' },
+    { date:'2026-09-30', cat:'sars', title:'Optional: Provisional tax top-up (3rd payment)', desc:'Voluntary third provisional tax payment. For taxpayers with taxable income above R1 million, making this payment reduces exposure to underestimation interest. Particularly useful if your first-period estimate was conservative.', note:'This is voluntary — not compulsory. Pays down interest exposure only.' },
+
+    // OCTOBER 2026
+    { date:'2026-10-07', cat:'sars', title:'EMP201 — September 2026 payroll', desc:'PAYE, UIF and SDL for September 2026.', penalty:'10% of monthly liability + interest for late payment' },
+    { date:'2026-10-31', cat:'sars', title:'EMP501 Interim Reconciliation DEADLINE', desc:'Submit your interim EMP501 reconciliation covering 1 March to 31 August 2026. Failure attracts administrative penalties and can cause issues with employee IRP5 interim data.', window:'Season: ~22 Sep – 31 Oct 2026', penalty:'Administrative penalties and SARS matching issues for late submission' },
+    { date:'2026-10-31', cat:'sars', title:'Individual income tax filing deadline (non-provisional)', desc:'Estimated deadline for individual income tax returns for non-provisional taxpayers via eFiling. This is the 2025/26 tax year return (1 March 2025 – 28 February 2026).', note:'Exact date confirmed by SARS at filing season launch. Usually late October or early November.' },
+
+    // NOVEMBER 2026
+    { date:'2026-11-07', cat:'sars', title:'EMP201 — October 2026 payroll', desc:'PAYE, UIF and SDL for October 2026.', penalty:'10% of monthly liability + interest for late payment' },
+    { date:'2026-11-30', cat:'cipc', title:'CIPC Annual Return — rolling reminder', desc:'CIPC annual returns are due within 30 business days of your company\'s registration anniversary date — not on a fixed calendar date. Check your exact anniversary date in your CIPC records and set a reminder 6 weeks before it. Missing annual returns can lead to deregistration.', note:'Date is company-specific — based on your registration anniversary, not this calendar date.' },
+
+    // DECEMBER 2026
+    { date:'2026-12-07', cat:'sars', title:'EMP201 — November 2026 payroll', desc:'PAYE, UIF and SDL for November 2026.', penalty:'10% of monthly liability + interest for late payment' },
+    { date:'2026-12-15', cat:'labour', title:'December payroll & UIF — plan ahead', desc:'December is high-risk for late EMP201 submissions due to holiday shutdowns. Ensure December payroll is processed and EMP201 submitted before the 7 January 2027 deadline. Many businesses miss the January EMP201 because December\'s payroll is processed late.', note:'Not a regulatory deadline — a planning reminder for December shutdown.' },
+
+    // EARLY 2027 (carry-over)
+    { date:'2027-01-07', cat:'sars', title:'EMP201 — December 2026 payroll (due Jan 2027)', desc:'PAYE, UIF and SDL for December 2026. First EMP201 due date of 2027. Many businesses miss this because December payroll is processed after holiday shutdown.', penalty:'10% penalty + interest for late payment' },
+    { date:'2027-02-26', cat:'sars', title:'Provisional tax — 2nd period (Feb year-end, 2027)', desc:'Second provisional tax payment for taxpayers with a February year-end — closes out the 2026/27 tax year estimate. Underestimation penalty applies if your estimate is less than 90% of actual taxable income (below R1m) or less than 80% (above R1m).', penalty:'10% late payment penalty + interest + underestimation penalty if estimate too low' },
+  ];
+
+  const MONTH_NAMES = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+  // ─── STATE ───
+  let activeFilter = 'all';
+
+  // ─── UTILS ───
+  function parseDate(str){ const [y,m,d] = str.split('-').map(Number); return new Date(y,m-1,d); }
+
+  function diffDays(d){
+    const t = parseDate(d);
+    const diff = Math.round((t - TODAY)/(1000*60*60*24));
+    return diff;
+  }
+
+  function getStatus(d){
+    const days = diffDays(d);
+    if(days < 0) return 'past';
+    if(days <= 7) return 'urgent';
+    if(days <= 21) return 'soon';
+    return 'upcoming';
+  }
+
+  function fmtDate(str){
+    const d = parseDate(str);
+    return d.getDate() + ' ' + MONTH_NAMES[d.getMonth()] + ' ' + d.getFullYear();
+  }
+
+  function daysLabel(days){
+    if(days < 0) return null;
+    if(days === 0) return 'Today';
+    if(days === 1) return '1 day';
+    return days + ' days';
+  }
+
+  // ─── UPCOMING STRIP ───
+  function renderUpcoming(){
+    const upcoming = DEADLINES
+      .filter(d => { const days = diffDays(d.date); return days >= 0 && days <= 45; })
+      .filter(d => activeFilter === 'all' || d.cat === activeFilter)
+      .sort((a,b) => parseDate(a.date) - parseDate(b.date))
+      .slice(0, 5);
+
+    const el = document.getElementById('upcomingStrip');
+    if(!upcoming.length){
+      el.innerHTML = `<div class="upcoming-strip empty" style="margin-bottom:20px;"><div class="us-tag">Looking ahead — next 45 days</div><div class="us-h" style="font-size:15px;">No deadlines in the next 45 days for the selected category.</div></div>`;
+      return;
+    }
+
+    const hasUrgent = upcoming.some(d => getStatus(d.date) === 'urgent');
+    const cls = hasUrgent ? '' : 'amber';
+
+    el.innerHTML = `
+      <div class="upcoming-strip ${cls}" style="margin-bottom:20px;">
+        <div class="us-tag">Coming up — next 45 days</div>
+        <div class="us-h">${hasUrgent ? '⚠️ Urgent deadlines ahead' : '📅 Upcoming deadlines'}</div>
+        <div class="us-items">
+          ${upcoming.map(d => {
+            const days = diffDays(d.date);
+            const st = getStatus(d.date);
+            const badgeCls = st === 'urgent' ? 'urgent' : st === 'soon' ? 'amber' : '';
+            const label = daysLabel(days);
+            return `
+              <div class="us-item">
+                <div class="us-item-left">
+                  <div class="us-item-title">${d.title}</div>
+                  <div class="us-item-date">${fmtDate(d.date)}</div>
+                </div>
+                ${label ? `<div class="us-badge ${badgeCls}">${label}</div>` : ''}
+              </div>`;
+          }).join('')}
+        </div>
+      </div>`;
+  }
+
+  // ─── TIMELINE ───
+  function renderTimeline(){
+    const months = {};
+    DEADLINES.forEach(d => {
+      const key = d.date.substring(0,7); // YYYY-MM
+      if(!months[key]) months[key] = [];
+      months[key].push(d);
+    });
+
+    const sortedKeys = Object.keys(months).sort();
+    const timeline = document.getElementById('timeline');
+    timeline.innerHTML = '';
+
+    sortedKeys.forEach(key => {
+      const [year, month] = key.split('-').map(Number);
+      const monthName = MONTH_NAMES[month-1];
+      const isCurrentMonth = (year === 2026 && month === 4); // April 2026
+      const isPast = new Date(year, month-1, 28) < TODAY && !isCurrentMonth;
+      const isFuture = !isCurrentMonth && !isPast;
+
+      const filtered = months[key].filter(d => activeFilter === 'all' || d.cat === activeFilter);
+      if(filtered.length === 0) return;
+
+      const blockCls = isPast ? 'past' : isCurrentMonth ? 'current' : 'future';
+      const tagLabel = isPast ? 'Passed' : isCurrentMonth ? 'This month' : 'Upcoming';
+      const tagCls = isPast ? 'past' : isCurrentMonth ? 'current' : 'future';
+
+      const empDue = year === 2027 ? false : true;
+      const empDate = year + '-' + String(month+1).padStart(2,'0') + '-07';
+
+      const deadlineCards = filtered.map(d => {
+        const days = diffDays(d.date);
+        const status = getStatus(d.date);
+        const statusLabels = {past:'Done',urgent:'Urgent',soon:'Soon',upcoming:'Upcoming'};
+        const label = daysLabel(days);
+
+        return `
+          <div class="deadline ${status}" style="display:${activeFilter==='all'||d.cat===activeFilter?'flex':'none'}">
+            <div class="dl-bar ${d.cat}"></div>
+            <div class="dl-content">
+              <div class="dl-top">
+                <div class="dl-title">${d.title}</div>
+                <div class="dl-badges">
+                  <span class="cat-badge ${d.cat}">${d.cat.toUpperCase()}</span>
+                  <span class="status-badge ${status}">${statusLabels[status]}</span>
+                </div>
+              </div>
+              <div class="dl-date">${fmtDate(d.date)}${label && status !== 'past' ? `<span class="days ${status}">${label}</span>` : ''}</div>
+              <div class="dl-desc">${d.desc}</div>
+              ${d.window ? `<div class="dl-window">📆 ${d.window}</div>` : ''}
+              ${d.penalty ? `<div class="dl-penalty">${d.penalty}</div>` : ''}
+              ${d.note ? `<div class="dl-note">${d.note}</div>` : ''}
+            </div>
+          </div>`;
+      }).join('');
+
+      const block = document.createElement('div');
+      block.className = `month-block ${blockCls}`;
+      block.innerHTML = `
+        <div class="month-header">
+          <div><span class="month-name">${monthName}</span><span class="month-year">${year}</span></div>
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+            ${(activeFilter === 'all' || activeFilter === 'sars') && year <= 2026 && month <= 12 ? `<div class="month-emp">EMP201 due 7${month < 12 ? ' ' + MONTH_NAMES[month].substring(0,3) : ' Jan ' + (year+1)}</div>` : ''}
+            <span class="month-tag ${tagCls}">${tagLabel}</span>
+          </div>
+        </div>
+        <div class="month-body">
+          ${deadlineCards || '<div class="month-empty">No additional deadlines for selected filter this month.</div>'}
+        </div>`;
+      timeline.appendChild(block);
+    });
+  }
+
+  // ─── FILTERS ───
+  document.getElementById('filterChips').addEventListener('click', e => {
+    const btn = e.target.closest('[data-cat]');
+    if(!btn) return;
+    activeFilter = btn.dataset.cat;
+    document.querySelectorAll('[data-cat]').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderUpcoming();
+    renderTimeline();
+  });
+
+  // ─── INIT ───
+  renderUpcoming();
+  renderTimeline();
+
+  // scroll current month into view gently on load
+  setTimeout(() => {
+    const cur = document.querySelector('.month-block.current');
+    if(cur) cur.scrollIntoView({behavior:'smooth', block:'nearest'});
+  }, 300);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Social Media Caption Generator — AutoComply</title>
+<meta name="description" content="Free AI-powered social media caption generator for South African businesses. Get ready-to-post captions for LinkedIn, Facebook, Instagram and WhatsApp in seconds.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;700;800&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --navy:#0B1628;--navy-soft:#1A2842;--blue:#1A56DB;--blue-soft:#EEF3FF;
+  --blue-line:rgba(26,86,219,.15);--green:#059669;--green-soft:#ECFDF5;
+  --amber:#D97706;--amber-soft:#FEF3C7;--red:#DC2626;--red-soft:#FEE2E2;
+  --muted:#5A6A82;--muted2:#8A96A8;--border:#DDE5F0;--border-strong:#C5D1E4;
+  --bg:#F8FAFF;--bg2:#EEF3FF;--white:#fff;
+  --sh:0 1px 4px rgba(11,22,40,.07);--sh-strong:0 4px 20px rgba(11,22,40,.10);
+  --li:#0A66C2;--fb:#1877F2;--ig:#E1306C;--wa:#25D366;
+}
+html,body{background:var(--bg);color:var(--navy);font-family:'Outfit',sans-serif;-webkit-font-smoothing:antialiased;min-height:100vh;font-size:15px;line-height:1.5;}
+
+/* ─── TOPBAR ─── */
+.topbar{background:var(--navy);padding:14px 20px;}
+.topbar-inner{max-width:1040px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;}
+.brand{font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;color:#fff;letter-spacing:-.3px;text-decoration:none;}
+.brand span{color:#60AEFF;}
+.back{font-size:12.5px;color:rgba(255,255,255,.55);text-decoration:none;display:inline-flex;align-items:center;gap:6px;}
+.back:hover{color:#fff;}
+
+/* ─── HERO ─── */
+.hero{background:var(--navy);padding:34px 20px 58px;position:relative;overflow:hidden;}
+.hero::before{content:"";position:absolute;top:-100px;right:-100px;width:400px;height:400px;background:radial-gradient(circle,rgba(26,86,219,.15),transparent 70%);pointer-events:none;}
+.hero-inner{max-width:1040px;margin:0 auto;position:relative;z-index:1;}
+.ai-badge{display:inline-flex;align-items:center;gap:7px;background:linear-gradient(135deg,rgba(26,86,219,.3),rgba(96,174,255,.2));border:1px solid rgba(96,174,255,.3);border-radius:20px;padding:5px 12px;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.8);margin-bottom:16px;}
+.ai-badge::before{content:"";width:6px;height:6px;border-radius:50%;background:#60AEFF;animation:pulse 2s ease-in-out infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.4;}}
+.hero-tag{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:14px;}
+.hero-h{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(26px,5vw,38px);font-weight:800;color:#fff;letter-spacing:-.6px;line-height:1.15;margin-bottom:12px;max-width:760px;}
+.hero-sub{font-size:clamp(14px,2.2vw,16px);color:rgba(255,255,255,.65);max-width:660px;line-height:1.55;}
+
+/* ─── LAYOUT ─── */
+.wrap{max-width:1040px;margin:0 auto;padding:0 20px;}
+.main{margin-top:-36px;margin-bottom:32px;position:relative;z-index:2;}
+.card{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:26px;box-shadow:var(--sh);margin-bottom:20px;}
+.card-h{font-family:'Bricolage Grotesque',sans-serif;font-size:17px;font-weight:700;color:var(--navy);margin-bottom:4px;letter-spacing:-.2px;}
+.card-sub{font-size:13px;color:var(--muted);margin-bottom:22px;line-height:1.55;}
+.section-tag{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:2.5px;text-transform:uppercase;color:var(--blue);margin-bottom:10px;}
+
+/* ─── PLATFORM TABS ─── */
+.platform-tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:24px;}
+@media(max-width:520px){.platform-tabs{grid-template-columns:repeat(2,1fr);}}
+.platform-tab{border:2px solid var(--border);border-radius:12px;padding:12px 10px;cursor:pointer;background:var(--white);text-align:center;transition:all .15s;}
+.platform-tab:hover{border-color:var(--border-strong);background:var(--bg);}
+.platform-tab.active.li{border-color:var(--li);background:#EBF5FF;}
+.platform-tab.active.fb{border-color:var(--fb);background:#EEF4FF;}
+.platform-tab.active.ig{border-color:var(--ig);background:#FFF0F5;}
+.platform-tab.active.wa{border-color:var(--wa);background:#E8FFF2;}
+.platform-tab-ico{font-size:22px;display:block;margin-bottom:5px;line-height:1;}
+.platform-tab-name{font-size:12px;font-weight:700;color:var(--navy);}
+.platform-tab.active.li .platform-tab-name{color:var(--li);}
+.platform-tab.active.fb .platform-tab-name{color:var(--fb);}
+.platform-tab.active.ig .platform-tab-name{color:var(--ig);}
+.platform-tab.active.wa .platform-tab-name{color:var(--wa);}
+.platform-tab-limit{font-family:'JetBrains Mono',monospace;font-size:9.5px;color:var(--muted2);margin-top:2px;}
+
+/* ─── CONTENT TYPE CHIPS ─── */
+.type-chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px;}
+.type-chip{font-family:'Outfit',sans-serif;font-size:12.5px;font-weight:600;padding:7px 13px;border-radius:20px;cursor:pointer;border:1.5px solid var(--border);background:var(--white);color:var(--muted);transition:all .15s;display:inline-flex;align-items:center;gap:5px;}
+.type-chip:hover{background:var(--bg2);border-color:var(--border-strong);}
+.type-chip.active{background:var(--navy);color:#fff;border-color:var(--navy);}
+
+/* ─── INPUTS ─── */
+.field-label{font-size:12.5px;font-weight:600;color:var(--navy);margin-bottom:6px;display:flex;align-items:center;justify-content:space-between;}
+.field-hint{font-size:11px;color:var(--muted2);font-weight:500;}
+.textarea{width:100%;padding:13px 15px;font-family:'Outfit',sans-serif;font-size:14px;color:var(--navy);background:var(--bg);border:1px solid var(--border);border-radius:10px;resize:vertical;min-height:100px;outline:none;transition:all .15s;line-height:1.6;}
+.textarea:focus{border-color:var(--blue);background:var(--white);box-shadow:0 0 0 3px rgba(26,86,219,.12);}
+.textarea::placeholder{color:var(--muted2);}
+.char-count{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--muted2);text-align:right;margin-top:4px;}
+.char-count.warn{color:var(--amber);}
+
+.options-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px;}
+@media(max-width:560px){.options-row{grid-template-columns:1fr;}}
+.input{width:100%;padding:10px 12px;font-family:'Outfit',sans-serif;font-size:14px;color:var(--navy);background:var(--bg);border:1px solid var(--border);border-radius:8px;outline:none;transition:all .15s;}
+.input:focus{border-color:var(--blue);background:var(--white);box-shadow:0 0 0 3px rgba(26,86,219,.12);}
+.input::placeholder{color:var(--muted2);}
+.select{width:100%;padding:10px 30px 10px 12px;font-family:'Outfit',sans-serif;font-size:14px;color:var(--navy);background:var(--bg) url("data:image/svg+xml;charset=US-ASCII,%3Csvg width='12' height='8' viewBox='0 0 12 8' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%235A6A82' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat right 12px center;border:1px solid var(--border);border-radius:8px;appearance:none;cursor:pointer;outline:none;transition:all .15s;}
+.select:focus{border-color:var(--blue);background-color:var(--white);}
+
+/* ─── GENERATE ─── */
+.generate-row{display:flex;justify-content:center;margin-top:22px;}
+.generate-btn{font-family:'Bricolage Grotesque',sans-serif;font-size:15px;font-weight:700;padding:14px 36px;border-radius:10px;cursor:pointer;border:none;background:linear-gradient(135deg,var(--blue),#1449B0);color:#fff;display:inline-flex;align-items:center;gap:9px;transition:all .15s;letter-spacing:-.1px;}
+.generate-btn:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 4px 16px rgba(26,86,219,.3);}
+.generate-btn:disabled{opacity:.6;cursor:not-allowed;transform:none;}
+
+/* ─── LOADING ─── */
+.loading{display:none;flex-direction:column;align-items:center;gap:16px;padding:40px 20px;}
+.loading.show{display:flex;}
+.loading-dots{display:flex;gap:6px;}
+.loading-dot{width:8px;height:8px;border-radius:50%;background:var(--blue);animation:bounce 1.4s ease-in-out infinite;}
+.loading-dot:nth-child(2){animation-delay:.2s;}
+.loading-dot:nth-child(3){animation-delay:.4s;}
+@keyframes bounce{0%,80%,100%{transform:scale(.8);opacity:.5;}40%{transform:scale(1.2);opacity:1;}}
+.loading-text{font-size:14px;color:var(--muted);}
+
+/* ─── OUTPUT ─── */
+.output-area{display:none;}
+.output-area.show{display:block;}
+
+/* Platform-coloured output card */
+.out-card{border:2px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px;}
+.out-card.li{border-color:var(--li);}
+.out-card.fb{border-color:var(--fb);}
+.out-card.ig{border-color:var(--ig);}
+.out-card.wa{border-color:var(--wa);}
+
+.out-header{padding:12px 18px;display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;}
+.out-card.li .out-header{background:#EBF5FF;}
+.out-card.fb .out-header{background:#EEF4FF;}
+.out-card.ig .out-header{background:#FFF0F5;}
+.out-card.wa .out-header{background:#E8FFF2;}
+
+.out-platform{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;font-weight:700;display:flex;align-items:center;gap:7px;}
+.out-card.li .out-platform{color:var(--li);}
+.out-card.fb .out-platform{color:var(--fb);}
+.out-card.ig .out-platform{color:var(--ig);}
+.out-card.wa .out-platform{color:var(--wa);}
+.out-platform-ico{font-size:15px;}
+
+.out-meta{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted2);}
+
+.out-btns{display:flex;gap:6px;align-items:center;}
+.copy-btn{font-family:'Outfit',sans-serif;font-size:11.5px;font-weight:600;padding:6px 12px;border-radius:7px;cursor:pointer;border:none;display:inline-flex;align-items:center;gap:5px;transition:all .15s;}
+.out-card.li .copy-btn{background:rgba(10,102,194,.12);color:var(--li);}
+.out-card.fb .copy-btn{background:rgba(24,119,242,.12);color:var(--fb);}
+.out-card.ig .copy-btn{background:rgba(225,48,108,.12);color:var(--ig);}
+.out-card.wa .copy-btn{background:rgba(37,211,102,.12);color:var(--wa);}
+.copy-btn.copied{background:var(--green-soft)!important;color:var(--green)!important;}
+
+.out-caption{padding:18px;font-size:14px;line-height:1.75;color:var(--navy);white-space:pre-wrap;word-break:break-word;background:var(--white);}
+
+.out-hashtags{padding:12px 18px;background:var(--bg);border-top:1px dashed var(--border);font-size:13px;color:var(--muted);}
+.out-hashtags-label{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted2);margin-bottom:5px;}
+.out-hashtags-text{font-size:13.5px;color:var(--navy);line-height:1.7;word-break:break-word;}
+
+.char-bar{height:3px;background:var(--border);border-radius:2px;overflow:hidden;margin:10px 18px;}
+.char-bar-fill{height:100%;border-radius:2px;background:var(--green);transition:width .3s,background .3s;}
+.char-bar-fill.warn{background:var(--amber);}
+.char-bar-fill.over{background:var(--red);}
+.char-bar-label{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted2);padding:0 18px 12px;text-align:right;}
+
+.regen-row{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;}
+.regen-btn{font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;padding:9px 18px;border-radius:8px;cursor:pointer;border:1px solid var(--border);background:var(--white);color:var(--navy);display:inline-flex;align-items:center;gap:6px;transition:all .15s;}
+.regen-btn:hover{background:var(--bg2);border-color:var(--border-strong);}
+
+/* ─── ERROR ─── */
+.error-box{background:var(--red-soft);border:1px solid rgba(220,38,38,.2);border-radius:10px;padding:14px 16px;font-size:13.5px;color:#991B1B;display:none;align-items:flex-start;gap:10px;line-height:1.55;margin-top:14px;}
+.error-box.show{display:flex;}
+.error-box strong{font-weight:700;}
+
+/* ─── TIPS ─── */
+.tips-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;}
+.tip-card{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:14px 16px;}
+.tip-platform{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;font-weight:700;}
+.tip-platform.li{color:var(--li);}
+.tip-platform.fb{color:var(--fb);}
+.tip-platform.ig{color:var(--ig);}
+.tip-platform.wa{color:var(--wa);}
+.tip-body{font-size:12.5px;color:var(--muted);line-height:1.6;}
+.tip-body strong{color:var(--navy);font-weight:700;}
+
+/* ─── CTA ─── */
+.cta-inner{background:var(--navy);border-radius:16px;padding:28px 26px;text-align:center;position:relative;overflow:hidden;}
+.cta-inner::before{content:"";position:absolute;top:-80px;left:-80px;width:240px;height:240px;background:radial-gradient(circle,rgba(26,86,219,.28),transparent 70%);pointer-events:none;}
+.cta-inner::after{content:"";position:absolute;bottom:-80px;right:-80px;width:240px;height:240px;background:radial-gradient(circle,rgba(96,174,255,.18),transparent 70%);pointer-events:none;}
+.cta-h{font-family:'Bricolage Grotesque',sans-serif;font-size:21px;font-weight:700;color:#fff;margin-bottom:8px;letter-spacing:-.3px;position:relative;z-index:1;}
+.cta-sub{font-size:14px;color:rgba(255,255,255,.65);margin-bottom:18px;max-width:520px;margin-left:auto;margin-right:auto;position:relative;z-index:1;line-height:1.55;}
+.cta-btn{display:inline-flex;align-items:center;gap:8px;background:#25D366;color:#fff;font-family:'Outfit',sans-serif;font-size:14px;font-weight:600;padding:12px 22px;border-radius:9px;text-decoration:none;position:relative;z-index:1;transition:transform .15s;}
+.cta-btn:hover{transform:translateY(-1px);}
+
+/* ─── FOOTER ─── */
+.foot{max-width:1040px;margin:20px auto 0;padding:26px 20px;text-align:center;font-size:12px;color:var(--muted2);border-top:1px solid var(--border);}
+.foot a{color:var(--muted);text-decoration:none;font-weight:600;}
+.foot .fine{font-size:11px;margin-top:8px;max-width:620px;margin-left:auto;margin-right:auto;line-height:1.55;}
+
+@media(max-width:620px){
+  .card{padding:20px 16px;}
+  .hero{padding:28px 20px 52px;}
+  .main{margin-top:-32px;}
+  .out-caption{padding:14px;}
+}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="topbar-inner">
+    <a href="https://autocomply.co.za" class="brand">Auto<span>Comply</span></a>
+    <a href="https://autocomply.co.za/#tools" class="back">← All tools</a>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="ai-badge">✦ AI-Powered</div>
+    <div class="hero-tag">Free Tool · Social Media Caption Generator</div>
+    <h1 class="hero-h">Ready-to-post captions for every platform — built for SA businesses.</h1>
+    <p class="hero-sub">Pick your platform, tell the AI what you want to say, and get a polished caption with hashtags in seconds. No marketing jargon. No cringe. Just captions that actually sound like you.</p>
+  </div>
+</section>
+
+<!-- MAIN -->
+<main class="main wrap">
+
+  <!-- INPUT CARD -->
+  <div class="card">
+    <div class="card-h">Build your caption</div>
+    <div class="card-sub">Select your platform and content type, then describe what you want to post. The AI handles the rest.</div>
+
+    <!-- Platform selector -->
+    <div class="section-tag">1 — Choose your platform</div>
+    <div class="platform-tabs">
+      <button class="platform-tab li active" data-platform="linkedin" data-cls="li" type="button">
+        <span class="platform-tab-ico">💼</span>
+        <span class="platform-tab-name">LinkedIn</span>
+        <span class="platform-tab-limit">Optimal ~1,300 chars</span>
+      </button>
+      <button class="platform-tab fb" data-platform="facebook" data-cls="fb" type="button">
+        <span class="platform-tab-ico">👥</span>
+        <span class="platform-tab-name">Facebook</span>
+        <span class="platform-tab-limit">Optimal ~80 chars</span>
+      </button>
+      <button class="platform-tab ig" data-platform="instagram" data-cls="ig" type="button">
+        <span class="platform-tab-ico">📸</span>
+        <span class="platform-tab-name">Instagram</span>
+        <span class="platform-tab-limit">Up to 2,200 chars</span>
+      </button>
+      <button class="platform-tab wa" data-platform="whatsapp" data-cls="wa" type="button">
+        <span class="platform-tab-ico">💬</span>
+        <span class="platform-tab-name">WhatsApp</span>
+        <span class="platform-tab-limit">Status &lt;700 chars</span>
+      </button>
+    </div>
+
+    <!-- Content type -->
+    <div class="section-tag">2 — What kind of post?</div>
+    <div class="type-chips">
+      <button class="type-chip active" data-type="promotion">🏷️ Promotion / offer</button>
+      <button class="type-chip" data-type="tip">💡 Business tip</button>
+      <button class="type-chip" data-type="bts">📷 Behind the scenes</button>
+      <button class="type-chip" data-type="win">🏆 Customer win / testimonial</button>
+      <button class="type-chip" data-type="announcement">📢 Announcement</button>
+      <button class="type-chip" data-type="question">❓ Question / engagement</button>
+      <button class="type-chip" data-type="motivation">🔥 Motivation / mindset</button>
+      <button class="type-chip" data-type="spotlight">⭐ Product / service spotlight</button>
+    </div>
+
+    <!-- What to post -->
+    <div class="section-tag">3 — What do you want to say?</div>
+    <div>
+      <div class="field-label">
+        <span id="contextLabel">Describe your promotion or offer</span>
+        <span class="field-hint">More detail = better caption</span>
+      </div>
+      <textarea id="contextInput" class="textarea" maxlength="500"
+        placeholder="e.g. We're offering 20% off all electrical installations booked before end of April. We service Johannesburg and Pretoria. We've done 300+ installations this year."></textarea>
+      <div class="char-count" id="charCount">0 / 500</div>
+    </div>
+
+    <!-- Options -->
+    <div class="options-row">
+      <div>
+        <div class="field-label"><span>Business type / industry</span><span class="field-hint">optional</span></div>
+        <input id="industry" class="input" type="text" placeholder="e.g. Electrical contractor, Bakery, HR Consulting">
+      </div>
+      <div>
+        <div class="field-label"><span>Brand voice</span></div>
+        <select id="voice" class="select">
+          <option value="professional">Professional</option>
+          <option value="casual" selected>Casual &amp; friendly</option>
+          <option value="bold">Bold &amp; confident</option>
+          <option value="educational">Educational / informative</option>
+          <option value="humorous">Light &amp; humorous</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Error -->
+    <div class="error-box" id="errorBox">
+      <div style="font-size:16px;flex-shrink:0;">⚠️</div>
+      <div id="errorText"><strong>Something went wrong.</strong> Please try again in a moment.</div>
+    </div>
+
+    <div class="generate-row">
+      <button class="generate-btn" id="generateBtn" type="button">
+        <span style="font-size:18px;">✦</span>
+        Generate caption
+      </button>
+    </div>
+  </div>
+
+  <!-- OUTPUT CARD -->
+  <div class="card" id="outputCard" style="display:none;">
+    <div class="card-h">Your caption</div>
+    <div class="card-sub">Ready to copy and post. The hashtag block is separate so you can paste it below your caption on platforms that support them.</div>
+
+    <div class="loading" id="loading">
+      <div class="loading-dots">
+        <div class="loading-dot"></div>
+        <div class="loading-dot"></div>
+        <div class="loading-dot"></div>
+      </div>
+      <div class="loading-text" id="loadingText">Writing your caption…</div>
+    </div>
+
+    <div class="output-area" id="outputArea">
+      <!-- Output card rendered here by JS -->
+      <div id="captionCard"></div>
+      <div class="regen-row">
+        <button class="regen-btn" id="regenBtn" type="button">↺ Generate another version</button>
+        <button class="regen-btn" id="editBtn" type="button">← Edit details</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PLATFORM TIPS -->
+  <div class="card">
+    <div class="card-h">What works on each platform for SA businesses</div>
+    <div class="card-sub">Platform conventions differ significantly — the same message needs a different treatment on each.</div>
+    <div class="tips-grid">
+      <div class="tip-card">
+        <div class="tip-platform li">LinkedIn</div>
+        <div class="tip-body"><strong>Hook in line 1</strong> — people see only the first ~2 lines before "see more". Make it a question, bold statement or surprising fact. <strong>3–5 hashtags</strong> max. Stories outperform company updates. South African business, economy and leadership content performs well locally.</div>
+      </div>
+      <div class="tip-card">
+        <div class="tip-platform fb">Facebook</div>
+        <div class="tip-body"><strong>Short wins</strong> — posts under 80 characters get 66% more engagement. Lead with an image or video and use caption sparingly. Facebook groups outperform pages for SA SME reach. Local community angles resonate strongly.</div>
+      </div>
+      <div class="tip-card">
+        <div class="tip-platform ig">Instagram</div>
+        <div class="tip-body"><strong>Caption isn't the hero</strong> — the image/video is. Keep the first line strong then expand. <strong>15–20 niche hashtags</strong> placed at the bottom or in comments. SA hashtags like #SouthAfricanBusiness and industry-specific tags (#JoziFood, #CapeTownEats) build local reach.</div>
+      </div>
+      <div class="tip-card">
+        <div class="tip-platform wa">WhatsApp Status</div>
+        <div class="tip-body"><strong>Direct and personal</strong> wins over broadcast-style. Treat it like a message to a friend, not an advertisement. <strong>No hashtags</strong>. Pair with a strong image. Status disappears in 24 hours — time-sensitive offers work well here.</div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<!-- CTA -->
+<div class="wrap" style="margin-bottom:30px;">
+  <div class="cta-inner">
+    <div class="cta-h">Need help with more than captions?</div>
+    <p class="cta-sub">If you're posting consistently but not seeing leads or enquiries, the issue is usually positioning and offer clarity — not the platform. We can help you work that out.</p>
+    <a href="https://wa.me/27670113108?text=Hi%20AutoComply%2C%20I%20used%20the%20Social%20Media%20Caption%20Generator%20and%20want%20help%20with%20my%20business%20marketing." class="cta-btn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Chat on WhatsApp
+    </a>
+  </div>
+</div>
+
+<div class="foot">
+  AutoComply · Practical tools for South African business owners · <a href="https://autocomply.co.za">autocomply.co.za</a>
+  <div class="fine">Captions are generated by AI — always review before posting. Nothing is stored. No content is saved after your session ends.</div>
+</div>
+
+<script>
+(function(){
+  const $ = id => document.getElementById(id);
+
+  let activePlatform = 'linkedin';
+  let activeCls      = 'li';
+  let activeType     = 'promotion';
+  let lastResult     = null;
+
+  const PLATFORM_CONFIG = {
+    linkedin:  { name:'LinkedIn',  icon:'💼', cls:'li',  limit:3000,  optimal:1300, hashCount:'3–5', noHashtags:false },
+    facebook:  { name:'Facebook',  icon:'👥', cls:'fb',  limit:63206, optimal:80,   hashCount:'0–2', noHashtags:false },
+    instagram: { name:'Instagram', icon:'📸', cls:'ig',  limit:2200,  optimal:150,  hashCount:'15–20', noHashtags:false },
+    whatsapp:  { name:'WhatsApp Status', icon:'💬', cls:'wa',  limit:700,   optimal:200,  hashCount:null, noHashtags:true },
+  };
+
+  const TYPE_LABELS = {
+    promotion:    'promotional post or special offer',
+    tip:          'helpful business tip or educational insight',
+    bts:          'behind-the-scenes look at the business',
+    win:          'customer success story or testimonial highlight',
+    announcement: 'business announcement or news',
+    question:     'engagement question to spark comments and interaction',
+    motivation:   'motivational or mindset post for business owners',
+    spotlight:    'product or service spotlight post',
+  };
+
+  const TYPE_PLACEHOLDERS = {
+    promotion:    'e.g. 20% off all electrical installations booked before end of April. We service Johannesburg and Pretoria. 300+ installations done this year.',
+    tip:          'e.g. The one thing most small retailers get wrong about stock management — hint: it\'s not about buying less, it\'s about buying smarter.',
+    bts:          'e.g. Show what a typical Monday morning looks like at our bakery — starting at 3am, mixing 80kg of dough before sunrise.',
+    win:          'e.g. Client was struggling with late payments from debtors. After we helped them restructure their terms, collections improved by 60% in 2 months.',
+    announcement: 'e.g. We\'re launching a new compliance calendar service for SA small businesses — free for the first 100 sign-ups.',
+    question:     'e.g. Ask business owners whether they prefer paying staff weekly or monthly, and why.',
+    motivation:   'e.g. Most people quit at 6 months. That\'s when the business starts getting easier. Speak to SA business owners who want to push through.',
+    spotlight:    'e.g. Our most popular product — the SA Business Compliance Pack. Everything a new business owner needs in one download.',
+  };
+
+  const PLATFORM_INSTRUCTIONS = {
+    linkedin: 'LinkedIn post for South African business owners and professionals. Hook in the first line (visible before "see more"). Use line breaks generously. Peer-to-peer tone — not brand-to-customer. End with a question or clear call to action. 3–5 relevant professional hashtags.',
+    facebook: 'Facebook post for a South African business page. Short and punchy — the optimal caption is under 80 characters. Conversational, community-first tone. 0–2 hashtags only. Lead with the most engaging element.',
+    instagram: 'Instagram caption for a South African business. First line is the hook (all that shows before "more"). Can expand after that. Put hashtags in a separate block at the very end, clearly separated by line breaks. 15–20 targeted hashtags mixing popular and niche SA tags.',
+    whatsapp: 'WhatsApp Status message for a South African business owner. Personal and direct — NOT broadcast-sounding. Under 250 characters. No hashtags. Sounds like a message from a trusted contact, not an advertisement.',
+  };
+
+  // ─── PLATFORM TABS ───
+  document.querySelectorAll('.platform-tab').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.platform-tab').forEach(b => { b.classList.remove('active','li','fb','ig','wa'); b.classList.add(b.dataset.cls); });
+      btn.classList.add('active');
+      activePlatform = btn.dataset.platform;
+      activeCls = btn.dataset.cls;
+    });
+  });
+
+  // ─── TYPE CHIPS ───
+  document.querySelectorAll('.type-chip').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.type-chip').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      activeType = btn.dataset.type;
+      $('contextLabel').textContent = 'Describe your ' + TYPE_LABELS[activeType];
+      $('contextInput').placeholder = TYPE_PLACEHOLDERS[activeType] || '';
+      $('contextInput').value = '';
+      $('charCount').textContent = '0 / 500';
+    });
+  });
+
+  // ─── CHAR COUNT ───
+  $('contextInput').addEventListener('input', () => {
+    const len = $('contextInput').value.length;
+    $('charCount').textContent = `${len} / 500`;
+    $('charCount').className = 'char-count' + (len > 420 ? ' warn' : '');
+  });
+
+  // ─── COPY ───
+  async function copyText(text, btn){
+    try { await navigator.clipboard.writeText(text); }
+    catch {
+      const ta = document.createElement('textarea');
+      ta.value = text; document.body.appendChild(ta); ta.select();
+      try { document.execCommand('copy'); } catch(_){} document.body.removeChild(ta);
+    }
+    const orig = btn.innerHTML;
+    btn.classList.add('copied');
+    btn.innerHTML = btn.innerHTML.replace('Copy','Copied ✓');
+    setTimeout(() => { btn.classList.remove('copied'); btn.innerHTML = orig; }, 1800);
+  }
+
+  // ─── RENDER RESULT ───
+  function showResult(result){
+    lastResult = result;
+    const cfg = PLATFORM_CONFIG[activePlatform];
+    const captionText  = result.caption || '';
+    const hashtagsText = result.hashtags || '';
+    const fullText     = captionText + (hashtagsText ? '\n\n' + hashtagsText : '');
+    const captionLen   = captionText.length;
+    const pct = Math.min((captionLen / cfg.limit) * 100, 100);
+    const barCls = pct < 70 ? '' : pct < 95 ? ' warn' : ' over';
+
+    $('captionCard').innerHTML = `
+      <div class="out-card ${cfg.cls}">
+        <div class="out-header">
+          <div class="out-platform">
+            <span class="out-platform-ico">${cfg.icon}</span>
+            ${cfg.name}
+          </div>
+          <div class="out-btns">
+            <span class="out-meta">${captionLen.toLocaleString('en-ZA')} chars</span>
+            <button class="copy-btn" id="copyCaptionOnly" type="button">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              Copy caption
+            </button>
+            ${hashtagsText ? `<button class="copy-btn" id="copyAll" type="button">Copy all</button>` : ''}
+          </div>
+        </div>
+        <div class="out-caption">${captionText.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>
+        <div class="char-bar"><div class="char-bar-fill${barCls}" style="width:${pct}%"></div></div>
+        <div class="char-bar-label">${captionLen.toLocaleString('en-ZA')} / ${cfg.limit.toLocaleString('en-ZA')} • Optimal: ~${cfg.optimal.toLocaleString('en-ZA')} chars</div>
+        ${hashtagsText ? `<div class="out-hashtags"><div class="out-hashtags-label">Hashtags ${cfg.hashCount ? '('+cfg.hashCount+')' : ''}</div><div class="out-hashtags-text">${hashtagsText.replace(/</g,'&lt;')}</div></div>` : ''}
+      </div>`;
+
+    // Bind copy buttons
+    const capBtn = $('copyCaptionOnly');
+    if(capBtn) capBtn.addEventListener('click', () => copyText(captionText, capBtn));
+    const allBtn = $('copyAll');
+    if(allBtn) allBtn.addEventListener('click', () => copyText(fullText, allBtn));
+
+    $('loading').classList.remove('show');
+    $('outputArea').classList.add('show');
+  }
+
+  // ─── API CALL ───
+  async function generate(){
+    const context = $('contextInput').value.trim();
+    if(!context){
+      $('contextInput').focus();
+      $('contextInput').style.borderColor = 'var(--red)';
+      setTimeout(() => $('contextInput').style.borderColor = '', 1500);
+      return;
+    }
+
+    const industry = $('industry').value.trim();
+    const voice    = $('voice').value;
+    const cfg      = PLATFORM_CONFIG[activePlatform];
+
+    const loadingMessages = {
+      linkedin: 'Writing your LinkedIn post…',
+      facebook: 'Crafting your Facebook caption…',
+      instagram: 'Building your Instagram caption…',
+      whatsapp: 'Writing your WhatsApp status…',
+    };
+
+    $('outputCard').style.display = '';
+    $('loading').classList.add('show');
+    $('loadingText').textContent = loadingMessages[activePlatform];
+    $('outputArea').classList.remove('show');
+    $('errorBox').classList.remove('show');
+    $('generateBtn').disabled = true;
+    setTimeout(() => $('outputCard').scrollIntoView({behavior:'smooth', block:'start'}), 100);
+
+    const userPrompt = `Platform: ${cfg.name}
+Post type: ${TYPE_LABELS[activeType]}
+Brand voice: ${voice}
+${industry ? `Industry / business type: ${industry}` : ''}
+
+What to post about:
+${context}
+
+Write a ${cfg.name} caption. Return ONLY valid JSON.`;
+
+    try {
+      const response = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-20250514',
+          max_tokens: 1000,
+          system: `You are an expert social media strategist for South African small and medium businesses. You write captions that sound authentic, get engagement, and reflect real SA business culture.
+
+CRITICAL: Return ONLY a valid JSON object. No markdown. No explanation. Just:
+{"caption":"the caption text here","hashtags":"the hashtag string here"}
+
+For WhatsApp Status: set "hashtags" to empty string "".
+
+PLATFORM RULES:
+${PLATFORM_INSTRUCTIONS[activePlatform]}
+
+SOUTH AFRICAN CONTEXT:
+- Use Rands (R) not dollars
+- Reference SA business realities — load shedding humour is acceptable when contextually appropriate
+- Don't use American idioms or references
+- SA business English — professional but warm and real
+- Reference local context naturally (Jozi, Cape Town, Durban etc. if relevant)
+
+VOICE RULES:
+- Professional: authoritative, confident, structured
+- Casual & friendly: conversational, warm, uses contractions
+- Bold & confident: direct, strong statements, punchy
+- Educational: teaches something, uses "Here's why" or "The truth about" framing
+- Light & humorous: playful, relatable, light SA workplace humour
+
+NEVER:
+- Start with "Are you" or "Did you know" clichés unless truly the best hook
+- Use empty words like "amazing", "awesome", "incredible"  
+- Sound like an advertisement — sound like a person
+- Use em dashes (—) excessively
+- Use "game-changing" or "revolutionary"
+
+HASHTAGS (if applicable):
+- Mix broad + niche SA-specific tags
+- Include at least 1–2 SA-specific hashtags (#SouthAfricanBusiness, #SAEntrepreneur etc.)
+- Return as a single block ready to paste`,
+          messages: [{ role:'user', content: userPrompt }]
+        })
+      });
+
+      if(!response.ok){
+        const err = await response.json().catch(() => ({}));
+        throw new Error(err.error?.message || `API error ${response.status}`);
+      }
+
+      const data    = await response.json();
+      const raw     = data.content.filter(i => i.type==='text').map(i => i.text).join('');
+      const cleaned = raw.replace(/```json\n?/g,'').replace(/```\n?/g,'').trim();
+      const result  = JSON.parse(cleaned);
+      showResult(result);
+
+    } catch(err){
+      console.error(err);
+      $('loading').classList.remove('show');
+      $('errorBox').classList.add('show');
+      $('errorText').innerHTML = `<strong>Couldn't generate the caption.</strong> ${err.message || 'Please try again.'}`;
+    } finally {
+      $('generateBtn').disabled = false;
+    }
+  }
+
+  // ─── EVENTS ───
+  $('generateBtn').addEventListener('click', generate);
+  $('regenBtn').addEventListener('click',    generate);
+  $('editBtn').addEventListener('click', () => {
+    $('contextInput').focus();
+    $('contextInput').scrollIntoView({behavior:'smooth', block:'center'});
+  });
+  $('contextInput').addEventListener('keydown', e => {
+    if(e.key==='Enter' && (e.ctrlKey||e.metaKey)) generate();
+  });
+})();
+</script>
+</body>
+</html>

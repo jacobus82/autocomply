@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Payment Reminder Scripts — AutoComply</title>
+<meta name="description" content="Free payment reminder scripts for South African businesses. Ready-to-send WhatsApp and email templates for every stage — Day 1, Day 7, Day 14 and final demand.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;700;800&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --navy:#0B1628;--navy-soft:#1A2842;--blue:#1A56DB;--blue-soft:#EEF3FF;
+  --blue-line:rgba(26,86,219,.15);--green:#059669;--green-soft:#ECFDF5;
+  --amber:#D97706;--amber-soft:#FEF3C7;--red:#DC2626;--red-soft:#FEE2E2;
+  --muted:#5A6A82;--muted2:#8A96A8;--border:#DDE5F0;--border-strong:#C5D1E4;
+  --bg:#F8FAFF;--bg2:#EEF3FF;--white:#fff;
+  --sh:0 1px 4px rgba(11,22,40,.07);--sh-strong:0 4px 20px rgba(11,22,40,.10);
+  --wa:#25D366;--wa-soft:#DCFCE7;
+}
+html,body{background:var(--bg);color:var(--navy);font-family:'Outfit',sans-serif;-webkit-font-smoothing:antialiased;min-height:100vh;font-size:15px;line-height:1.5;}
+
+/* ─── TOPBAR ─── */
+.topbar{background:var(--navy);padding:14px 20px;}
+.topbar-inner{max-width:1040px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;}
+.brand{font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;color:#fff;letter-spacing:-.3px;text-decoration:none;}
+.brand span{color:#60AEFF;}
+.back{font-size:12.5px;color:rgba(255,255,255,.55);text-decoration:none;display:inline-flex;align-items:center;gap:6px;transition:color .15s;}
+.back:hover{color:#fff;}
+
+/* ─── HERO ─── */
+.hero{background:var(--navy);padding:34px 20px 58px;position:relative;overflow:hidden;}
+.hero::before{content:"";position:absolute;top:-100px;right:-100px;width:400px;height:400px;background:radial-gradient(circle,rgba(26,86,219,.15),transparent 70%);pointer-events:none;}
+.hero-inner{max-width:1040px;margin:0 auto;position:relative;z-index:1;}
+.hero-tag{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:14px;}
+.hero-h{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(26px,5vw,38px);font-weight:800;color:#fff;letter-spacing:-.6px;line-height:1.15;margin-bottom:12px;max-width:760px;}
+.hero-sub{font-size:clamp(14px,2.2vw,16px);color:rgba(255,255,255,.65);max-width:640px;line-height:1.55;}
+
+/* ─── LAYOUT ─── */
+.wrap{max-width:1040px;margin:0 auto;padding:0 20px;}
+.main{margin-top:-36px;margin-bottom:32px;position:relative;z-index:2;}
+.card{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:26px;box-shadow:var(--sh);margin-bottom:20px;}
+.card-h{font-family:'Bricolage Grotesque',sans-serif;font-size:17px;font-weight:700;color:var(--navy);margin-bottom:4px;letter-spacing:-.2px;}
+.card-sub{font-size:13px;color:var(--muted);margin-bottom:20px;line-height:1.55;}
+
+/* ─── INPUTS ─── */
+.inputs-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+@media(max-width:680px){.inputs-grid{grid-template-columns:1fr;gap:14px;}}
+.input-col-label{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:2px;text-transform:uppercase;color:var(--blue);margin-bottom:12px;}
+.fields{display:flex;flex-direction:column;gap:12px;}
+.field-label{display:flex;align-items:center;justify-content:space-between;font-size:12px;font-weight:600;color:var(--navy);margin-bottom:5px;}
+.field-hint{font-size:11px;color:var(--muted2);}
+.input-wrap{position:relative;}
+.input-prefix{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-family:'JetBrains Mono',monospace;font-size:12.5px;font-weight:600;color:var(--muted);pointer-events:none;}
+.input{width:100%;padding:10px 12px;font-family:'Outfit',sans-serif;font-size:14px;font-weight:500;color:var(--navy);background:var(--bg);border:1px solid var(--border);border-radius:8px;transition:all .15s;}
+.input.with-prefix{padding-left:28px;}
+.input:focus{outline:none;border-color:var(--blue);background:var(--white);box-shadow:0 0 0 3px rgba(26,86,219,.12);}
+.input::placeholder{color:var(--muted2);font-weight:400;}
+
+/* ─── SMART SUGGESTION ─── */
+.suggestion{border-radius:10px;padding:13px 16px;display:flex;gap:10px;align-items:flex-start;font-size:13.5px;line-height:1.55;margin-top:16px;}
+.suggestion.green{background:var(--green-soft);border:1px solid rgba(5,150,105,.2);color:#065F46;}
+.suggestion.amber{background:var(--amber-soft);border:1px solid rgba(217,119,6,.2);color:#78350F;}
+.suggestion.red{background:var(--red-soft);border:1px solid rgba(220,38,38,.2);color:#991B1B;}
+.suggestion.blue{background:var(--blue-soft);border:1px solid var(--blue-line);color:#1E3A8A;}
+.suggestion-ico{font-size:16px;flex-shrink:0;margin-top:1px;}
+.suggestion strong{font-weight:700;}
+
+/* actions row */
+.actions-row{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-top:16px;}
+.action-btn{font-family:'Outfit',sans-serif;font-size:12.5px;font-weight:600;padding:8px 14px;border-radius:8px;cursor:pointer;border:1px solid var(--border);background:var(--white);color:var(--muted);transition:all .15s;display:inline-flex;align-items:center;gap:6px;}
+.action-btn.primary{background:var(--blue);color:#fff;border-color:var(--blue);}
+.action-btn.primary:hover{background:#1449B0;}
+.action-btn:hover{border-color:var(--border-strong);background:var(--bg);color:var(--navy);}
+
+/* ─── STAGE TABS ─── */
+.stage-tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:20px;}
+@media(max-width:600px){.stage-tabs{grid-template-columns:repeat(2,1fr);gap:6px;}}
+.stage-tab{font-family:'Outfit',sans-serif;font-size:12.5px;font-weight:600;padding:10px 8px;border-radius:10px;cursor:pointer;border:1.5px solid var(--border);background:var(--white);color:var(--muted);transition:all .15s;text-align:center;line-height:1.3;}
+.stage-tab:hover{background:var(--bg2);border-color:var(--border-strong);}
+.stage-tab.active{background:var(--navy);color:#fff;border-color:var(--navy);}
+.stage-tab .tab-label{display:block;font-size:11px;font-weight:500;opacity:.7;margin-top:2px;}
+.stage-tab.stage-1.active{background:var(--green);border-color:var(--green);}
+.stage-tab.stage-2.active{background:var(--blue);border-color:var(--blue);}
+.stage-tab.stage-3.active{background:var(--amber);border-color:var(--amber);}
+.stage-tab.stage-4.active{background:var(--red);border-color:var(--red);}
+
+/* stage description */
+.stage-desc{border-radius:10px;padding:14px 16px;margin-bottom:18px;border:1px solid;}
+.stage-desc.green{background:var(--green-soft);border-color:rgba(5,150,105,.2);color:#065F46;}
+.stage-desc.blue{background:var(--blue-soft);border-color:var(--blue-line);color:#1E3A8A;}
+.stage-desc.amber{background:var(--amber-soft);border-color:rgba(217,119,6,.2);color:#78350F;}
+.stage-desc.red{background:var(--red-soft);border-color:rgba(220,38,38,.2);color:#991B1B;}
+.stage-desc-title{font-weight:700;font-size:14px;margin-bottom:3px;}
+.stage-desc-body{font-size:13px;line-height:1.55;opacity:.9;}
+
+/* ─── SCRIPT PANELS ─── */
+.scripts-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+@media(max-width:700px){.scripts-grid{grid-template-columns:1fr;}}
+
+.script-card{border:1.5px solid var(--border);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;}
+.script-card.wa{border-color:rgba(37,211,102,.35);}
+.script-card.email{border-color:var(--blue-line);}
+
+.script-header{padding:12px 16px;display:flex;align-items:center;justify-content:space-between;gap:8px;}
+.script-card.wa .script-header{background:var(--wa-soft);border-bottom:1px solid rgba(37,211,102,.25);}
+.script-card.email .script-header{background:var(--blue-soft);border-bottom:1px solid var(--blue-line);}
+.script-type{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;font-weight:700;display:flex;align-items:center;gap:6px;}
+.script-card.wa .script-type{color:#16A34A;}
+.script-card.email .script-type{color:var(--blue);}
+.script-type-ico{font-size:14px;}
+
+.copy-btn{font-family:'Outfit',sans-serif;font-size:11.5px;font-weight:600;padding:6px 12px;border-radius:7px;cursor:pointer;border:none;display:inline-flex;align-items:center;gap:5px;transition:all .15s;flex-shrink:0;}
+.script-card.wa .copy-btn{background:rgba(37,211,102,.15);color:#16A34A;}
+.script-card.wa .copy-btn:hover{background:rgba(37,211,102,.25);}
+.script-card.email .copy-btn{background:var(--blue-line);color:var(--blue);}
+.script-card.email .copy-btn:hover{background:rgba(26,86,219,.18);}
+.copy-btn.copied{background:var(--green-soft)!important;color:var(--green)!important;}
+
+/* email subject */
+.script-subject{padding:10px 16px;background:var(--bg);border-bottom:1px solid var(--border);}
+.script-subject-label{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:2px;}
+.script-subject-text{font-size:13px;font-weight:600;color:var(--navy);}
+
+/* script body */
+.script-body{padding:16px;flex:1;font-size:13.5px;line-height:1.75;color:var(--navy);white-space:pre-wrap;word-break:break-word;background:var(--white);}
+.script-body .placeholder{background:#FEF9C3;color:#854D0E;border-radius:3px;padding:0 3px;font-weight:600;}
+
+/* ─── GUIDE ─── */
+.guide-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;}
+.guide-item{}
+.guide-item-h{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--blue);margin-bottom:7px;}
+.guide-item-body{font-size:13.5px;color:var(--navy);line-height:1.6;}
+.guide-item-body strong{font-weight:700;}
+
+/* ─── CTA ─── */
+.cta-inner{background:var(--navy);border-radius:16px;padding:28px 26px;text-align:center;position:relative;overflow:hidden;}
+.cta-inner::before{content:"";position:absolute;top:-80px;left:-80px;width:240px;height:240px;background:radial-gradient(circle,rgba(26,86,219,.28),transparent 70%);pointer-events:none;}
+.cta-inner::after{content:"";position:absolute;bottom:-80px;right:-80px;width:240px;height:240px;background:radial-gradient(circle,rgba(96,174,255,.18),transparent 70%);pointer-events:none;}
+.cta-h{font-family:'Bricolage Grotesque',sans-serif;font-size:21px;font-weight:700;color:#fff;margin-bottom:8px;letter-spacing:-.3px;position:relative;z-index:1;}
+.cta-sub{font-size:14px;color:rgba(255,255,255,.65);margin-bottom:18px;max-width:520px;margin-left:auto;margin-right:auto;position:relative;z-index:1;line-height:1.55;}
+.cta-btn{display:inline-flex;align-items:center;gap:8px;background:#25D366;color:#fff;font-family:'Outfit',sans-serif;font-size:14px;font-weight:600;padding:12px 22px;border-radius:9px;text-decoration:none;position:relative;z-index:1;transition:transform .15s;}
+.cta-btn:hover{transform:translateY(-1px);}
+
+/* ─── FOOTER ─── */
+.foot{max-width:1040px;margin:20px auto 0;padding:26px 20px;text-align:center;font-size:12px;color:var(--muted2);border-top:1px solid var(--border);}
+.foot a{color:var(--muted);text-decoration:none;font-weight:600;}
+.foot .fine{font-size:11px;margin-top:8px;max-width:600px;margin-left:auto;margin-right:auto;line-height:1.55;}
+
+@media(max-width:620px){
+  .card{padding:20px 16px;}
+  .hero{padding:28px 20px 52px;}
+  .main{margin-top:-32px;}
+}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="topbar-inner">
+    <a href="https://autocomply.co.za" class="brand">Auto<span>Comply</span></a>
+    <a href="https://autocomply.co.za/#tools" class="back">← All tools</a>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-tag">Free Tool · Payment Reminder Scripts</div>
+    <h1 class="hero-h">Polite. Firm. Professional.<br>Ready to send in 60 seconds.</h1>
+    <p class="hero-sub">Fill in your details once. Get ready-to-send payment reminders for every stage — from friendly nudge to final demand — in both WhatsApp and email format.</p>
+  </div>
+</section>
+
+<!-- MAIN -->
+<main class="main wrap">
+
+  <!-- INPUTS -->
+  <div class="card">
+    <div class="card-h">Your details</div>
+    <div class="card-sub">Fill these in once and every script updates automatically. Nothing is stored or sent anywhere.</div>
+
+    <div class="inputs-grid">
+      <div>
+        <div class="input-col-label">Your business</div>
+        <div class="fields">
+          <div>
+            <div class="field-label"><span>Your name</span></div>
+            <input id="yourName" class="input" type="text" placeholder="e.g. Thabo Nkosi">
+          </div>
+          <div>
+            <div class="field-label"><span>Business name</span></div>
+            <input id="bizName" class="input" type="text" placeholder="e.g. Nkosi Plumbing Services">
+          </div>
+          <div>
+            <div class="field-label"><span>Your contact number</span></div>
+            <input id="yourPhone" class="input" type="text" placeholder="e.g. 082 345 6789">
+          </div>
+          <div>
+            <div class="field-label">
+              <span>Payment details</span>
+              <span class="field-hint">shown in later-stage scripts</span>
+            </div>
+            <input id="payDetails" class="input" type="text" placeholder="e.g. FNB Cheque · Acc 62012345678 · Branch 250655">
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="input-col-label">Invoice details</div>
+        <div class="fields">
+          <div>
+            <div class="field-label"><span>Client / company name</span></div>
+            <input id="clientName" class="input" type="text" placeholder="e.g. ABC Retailers (Pty) Ltd">
+          </div>
+          <div>
+            <div class="field-label"><span>Invoice number</span></div>
+            <input id="invoiceNum" class="input" type="text" placeholder="e.g. INV-2026-047">
+          </div>
+          <div>
+            <div class="field-label"><span>Invoice amount</span></div>
+            <div class="input-wrap">
+              <span class="input-prefix">R</span>
+              <input id="invoiceAmt" class="input with-prefix" type="text" placeholder="e.g. 18 500.00">
+            </div>
+          </div>
+          <div>
+            <div class="field-label">
+              <span>Invoice due date</span>
+              <span class="field-hint">used to suggest the right script</span>
+            </div>
+            <input id="dueDate" class="input" type="date">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="suggestionBlock"></div>
+
+    <div class="actions-row">
+      <button class="action-btn primary" id="demoBtn" type="button">✦ Demo data</button>
+      <div style="display:flex;gap:8px;">
+        <button class="action-btn" id="copyAllBtn" type="button">📋 Copy all scripts</button>
+        <button class="action-btn" id="clearBtn" type="button">✕ Clear</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STAGES -->
+  <div class="card">
+    <div class="card-h">Your scripts</div>
+    <div class="card-sub">Click a stage, then copy the WhatsApp or email version. Scripts update automatically as you edit your details above.</div>
+
+    <!-- Stage tabs -->
+    <div class="stage-tabs">
+      <button class="stage-tab stage-1 active" data-stage="1">
+        Friendly Reminder
+        <span class="tab-label">Day 1–3</span>
+      </button>
+      <button class="stage-tab stage-2" data-stage="2">
+        Overdue Notice
+        <span class="tab-label">Day 7</span>
+      </button>
+      <button class="stage-tab stage-3" data-stage="3">
+        Formal Notice
+        <span class="tab-label">Day 14</span>
+      </button>
+      <button class="stage-tab stage-4" data-stage="4">
+        Final Demand
+        <span class="tab-label">Day 30+</span>
+      </button>
+    </div>
+
+    <!-- Stage description -->
+    <div id="stageDesc"></div>
+
+    <!-- Scripts grid -->
+    <div class="scripts-grid">
+      <!-- WhatsApp -->
+      <div class="script-card wa">
+        <div class="script-header">
+          <div class="script-type"><span class="script-type-ico">💬</span>WhatsApp</div>
+          <button class="copy-btn" id="copyWa" type="button">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            Copy
+          </button>
+        </div>
+        <div class="script-body" id="scriptWa"></div>
+      </div>
+
+      <!-- Email -->
+      <div class="script-card email">
+        <div class="script-header">
+          <div class="script-type"><span class="script-type-ico">✉️</span>Email</div>
+          <button class="copy-btn" id="copyEmail" type="button">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2 2v1"/></svg>
+            Copy
+          </button>
+        </div>
+        <div class="script-subject" id="scriptSubjectWrap" style="display:none;">
+          <div class="script-subject-label">Subject line</div>
+          <div class="script-subject-text" id="scriptSubject"></div>
+        </div>
+        <div class="script-body" id="scriptEmail"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GUIDE -->
+  <div class="card">
+    <div class="card-h">How to use these scripts effectively</div>
+    <div class="card-sub">Professional payment follow-up is a skill. These principles make the difference between collecting and chasing.</div>
+    <div class="guide-grid">
+      <div class="guide-item">
+        <div class="guide-item-h">Send on the due date</div>
+        <div class="guide-item-body">The Day 1 reminder should go out <strong>on the due date itself</strong> — not a week later. Most late payments are oversights that get forgotten if you wait too long to follow up.</div>
+      </div>
+      <div class="guide-item">
+        <div class="guide-item-h">WhatsApp first, email as a record</div>
+        <div class="guide-item-body">In South Africa, WhatsApp gets read. <strong>Send the WA message first</strong> for speed. Follow with the email version for a paper trail, especially from Day 7 onwards.</div>
+      </div>
+      <div class="guide-item">
+        <div class="guide-item-h">Escalate on schedule</div>
+        <div class="guide-item-body">Silence is not permission to wait. If Day 7 passes with no response, <strong>send Day 14 on Day 14</strong> — not Day 21. Consistent, predictable follow-up trains clients to pay.</div>
+      </div>
+      <div class="guide-item">
+        <div class="guide-item-h">Never apologise for chasing</div>
+        <div class="guide-item-body">You delivered the work. You issued the invoice. Following up is <strong>your right, not an imposition</strong>. Professional tone — not apologetic. These scripts are written that way deliberately.</div>
+      </div>
+      <div class="guide-item">
+        <div class="guide-item-h">Leave a payment arrangement option</div>
+        <div class="guide-item-body">From Day 14 onwards, <strong>offer a payment plan</strong> if the client contacts you. Getting paid in instalments is better than not getting paid at all, and it preserves the relationship.</div>
+      </div>
+      <div class="guide-item">
+        <div class="guide-item-h">Final demand is real</div>
+        <div class="guide-item-body">Only send the Final Demand if you are <strong>genuinely prepared to proceed</strong>. Empty threats damage your credibility. If you send it, follow through — refer to an attorney or debt collector.</div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<!-- CTA -->
+<div class="wrap" style="margin-bottom:30px;">
+  <div class="cta-inner">
+    <div class="cta-h">Debt becoming a cash flow problem?</div>
+    <p class="cta-sub">Persistent late payment is usually a contract or terms problem — not just a client behaviour problem. We can help you tighten your payment terms, draft a proper invoice clause, and structure your follow-up process so this happens less often.</p>
+    <a href="https://wa.me/27670113108?text=Hi%20AutoComply%2C%20I%20used%20the%20Payment%20Reminder%20Scripts%20tool%20and%20need%20help%20with%20my%20payment%20terms%20or%20collections." class="cta-btn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Chat on WhatsApp
+    </a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="foot">
+  AutoComply · Practical tools for South African business owners · <a href="https://autocomply.co.za">autocomply.co.za</a>
+  <div class="fine">These scripts are templates for guidance only. Final demand letters may have legal implications — consult an attorney before using them in complex disputes. AutoComply is not a law firm.</div>
+</div>
+
+<script>
+(function(){
+  const $ = id => document.getElementById(id);
+
+  let activeStage = 1;
+
+  // ─── STAGE DEFINITIONS ───
+  const STAGES = {
+    1: {
+      label: 'Friendly Reminder — Day 1 to 3',
+      color: 'green',
+      desc: 'Polite and warm. Assume the invoice slipped through the cracks — most late payments are genuinely overlooked. This message keeps the relationship comfortable while nudging action.',
+      wa: (v) => `Hi ${v.clientName}, just a friendly reminder that ${v.invoiceNum ? 'Invoice ' + v.invoiceNum : 'an invoice'} for R ${v.amt} was due ${v.dueStr}.\n\nIf you've already processed payment — thank you, please disregard this! If not, please arrange payment at your earliest convenience or let us know if you have any queries.\n\nMany thanks,\n${v.yourName}${v.bizName ? ' | ' + v.bizName : ''}`,
+      subj: (v) => `Friendly Payment Reminder — ${v.invoiceNum || 'Invoice'} | ${v.bizName || v.yourName}`,
+      email: (v) => `Dear ${v.clientName},\n\nI hope you're well. This is a friendly reminder that ${v.invoiceNum ? 'Invoice ' + v.invoiceNum : 'the invoice issued to you'} for R ${v.amt} was due ${v.dueStr}.\n\nIf payment has already been processed on your end, please disregard this message — and thank you. If not, we'd appreciate your attention to this when convenient.\n\nShould you have any queries regarding the invoice, please don't hesitate to reach out and we'll resolve it promptly.\n\nKind regards,\n${v.yourName}\n${v.bizName || ''}\n${v.yourPhone || ''}`,
+    },
+    2: {
+      label: 'Overdue Notice — Day 7',
+      color: 'blue',
+      desc: 'Direct and professional. The invoice is one week overdue — this message is firmer but still leaves room for the client to raise a query or explain a delay without embarrassment.',
+      wa: (v) => `Hi ${v.clientName}, I notice ${v.invoiceNum ? 'Invoice ' + v.invoiceNum : 'our invoice'} for R ${v.amt}${v.dueStr ? ', due ' + v.dueStr + ',' : ''} is now 7 days overdue.\n\nPlease arrange payment today. If there's an issue with the invoice or you need to discuss, please reply here and we can sort it out.\n\nThank you,\n${v.yourName}${v.bizName ? ' | ' + v.bizName : ''}`,
+      subj: (v) => `Overdue Invoice ${v.invoiceNum || ''} — Payment Required | ${v.bizName || v.yourName}`,
+      email: (v) => `Dear ${v.clientName},\n\nI'm following up on ${v.invoiceNum ? 'Invoice ' + v.invoiceNum : 'our outstanding invoice'} for R ${v.amt}${v.dueStr ? ', which was due on ' + v.dueStr : ''}. This account is now 7 days overdue and requires your urgent attention.\n\nIf there is a query on the invoice, or if you need to discuss a payment arrangement, please contact us directly so we can assist.\n\nPlease note that continued non-payment may result in the suspension of further services/supply until the account is brought up to date.\n\nWe value our working relationship and trust this can be resolved promptly.\n\nKind regards,\n${v.yourName}\n${v.bizName || ''}\n${v.yourPhone || ''}`,
+    },
+    3: {
+      label: 'Formal Notice — Day 14',
+      color: 'amber',
+      desc: 'Firm and specific. Consequences are named, a resolution deadline is given, and a payment arrangement offer is included. This message signals that escalation is coming — and it means it.',
+      wa: (v) => `${v.clientName}, ${v.invoiceNum ? 'Invoice ' + v.invoiceNum : 'Our invoice'} for R ${v.amt} is now 14 days overdue. This requires your urgent attention.\n\nPlease arrange full payment immediately, or contact us within 24 hours to discuss a payment arrangement. Failure to respond may result in your account being placed on hold and the matter referred to our attorneys for collection.\n\nPlease contact ${v.yourPhone || v.yourName} directly to resolve this.\n\nRegards,\n${v.yourName}${v.bizName ? ' | ' + v.bizName : ''}`,
+      subj: (v) => `FORMAL NOTICE: Overdue Invoice ${v.invoiceNum || ''} — Immediate Action Required | ${v.bizName || v.yourName}`,
+      email: (v) => `Dear ${v.clientName},\n\nDespite our previous reminders, ${v.invoiceNum ? 'Invoice ' + v.invoiceNum : 'the outstanding invoice'} for R ${v.amt}${v.dueStr ? ' (originally due ' + v.dueStr + ')' : ''} remains unpaid — now 14 days overdue.\n\nPlease be advised that if payment is not received within 5 (five) business days of this notice, we will be compelled to:\n\n1. Place your account on hold and suspend further services or supply.\n2. Refer the matter to our attorneys for debt collection, at your cost.\n3. Report the default to a credit bureau if applicable.\n\nThis is not an outcome we want. If you are experiencing financial difficulty, please contact us immediately to arrange a payment plan before escalation proceeds.\n\nTo resolve this, please:\n- Make payment to: ${v.payDetails || '[your payment details]'}\n- Or contact ${v.yourPhone || '[your number]'} before ${v.fiveDaysFromNow}.\n\nYours faithfully,\n${v.yourName}\n${v.bizName || ''}`,
+    },
+    4: {
+      label: 'Final Demand — Day 30+',
+      color: 'red',
+      desc: 'Legal and final. "Without Prejudice" noted. Specific deadline for payment before attorney referral. Only send this if you are genuinely prepared to act — an empty threat erodes your credibility.',
+      wa: (v) => `${v.clientName} — this is our FINAL DEMAND for payment of ${v.invoiceNum ? 'Invoice ' + v.invoiceNum : 'the outstanding invoice'} for R ${v.amt}.\n\nIf full payment is not received by ${v.fiveDaysFromNow}, this matter will be handed to our attorneys for legal action without further notice. Legal costs will be for your account.\n\nTo avoid legal action, pay to:\n${v.payDetails || '[payment details]'}\n\nConfirm payment by replying here or calling ${v.yourPhone || '[your number]'}.\n\n${v.yourName}${v.bizName ? ' | ' + v.bizName : ''}`,
+      subj: (v) => `FINAL DEMAND — Invoice ${v.invoiceNum || ''} | R ${v.amt} | Legal Action Pending | ${v.bizName || v.yourName}`,
+      email: (v) => `WITHOUT PREJUDICE\n\nDear ${v.clientName},\n\nRe: Outstanding Invoice ${v.invoiceNum || ''} — R ${v.amt}\n\nDespite repeated written notices, the above invoice remains unpaid. This letter constitutes our FINAL DEMAND for settlement of the full outstanding amount of R ${v.amt}.\n\nYOU ARE HEREBY REQUIRED to settle the full outstanding amount within 5 (five) business days of this notice, i.e. by ${v.fiveDaysFromNow}.\n\nShould payment not be received by this date, we will proceed without further notice to:\n\n1. Instruct our attorneys to issue a summons or letter of demand.\n2. Pursue judgment against you for the full amount owing, plus legal costs and interest.\n3. Execute against your assets if judgment is obtained.\n\nAll legal costs arising from this matter will be for your account.\n\nTO AVOID LEGAL ACTION, make immediate payment to:\n${v.payDetails || '[your payment details]'}\n\nProof of payment should be sent to ${v.yourPhone || '[your contact]'} immediately upon payment.\n\nYours faithfully,\n${v.yourName}\n${v.bizName || ''}\n${v.yourPhone || ''}`,
+    },
+  };
+
+  const STAGE_COLORS = { 1:'green', 2:'blue', 3:'amber', 4:'red' };
+
+  // ─── UTILS ───
+  function fmtDateNice(dateStr){
+    if(!dateStr) return '';
+    const d = new Date(dateStr + 'T00:00:00');
+    const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+    return d.getDate() + ' ' + months[d.getMonth()] + ' ' + d.getFullYear();
+  }
+
+  function addDays(n){
+    const d = new Date();
+    d.setDate(d.getDate() + n);
+    return fmtDateNice(d.toISOString().split('T')[0]);
+  }
+
+  function daysOverdue(dateStr){
+    if(!dateStr) return null;
+    const due = new Date(dateStr + 'T00:00:00');
+    const now = new Date();
+    now.setHours(0,0,0,0);
+    return Math.round((now - due)/(1000*60*60*24));
+  }
+
+  function getVars(){
+    const amt = $('invoiceAmt').value.trim() || '[amount]';
+    const dueStr = $('dueDate').value ? 'on ' + fmtDateNice($('dueDate').value) : '[due date]';
+    return {
+      clientName: $('clientName').value.trim() || '[Client Name]',
+      yourName:   $('yourName').value.trim() || '[Your Name]',
+      bizName:    $('bizName').value.trim(),
+      yourPhone:  $('yourPhone').value.trim(),
+      payDetails: $('payDetails').value.trim(),
+      invoiceNum: $('invoiceNum').value.trim(),
+      amt,
+      dueStr,
+      fiveDaysFromNow: addDays(5),
+    };
+  }
+
+  function highlightPlaceholders(text){
+    // Wrap anything in [square brackets] with highlight span
+    return text.replace(/\[([^\]]+)\]/g, (m, inner) =>
+      `<span class="placeholder">[${inner}]</span>`
+    );
+  }
+
+  // ─── RENDER ───
+  function render(){
+    const v = getVars();
+    const stage = STAGES[activeStage];
+    const color = STAGE_COLORS[activeStage];
+
+    // Stage description
+    $('stageDesc').innerHTML = `
+      <div class="stage-desc ${color}">
+        <div class="stage-desc-title">${stage.label}</div>
+        <div class="stage-desc-body">${stage.desc}</div>
+      </div>`;
+
+    // WhatsApp script
+    const waText = stage.wa(v);
+    $('scriptWa').innerHTML = highlightPlaceholders(waText);
+
+    // Email script
+    const emailText = stage.email(v);
+    const subjText  = stage.subj(v);
+    $('scriptSubjectWrap').style.display = 'block';
+    $('scriptSubject').textContent = subjText;
+    $('scriptEmail').innerHTML = highlightPlaceholders(emailText);
+
+    // Suggestion
+    renderSuggestion();
+  }
+
+  function renderSuggestion(){
+    const date = $('dueDate').value;
+    if(!date){ $('suggestionBlock').innerHTML = ''; return; }
+    const days = daysOverdue(date);
+    let html = '';
+    if(days < 0){
+      html = `<div class="suggestion blue"><div class="suggestion-ico">📅</div><div>Invoice is due in <strong>${Math.abs(days)} day${Math.abs(days)===1?'':'s'}</strong>. No reminder needed yet — save these scripts for the due date.</div></div>`;
+    } else if(days === 0){
+      html = `<div class="suggestion green"><div class="suggestion-ico">✅</div><div><strong>Due today.</strong> Send the <strong>Stage 1 — Friendly Reminder</strong> today so the client knows you're on top of it.</div></div>`;
+    } else if(days <= 3){
+      html = `<div class="suggestion green"><div class="suggestion-ico">📋</div><div>Invoice is <strong>${days} day${days===1?'':'s'} overdue.</strong> Use the <strong>Stage 1 — Friendly Reminder</strong>.</div></div>`;
+    } else if(days <= 10){
+      html = `<div class="suggestion amber"><div class="suggestion-ico">⚡</div><div>Invoice is <strong>${days} days overdue.</strong> Use the <strong>Stage 2 — Overdue Notice</strong>.</div></div>`;
+    } else if(days <= 21){
+      html = `<div class="suggestion amber"><div class="suggestion-ico">⚠️</div><div>Invoice is <strong>${days} days overdue.</strong> Use the <strong>Stage 3 — Formal Notice</strong>.</div></div>`;
+    } else {
+      html = `<div class="suggestion red"><div class="suggestion-ico">🔴</div><div>Invoice is <strong>${days} days overdue.</strong> Consider the <strong>Stage 4 — Final Demand</strong>, or refer to an attorney.</div></div>`;
+    }
+    $('suggestionBlock').innerHTML = html;
+  }
+
+  // ─── COPY ───
+  async function copyText(text, btnId){
+    try {
+      await navigator.clipboard.writeText(text);
+    } catch {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand('copy'); } catch(_){}
+      document.body.removeChild(ta);
+    }
+    const btn = $(btnId);
+    const orig = btn.innerHTML;
+    btn.classList.add('copied');
+    btn.innerHTML = btn.innerHTML.replace(/Copy.*/, 'Copied ✓');
+    setTimeout(() => { btn.classList.remove('copied'); btn.innerHTML = orig; }, 1800);
+  }
+
+  $('copyWa').addEventListener('click', () => {
+    copyText(STAGES[activeStage].wa(getVars()), 'copyWa');
+  });
+
+  $('copyEmail').addEventListener('click', () => {
+    const subj = 'Subject: ' + STAGES[activeStage].subj(getVars()) + '\n\n';
+    copyText(subj + STAGES[activeStage].email(getVars()), 'copyEmail');
+  });
+
+  // Copy all
+  $('copyAllBtn').addEventListener('click', async () => {
+    const v = getVars();
+    let all = '=== PAYMENT REMINDER SCRIPTS ===\n';
+    all += `Client: ${v.clientName} | Invoice: ${v.invoiceNum} | Amount: R ${v.amt}\n`;
+    all += '='.repeat(40) + '\n\n';
+    Object.entries(STAGES).forEach(([n, s]) => {
+      all += `--- STAGE ${n}: ${s.label.toUpperCase()} ---\n\n`;
+      all += `WHATSAPP:\n${s.wa(v)}\n\n`;
+      all += `EMAIL SUBJECT: ${s.subj(v)}\n`;
+      all += `EMAIL BODY:\n${s.email(v)}\n\n`;
+      all += '='.repeat(40) + '\n\n';
+    });
+    try { await navigator.clipboard.writeText(all); } catch {
+      const ta = document.createElement('textarea');
+      ta.value = all; document.body.appendChild(ta); ta.select();
+      try { document.execCommand('copy'); } catch(_){} document.body.removeChild(ta);
+    }
+    const btn = $('copyAllBtn');
+    const orig = btn.textContent;
+    btn.textContent = '✓ All copied';
+    setTimeout(() => { btn.textContent = orig; }, 2000);
+  });
+
+  // ─── TABS ───
+  document.querySelectorAll('.stage-tab').forEach(btn => {
+    btn.addEventListener('click', () => {
+      activeStage = parseInt(btn.dataset.stage);
+      document.querySelectorAll('.stage-tab').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      render();
+    });
+  });
+
+  // ─── DEMO ───
+  $('demoBtn').addEventListener('click', () => {
+    $('yourName').value    = 'Thabo Nkosi';
+    $('bizName').value     = 'Nkosi Electrical Services';
+    $('yourPhone').value   = '082 345 6789';
+    $('payDetails').value  = 'FNB Cheque · Acc 62012345678 · Branch 250655 · Ref: INV-2026-047';
+    $('clientName').value  = 'ABC Retailers (Pty) Ltd';
+    $('invoiceNum').value  = 'INV-2026-047';
+    $('invoiceAmt').value  = '18 500.00';
+    // Set due date 14 days ago
+    const d = new Date(); d.setDate(d.getDate()-14);
+    $('dueDate').value = d.toISOString().split('T')[0];
+    render();
+  });
+
+  // ─── CLEAR ───
+  $('clearBtn').addEventListener('click', () => {
+    ['yourName','bizName','yourPhone','payDetails','clientName','invoiceNum','invoiceAmt','dueDate']
+      .forEach(id => $(id).value = '');
+    render();
+  });
+
+  // ─── LIVE UPDATE ───
+  ['yourName','bizName','yourPhone','payDetails','clientName','invoiceNum','invoiceAmt','dueDate']
+    .forEach(id => $(id).addEventListener('input', render));
+
+  // ─── INIT ───
+  render();
+})();
+</script>
+</body>
+</html>

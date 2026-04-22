@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Bio & About Section Generator — AutoComply</title>
+<meta name="description" content="Free AI-powered bio generator for South African businesses. Fill in your details once and get professional bios for LinkedIn, Instagram, Facebook, website, WhatsApp Business and Google — all at once.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;700;800&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --navy:#0B1628;--navy-soft:#1A2842;--blue:#1A56DB;--blue-soft:#EEF3FF;
+  --blue-line:rgba(26,86,219,.15);--green:#059669;--green-soft:#ECFDF5;
+  --amber:#D97706;--amber-soft:#FEF3C7;--red:#DC2626;--red-soft:#FEE2E2;
+  --muted:#5A6A82;--muted2:#8A96A8;--border:#DDE5F0;--border-strong:#C5D1E4;
+  --bg:#F8FAFF;--bg2:#EEF3FF;--white:#fff;
+  --li:#0A66C2;--ig:#E1306C;--fb:#1877F2;--wa:#25D366;--gg:#4285F4;
+  --sh:0 1px 4px rgba(11,22,40,.07);--sh-strong:0 4px 20px rgba(11,22,40,.10);
+}
+html,body{background:var(--bg);color:var(--navy);font-family:'Outfit',sans-serif;-webkit-font-smoothing:antialiased;min-height:100vh;font-size:15px;line-height:1.5;}
+
+.topbar{background:var(--navy);padding:14px 20px;}
+.topbar-inner{max-width:1040px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;}
+.brand{font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;color:#fff;letter-spacing:-.3px;text-decoration:none;}
+.brand span{color:#60AEFF;}
+.back{font-size:12.5px;color:rgba(255,255,255,.55);text-decoration:none;display:inline-flex;align-items:center;gap:6px;}
+.back:hover{color:#fff;}
+
+.hero{background:var(--navy);padding:34px 20px 58px;position:relative;overflow:hidden;}
+.hero::before{content:"";position:absolute;top:-100px;right:-100px;width:400px;height:400px;background:radial-gradient(circle,rgba(26,86,219,.15),transparent 70%);pointer-events:none;}
+.hero-inner{max-width:1040px;margin:0 auto;position:relative;z-index:1;}
+.ai-badge{display:inline-flex;align-items:center;gap:7px;background:linear-gradient(135deg,rgba(26,86,219,.3),rgba(96,174,255,.2));border:1px solid rgba(96,174,255,.3);border-radius:20px;padding:5px 12px;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.8);margin-bottom:16px;}
+.ai-badge::before{content:"";width:6px;height:6px;border-radius:50%;background:#60AEFF;animation:pulse 2s ease-in-out infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.4;}}
+.hero-tag{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:14px;}
+.hero-h{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(26px,5vw,38px);font-weight:800;color:#fff;letter-spacing:-.6px;line-height:1.15;margin-bottom:12px;max-width:800px;}
+.hero-sub{font-size:clamp(14px,2.2vw,16px);color:rgba(255,255,255,.65);max-width:660px;line-height:1.55;}
+
+.wrap{max-width:1040px;margin:0 auto;padding:0 20px;}
+.main{margin-top:-36px;margin-bottom:32px;position:relative;z-index:2;}
+.card{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:26px;box-shadow:var(--sh);margin-bottom:20px;}
+.card-h{font-family:'Bricolage Grotesque',sans-serif;font-size:17px;font-weight:700;color:var(--navy);margin-bottom:4px;letter-spacing:-.2px;}
+.card-sub{font-size:13px;color:var(--muted);margin-bottom:22px;line-height:1.55;}
+.section-tag{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:2.5px;text-transform:uppercase;color:var(--blue);margin-bottom:10px;}
+
+/* ─── INPUTS ─── */
+.inputs-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;}
+@media(max-width:600px){.inputs-grid{grid-template-columns:1fr;}}
+.inputs-single{margin-bottom:14px;}
+
+.field-label{font-size:12.5px;font-weight:600;color:var(--navy);margin-bottom:5px;display:flex;align-items:center;justify-content:space-between;}
+.field-hint{font-size:11px;color:var(--muted2);font-weight:500;}
+.input{width:100%;padding:10px 12px;font-family:'Outfit',sans-serif;font-size:14px;color:var(--navy);background:var(--bg);border:1px solid var(--border);border-radius:8px;outline:none;transition:all .15s;}
+.input:focus{border-color:var(--blue);background:var(--white);box-shadow:0 0 0 3px rgba(26,86,219,.12);}
+.input::placeholder{color:var(--muted2);}
+.textarea{width:100%;padding:10px 12px;font-family:'Outfit',sans-serif;font-size:14px;color:var(--navy);background:var(--bg);border:1px solid var(--border);border-radius:8px;outline:none;resize:none;transition:all .15s;line-height:1.6;}
+.textarea:focus{border-color:var(--blue);background:var(--white);box-shadow:0 0 0 3px rgba(26,86,219,.12);}
+.textarea::placeholder{color:var(--muted2);}
+
+/* platform checkboxes */
+.platform-select{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px;}
+.plat-chip{display:flex;align-items:center;gap:6px;font-family:'Outfit',sans-serif;font-size:12.5px;font-weight:600;padding:7px 12px;border-radius:20px;cursor:pointer;border:1.5px solid var(--border);background:var(--white);color:var(--muted);transition:all .15s;user-select:none;}
+.plat-chip input[type=checkbox]{display:none;}
+.plat-chip.checked{color:#fff;}
+.plat-chip[data-p=li].checked{background:var(--li);border-color:var(--li);}
+.plat-chip[data-p=li_h].checked{background:var(--li);border-color:var(--li);}
+.plat-chip[data-p=ig].checked{background:var(--ig);border-color:var(--ig);}
+.plat-chip[data-p=fb].checked{background:var(--fb);border-color:var(--fb);}
+.plat-chip[data-p=web].checked{background:var(--navy);border-color:var(--navy);}
+.plat-chip[data-p=wa].checked{background:var(--wa);border-color:var(--wa);}
+.plat-chip[data-p=gg].checked{background:var(--gg);border-color:var(--gg);}
+
+/* ─── GENERATE ─── */
+.generate-row{display:flex;justify-content:center;margin-top:22px;}
+.generate-btn{font-family:'Bricolage Grotesque',sans-serif;font-size:15px;font-weight:700;padding:14px 36px;border-radius:10px;cursor:pointer;border:none;background:linear-gradient(135deg,var(--blue),#1449B0);color:#fff;display:inline-flex;align-items:center;gap:9px;transition:all .15s;letter-spacing:-.1px;}
+.generate-btn:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 4px 16px rgba(26,86,219,.3);}
+.generate-btn:disabled{opacity:.6;cursor:not-allowed;transform:none;}
+
+/* ─── LOADING ─── */
+.loading{display:none;flex-direction:column;align-items:center;gap:16px;padding:40px 20px;}
+.loading.show{display:flex;}
+.loading-dots{display:flex;gap:6px;}
+.loading-dot{width:8px;height:8px;border-radius:50%;background:var(--blue);animation:bounce 1.4s ease-in-out infinite;}
+.loading-dot:nth-child(2){animation-delay:.2s;}
+.loading-dot:nth-child(3){animation-delay:.4s;}
+@keyframes bounce{0%,80%,100%{transform:scale(.8);opacity:.5;}40%{transform:scale(1.2);opacity:1;}}
+.loading-text{font-size:14px;color:var(--muted);}
+
+/* ─── OUTPUT ─── */
+.output-area{display:none;}
+.output-area.show{display:block;}
+
+.bio-cards{display:flex;flex-direction:column;gap:14px;margin-bottom:18px;}
+
+.bio-card{border:1.5px solid var(--border);border-radius:12px;overflow:hidden;}
+.bio-card-header{padding:12px 16px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;}
+.bio-card-left{display:flex;align-items:center;gap:10px;}
+.bio-platform-ico{width:28px;height:28px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+.bio-platform-name{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;font-weight:700;}
+.bio-platform-limit{font-family:'JetBrains Mono',monospace;font-size:9.5px;color:var(--muted2);margin-top:1px;}
+.bio-card-right{display:flex;align-items:center;gap:8px;}
+.char-pill{font-family:'JetBrains Mono',monospace;font-size:10px;padding:3px 8px;border-radius:10px;font-weight:600;}
+.char-pill.ok{background:var(--green-soft);color:var(--green);}
+.char-pill.warn{background:var(--amber-soft);color:var(--amber);}
+.char-pill.over{background:var(--red-soft);color:var(--red);}
+.copy-btn{font-family:'Outfit',sans-serif;font-size:11.5px;font-weight:600;padding:6px 12px;border-radius:7px;cursor:pointer;border:none;background:var(--bg2);color:var(--blue);display:inline-flex;align-items:center;gap:5px;transition:all .15s;}
+.copy-btn:hover{background:var(--blue-soft);}
+.copy-btn.copied{background:var(--green-soft)!important;color:var(--green)!important;}
+
+.bio-body{padding:16px;font-size:14px;line-height:1.75;color:var(--navy);white-space:pre-wrap;word-break:break-word;background:var(--white);}
+
+/* platform colour headers */
+.bio-card[data-p=li] .bio-card-header{background:#EBF5FF;border-bottom:1px solid rgba(10,102,194,.12);}
+.bio-card[data-p=li] .bio-platform-name{color:var(--li);}
+.bio-card[data-p=li] .bio-platform-ico{background:rgba(10,102,194,.1);color:var(--li);}
+
+.bio-card[data-p=li_h] .bio-card-header{background:#EBF5FF;border-bottom:1px solid rgba(10,102,194,.12);}
+.bio-card[data-p=li_h] .bio-platform-name{color:var(--li);}
+.bio-card[data-p=li_h] .bio-platform-ico{background:rgba(10,102,194,.1);color:var(--li);}
+
+.bio-card[data-p=ig] .bio-card-header{background:#FFF0F5;border-bottom:1px solid rgba(225,48,108,.12);}
+.bio-card[data-p=ig] .bio-platform-name{color:var(--ig);}
+.bio-card[data-p=ig] .bio-platform-ico{background:rgba(225,48,108,.1);color:var(--ig);}
+
+.bio-card[data-p=fb] .bio-card-header{background:#EEF4FF;border-bottom:1px solid rgba(24,119,242,.12);}
+.bio-card[data-p=fb] .bio-platform-name{color:var(--fb);}
+.bio-card[data-p=fb] .bio-platform-ico{background:rgba(24,119,242,.1);color:var(--fb);}
+
+.bio-card[data-p=web] .bio-card-header{background:var(--bg);border-bottom:1px solid var(--border);}
+.bio-card[data-p=web] .bio-platform-name{color:var(--navy);}
+.bio-card[data-p=web] .bio-platform-ico{background:var(--bg2);color:var(--navy);}
+
+.bio-card[data-p=wa] .bio-card-header{background:#E8FFF2;border-bottom:1px solid rgba(37,211,102,.12);}
+.bio-card[data-p=wa] .bio-platform-name{color:#128C7E;}
+.bio-card[data-p=wa] .bio-platform-ico{background:rgba(37,211,102,.12);color:#128C7E;}
+
+.bio-card[data-p=gg] .bio-card-header{background:#EEF3FF;border-bottom:1px solid rgba(66,133,244,.12);}
+.bio-card[data-p=gg] .bio-platform-name{color:var(--gg);}
+.bio-card[data-p=gg] .bio-platform-ico{background:rgba(66,133,244,.1);color:var(--gg);}
+
+.regen-row{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;}
+.regen-btn{font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;padding:9px 18px;border-radius:8px;cursor:pointer;border:1px solid var(--border);background:var(--white);color:var(--navy);display:inline-flex;align-items:center;gap:6px;transition:all .15s;}
+.regen-btn:hover{background:var(--bg2);border-color:var(--border-strong);}
+
+.error-box{background:var(--red-soft);border:1px solid rgba(220,38,38,.2);border-radius:10px;padding:14px 16px;font-size:13.5px;color:#991B1B;display:none;align-items:flex-start;gap:10px;line-height:1.55;margin-top:14px;}
+.error-box.show{display:flex;}
+.error-box strong{font-weight:700;}
+
+/* ─── TIPS ─── */
+.tips-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;}
+.tip{display:flex;gap:10px;}
+.tip-ico{font-size:20px;flex-shrink:0;line-height:1;margin-top:2px;}
+.tip-title{font-size:13.5px;font-weight:700;color:var(--navy);margin-bottom:3px;}
+.tip-body{font-size:13px;color:var(--muted);line-height:1.55;}
+
+/* ─── CTA ─── */
+.cta-inner{background:var(--navy);border-radius:16px;padding:28px 26px;text-align:center;position:relative;overflow:hidden;}
+.cta-inner::before{content:"";position:absolute;top:-80px;left:-80px;width:240px;height:240px;background:radial-gradient(circle,rgba(26,86,219,.28),transparent 70%);pointer-events:none;}
+.cta-inner::after{content:"";position:absolute;bottom:-80px;right:-80px;width:240px;height:240px;background:radial-gradient(circle,rgba(96,174,255,.18),transparent 70%);pointer-events:none;}
+.cta-h{font-family:'Bricolage Grotesque',sans-serif;font-size:21px;font-weight:700;color:#fff;margin-bottom:8px;letter-spacing:-.3px;position:relative;z-index:1;}
+.cta-sub{font-size:14px;color:rgba(255,255,255,.65);margin-bottom:18px;max-width:520px;margin-left:auto;margin-right:auto;position:relative;z-index:1;line-height:1.55;}
+.cta-btn{display:inline-flex;align-items:center;gap:8px;background:#25D366;color:#fff;font-family:'Outfit',sans-serif;font-size:14px;font-weight:600;padding:12px 22px;border-radius:9px;text-decoration:none;position:relative;z-index:1;transition:transform .15s;}
+.cta-btn:hover{transform:translateY(-1px);}
+
+.foot{max-width:1040px;margin:20px auto 0;padding:26px 20px;text-align:center;font-size:12px;color:var(--muted2);border-top:1px solid var(--border);}
+.foot a{color:var(--muted);text-decoration:none;font-weight:600;}
+.foot .fine{font-size:11px;margin-top:8px;max-width:640px;margin-left:auto;margin-right:auto;line-height:1.55;}
+
+@media(max-width:620px){
+  .card{padding:20px 16px;}
+  .hero{padding:28px 20px 52px;}
+  .main{margin-top:-32px;}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <a href="https://autocomply.co.za" class="brand">Auto<span>Comply</span></a>
+    <a href="https://autocomply.co.za/#tools" class="back">← All tools</a>
+  </div>
+</div>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div class="ai-badge">✦ AI-Powered</div>
+    <div class="hero-tag">Free Tool · Bio & About Section Generator</div>
+    <h1 class="hero-h">Fill in your details once. Get bios for every platform — instantly.</h1>
+    <p class="hero-sub">LinkedIn, Instagram, Facebook, your website, WhatsApp Business and Google — each platform needs a different bio. Fill in your details once and the AI writes all of them simultaneously.</p>
+  </div>
+</section>
+
+<main class="main wrap">
+
+  <!-- INPUT CARD -->
+  <div class="card">
+    <div class="card-h">Your details</div>
+    <div class="card-sub">The more detail you give, the more specific and credible each bio will be. Required fields are marked — everything else adds depth.</div>
+
+    <div class="inputs-grid">
+      <div>
+        <div class="field-label"><span>Full name <span style="color:var(--red);">*</span></span></div>
+        <input id="fName" class="input" type="text" placeholder="e.g. Thabo Nkosi">
+      </div>
+      <div>
+        <div class="field-label"><span>Job title / role <span style="color:var(--red);">*</span></span></div>
+        <input id="fTitle" class="input" type="text" placeholder="e.g. Master Electrician & Business Owner">
+      </div>
+    </div>
+
+    <div class="inputs-grid">
+      <div>
+        <div class="field-label"><span>What you do <span style="color:var(--red);">*</span></span><span class="field-hint">your core service</span></div>
+        <input id="fWhat" class="input" type="text" placeholder="e.g. Residential and commercial electrical installations">
+      </div>
+      <div>
+        <div class="field-label"><span>Who you serve <span style="color:var(--red);">*</span></span><span class="field-hint">your ideal client</span></div>
+        <input id="fWho" class="input" type="text" placeholder="e.g. Homeowners and small businesses in Gauteng">
+      </div>
+    </div>
+
+    <div class="inputs-grid">
+      <div>
+        <div class="field-label"><span>Business / company name</span><span class="field-hint">optional</span></div>
+        <input id="fBiz" class="input" type="text" placeholder="e.g. Nkosi Electrical Services">
+      </div>
+      <div>
+        <div class="field-label"><span>Location / area served</span><span class="field-hint">optional</span></div>
+        <input id="fLocation" class="input" type="text" placeholder="e.g. Johannesburg, Pretoria &amp; surrounding areas">
+      </div>
+    </div>
+
+    <div class="inputs-grid">
+      <div>
+        <div class="field-label"><span>Years of experience</span><span class="field-hint">optional</span></div>
+        <input id="fYears" class="input" type="text" placeholder="e.g. 12 years">
+      </div>
+      <div>
+        <div class="field-label"><span>Key credential or certification</span><span class="field-hint">optional</span></div>
+        <input id="fCred" class="input" type="text" placeholder="e.g. Master Electrician — CoC registered">
+      </div>
+    </div>
+
+    <div class="inputs-single">
+      <div class="field-label"><span>What you're known for / your USP</span><span class="field-hint">what makes you different</span></div>
+      <input id="fUsp" class="input" type="text" placeholder="e.g. We show up on time and quote in writing before any work starts — no surprises">
+    </div>
+
+    <div class="inputs-single">
+      <div class="field-label"><span>A result or win</span><span class="field-hint">optional — adds strong credibility</span></div>
+      <input id="fResult" class="input" type="text" placeholder="e.g. Over 500 installations completed, 4.9 stars on Google across 120+ reviews">
+    </div>
+
+    <div class="divider" style="height:1px;background:var(--border);margin:18px 0;"></div>
+
+    <!-- Platform selector -->
+    <div class="section-tag">Choose your platforms</div>
+    <div class="platform-select">
+      <label class="plat-chip checked" data-p="li"><input type="checkbox" value="li" checked>💼 LinkedIn About</label>
+      <label class="plat-chip checked" data-p="li_h"><input type="checkbox" value="li_h" checked>🔤 LinkedIn Headline</label>
+      <label class="plat-chip checked" data-p="ig"><input type="checkbox" value="ig" checked>📸 Instagram Bio</label>
+      <label class="plat-chip checked" data-p="fb"><input type="checkbox" value="fb" checked>👥 Facebook Page</label>
+      <label class="plat-chip checked" data-p="web"><input type="checkbox" value="web" checked>🌐 Website About</label>
+      <label class="plat-chip checked" data-p="wa"><input type="checkbox" value="wa" checked>💬 WhatsApp Business</label>
+      <label class="plat-chip checked" data-p="gg"><input type="checkbox" value="gg" checked>📍 Google Business</label>
+    </div>
+
+    <div class="error-box" id="errorBox">
+      <div style="font-size:16px;flex-shrink:0;">⚠️</div>
+      <div id="errorText"><strong>Something went wrong.</strong> Please try again.</div>
+    </div>
+
+    <div class="generate-row">
+      <button class="generate-btn" id="generateBtn" type="button">
+        <span style="font-size:18px;">✦</span>
+        Generate all bios
+      </button>
+    </div>
+  </div>
+
+  <!-- OUTPUT CARD -->
+  <div class="card" id="outputCard" style="display:none;">
+    <div class="card-h">Your bios</div>
+    <div class="card-sub">Each one is sized, toned and structured for its platform. Click copy on any to use it immediately.</div>
+
+    <div class="loading" id="loading">
+      <div class="loading-dots">
+        <div class="loading-dot"></div>
+        <div class="loading-dot"></div>
+        <div class="loading-dot"></div>
+      </div>
+      <div class="loading-text">Writing bios for all platforms…</div>
+    </div>
+
+    <div class="output-area" id="outputArea">
+      <div class="bio-cards" id="bioCards"></div>
+      <div class="regen-row">
+        <button class="regen-btn" id="regenBtn" type="button">↺ Regenerate all bios</button>
+        <button class="regen-btn" id="editBtn" type="button">← Edit details</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TIPS -->
+  <div class="card">
+    <div class="card-h">Why your bio matters more than you think</div>
+    <div class="card-sub">A potential client checks your bio before deciding whether to contact you. It's often the only thing standing between a lead and a client.</div>
+    <div class="tips-grid">
+      <div class="tip">
+        <div class="tip-ico">🎯</div>
+        <div>
+          <div class="tip-title">Lead with what you do, not who you are</div>
+          <div class="tip-body">Most people start with their name and title. Start with the value instead. "I help Gauteng homeowners get electrical work done right first time" lands harder than "Master Electrician with 12 years experience".</div>
+        </div>
+      </div>
+      <div class="tip">
+        <div class="tip-ico">🔑</div>
+        <div>
+          <div class="tip-title">Specificity beats impressive-sounding</div>
+          <div class="tip-body">"500+ installations, 4.9 stars on Google" is more credible than "passionate and dedicated professional". Real numbers, real outcomes. Prospective clients are evaluating risk — give them evidence.</div>
+        </div>
+      </div>
+      <div class="tip">
+        <div class="tip-ico">📍</div>
+        <div>
+          <div class="tip-title">Location matters for local businesses</div>
+          <div class="tip-body">If you serve a specific area, say it in every bio. "Electrical contractor" competes with the whole country. "Johannesburg electrical contractor" captures your actual market.</div>
+        </div>
+      </div>
+      <div class="tip">
+        <div class="tip-ico">🔄</div>
+        <div>
+          <div class="tip-title">Update bios every 6 months</div>
+          <div class="tip-body">Most people set their bio once and forget it. As your business grows, your bio should reflect it. A stale bio with an old service focus or missing credentials is a silent conversion killer.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<div class="wrap" style="margin-bottom:30px;">
+  <div class="cta-inner">
+    <div class="cta-h">Need help with your full online presence?</div>
+    <p class="cta-sub">A great bio is one piece. If you need a consistent brand identity, company registration, or compliance foundation to back it up — we can help you build it properly.</p>
+    <a href="https://wa.me/27670113108?text=Hi%20AutoComply%2C%20I%20used%20the%20Bio%20Generator%20and%20want%20help%20with%20my%20business%20setup." class="cta-btn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Chat on WhatsApp
+    </a>
+  </div>
+</div>
+
+<div class="foot">
+  AutoComply · Practical tools for South African business owners · <a href="https://autocomply.co.za">autocomply.co.za</a>
+  <div class="fine">Bios are generated by AI — review before publishing. Nothing is stored after your session ends.</div>
+</div>
+
+<script>
+(function(){
+  const $ = id => document.getElementById(id);
+
+  let lastResult = null;
+
+  // Platform config
+  const PLATFORMS = {
+    li:   { name:'LinkedIn About',      icon:'💼', limit:2600, optChar:1300, label:'Optimal ~1,300 chars',    charThresh:[1300,2000] },
+    li_h: { name:'LinkedIn Headline',   icon:'🔤', limit:220,  optChar:180,  label:'220 char limit',          charThresh:[180,210]  },
+    ig:   { name:'Instagram Bio',       icon:'📸', limit:150,  optChar:120,  label:'150 char limit',          charThresh:[120,148]  },
+    fb:   { name:'Facebook Page',       icon:'👥', limit:255,  optChar:180,  label:'255 char limit',          charThresh:[180,250]  },
+    web:  { name:'Website About',       icon:'🌐', limit:9999, optChar:250,  label:'~200–300 words',          charThresh:[600,1000] },
+    wa:   { name:'WhatsApp Business',   icon:'💬', limit:139,  optChar:100,  label:'139 char limit',          charThresh:[100,135]  },
+    gg:   { name:'Google Business',     icon:'📍', limit:750,  optChar:400,  label:'750 char limit',          charThresh:[400,700]  },
+  };
+
+  // Platform checkboxes
+  document.querySelectorAll('.plat-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      const cb = chip.querySelector('input[type=checkbox]');
+      cb.checked = !cb.checked;
+      chip.classList.toggle('checked', cb.checked);
+    });
+  });
+
+  function getSelectedPlatforms(){
+    return Array.from(document.querySelectorAll('.plat-chip input:checked')).map(cb => cb.value);
+  }
+
+  // Copy
+  async function copyText(text, btn){
+    try { await navigator.clipboard.writeText(text); }
+    catch {
+      const ta = document.createElement('textarea');
+      ta.value = text; document.body.appendChild(ta); ta.select();
+      try { document.execCommand('copy'); } catch(_){} document.body.removeChild(ta);
+    }
+    const orig = btn.innerHTML;
+    btn.classList.add('copied');
+    btn.innerHTML = btn.innerHTML.replace('Copy','Copied ✓');
+    setTimeout(() => { btn.classList.remove('copied'); btn.innerHTML = orig; }, 1800);
+  }
+
+  function charPillClass(len, p){
+    const cfg = PLATFORMS[p];
+    if(!cfg) return 'ok';
+    if(len > cfg.limit) return 'over';
+    if(len > cfg.charThresh[0]) return 'warn';
+    return 'ok';
+  }
+
+  function showResult(result, platforms){
+    lastResult = { result, platforms };
+    const container = $('bioCards');
+    container.innerHTML = '';
+
+    platforms.forEach(p => {
+      const text = result[p];
+      if(!text) return;
+      const cfg = PLATFORMS[p];
+      const len = text.length;
+      const pillCls = charPillClass(len, p);
+
+      const card = document.createElement('div');
+      card.className = 'bio-card';
+      card.dataset.p = p;
+      card.innerHTML = `
+        <div class="bio-card-header">
+          <div class="bio-card-left">
+            <div class="bio-platform-ico">${cfg.icon}</div>
+            <div>
+              <div class="bio-platform-name">${cfg.name}</div>
+              <div class="bio-platform-limit">${cfg.label}</div>
+            </div>
+          </div>
+          <div class="bio-card-right">
+            <span class="char-pill ${pillCls}">${len.toLocaleString('en-ZA')} chars</span>
+            <button class="copy-btn" type="button">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              Copy
+            </button>
+          </div>
+        </div>
+        <div class="bio-body">${text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>`;
+
+      const copyBtn = card.querySelector('.copy-btn');
+      copyBtn.addEventListener('click', () => copyText(text, copyBtn));
+      container.appendChild(card);
+    });
+
+    $('loading').classList.remove('show');
+    $('outputArea').classList.add('show');
+  }
+
+  async function generate(){
+    const name     = $('fName').value.trim();
+    const title    = $('fTitle').value.trim();
+    const what     = $('fWhat').value.trim();
+    const who      = $('fWho').value.trim();
+
+    if(!name || !title || !what || !who){
+      ['fName','fTitle','fWhat','fWho'].forEach(id => {
+        if(!$(id).value.trim()) $(id).style.borderColor = 'var(--red)';
+      });
+      setTimeout(() => ['fName','fTitle','fWhat','fWho'].forEach(id => $(id).style.borderColor = ''), 1500);
+      return;
+    }
+
+    const platforms = getSelectedPlatforms();
+    if(platforms.length === 0) return;
+
+    const biz      = $('fBiz').value.trim();
+    const location = $('fLocation').value.trim();
+    const years    = $('fYears').value.trim();
+    const cred     = $('fCred').value.trim();
+    const usp      = $('fUsp').value.trim();
+    const result   = $('fResult').value.trim();
+
+    $('outputCard').style.display = '';
+    $('loading').classList.add('show');
+    $('outputArea').classList.remove('show');
+    $('errorBox').classList.remove('show');
+    $('generateBtn').disabled = true;
+    setTimeout(() => $('outputCard').scrollIntoView({behavior:'smooth', block:'start'}), 100);
+
+    const PLATFORM_INSTRUCTIONS = {
+      li:   `LinkedIn About (first person, narrative, 800–1300 characters, story-driven, professional peer-to-peer tone, no buzzwords, end with what you're looking for or a soft CTA)`,
+      li_h: `LinkedIn Headline (under 180 characters, keyword-rich, value-focused format: "[Title] | [Who you help] | [Key outcome or USP]" — must be punchy and specific)`,
+      ig:   `Instagram Bio (under 150 characters, punchy multi-line format using line breaks, emojis optional but used purposefully, end with location and a CTA or contact)`,
+      fb:   `Facebook Page About (100–200 characters, warm and approachable, tells people exactly what the business does and where, conversational)`,
+      web:  `Website About Section (150–250 words, can be first OR third person — choose whichever sounds more natural for the business type, tell the full story: problem they solve, how, who for, credentials, results, close with invitation to contact)`,
+      wa:   `WhatsApp Business Description (under 139 characters, functional and clear — tells anyone who lands on the profile exactly what the business does, include location if possible, no emojis)`,
+      gg:   `Google Business Description (300–500 characters, keyword-aware for local SEO, describes what the business does, who they serve, where they operate, what makes them trustworthy — no promotional language like "best" or "cheapest", just clear professional description)`,
+    };
+
+    const selected = platforms.map(p => `${p}: ${PLATFORM_INSTRUCTIONS[p]}`).join('\n');
+
+    const userPrompt = `Write professional bios for the following platforms. Return ONLY valid JSON with one key per platform code.
+
+PERSON / BUSINESS DETAILS:
+Name: ${name}
+Title: ${title}
+What they do: ${what}
+Who they serve: ${who}
+${biz      ? `Business name: ${biz}` : ''}
+${location ? `Location / area: ${location}` : ''}
+${years    ? `Experience: ${years}` : ''}
+${cred     ? `Credential: ${cred}` : ''}
+${usp      ? `USP / known for: ${usp}` : ''}
+${result   ? `Key result / proof: ${result}` : ''}
+
+PLATFORMS REQUIRED:
+${selected}
+
+Return JSON with these exact keys: ${platforms.join(', ')}`;
+
+    try {
+      const response = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-20250514',
+          max_tokens: 2000,
+          system: `You are an expert business profile writer for South African businesses. You write bios that are specific, credible and platform-appropriate — not generic or full of buzzwords.
+
+CRITICAL: Return ONLY valid JSON. No markdown. No explanation.
+
+WRITING PRINCIPLES:
+- Be specific — use the actual details provided, not generic filler
+- South African business English — professional but warm and direct
+- Use Rands (R) and SA geographic references where relevant
+- Never use: "passionate", "dedicated", "results-driven", "synergy", "leveraging", "game-changing"
+- Avoid starting with the person's name (unless the platform convention requires it)
+- Lead with value — what the person/business does for clients, not their background
+- Include credentials and proof points where provided — these build trust
+- Respect character limits strictly — this is critical for Instagram, WhatsApp and LinkedIn Headline`,
+          messages: [{ role:'user', content: userPrompt }]
+        })
+      });
+
+      if(!response.ok){
+        const err = await response.json().catch(() => ({}));
+        throw new Error(err.error?.message || `API error ${response.status}`);
+      }
+
+      const data    = await response.json();
+      const raw     = data.content.filter(i => i.type==='text').map(i => i.text).join('');
+      const cleaned = raw.replace(/```json\n?/g,'').replace(/```\n?/g,'').trim();
+      showResult(JSON.parse(cleaned), platforms);
+
+    } catch(err){
+      console.error(err);
+      $('loading').classList.remove('show');
+      $('errorBox').classList.add('show');
+      $('errorText').innerHTML = `<strong>Couldn't generate bios.</strong> ${err.message || 'Please try again.'}`;
+    } finally {
+      $('generateBtn').disabled = false;
+    }
+  }
+
+  $('generateBtn').addEventListener('click', generate);
+  $('regenBtn').addEventListener('click', generate);
+  $('editBtn').addEventListener('click', () => {
+    $('fName').focus();
+    $('fName').scrollIntoView({behavior:'smooth', block:'center'});
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Business Health Check — AutoComply</title>
+<meta name="description" content="Free business health check for South African SMEs. Enter a few monthly numbers and get instant insights on profitability, cash health, debtor pressure and operating efficiency.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;700;800&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+
+:root{
+  --navy:#0B1628;
+  --navy-soft:#1A2842;
+  --blue:#1A56DB;
+  --blue-soft:#EEF3FF;
+  --blue-line:rgba(26,86,219,.15);
+  --green:#059669;
+  --green-soft:#ECFDF5;
+  --green-line:rgba(5,150,105,.2);
+  --amber:#D97706;
+  --amber-soft:#FEF3C7;
+  --amber-line:rgba(217,119,6,.2);
+  --red:#DC2626;
+  --red-soft:#FEE2E2;
+  --red-line:rgba(220,38,38,.2);
+  --muted:#5A6A82;
+  --muted2:#8A96A8;
+  --border:#DDE5F0;
+  --border-strong:#C5D1E4;
+  --bg:#F8FAFF;
+  --bg2:#EEF3FF;
+  --white:#fff;
+  --sh:0 1px 4px rgba(11,22,40,.07);
+  --sh-strong:0 4px 20px rgba(11,22,40,.10);
+}
+
+html,body{background:var(--bg);color:var(--navy);font-family:'Outfit',sans-serif;-webkit-font-smoothing:antialiased;min-height:100vh;font-size:15px;line-height:1.5;}
+
+/* ─────────── TOPBAR ─────────── */
+.topbar{background:var(--navy);padding:14px 20px;border-bottom:1px solid rgba(255,255,255,.05);}
+.topbar-inner{max-width:1140px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;}
+.brand{font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;color:#fff;letter-spacing:-.3px;text-decoration:none;}
+.brand span{color:#60AEFF;}
+.back{font-size:12.5px;color:rgba(255,255,255,.55);text-decoration:none;display:inline-flex;align-items:center;gap:6px;transition:color .15s;}
+.back:hover{color:#fff;}
+
+/* ─────────── HERO ─────────── */
+.hero{background:var(--navy);padding:36px 20px 56px;position:relative;overflow:hidden;}
+.hero::before{content:"";position:absolute;top:-100px;right:-100px;width:400px;height:400px;background:radial-gradient(circle,rgba(26,86,219,.18),transparent 70%);pointer-events:none;}
+.hero::after{content:"";position:absolute;bottom:-150px;left:-150px;width:400px;height:400px;background:radial-gradient(circle,rgba(96,174,255,.1),transparent 70%);pointer-events:none;}
+.hero-inner{max-width:1140px;margin:0 auto;position:relative;z-index:1;}
+.hero-tag{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:14px;}
+.hero-h{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(28px,5.2vw,40px);font-weight:800;color:#fff;letter-spacing:-.7px;line-height:1.12;margin-bottom:14px;max-width:780px;}
+.hero-sub{font-size:clamp(14px,2.2vw,16px);color:rgba(255,255,255,.68);max-width:680px;line-height:1.55;margin-bottom:8px;}
+.hero-fine{font-size:13px;color:rgba(255,255,255,.4);max-width:620px;}
+
+/* ─────────── LAYOUT ─────────── */
+.wrap{max-width:1140px;margin:0 auto;padding:0 20px;}
+.main{margin-top:-34px;margin-bottom:40px;position:relative;z-index:2;}
+
+.card{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:26px;box-shadow:var(--sh);margin-bottom:22px;}
+.card-h{font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:700;color:var(--navy);margin-bottom:4px;letter-spacing:-.2px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.card-sub{font-size:13px;color:var(--muted);margin-bottom:20px;line-height:1.55;}
+
+/* ─────────── INPUTS ─────────── */
+.input-group-h{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:12px;margin-top:18px;}
+.input-group-h:first-child{margin-top:0;}
+
+.input-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;}
+
+.field-label{display:flex;align-items:center;justify-content:space-between;font-size:12.5px;font-weight:600;color:var(--navy);margin-bottom:7px;}
+.field-hint{font-size:11px;color:var(--muted2);font-weight:500;}
+.input-wrap{position:relative;}
+.input-prefix{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;color:var(--muted);pointer-events:none;}
+.input{width:100%;padding:11px 12px 11px 30px;font-family:'Outfit',sans-serif;font-size:15px;font-weight:500;color:var(--navy);background:var(--bg);border:1px solid var(--border);border-radius:9px;transition:all .15s;-moz-appearance:textfield;}
+.input::-webkit-outer-spin-button,.input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
+.input:focus{outline:none;border-color:var(--blue);background:var(--white);box-shadow:0 0 0 3px rgba(26,86,219,.12);}
+.input::placeholder{color:var(--muted2);font-weight:400;}
+
+/* action buttons */
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px;padding-top:18px;border-top:1px solid var(--border);}
+.btn{font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;padding:10px 18px;border-radius:9px;cursor:pointer;border:1px solid var(--border);background:var(--white);color:var(--navy);transition:all .15s;display:inline-flex;align-items:center;gap:6px;}
+.btn:hover{border-color:var(--border-strong);background:var(--bg);}
+.btn.primary{background:var(--blue);border-color:var(--blue);color:#fff;}
+.btn.primary:hover{background:#1549B9;border-color:#1549B9;}
+.btn.ghost{color:var(--muted);}
+
+/* ─────────── HEALTH BANNER ─────────── */
+.banner{position:relative;border-radius:18px;padding:28px 26px;margin-bottom:22px;overflow:hidden;border:1px solid var(--border);box-shadow:var(--sh);}
+.banner.green{background:linear-gradient(135deg,#ECFDF5 0%,#F0FDF9 100%);border-color:var(--green-line);}
+.banner.blue{background:linear-gradient(135deg,#EEF3FF 0%,#F5F8FF 100%);border-color:var(--blue-line);}
+.banner.amber{background:linear-gradient(135deg,#FEF3C7 0%,#FEF9E7 100%);border-color:var(--amber-line);}
+.banner.red{background:linear-gradient(135deg,#FEE2E2 0%,#FEF2F2 100%);border-color:var(--red-line);}
+.banner.neutral{background:linear-gradient(135deg,#F8FAFF 0%,#F0F4FB 100%);}
+.banner-inner{display:flex;align-items:center;gap:26px;flex-wrap:wrap;}
+.banner-score{display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0;}
+.score-ring{position:relative;width:110px;height:110px;}
+.score-ring svg{transform:rotate(-90deg);}
+.score-track{fill:none;stroke:rgba(11,22,40,.08);stroke-width:9;}
+.score-prog{fill:none;stroke-width:9;stroke-linecap:round;transition:stroke-dasharray .6s cubic-bezier(.4,0,.2,1);}
+.score-prog.green{stroke:var(--green);}
+.score-prog.blue{stroke:var(--blue);}
+.score-prog.amber{stroke:var(--amber);}
+.score-prog.red{stroke:var(--red);}
+.score-prog.neutral{stroke:var(--muted2);}
+.score-num{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Bricolage Grotesque',sans-serif;font-size:30px;font-weight:800;color:var(--navy);letter-spacing:-1px;}
+.score-num .pct{font-size:16px;font-weight:600;color:var(--muted);margin-left:1px;}
+.score-text{flex:1;min-width:200px;}
+.banner-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;}
+.banner-status{font-family:'Bricolage Grotesque',sans-serif;font-size:26px;font-weight:700;color:var(--navy);letter-spacing:-.4px;margin-bottom:6px;}
+.banner-desc{font-size:14px;color:var(--navy);opacity:.78;line-height:1.55;}
+
+/* ─────────── METRICS GRID ─────────── */
+.metrics-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;}
+
+.metric{background:var(--white);border:1px solid var(--border);border-radius:13px;padding:18px 20px;transition:all .15s;position:relative;overflow:hidden;}
+.metric:hover{border-color:var(--border-strong);box-shadow:var(--sh);transform:translateY(-1px);}
+.metric.empty{background:var(--bg);opacity:.75;}
+.metric-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;gap:8px;}
+.metric-name{font-size:12.5px;font-weight:600;color:var(--muted);}
+.metric-value{font-family:'Bricolage Grotesque',sans-serif;font-size:30px;font-weight:800;color:var(--navy);line-height:1.05;letter-spacing:-.6px;margin-bottom:4px;}
+.metric-value.empty{color:var(--muted2);font-size:18px;font-weight:600;}
+.metric-sub{font-size:11.5px;color:var(--muted);font-family:'JetBrains Mono',monospace;margin-bottom:12px;min-height:14px;}
+.metric-insight{font-size:12.5px;color:var(--navy);line-height:1.55;padding-top:10px;border-top:1px dashed var(--border);}
+.metric-insight.empty{color:var(--muted2);font-style:italic;}
+
+/* status pill */
+.pill{display:inline-flex;align-items:center;gap:5px;font-family:'JetBrains Mono',monospace;font-size:9.5px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:4px 8px;border-radius:5px;flex-shrink:0;}
+.pill::before{content:"";width:5px;height:5px;border-radius:50%;background:currentColor;}
+.pill.green{background:var(--green-soft);color:var(--green);}
+.pill.amber{background:var(--amber-soft);color:var(--amber);}
+.pill.red{background:var(--red-soft);color:var(--red);}
+.pill.blue{background:var(--blue-soft);color:var(--blue);}
+.pill.neutral{background:var(--bg2);color:var(--muted);}
+
+/* ─────────── INSIGHTS ─────────── */
+.insight-h{font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:700;color:var(--navy);margin-bottom:4px;letter-spacing:-.2px;display:flex;align-items:center;gap:8px;}
+.insight-h-ico{width:28px;height:28px;border-radius:8px;background:var(--blue-soft);color:var(--blue);display:inline-flex;align-items:center;justify-content:center;font-size:14px;}
+.insight-list{display:flex;flex-direction:column;gap:10px;}
+.insight{display:flex;gap:12px;padding:14px 16px;border-radius:11px;border:1px solid var(--border);background:var(--bg);}
+.insight.crit{background:var(--red-soft);border-color:var(--red-line);}
+.insight.warn{background:var(--amber-soft);border-color:var(--amber-line);}
+.insight.good{background:var(--green-soft);border-color:var(--green-line);}
+.insight.neut{background:var(--blue-soft);border-color:var(--blue-line);}
+.insight-ico{font-size:16px;flex-shrink:0;line-height:1.3;}
+.insight-body{font-size:13.5px;color:var(--navy);line-height:1.55;}
+.insight-body strong{font-weight:700;}
+
+/* ─────────── EXPLAINER ─────────── */
+.explainer-inner{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:26px;box-shadow:var(--sh);}
+.explainer-h{font-family:'Bricolage Grotesque',sans-serif;font-size:19px;font-weight:700;color:var(--navy);margin-bottom:6px;letter-spacing:-.2px;}
+.explainer-sub{font-size:13px;color:var(--muted);margin-bottom:20px;}
+
+.explainer-item{border-top:1px solid var(--border);}
+.explainer-item:first-of-type{border-top:none;}
+.explainer-item summary{font-size:14px;font-weight:600;color:var(--navy);padding:14px 0;cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;gap:10px;user-select:none;}
+.explainer-item summary::-webkit-details-marker{display:none;}
+.explainer-item summary::after{content:"+";font-family:'JetBrains Mono',monospace;font-size:16px;color:var(--muted);font-weight:400;flex-shrink:0;transition:transform .2s;}
+.explainer-item[open] summary::after{content:"−";}
+.explainer-item-body{font-size:13.5px;color:var(--navy);line-height:1.65;padding:0 0 16px;opacity:.85;}
+
+/* ─────────── CTA ─────────── */
+.cta-inner{background:var(--navy);border-radius:16px;padding:30px 28px;text-align:center;position:relative;overflow:hidden;}
+.cta-inner::before{content:"";position:absolute;top:-80px;left:-80px;width:240px;height:240px;background:radial-gradient(circle,rgba(26,86,219,.28),transparent 70%);pointer-events:none;}
+.cta-inner::after{content:"";position:absolute;bottom:-80px;right:-80px;width:240px;height:240px;background:radial-gradient(circle,rgba(96,174,255,.18),transparent 70%);pointer-events:none;}
+.cta-h{font-family:'Bricolage Grotesque',sans-serif;font-size:22px;font-weight:700;color:#fff;margin-bottom:8px;letter-spacing:-.3px;position:relative;z-index:1;}
+.cta-sub{font-size:14px;color:rgba(255,255,255,.65);margin-bottom:20px;max-width:500px;margin-left:auto;margin-right:auto;position:relative;z-index:1;}
+.cta-btn{display:inline-flex;align-items:center;gap:8px;background:#25D366;color:#fff;font-family:'Outfit',sans-serif;font-size:14px;font-weight:600;padding:12px 22px;border-radius:9px;text-decoration:none;position:relative;z-index:1;transition:transform .15s;}
+.cta-btn:hover{transform:translateY(-1px);}
+
+/* ─────────── FOOTER ─────────── */
+.foot{max-width:1140px;margin:0 auto;padding:26px 20px;text-align:center;font-size:12px;color:var(--muted2);border-top:1px solid var(--border);}
+.foot a{color:var(--muted);text-decoration:none;font-weight:600;}
+
+/* ─────────── ANIMATION ─────────── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+.fadeUp{animation:fadeUp .35s ease-out;}
+
+/* ─────────── RESPONSIVE ─────────── */
+@media (max-width:620px){
+  .card,.explainer-inner{padding:22px 18px;}
+  .hero{padding:28px 20px 48px;}
+  .main{margin-top:-28px;}
+  .cta-inner{padding:26px 22px;}
+  .banner{padding:22px 20px;}
+  .banner-inner{gap:18px;}
+  .score-ring{width:90px;height:90px;}
+  .score-num{font-size:26px;}
+  .banner-status{font-size:22px;}
+}
+
+/* ─────────── PRINT ─────────── */
+@media print{
+  body{background:#fff;}
+  .topbar,.hero,.actions,.cta-inner,.back,.foot{display:none!important;}
+  .card,.explainer-inner{box-shadow:none;border:1px solid #ccc;page-break-inside:avoid;}
+  .banner{box-shadow:none;}
+  .metric{box-shadow:none;}
+  .main{margin-top:20px;}
+}
+</style>
+</head>
+<body>
+
+<!-- ─── TOPBAR ─── -->
+<div class="topbar">
+  <div class="topbar-inner">
+    <a href="https://autocomply.co.za" class="brand">Auto<span>Comply</span></a>
+    <a href="https://autocomply.co.za/#tools" class="back">← All tools</a>
+  </div>
+</div>
+
+<!-- ─── HERO ─── -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-tag">Free Tool · Business Health Check</div>
+    <h1 class="hero-h">Your business numbers, translated<br>into a 60-second health check.</h1>
+    <p class="hero-sub">Enter a handful of monthly figures and see profitability, cash pressure, debtor risk and operating efficiency in one clear view. No accounting jargon.</p>
+    <p class="hero-fine">Built for South African business owners who need practical insights — not a spreadsheet.</p>
+  </div>
+</section>
+
+<main class="main wrap">
+
+  <!-- ─── INPUTS ─── -->
+  <div class="card">
+    <div class="card-h">Enter your monthly numbers</div>
+    <div class="card-sub">Use typical monthly figures. The more fields you fill, the sharper your insights. All processing happens in your browser — nothing is sent or saved.</div>
+
+    <div class="input-group-h">Required</div>
+    <div class="input-grid">
+      <div>
+        <div class="field-label"><span>Monthly revenue</span><span class="field-hint">total sales</span></div>
+        <div class="input-wrap"><span class="input-prefix">R</span><input id="inRevenue" class="input" type="number" inputmode="decimal" placeholder="e.g. 250 000" min="0" step="100"></div>
+      </div>
+      <div>
+        <div class="field-label"><span>Cost of sales</span><span class="field-hint">direct costs</span></div>
+        <div class="input-wrap"><span class="input-prefix">R</span><input id="inCoS" class="input" type="number" inputmode="decimal" placeholder="e.g. 140 000" min="0" step="100"></div>
+      </div>
+      <div>
+        <div class="field-label"><span>Operating expenses</span><span class="field-hint">rent, utilities, admin</span></div>
+        <div class="input-wrap"><span class="input-prefix">R</span><input id="inOpEx" class="input" type="number" inputmode="decimal" placeholder="e.g. 65 000" min="0" step="100"></div>
+      </div>
+      <div>
+        <div class="field-label"><span>Monthly payroll</span><span class="field-hint">total staff cost</span></div>
+        <div class="input-wrap"><span class="input-prefix">R</span><input id="inPayroll" class="input" type="number" inputmode="decimal" placeholder="e.g. 45 000" min="0" step="100"></div>
+      </div>
+      <div>
+        <div class="field-label"><span>Cash on hand</span><span class="field-hint">bank + petty cash</span></div>
+        <div class="input-wrap"><span class="input-prefix">R</span><input id="inCash" class="input" type="number" inputmode="decimal" placeholder="e.g. 180 000" min="-99999999" step="100"></div>
+      </div>
+    </div>
+
+    <div class="input-group-h">Optional · sharpens your insights</div>
+    <div class="input-grid">
+      <div>
+        <div class="field-label"><span>Debtors</span><span class="field-hint">unpaid invoices</span></div>
+        <div class="input-wrap"><span class="input-prefix">R</span><input id="inDebtors" class="input" type="number" inputmode="decimal" placeholder="e.g. 85 000" min="0" step="100"></div>
+      </div>
+      <div>
+        <div class="field-label"><span>Creditors</span><span class="field-hint">suppliers you owe</span></div>
+        <div class="input-wrap"><span class="input-prefix">R</span><input id="inCreditors" class="input" type="number" inputmode="decimal" placeholder="e.g. 55 000" min="0" step="100"></div>
+      </div>
+      <div>
+        <div class="field-label"><span>Loan repayments</span><span class="field-hint">monthly debt service</span></div>
+        <div class="input-wrap"><span class="input-prefix">R</span><input id="inLoans" class="input" type="number" inputmode="decimal" placeholder="e.g. 8 500" min="0" step="100"></div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="btn primary" id="demoBtn" type="button">Try with demo data</button>
+      <button class="btn ghost" id="resetBtn" type="button">↺ Reset</button>
+      <button class="btn ghost" id="printBtn" type="button">🖨 Print report</button>
+    </div>
+  </div>
+
+  <!-- ─── HEALTH BANNER ─── -->
+  <div id="bannerWrap"></div>
+
+  <!-- ─── METRICS GRID ─── -->
+  <div class="card">
+    <div class="card-h">Key metrics</div>
+    <div class="card-sub">Each card gives you the number, a status, and what it actually means for your business.</div>
+    <div class="metrics-grid" id="metricsGrid"></div>
+  </div>
+
+  <!-- ─── INSIGHTS ─── -->
+  <div class="card">
+    <div class="insight-h"><span class="insight-h-ico">💡</span> What this tells you</div>
+    <div class="card-sub" style="margin-top:4px;">Specific, prioritised observations based on your numbers. Act on the critical ones first.</div>
+    <div class="insight-list" id="insightsList"></div>
+  </div>
+
+  <!-- ─── EXPLAINER ─── -->
+  <div class="explainer-inner" style="margin-bottom:26px;">
+    <div class="explainer-h">What these numbers mean</div>
+    <div class="explainer-sub">Plain-English definitions for each metric. Tap any heading to expand.</div>
+
+    <details class="explainer-item">
+      <summary>Gross profit margin</summary>
+      <div class="explainer-item-body">The share of each rand of sales you keep after paying the direct cost of what you sell. If you sell something for R100 and it cost you R60 to buy or make, your gross margin is 40%. It's the money you have left to cover rent, salaries, marketing and everything else.</div>
+    </details>
+    <details class="explainer-item">
+      <summary>Net profit margin</summary>
+      <div class="explainer-item-body">The share of revenue left after all costs — direct costs and operating expenses. This is the actual profit per rand of sales. A negative number means you're losing money every month.</div>
+    </details>
+    <details class="explainer-item">
+      <summary>Expense ratio</summary>
+      <div class="explainer-item-body">How much of your revenue goes toward running the business (rent, admin, utilities, marketing, etc). Above 50% is usually a sign your overheads are too heavy for your current revenue level.</div>
+    </details>
+    <details class="explainer-item">
+      <summary>Labour percentage</summary>
+      <div class="explainer-item-body">How much of your revenue goes to paying your team. What's healthy depends on your industry — retail is usually under 20%, services can run 30–50%. Sudden jumps usually mean you've hired ahead of sales or lost revenue while keeping staff.</div>
+    </details>
+    <details class="explainer-item">
+      <summary>Cash runway</summary>
+      <div class="explainer-item-body">How many months you could keep the doors open if no new money came in, based on current expenses and loan repayments. Under 1 month is dangerous — any late invoice or surprise cost becomes a crisis. Three or more months gives you room to respond to problems.</div>
+    </details>
+    <details class="explainer-item">
+      <summary>Debtor days</summary>
+      <div class="explainer-item-body">The average number of days customers take to pay you. Above 60 days means cash is tied up in unpaid invoices — the business may look profitable on paper but run out of cash. This is one of the most common causes of SME failure.</div>
+    </details>
+    <details class="explainer-item">
+      <summary>Creditor days</summary>
+      <div class="explainer-item-body">The average number of days you take to pay your suppliers. Longer is better for cash flow — but only up to a point. Paying too slowly damages supplier relationships and can cost you preferential pricing.</div>
+    </details>
+    <details class="explainer-item">
+      <summary>Short-term cover</summary>
+      <div class="explainer-item-body">A simple check of whether the cash you have plus what customers owe you is enough to cover what you owe suppliers. Below 1.0 means you technically owe more than you can quickly collect. Above 1.5 is comfortable.</div>
+    </details>
+  </div>
+
+  <!-- ─── CTA ─── -->
+  <div class="cta-inner" style="margin-bottom:30px;">
+    <div class="cta-h">Want to fix what the numbers are showing?</div>
+    <p class="cta-sub">We help SME owners turn a weak health check into a strong one — cash flow, pricing, expense discipline, debtor collection. Talk to us.</p>
+    <a href="https://wa.me/27670113108?text=Hi%20AutoComply%2C%20I%20ran%20the%20Business%20Health%20Check%20and%20want%20to%20discuss%20my%20results." class="cta-btn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Chat on WhatsApp
+    </a>
+  </div>
+</main>
+
+<!-- ─── FOOTER ─── -->
+<div class="foot">
+  AutoComply · Practical tools for South African business owners · <a href="https://autocomply.co.za">autocomply.co.za</a>
+</div>
+
+<script>
+(function(){
+  'use strict';
+
+  const $ = id => document.getElementById(id);
+  const inputs = {
+    revenue:   $('inRevenue'),
+    cos:       $('inCoS'),
+    opex:      $('inOpEx'),
+    payroll:   $('inPayroll'),
+    cash:      $('inCash'),
+    debtors:   $('inDebtors'),
+    creditors: $('inCreditors'),
+    loans:     $('inLoans')
+  };
+
+  const num = el => {
+    const v = parseFloat(el.value);
+    return (isNaN(v)) ? null : v;
+  };
+  const fmtR   = n => (n < 0 ? '−R ' : 'R ') + Math.abs(Math.round(n)).toLocaleString('en-ZA');
+  const fmtPct = n => (n.toLocaleString('en-ZA', {minimumFractionDigits:1, maximumFractionDigits:1})) + '%';
+  const fmtMon = n => n < 10 ? n.toFixed(1) : Math.round(n).toString();
+  const fmtDays = n => Math.round(n).toString();
+
+  function statusGPM(v){ if(v===null) return 'n/a'; if(v>=30) return 'healthy'; if(v>=20) return 'watch'; return 'attention'; }
+  function statusNPM(v){ if(v===null) return 'n/a'; if(v>=10) return 'healthy'; if(v>=0)  return 'watch'; return 'attention'; }
+  function statusExp(v){ if(v===null) return 'n/a'; if(v<30)  return 'healthy'; if(v<=50) return 'watch'; return 'attention'; }
+  function statusLab(v){ if(v===null) return 'n/a'; if(v<20)  return 'healthy'; if(v<=35) return 'watch'; return 'attention'; }
+  function statusRun(v){ if(v===null) return 'n/a'; if(v>=3)  return 'healthy'; if(v>=1)  return 'watch'; return 'attention'; }
+  function statusDeb(v){ if(v===null) return 'n/a'; if(v<30)  return 'healthy'; if(v<=60) return 'watch'; return 'attention'; }
+  function statusSTC(v){ if(v===null) return 'n/a'; if(v>=1.5)return 'healthy'; if(v>=1)  return 'watch'; return 'attention'; }
+
+  const pillMap = {
+    'healthy':   {label:'Healthy',         cls:'green'},
+    'watch':     {label:'Watch',           cls:'amber'},
+    'attention': {label:'Needs attention', cls:'red'},
+    'neutral':   {label:'For context',     cls:'neutral'},
+    'n/a':       {label:'—',               cls:'neutral'}
+  };
+
+  function calc(){
+    const rev  = num(inputs.revenue);
+    const cos  = num(inputs.cos);
+    const opex = num(inputs.opex);
+    const pay  = num(inputs.payroll);
+    const cash = num(inputs.cash);
+    const deb  = num(inputs.debtors);
+    const cred = num(inputs.creditors);
+    const loan = num(inputs.loans);
+
+    const hasRev    = rev !== null && rev > 0;
+    const hasCoS    = cos !== null;
+    const hasOpEx   = opex !== null;
+    const hasPay    = pay !== null;
+    const hasCash   = cash !== null;
+    const anyInput  = [rev,cos,opex,pay,cash,deb,cred,loan].some(v => v !== null);
+
+    const r = {
+      hasRev, hasCoS, hasOpEx, hasPay, hasCash, anyInput,
+      rev: rev || 0,
+      cos: cos || 0,
+      opex: opex || 0,
+      pay: pay || 0,
+      cash: cash || 0,
+      deb: deb, cred: cred, loan: loan || 0
+    };
+
+    r.gp   = (hasRev && hasCoS) ? (r.rev - r.cos) : null;
+    r.gpm  = (hasRev && hasCoS && r.rev > 0) ? ((r.rev - r.cos) / r.rev * 100) : null;
+    r.np   = (hasRev && hasCoS && hasOpEx) ? (r.rev - r.cos - r.opex) : null;
+    r.npm  = (hasRev && hasCoS && hasOpEx && r.rev > 0) ? (r.np / r.rev * 100) : null;
+    r.exp  = (hasRev && hasOpEx && r.rev > 0) ? (r.opex / r.rev * 100) : null;
+    r.lab  = (hasRev && hasPay  && r.rev > 0) ? (r.pay / r.rev * 100) : null;
+
+    const burn = r.opex + (loan !== null ? r.loan : 0);
+    r.runway = (hasCash && hasOpEx) ? (r.cash / Math.max(burn, 1)) : null;
+    r.burnDetails = { opex: r.opex, loans: loan !== null ? r.loan : 0, total: burn };
+
+    r.debDays  = (hasRev && deb  !== null && r.rev > 0) ? (deb  / r.rev * 30) : null;
+    r.credDays = (hasCoS && cred !== null && r.cos > 0) ? (cred / r.cos * 30) : null;
+
+    r.stc = (hasCash && cred !== null && cred > 0)
+      ? ((r.cash + (deb !== null ? deb : 0)) / cred)
+      : null;
+
+    r.st = {
+      gpm: statusGPM(r.gpm),
+      npm: statusNPM(r.npm),
+      exp: statusExp(r.exp),
+      lab: statusLab(r.lab),
+      run: statusRun(r.runway),
+      deb: statusDeb(r.debDays),
+      stc: statusSTC(r.stc),
+      cred: r.credDays !== null ? 'neutral' : 'n/a'
+    };
+
+    const weights = { gpm:2, npm:3, exp:2, lab:1, run:3, deb:1, stc:2 };
+    const sv = { healthy:2, watch:1, attention:0 };
+    let scored = 0, maxP = 0;
+    Object.entries(weights).forEach(([k,w]) => {
+      if(r.st[k] && r.st[k] in sv){
+        scored += w * sv[r.st[k]];
+        maxP   += w * 2;
+      }
+    });
+    r.score = maxP > 0 ? Math.round((scored / maxP) * 100) : null;
+
+    return r;
+  }
+
+  function renderBanner(r){
+    const wrap = $('bannerWrap');
+
+    if(!r.anyInput){
+      wrap.innerHTML = `
+        <div class="banner neutral fadeUp">
+          <div class="banner-inner">
+            <div class="banner-score">
+              <div class="score-ring">
+                <svg width="110" height="110" viewBox="0 0 110 110">
+                  <circle class="score-track" cx="55" cy="55" r="48"/>
+                </svg>
+                <div class="score-num">—</div>
+              </div>
+            </div>
+            <div class="score-text">
+              <div class="banner-label">Overall health score</div>
+              <div class="banner-status">Ready when you are</div>
+              <div class="banner-desc">Enter your monthly numbers above — or tap "Try with demo data" — to see your business health score and what it means.</div>
+            </div>
+          </div>
+        </div>`;
+      return;
+    }
+
+    if(r.score === null){
+      wrap.innerHTML = `
+        <div class="banner neutral fadeUp">
+          <div class="banner-inner">
+            <div class="banner-score">
+              <div class="score-ring">
+                <svg width="110" height="110" viewBox="0 0 110 110">
+                  <circle class="score-track" cx="55" cy="55" r="48"/>
+                </svg>
+                <div class="score-num">—</div>
+              </div>
+            </div>
+            <div class="score-text">
+              <div class="banner-label">Overall health score</div>
+              <div class="banner-status">Keep going</div>
+              <div class="banner-desc">Add more of the required fields above (revenue, cost of sales, operating expenses, payroll, cash) to unlock your full health score.</div>
+            </div>
+          </div>
+        </div>`;
+      return;
+    }
+
+    let cls, statusLabel, desc;
+    if(r.score >= 80){ cls='green'; statusLabel='Healthy'; desc='Your business is in good shape across the metrics you\'ve entered. Keep monitoring what\'s working and stay disciplined on costs.'; }
+    else if(r.score >= 60){ cls='blue'; statusLabel='Stable'; desc='Your business is holding its own. There are one or two areas to tighten up — check the metrics flagged amber below.'; }
+    else if(r.score >= 40){ cls='amber'; statusLabel='Under pressure'; desc='Several key metrics are flashing warning signs. The insights below will tell you exactly where to focus first.'; }
+    else{ cls='red'; statusLabel='Needs urgent attention'; desc='Multiple critical indicators are in the red. Don\'t panic — the insights below break down exactly what\'s wrong and where to act.'; }
+
+    if(r.npm !== null && r.npm < 0) desc = 'You\'re currently operating at a loss. Net profit is negative — review the insights below for the first actions to take.';
+    if(r.runway !== null && r.runway < 1) desc = 'Your cash runway is under a month. This is the most urgent issue — cash flow needs attention before anything else.';
+
+    const circ = 2 * Math.PI * 48;
+    const dash = (r.score / 100) * circ;
+
+    wrap.innerHTML = `
+      <div class="banner ${cls} fadeUp">
+        <div class="banner-inner">
+          <div class="banner-score">
+            <div class="score-ring">
+              <svg width="110" height="110" viewBox="0 0 110 110">
+                <circle class="score-track" cx="55" cy="55" r="48"/>
+                <circle class="score-prog ${cls}" cx="55" cy="55" r="48" stroke-dasharray="${dash} ${circ}"/>
+              </svg>
+              <div class="score-num">${r.score}<span class="pct">/100</span></div>
+            </div>
+          </div>
+          <div class="score-text">
+            <div class="banner-label">Overall health score</div>
+            <div class="banner-status">${statusLabel}</div>
+            <div class="banner-desc">${desc}</div>
+          </div>
+        </div>
+      </div>`;
+  }
+
+  function metricCard(name, value, sub, status, insight, empty){
+    const pillInfo = pillMap[status] || pillMap['n/a'];
+    const pillHTML = empty
+      ? `<span class="pill neutral">—</span>`
+      : `<span class="pill ${pillInfo.cls}">${pillInfo.label}</span>`;
+    return `
+      <div class="metric ${empty ? 'empty' : ''}">
+        <div class="metric-top">
+          <div class="metric-name">${name}</div>
+          ${pillHTML}
+        </div>
+        <div class="metric-value ${empty ? 'empty' : ''}">${value}</div>
+        <div class="metric-sub">${sub || ''}</div>
+        <div class="metric-insight ${empty ? 'empty' : ''}">${insight}</div>
+      </div>
+    `;
+  }
+
+  function renderMetrics(r){
+    const grid = $('metricsGrid');
+    const cards = [];
+
+    if(r.gpm !== null){
+      const gpSub = `Gross profit ${fmtR(r.gp)}`;
+      let insight;
+      if(r.st.gpm === 'healthy') insight = 'You\'re keeping a solid share of revenue after direct costs.';
+      else if(r.st.gpm === 'watch') insight = 'Margin is workable but tight — small cost increases squeeze profit fast.';
+      else insight = 'Too low for comfort. Review pricing, supplier costs, wastage or product mix.';
+      cards.push(metricCard('Gross profit margin', fmtPct(r.gpm), gpSub, r.st.gpm, insight));
+    } else {
+      cards.push(metricCard('Gross profit margin', '—', 'Add revenue and cost of sales', null, 'Tells you how much is left after direct costs.', true));
+    }
+
+    if(r.npm !== null){
+      const npSub = `Net profit ${fmtR(r.np)}`;
+      let insight;
+      if(r.st.npm === 'healthy') insight = 'Genuinely profitable after all monthly costs.';
+      else if(r.st.npm === 'watch') insight = 'Just above break-even. Any revenue dip puts you in the red.';
+      else insight = 'You\'re losing money each month. Revenue, pricing or costs need urgent work.';
+      cards.push(metricCard('Net profit margin', fmtPct(r.npm), npSub, r.st.npm, insight));
+    } else {
+      cards.push(metricCard('Net profit margin', '—', 'Add revenue, cost of sales, operating expenses', null, 'Your actual bottom-line margin.', true));
+    }
+
+    if(r.exp !== null){
+      let insight;
+      if(r.st.exp === 'healthy') insight = 'Overheads are in healthy proportion to revenue.';
+      else if(r.st.exp === 'watch') insight = 'Overheads are eating a sizeable share. Audit discretionary spend.';
+      else insight = 'Overheads are too heavy for current revenue. Cut costs or grow sales.';
+      cards.push(metricCard('Expense ratio', fmtPct(r.exp), 'OpEx as % of revenue', r.st.exp, insight));
+    } else {
+      cards.push(metricCard('Expense ratio', '—', 'Add revenue and operating expenses', null, 'How much of revenue goes to overheads.', true));
+    }
+
+    if(r.lab !== null){
+      let insight;
+      if(r.st.lab === 'healthy') insight = 'Staff costs are well-contained relative to revenue.';
+      else if(r.st.lab === 'watch') insight = 'Payroll is taking a substantial share. Watch productivity per head.';
+      else insight = 'Payroll is too heavy. Either grow revenue or restructure staffing.';
+      cards.push(metricCard('Labour %', fmtPct(r.lab), 'Payroll as % of revenue', r.st.lab, insight));
+    } else {
+      cards.push(metricCard('Labour %', '—', 'Add revenue and payroll', null, 'Payroll as a share of revenue.', true));
+    }
+
+    if(r.runway !== null){
+      const runSub = `Burn ${fmtR(r.burnDetails.total)}/month`;
+      let insight;
+      if(r.st.run === 'healthy') insight = 'Healthy buffer — you can respond to surprises without panic.';
+      else if(r.st.run === 'watch') insight = 'Workable but thin. One late customer payment could tip you over.';
+      else insight = 'Critical. Less than a month of cash — prioritise collections and cut non-essential spend.';
+      cards.push(metricCard('Cash runway', fmtMon(r.runway) + (r.runway < 1 ? ' month' : ' months'), runSub, r.st.run, insight));
+    } else {
+      cards.push(metricCard('Cash runway', '—', 'Add cash and operating expenses', null, 'How long your cash lasts at current burn rate.', true));
+    }
+
+    if(r.debDays !== null){
+      let insight;
+      if(r.st.deb === 'healthy') insight = 'Customers are paying promptly. Good discipline on collections.';
+      else if(r.st.deb === 'watch') insight = 'Collection speed is slowing. Tighten terms and follow up.';
+      else insight = 'Cash is tied up in unpaid invoices — chase debtors hard before taking on new costs.';
+      cards.push(metricCard('Debtor days', fmtDays(r.debDays) + ' days', 'Avg time customers take to pay', r.st.deb, insight));
+    } else {
+      cards.push(metricCard('Debtor days', '—', 'Add debtors to see this', null, 'Average days your customers take to pay.', true));
+    }
+
+    if(r.credDays !== null){
+      const insight = 'Supplier payment speed is a liquidity lever — pay slower to conserve cash, but don\'t burn supplier relationships.';
+      cards.push(metricCard('Creditor days', fmtDays(r.credDays) + ' days', 'Avg time you take to pay suppliers', 'neutral', insight));
+    } else {
+      cards.push(metricCard('Creditor days', '—', 'Add creditors to see this', null, 'Average days you take to pay suppliers.', true));
+    }
+
+    if(r.stc !== null){
+      const stcSub = `(Cash ${r.deb !== null ? '+ debtors' : ''}) ÷ creditors`;
+      let insight;
+      if(r.st.stc === 'healthy') insight = 'Short-term obligations are well-covered by cash and debtors.';
+      else if(r.st.stc === 'watch') insight = 'Cover is tight. Keep a close eye on both collections and supplier terms.';
+      else insight = 'You owe more than you can quickly collect. Negotiate supplier terms and accelerate collections.';
+      cards.push(metricCard('Short-term cover', r.stc.toFixed(2) + '×', stcSub, r.st.stc, insight));
+    } else {
+      cards.push(metricCard('Short-term cover', '—', 'Add creditors (and debtors) to see this', null, 'Whether cash + receivables cover what you owe suppliers.', true));
+    }
+
+    grid.innerHTML = cards.join('');
+  }
+
+  function renderInsights(r){
+    const list = $('insightsList');
+    if(!r.anyInput){
+      list.innerHTML = `<div class="insight neut"><div class="insight-ico">👋</div><div class="insight-body">Enter your numbers above to get personalised insights. Don't have the exact figures? Hit <strong>"Try with demo data"</strong> to see how the tool works.</div></div>`;
+      return;
+    }
+
+    const items = [];
+
+    // CRITICAL
+    if(r.st.npm === 'attention' && r.st.gpm === 'attention'){
+      items.push({ sev:'crit', ico:'🚨', msg:`<strong>You may be selling at a loss.</strong> Both gross margin (${fmtPct(r.gpm)}) and net profit (${fmtPct(r.npm)}) are in the red. This is a pricing or costing problem — the fix is rarely "sell more". Review what you charge versus what each sale actually costs you.` });
+    } else {
+      if(r.st.npm === 'attention'){
+        items.push({ sev:'crit', ico:'📉', msg:`<strong>You're losing money each month.</strong> Net profit margin is ${fmtPct(r.npm)}. Gross margin looks ${r.st.gpm === 'healthy' ? 'healthy — so the problem is overheads eating profit' : 'weak — so the issue starts with what you charge versus direct costs'}. Address this before anything else.` });
+      }
+      if(r.st.gpm === 'attention'){
+        items.push({ sev:'crit', ico:'⚠️', msg:`<strong>Gross margin is dangerously thin.</strong> At ${fmtPct(r.gpm)}, you have almost nothing left to cover overheads. Review pricing, renegotiate supplier costs, or cut low-margin products and services.` });
+      }
+    }
+    if(r.st.run === 'attention'){
+      items.push({ sev:'crit', ico:'🔻', msg:`<strong>Cash runway under 1 month.</strong> At current burn of ${fmtR(r.burnDetails.total)}/month, you have ${fmtMon(r.runway)} months of cash. This is the most urgent issue — chase debtors, delay non-essential spend, and arrange overdraft facility before it becomes a crisis.` });
+    }
+    if(r.st.stc === 'attention'){
+      items.push({ sev:'crit', ico:'💸', msg:`<strong>You owe more than you can quickly collect.</strong> Short-term cover at ${r.stc.toFixed(2)}× means cash and debtors combined don't fully cover supplier obligations. Start negotiating longer payment terms with suppliers now.` });
+    }
+    if(r.st.deb === 'attention'){
+      items.push({ sev:'crit', ico:'⏳', msg:`<strong>Debtor days are high (${fmtDays(r.debDays)} days).</strong> Cash is tied up in unpaid invoices. Tighten payment terms, add late fees, require deposits, and escalate collections on overdue accounts.` });
+    }
+    if(r.st.exp === 'attention'){
+      items.push({ sev:'crit', ico:'💼', msg:`<strong>Overheads are eating your revenue.</strong> Operating expenses at ${fmtPct(r.exp)} of revenue leaves almost nothing for profit. Review every recurring cost — subscriptions, rent, admin — and cut what isn't driving sales.` });
+    }
+    if(r.st.lab === 'attention'){
+      items.push({ sev:'crit', ico:'👥', msg:`<strong>Labour cost is too heavy (${fmtPct(r.lab)} of revenue).</strong> Either you need more sales per head, or you have more staff than the current revenue supports. Review productivity and consider restructuring.` });
+    }
+
+    // CROSS-METRIC
+    if(r.npm !== null && r.npm >= 10 && r.runway !== null && r.runway < 1.5){
+      items.push({ sev:'warn', ico:'🔄', msg:`<strong>Profitable but cash-tight.</strong> You're profitable on paper (${fmtPct(r.npm)} net margin) but only have ${fmtMon(r.runway)} months of runway. Cash is tied up somewhere — check debtors, stock, or owner drawings.` });
+    }
+    if(r.gpm !== null && r.gpm >= 30 && r.npm !== null && r.npm < 0){
+      items.push({ sev:'warn', ico:'🎯', msg:`<strong>Overheads are the problem, not pricing.</strong> Your gross margin (${fmtPct(r.gpm)}) is healthy — the loss is coming from operating costs. Audit admin, rent, marketing, and subscriptions line by line.` });
+    }
+    if(r.debDays !== null && r.debDays > 60 && r.runway !== null && r.runway < 2){
+      items.push({ sev:'warn', ico:'🏃', msg:`<strong>Cash conversion problem.</strong> With ${fmtDays(r.debDays)} debtor days and ${fmtMon(r.runway)} months of runway, the issue is slow collections, not underlying profitability. Every R collected faster extends your runway.` });
+    }
+
+    // WATCH-LEVEL
+    if(r.st.run === 'watch' && !items.some(i => i.msg.toLowerCase().includes('runway') || i.msg.toLowerCase().includes('cash'))){
+      items.push({ sev:'warn', ico:'⚡', msg:`<strong>Cash runway at ${fmtMon(r.runway)} months — workable but thin.</strong> Build to at least 3 months buffer. Even R5 000–R10 000/month set aside compounds quickly.` });
+    }
+    if(r.st.gpm === 'watch' && !items.some(i => i.msg.toLowerCase().includes('gross margin'))){
+      items.push({ sev:'warn', ico:'📊', msg:`<strong>Gross margin is workable (${fmtPct(r.gpm)}) but not comfortable.</strong> A 5% price increase or 5% supplier discount has a disproportionate impact at this margin level — worth testing.` });
+    }
+    if(r.st.lab === 'watch' && !items.some(i => i.msg.toLowerCase().includes('labour') || i.msg.toLowerCase().includes('payroll'))){
+      items.push({ sev:'warn', ico:'📋', msg:`<strong>Payroll at ${fmtPct(r.lab)} of revenue.</strong> Track revenue per employee monthly — if it's flat or declining while headcount stays, you'll drift into the red.` });
+    }
+    if(r.st.deb === 'watch' && !items.some(i => i.msg.toLowerCase().includes('debtor'))){
+      items.push({ sev:'warn', ico:'📅', msg:`<strong>Debtor days trending high (${fmtDays(r.debDays)}).</strong> Review payment terms with slow-paying clients. Consider early-payment discounts or deposit requirements on new work.` });
+    }
+
+    // POSITIVE (only if score > 75 and no crit items)
+    const critCount = items.filter(i => i.sev === 'crit').length;
+    if(r.score !== null && r.score >= 75 && critCount === 0){
+      const positives = [];
+      if(r.st.gpm === 'healthy') positives.push(`strong gross margin (${fmtPct(r.gpm)})`);
+      if(r.st.npm === 'healthy') positives.push(`healthy net profit (${fmtPct(r.npm)})`);
+      if(r.st.run === 'healthy') positives.push(`solid cash runway (${fmtMon(r.runway)} months)`);
+      if(r.st.stc === 'healthy') positives.push(`comfortable short-term cover (${r.stc.toFixed(2)}×)`);
+      if(positives.length > 0){
+        const txt = positives.slice(0, 3).join(', ');
+        items.push({ sev:'good', ico:'✓', msg:`<strong>What's working:</strong> ${txt}. Keep protecting these — they're the foundation of a durable business.` });
+      }
+    }
+
+    const sevOrder = { crit:0, warn:1, good:2, neut:3 };
+    items.sort((a,b) => sevOrder[a.sev] - sevOrder[b.sev]);
+    const top = items.slice(0, 6);
+
+    if(top.length === 0){
+      list.innerHTML = `<div class="insight neut"><div class="insight-ico">👀</div><div class="insight-body">Not enough data to generate specific insights yet. Add more required fields above to unlock personalised recommendations.</div></div>`;
+      return;
+    }
+
+    list.innerHTML = top.map(i => `
+      <div class="insight ${i.sev}">
+        <div class="insight-ico">${i.ico}</div>
+        <div class="insight-body">${i.msg}</div>
+      </div>
+    `).join('');
+  }
+
+  function update(){
+    const r = calc();
+    renderBanner(r);
+    renderMetrics(r);
+    renderInsights(r);
+  }
+
+  Object.values(inputs).forEach(el => el.addEventListener('input', update));
+
+  $('demoBtn').addEventListener('click', () => {
+    inputs.revenue.value   = 250000;
+    inputs.cos.value       = 140000;
+    inputs.opex.value      = 65000;
+    inputs.payroll.value   = 45000;
+    inputs.cash.value      = 180000;
+    inputs.debtors.value   = 85000;
+    inputs.creditors.value = 55000;
+    inputs.loans.value     = 8500;
+    update();
+    document.getElementById('bannerWrap').scrollIntoView({ behavior:'smooth', block:'start' });
+  });
+
+  $('resetBtn').addEventListener('click', () => {
+    Object.values(inputs).forEach(el => el.value = '');
+    update();
+  });
+
+  $('printBtn').addEventListener('click', () => window.print());
+
+  update();
+})();
+</script>
+
+</body>
+</html>

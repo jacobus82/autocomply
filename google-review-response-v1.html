@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Google Review Response Generator — AutoComply</title>
+<meta name="description" content="Free AI-powered Google review response generator for South African businesses. Get professional responses to positive and negative reviews — ready to post in seconds.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;700;800&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --navy:#0B1628;--navy-soft:#1A2842;--blue:#1A56DB;--blue-soft:#EEF3FF;
+  --blue-line:rgba(26,86,219,.15);--green:#059669;--green-soft:#ECFDF5;
+  --green-mid:#10B981;--amber:#D97706;--amber-soft:#FEF3C7;
+  --red:#DC2626;--red-soft:#FEE2E2;--gg:#4285F4;--gg-soft:#EEF3FF;
+  --muted:#5A6A82;--muted2:#8A96A8;--border:#DDE5F0;--border-strong:#C5D1E4;
+  --bg:#F8FAFF;--bg2:#EEF3FF;--white:#fff;
+  --sh:0 1px 4px rgba(11,22,40,.07);--sh-strong:0 4px 20px rgba(11,22,40,.10);
+  --star:#F5A623;
+}
+html,body{background:var(--bg);color:var(--navy);font-family:'Outfit',sans-serif;-webkit-font-smoothing:antialiased;min-height:100vh;font-size:15px;line-height:1.5;}
+
+.topbar{background:var(--navy);padding:14px 20px;}
+.topbar-inner{max-width:1040px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;}
+.brand{font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;color:#fff;letter-spacing:-.3px;text-decoration:none;}
+.brand span{color:#60AEFF;}
+.back{font-size:12.5px;color:rgba(255,255,255,.55);text-decoration:none;display:inline-flex;align-items:center;gap:6px;}
+.back:hover{color:#fff;}
+
+.hero{background:var(--navy);padding:34px 20px 58px;position:relative;overflow:hidden;}
+.hero::before{content:"";position:absolute;top:-100px;right:-100px;width:400px;height:400px;background:radial-gradient(circle,rgba(66,133,244,.18),transparent 70%);pointer-events:none;}
+.hero-inner{max-width:1040px;margin:0 auto;position:relative;z-index:1;}
+.ai-badge{display:inline-flex;align-items:center;gap:7px;background:linear-gradient(135deg,rgba(66,133,244,.3),rgba(96,174,255,.2));border:1px solid rgba(96,174,255,.3);border-radius:20px;padding:5px 12px;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.85);margin-bottom:16px;}
+.ai-badge::before{content:"";width:6px;height:6px;border-radius:50%;background:#60AEFF;animation:pulse 2s ease-in-out infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.4;}}
+.hero-tag{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:14px;}
+.hero-h{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(26px,5vw,38px);font-weight:800;color:#fff;letter-spacing:-.6px;line-height:1.15;margin-bottom:12px;max-width:780px;}
+.hero-sub{font-size:clamp(14px,2.2vw,16px);color:rgba(255,255,255,.65);max-width:660px;line-height:1.55;}
+
+.wrap{max-width:1040px;margin:0 auto;padding:0 20px;}
+.main{margin-top:-36px;margin-bottom:32px;position:relative;z-index:2;}
+.card{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:26px;box-shadow:var(--sh);margin-bottom:20px;}
+.card-h{font-family:'Bricolage Grotesque',sans-serif;font-size:17px;font-weight:700;color:var(--navy);margin-bottom:4px;letter-spacing:-.2px;}
+.card-sub{font-size:13px;color:var(--muted);margin-bottom:22px;line-height:1.55;}
+.section-tag{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:2.5px;text-transform:uppercase;color:var(--gg);margin-bottom:10px;}
+
+/* ─── REVIEW TYPE TOGGLE ─── */
+.type-toggle{display:grid;grid-template-columns:1fr 1fr;background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:4px;margin-bottom:24px;}
+.type-btn{font-family:'Outfit',sans-serif;font-size:13.5px;font-weight:600;padding:12px 10px;border-radius:9px;cursor:pointer;border:none;background:transparent;color:var(--muted);transition:all .18s;text-align:center;display:flex;align-items:center;justify-content:center;gap:7px;}
+.type-btn.active.positive{background:var(--green-soft);color:var(--green);box-shadow:0 1px 4px rgba(5,150,105,.15);}
+.type-btn.active.negative{background:var(--red-soft);color:var(--red);box-shadow:0 1px 4px rgba(220,38,38,.15);}
+
+/* ─── STAR RATING ─── */
+.stars{display:flex;gap:4px;margin-bottom:18px;}
+.star{font-size:28px;cursor:pointer;color:#DDD;transition:color .1s;line-height:1;}
+.star.lit{color:var(--star);}
+.star:hover{color:var(--star);}
+.rating-label{font-size:12px;color:var(--muted);margin-left:8px;align-self:center;}
+
+/* ─── NEGATIVE MODE ─── */
+.neg-modes{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:20px;}
+@media(max-width:580px){.neg-modes{grid-template-columns:1fr;}}
+.neg-mode{border:2px solid var(--border);border-radius:10px;padding:12px;cursor:pointer;background:var(--white);transition:all .15s;}
+.neg-mode:hover{border-color:var(--border-strong);background:var(--bg);}
+.neg-mode.active{border-color:var(--red);background:var(--red-soft);}
+.neg-mode-ico{font-size:20px;margin-bottom:5px;line-height:1;}
+.neg-mode-name{font-size:13px;font-weight:700;color:var(--navy);margin-bottom:2px;}
+.neg-mode.active .neg-mode-name{color:var(--red);}
+.neg-mode-desc{font-size:11.5px;color:var(--muted);line-height:1.4;}
+
+/* ─── GOOGLE REVIEW MOCK ─── */
+.review-mock{background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin-bottom:22px;}
+.review-mock-label{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted2);margin-bottom:10px;}
+.rm-header{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.rm-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--gg),#0F9D58);display:flex;align-items:center;justify-content:center;font-family:'Bricolage Grotesque',sans-serif;font-size:14px;font-weight:800;color:#fff;flex-shrink:0;}
+.rm-name{font-size:14px;font-weight:700;color:var(--navy);}
+.rm-stars{color:var(--star);font-size:13px;margin-top:2px;}
+.rm-text{font-size:13.5px;color:var(--navy);line-height:1.65;white-space:pre-wrap;word-break:break-word;}
+.rm-placeholder{font-style:italic;color:var(--muted2);font-size:13px;}
+
+/* ─── INPUTS ─── */
+.field-label{font-size:12.5px;font-weight:600;color:var(--navy);margin-bottom:6px;display:flex;align-items:center;justify-content:space-between;}
+.field-hint{font-size:11px;color:var(--muted2);font-weight:500;}
+.textarea{width:100%;padding:12px 14px;font-family:'Outfit',sans-serif;font-size:14px;color:var(--navy);background:var(--bg);border:1px solid var(--border);border-radius:10px;resize:vertical;outline:none;transition:all .15s;line-height:1.6;}
+.textarea:focus{border-color:var(--gg);background:var(--white);box-shadow:0 0 0 3px rgba(66,133,244,.12);}
+.textarea::placeholder{color:var(--muted2);}
+.input{width:100%;padding:10px 12px;font-family:'Outfit',sans-serif;font-size:14px;color:var(--navy);background:var(--bg);border:1px solid var(--border);border-radius:8px;outline:none;transition:all .15s;}
+.input:focus{border-color:var(--gg);background:var(--white);box-shadow:0 0 0 3px rgba(66,133,244,.12);}
+.input::placeholder{color:var(--muted2);}
+.options-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px;}
+@media(max-width:560px){.options-row{grid-template-columns:1fr;}}
+.char-count{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--muted2);text-align:right;margin-top:4px;}
+.char-count.warn{color:var(--amber);}
+
+/* ─── GENERATE ─── */
+.generate-row{display:flex;justify-content:center;margin-top:22px;}
+.generate-btn{font-family:'Bricolage Grotesque',sans-serif;font-size:15px;font-weight:700;padding:14px 36px;border-radius:10px;cursor:pointer;border:none;background:linear-gradient(135deg,var(--gg),#1A56DB);color:#fff;display:inline-flex;align-items:center;gap:9px;transition:all .15s;letter-spacing:-.1px;}
+.generate-btn:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 4px 16px rgba(66,133,244,.35);}
+.generate-btn:disabled{opacity:.6;cursor:not-allowed;transform:none;}
+
+/* ─── LOADING ─── */
+.loading{display:none;flex-direction:column;align-items:center;gap:16px;padding:40px 20px;}
+.loading.show{display:flex;}
+.loading-dots{display:flex;gap:6px;}
+.loading-dot{width:8px;height:8px;border-radius:50%;background:var(--gg);animation:bounce 1.4s ease-in-out infinite;}
+.loading-dot:nth-child(2){animation-delay:.2s;}
+.loading-dot:nth-child(3){animation-delay:.4s;}
+@keyframes bounce{0%,80%,100%{transform:scale(.8);opacity:.5;}40%{transform:scale(1.2);opacity:1;}}
+.loading-text{font-size:14px;color:var(--muted);}
+
+/* ─── OUTPUT ─── */
+.output-area{display:none;}
+.output-area.show{display:block;}
+
+/* Google response mock */
+.gg-response-wrap{border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:16px;box-shadow:var(--sh);}
+.gg-resp-header{padding:12px 16px;background:#F8F9FA;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;}
+.gg-resp-platform{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;font-weight:700;color:var(--gg);display:flex;align-items:center;gap:7px;}
+.gg-resp-meta{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted2);}
+.copy-btn{font-family:'Outfit',sans-serif;font-size:11.5px;font-weight:600;padding:6px 12px;border-radius:7px;cursor:pointer;border:none;background:rgba(66,133,244,.12);color:var(--gg);display:inline-flex;align-items:center;gap:5px;transition:all .15s;}
+.copy-btn:hover{background:rgba(66,133,244,.2);}
+.copy-btn.copied{background:var(--green-soft)!important;color:var(--green)!important;}
+
+/* Business reply in-thread */
+.gg-thread{padding:14px 16px;background:#fff;}
+.gg-original{display:flex;gap:10px;margin-bottom:14px;padding-bottom:14px;border-bottom:1px dashed var(--border);}
+.gg-orig-avatar{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#888,#555);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fff;flex-shrink:0;}
+.gg-orig-body{flex:1;min-width:0;}
+.gg-orig-name{font-size:13px;font-weight:700;color:var(--navy);}
+.gg-orig-stars{color:var(--star);font-size:12px;margin-bottom:3px;}
+.gg-orig-text{font-size:13px;color:var(--muted);line-height:1.55;white-space:pre-wrap;word-break:break-word;}
+.gg-response{display:flex;gap:10px;}
+.gg-resp-avatar{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--gg),#0F9D58);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;flex-shrink:0;}
+.gg-resp-body{flex:1;min-width:0;}
+.gg-resp-label{font-size:12px;font-weight:700;color:var(--navy);margin-bottom:4px;display:flex;align-items:center;gap:6px;}
+.gg-resp-badge{font-size:10px;background:var(--gg-soft);color:var(--gg);padding:1px 6px;border-radius:4px;font-weight:600;}
+.gg-resp-text{font-size:13.5px;color:var(--navy);line-height:1.65;white-space:pre-wrap;word-break:break-word;}
+
+/* Contextual notes */
+.context-note{border-radius:10px;padding:13px 16px;margin-bottom:14px;display:flex;gap:10px;align-items:flex-start;font-size:13px;line-height:1.55;border:1px solid;}
+.context-note.green{background:var(--green-soft);border-color:rgba(5,150,105,.2);color:#065F46;}
+.context-note.amber{background:var(--amber-soft);border-color:rgba(217,119,6,.2);color:#78350F;}
+.context-note.red{background:var(--red-soft);border-color:rgba(220,38,38,.2);color:#991B1B;}
+.context-note strong{font-weight:700;}
+.context-note-ico{font-size:16px;flex-shrink:0;margin-top:1px;}
+
+.regen-row{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:16px;}
+.regen-btn{font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;padding:9px 18px;border-radius:8px;cursor:pointer;border:1px solid var(--border);background:var(--white);color:var(--navy);display:inline-flex;align-items:center;gap:6px;transition:all .15s;}
+.regen-btn:hover{background:var(--bg2);border-color:var(--border-strong);}
+
+.error-box{background:var(--red-soft);border:1px solid rgba(220,38,38,.2);border-radius:10px;padding:14px 16px;font-size:13.5px;color:#991B1B;display:none;align-items:flex-start;gap:10px;line-height:1.55;margin-top:14px;}
+.error-box.show{display:flex;}
+.error-box strong{font-weight:700;}
+
+/* ─── RULES ─── */
+.rules-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;}
+.rule{border-radius:10px;padding:14px 16px;border:1px solid;}
+.rule.do{background:var(--green-soft);border-color:rgba(5,150,105,.2);}
+.rule.dont{background:var(--red-soft);border-color:rgba(220,38,38,.15);}
+.rule-header{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:7px;}
+.rule.do .rule-header{color:var(--green);}
+.rule.dont .rule-header{color:var(--red);}
+.rule-body{font-size:13px;line-height:1.55;}
+.rule.do .rule-body{color:#065F46;}
+.rule.dont .rule-body{color:#991B1B;}
+.rule-body strong{font-weight:700;}
+
+/* ─── CTA ─── */
+.cta-inner{background:var(--navy);border-radius:16px;padding:28px 26px;text-align:center;position:relative;overflow:hidden;}
+.cta-inner::before{content:"";position:absolute;top:-80px;left:-80px;width:240px;height:240px;background:radial-gradient(circle,rgba(66,133,244,.25),transparent 70%);pointer-events:none;}
+.cta-inner::after{content:"";position:absolute;bottom:-80px;right:-80px;width:240px;height:240px;background:radial-gradient(circle,rgba(96,174,255,.18),transparent 70%);pointer-events:none;}
+.cta-h{font-family:'Bricolage Grotesque',sans-serif;font-size:21px;font-weight:700;color:#fff;margin-bottom:8px;letter-spacing:-.3px;position:relative;z-index:1;}
+.cta-sub{font-size:14px;color:rgba(255,255,255,.65);margin-bottom:18px;max-width:520px;margin-left:auto;margin-right:auto;position:relative;z-index:1;line-height:1.55;}
+.cta-btn{display:inline-flex;align-items:center;gap:8px;background:#25D366;color:#fff;font-family:'Outfit',sans-serif;font-size:14px;font-weight:600;padding:12px 22px;border-radius:9px;text-decoration:none;position:relative;z-index:1;transition:transform .15s;}
+.cta-btn:hover{transform:translateY(-1px);}
+
+.foot{max-width:1040px;margin:20px auto 0;padding:26px 20px;text-align:center;font-size:12px;color:var(--muted2);border-top:1px solid var(--border);}
+.foot a{color:var(--muted);text-decoration:none;font-weight:600;}
+.foot .fine{font-size:11px;margin-top:8px;max-width:640px;margin-left:auto;margin-right:auto;line-height:1.55;}
+
+@media(max-width:620px){
+  .card{padding:20px 16px;}
+  .hero{padding:28px 20px 52px;}
+  .main{margin-top:-32px;}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <a href="https://autocomply.co.za" class="brand">Auto<span>Comply</span></a>
+    <a href="https://autocomply.co.za/#tools" class="back">← All tools</a>
+  </div>
+</div>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div class="ai-badge">✦ AI-Powered</div>
+    <div class="hero-tag">Free Tool · Google Review Response Generator</div>
+    <h1 class="hero-h">Professional responses to every Google review — positive or negative.</h1>
+    <p class="hero-sub">Paste the review, tell the AI the context, and get a ready-to-post response. The real audience for your negative review responses isn't the angry customer — it's every potential client who reads it afterwards.</p>
+  </div>
+</section>
+
+<main class="main wrap">
+
+  <!-- INPUT CARD -->
+  <div class="card">
+    <div class="card-h">Generate your response</div>
+    <div class="card-sub">Paste the review text, select the type and fill in a few details. The AI handles the rest.</div>
+
+    <!-- Positive / Negative toggle -->
+    <div class="section-tag">1 — Review type</div>
+    <div class="type-toggle">
+      <button class="type-btn active positive" id="btnPositive" type="button">⭐ Positive review</button>
+      <button class="type-btn negative" id="btnNegative" type="button">⚠️ Negative review</button>
+    </div>
+
+    <!-- Star rating -->
+    <div class="section-tag">2 — Star rating given</div>
+    <div style="margin-bottom:20px;">
+      <div class="stars" id="starRow">
+        <span class="star lit" data-val="1">★</span>
+        <span class="star lit" data-val="2">★</span>
+        <span class="star lit" data-val="3">★</span>
+        <span class="star lit" data-val="4">★</span>
+        <span class="star lit" data-val="5">★</span>
+        <span class="rating-label" id="ratingLabel">5 stars</span>
+      </div>
+    </div>
+
+    <!-- Negative mode (conditional) -->
+    <div id="negModeSection" style="display:none;">
+      <div class="section-tag">3 — What kind of negative review?</div>
+      <div class="neg-modes">
+        <button class="neg-mode active" data-mode="legitimate" type="button">
+          <div class="neg-mode-ico">🤝</div>
+          <div class="neg-mode-name">Legitimate complaint</div>
+          <div class="neg-mode-desc">Something genuinely went wrong on our side</div>
+        </button>
+        <button class="neg-mode" data-mode="partial" type="button">
+          <div class="neg-mode-ico">⚖️</div>
+          <div class="neg-mode-name">Partially valid</div>
+          <div class="neg-mode-desc">Situation is nuanced — both sides have context</div>
+        </button>
+        <button class="neg-mode" data-mode="unfair" type="button">
+          <div class="neg-mode-ico">🚫</div>
+          <div class="neg-mode-name">Unfair / incorrect</div>
+          <div class="neg-mode-desc">Factually wrong, wrong business, or bad faith</div>
+        </button>
+      </div>
+    </div>
+
+    <!-- Review text -->
+    <div class="section-tag" id="reviewStepLabel">3 — Paste the review</div>
+    <div style="margin-bottom:16px;">
+      <div class="review-mock">
+        <div class="review-mock-label">Google Review Preview</div>
+        <div class="rm-header">
+          <div class="rm-avatar" id="rmAvatar">R</div>
+          <div>
+            <div class="rm-name" id="rmName">Reviewer</div>
+            <div class="rm-stars" id="rmStars">★★★★★</div>
+          </div>
+        </div>
+        <div class="rm-text" id="rmText"><span class="rm-placeholder">Paste the review text below and it will appear here…</span></div>
+      </div>
+      <div class="field-label" style="margin-bottom:6px;"><span>Review text</span><span class="field-hint">paste the full review</span></div>
+      <textarea id="reviewText" class="textarea" rows="4" maxlength="2000" placeholder="Paste the Google review here — the full text as the customer wrote it…"></textarea>
+      <div class="char-count" id="charCount">0 / 2000</div>
+    </div>
+
+    <!-- Options -->
+    <div class="options-row">
+      <div>
+        <div class="field-label"><span>Reviewer's name</span><span class="field-hint">from the review</span></div>
+        <input id="reviewerName" class="input" type="text" placeholder="e.g. Sipho M. or 'A Google User'">
+      </div>
+      <div>
+        <div class="field-label"><span>Your business name</span></div>
+        <input id="bizName" class="input" type="text" placeholder="e.g. Nkosi Electrical Services">
+      </div>
+    </div>
+    <div style="margin-top:14px;">
+      <div class="field-label"><span>Context for the AI</span><span class="field-hint">optional but makes the response better</span></div>
+      <textarea id="context" class="textarea" rows="3" maxlength="400" placeholder="e.g. The delay was due to load shedding affecting our schedule. We did call to notify the client but couldn't reach them. OR: This person has never been a client — the booking name doesn't match our records."></textarea>
+    </div>
+
+    <div class="error-box" id="errorBox">
+      <div style="font-size:16px;flex-shrink:0;">⚠️</div>
+      <div id="errorText"><strong>Something went wrong.</strong> Please try again.</div>
+    </div>
+
+    <div class="generate-row">
+      <button class="generate-btn" id="generateBtn" type="button">
+        <span style="font-size:18px;">✦</span>
+        Generate response
+      </button>
+    </div>
+  </div>
+
+  <!-- OUTPUT CARD -->
+  <div class="card" id="outputCard" style="display:none;">
+    <div class="card-h">Your response</div>
+    <div class="card-sub">Review in-context — then copy and paste directly into Google Business.</div>
+
+    <div class="loading" id="loading">
+      <div class="loading-dots">
+        <div class="loading-dot"></div>
+        <div class="loading-dot"></div>
+        <div class="loading-dot"></div>
+      </div>
+      <div class="loading-text">Writing your response…</div>
+    </div>
+
+    <div class="output-area" id="outputArea">
+      <!-- Context note -->
+      <div id="contextNoteBlock"></div>
+
+      <!-- Header + copy -->
+      <div class="gg-response-wrap">
+        <div class="gg-resp-header">
+          <div class="gg-resp-platform">
+            <span style="font-size:14px;">📍</span>
+            Google Business Response
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span class="gg-resp-meta" id="respCharCount">0 chars</span>
+            <button class="copy-btn" id="copyResp" type="button">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              Copy response
+            </button>
+          </div>
+        </div>
+
+        <!-- Thread view -->
+        <div class="gg-thread">
+          <div class="gg-original">
+            <div class="gg-orig-avatar" id="outAvatar">R</div>
+            <div class="gg-orig-body">
+              <div class="gg-orig-name" id="outReviewerName">Reviewer</div>
+              <div class="gg-orig-stars" id="outStars">★★★★★</div>
+              <div class="gg-orig-text" id="outReviewText"></div>
+            </div>
+          </div>
+          <div class="gg-response">
+            <div class="gg-resp-avatar" id="outBizAvatar">B</div>
+            <div class="gg-resp-body">
+              <div class="gg-resp-label">
+                <span id="outBizName">Your Business</span>
+                <span class="gg-resp-badge">Owner</span>
+              </div>
+              <div class="gg-resp-text" id="outRespText"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="regen-row">
+        <button class="regen-btn" id="regenBtn" type="button">↺ Generate another version</button>
+        <button class="regen-btn" id="editBtn" type="button">← Edit details</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- RULES -->
+  <div class="card">
+    <div class="card-h">The rules of responding to Google reviews</div>
+    <div class="card-sub">When potential clients see a review, they're also evaluating your response. Every public reply is a sales message.</div>
+    <div class="rules-grid">
+      <div class="rule do">
+        <div class="rule-header">✓ Do this</div>
+        <div class="rule-body"><strong>Respond to every review</strong> — positive and negative. Businesses that respond to reviews rank higher on Google and convert better.</div>
+      </div>
+      <div class="rule dont">
+        <div class="rule-header">✕ Never do this</div>
+        <div class="rule-body"><strong>Never argue publicly</strong> — even if the reviewer is wrong. Potential clients reading your response will judge you by how you handle conflict, not who's right.</div>
+      </div>
+      <div class="rule do">
+        <div class="rule-header">✓ Do this</div>
+        <div class="rule-body"><strong>Move the conversation offline</strong> for negative reviews. Give a phone number or email. Resolving it privately often leads to the reviewer updating or removing the review.</div>
+      </div>
+      <div class="rule dont">
+        <div class="rule-header">✕ Never do this</div>
+        <div class="rule-body"><strong>Never use the same template</strong> for positive reviews. "Thanks for the 5 stars!" on every review looks automated and insincere. Reference something specific.</div>
+      </div>
+      <div class="rule do">
+        <div class="rule-header">✓ Do this</div>
+        <div class="rule-body"><strong>Respond within 24–48 hours</strong> — especially to negative reviews. A quick, professional response signals that you're attentive and care about your clients.</div>
+      </div>
+      <div class="rule dont">
+        <div class="rule-header">✕ Never do this</div>
+        <div class="rule-body"><strong>Never admit legal liability</strong> in a negative review response. "We're sorry this happened and want to make it right" is fine. "You're right, it was our fault" can be used against you.</div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<div class="wrap" style="margin-bottom:30px;">
+  <div class="cta-inner">
+    <div class="cta-h">Want more Google reviews?</div>
+    <p class="cta-sub">The businesses with the most reviews aren't luckier — they have a systematic ask process. We can help you build a simple review-collection system that fits into your existing workflow.</p>
+    <a href="https://wa.me/27670113108?text=Hi%20AutoComply%2C%20I%20used%20the%20Google%20Review%20Response%20Generator%20and%20want%20help%20getting%20more%20reviews." class="cta-btn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Chat on WhatsApp
+    </a>
+  </div>
+</div>
+
+<div class="foot">
+  AutoComply · Practical tools for South African business owners · <a href="https://autocomply.co.za">autocomply.co.za</a>
+  <div class="fine">Responses are generated by AI — always review before posting. Do not include sensitive business or legal information in review context. Nothing is stored after your session ends.</div>
+</div>
+
+<script>
+(function(){
+  const $ = id => document.getElementById(id);
+
+  let reviewType = 'positive';
+  let starRating = 5;
+  let negMode    = 'legitimate';
+  let lastResult = null;
+
+  // ─── STAR RATING ───
+  const stars = document.querySelectorAll('.star');
+  function setStars(val){
+    starRating = val;
+    stars.forEach(s => s.classList.toggle('lit', parseInt(s.dataset.val) <= val));
+    $('ratingLabel').textContent = val + ' star' + (val !== 1 ? 's' : '');
+    $('rmStars').textContent = '★'.repeat(val) + '☆'.repeat(5-val);
+    // Auto-switch type
+    if(val >= 4 && reviewType === 'negative'){ setType('positive'); }
+    if(val <= 2 && reviewType === 'positive'){ setType('negative'); }
+  }
+  stars.forEach(s => {
+    s.addEventListener('click',      () => setStars(parseInt(s.dataset.val)));
+    s.addEventListener('mouseenter', () => stars.forEach(x => x.classList.toggle('lit', parseInt(x.dataset.val) <= parseInt(s.dataset.val))));
+    s.addEventListener('mouseleave', () => setStars(starRating));
+  });
+
+  // ─── TYPE TOGGLE ───
+  function setType(type){
+    reviewType = type;
+    $('btnPositive').classList.toggle('active', type==='positive');
+    $('btnPositive').classList.toggle('positive', true);
+    $('btnNegative').classList.toggle('active', type==='negative');
+    $('btnNegative').classList.toggle('negative', true);
+    $('negModeSection').style.display = type==='negative' ? '' : 'none';
+    $('reviewStepLabel').textContent   = type==='negative' ? '4 — Paste the review' : '3 — Paste the review';
+    if(type==='negative' && starRating >= 4) setStars(1);
+    if(type==='positive' && starRating <= 2) setStars(5);
+  }
+  $('btnPositive').addEventListener('click', () => setType('positive'));
+  $('btnNegative').addEventListener('click', () => setType('negative'));
+
+  // ─── NEG MODE ───
+  document.querySelectorAll('.neg-mode').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.neg-mode').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      negMode = btn.dataset.mode;
+    });
+  });
+
+  // ─── LIVE REVIEW PREVIEW ───
+  $('reviewText').addEventListener('input', () => {
+    const text = $('reviewText').value;
+    $('charCount').textContent = `${text.length} / 2000`;
+    $('charCount').className = 'char-count' + (text.length > 1800 ? ' warn' : '');
+    $('rmText').textContent = text || '';
+    if(!text) $('rmText').innerHTML = '<span class="rm-placeholder">Paste the review text below and it will appear here…</span>';
+  });
+  $('reviewerName').addEventListener('input', () => {
+    const n = $('reviewerName').value.trim() || 'Reviewer';
+    $('rmName').textContent   = n;
+    $('rmAvatar').textContent = n.charAt(0).toUpperCase();
+  });
+
+  // ─── COPY ───
+  async function copyText(text, btn){
+    try { await navigator.clipboard.writeText(text); }
+    catch {
+      const ta = document.createElement('textarea');
+      ta.value = text; document.body.appendChild(ta); ta.select();
+      try { document.execCommand('copy'); } catch(_){} document.body.removeChild(ta);
+    }
+    const orig = btn.innerHTML;
+    btn.classList.add('copied');
+    btn.innerHTML = btn.innerHTML.replace('Copy response','Copied ✓');
+    setTimeout(() => { btn.classList.remove('copied'); btn.innerHTML = orig; }, 1800);
+  }
+
+  // ─── CONTEXT NOTES ───
+  const CONTEXT_NOTES = {
+    positive: {
+      cls:'green', ico:'💡',
+      msg:'<strong>Positive response tip:</strong> Reference something specific from the review — it shows you read it and sounds genuine. Invite them back. Under 80 words is ideal for positive responses.',
+    },
+    legitimate: {
+      cls:'amber', ico:'⚠️',
+      msg:'<strong>Legitimate complaint — remember:</strong> Your response is public. Potential clients are reading it. Acknowledge without admitting legal liability. Get the conversation offline quickly. Never match the reviewer\'s tone.',
+    },
+    partial: {
+      cls:'amber', ico:'⚖️',
+      msg:'<strong>Nuanced situation — be careful:</strong> Don\'t contradict the reviewer publicly. Acknowledge their experience, add brief context without being defensive, and offer to discuss directly.',
+    },
+    unfair: {
+      cls:'red', ico:'🚫',
+      msg:'<strong>Unfair review — stay calm and professional:</strong> Do NOT accuse the reviewer publicly. A measured, professional response to a bad-faith review shows other readers your character. You can flag it to Google separately if it violates their policies.',
+    },
+  };
+
+  function showResult(result){
+    lastResult = result;
+    const resp         = result.response || '';
+    const reviewerName = $('reviewerName').value.trim() || 'Reviewer';
+    const bizName      = $('bizName').value.trim() || 'Your Business';
+    const reviewText   = $('reviewText').value.trim();
+
+    // Context note
+    const noteKey = reviewType === 'positive' ? 'positive' : negMode;
+    const note    = CONTEXT_NOTES[noteKey];
+    $('contextNoteBlock').innerHTML = `
+      <div class="context-note ${note.cls}">
+        <div class="context-note-ico">${note.ico}</div>
+        <div>${note.msg}</div>
+      </div>`;
+
+    // Thread
+    $('outAvatar').textContent       = reviewerName.charAt(0).toUpperCase();
+    $('outReviewerName').textContent = reviewerName;
+    $('outStars').textContent        = '★'.repeat(starRating) + '☆'.repeat(5-starRating);
+    $('outReviewText').textContent   = reviewText;
+    $('outBizAvatar').textContent    = bizName.charAt(0).toUpperCase();
+    $('outBizName').textContent      = bizName;
+    $('outRespText').textContent     = resp;
+    $('respCharCount').textContent   = resp.length.toLocaleString('en-ZA') + ' chars';
+
+    $('copyResp').onclick = () => copyText(resp, $('copyResp'));
+
+    $('loading').classList.remove('show');
+    $('outputArea').classList.add('show');
+  }
+
+  // ─── GENERATE ───
+  async function generate(){
+    const reviewText = $('reviewText').value.trim();
+    if(!reviewText){
+      $('reviewText').focus();
+      $('reviewText').style.borderColor = 'var(--red)';
+      setTimeout(() => $('reviewText').style.borderColor = '', 1500);
+      return;
+    }
+
+    const reviewerName = $('reviewerName').value.trim() || 'the reviewer';
+    const bizName      = $('bizName').value.trim() || 'our business';
+    const context      = $('context').value.trim();
+
+    const NEG_MODE_INSTRUCTIONS = {
+      legitimate: `This is a legitimate complaint where something genuinely went wrong on our side. Acknowledge the issue sincerely, apologise without admitting legal liability, offer to make it right offline. Do NOT be defensive.`,
+      partial:    `This is a nuanced situation with context on both sides. Acknowledge the reviewer's experience briefly, add one sentence of brief factual context without being defensive or contradictory, and offer to discuss directly.`,
+      unfair:     `This review appears to be factually incorrect, from someone who may not be a real client, or posted in bad faith. Respond calmly and professionally without accusing the reviewer publicly. A measured response shows potential clients your character. Do not match the reviewer's tone. Keep it brief.`,
+    };
+
+    const systemPrompt = reviewType === 'positive'
+      ? `You are an expert Google review response writer for South African businesses. Write responses that sound genuine and human — not templated.
+
+POSITIVE REVIEW RULES:
+- Thank the reviewer by name if provided
+- Reference something SPECIFIC from their review — don't be generic
+- Keep it under 100 words
+- Optionally invite them back or mention one other service
+- Warm, genuine, professional — not over-the-top
+- South African business English
+- NEVER say "Thank you for your 5-star review!" — it's robotic
+- NEVER start with "We're thrilled/delighted/over the moon"
+
+Return ONLY valid JSON: {"response":"the response text"}`
+      : `You are an expert Google review response writer for South African businesses. Your responses to negative reviews are calm, professional and focused on the real audience: potential clients reading the exchange.
+
+NEGATIVE REVIEW CONTEXT:
+${NEG_MODE_INSTRUCTIONS[negMode]}
+
+NEGATIVE REVIEW RULES:
+- Address the reviewer by name if provided
+- Acknowledge their experience (NOT "I'm sorry you feel that way")
+- DO NOT argue, counter-attack, or be defensive
+- Move the conversation offline — give a contact method
+- 80–150 words is the ideal length for negative responses
+- The real audience is future potential clients — write for them too
+- South African business English, professional tone
+- DO NOT admit legal liability ("We're sorry this happened" is fine, "We were wrong" is not)
+- If unfair/incorrect: politely note the discrepancy without accusation, invite them to contact you
+
+Return ONLY valid JSON: {"response":"the response text"}`;
+
+    $('outputCard').style.display = '';
+    $('loading').classList.add('show');
+    $('outputArea').classList.remove('show');
+    $('errorBox').classList.remove('show');
+    $('generateBtn').disabled = true;
+    setTimeout(() => $('outputCard').scrollIntoView({behavior:'smooth', block:'start'}), 100);
+
+    const userPrompt = `Business: ${bizName}
+Reviewer name: ${reviewerName}
+Star rating: ${starRating} star${starRating !== 1 ? 's' : ''}
+${reviewType === 'negative' ? `Situation type: ${negMode}` : ''}
+${context ? `Context / our side of the story: ${context}` : ''}
+
+Review text:
+${reviewText}
+
+Write a ${reviewType} review response. Return ONLY valid JSON.`;
+
+    try {
+      const response = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-20250514',
+          max_tokens: 600,
+          system: systemPrompt,
+          messages: [{ role:'user', content: userPrompt }]
+        })
+      });
+
+      if(!response.ok){
+        const err = await response.json().catch(() => ({}));
+        throw new Error(err.error?.message || `API error ${response.status}`);
+      }
+
+      const data    = await response.json();
+      const raw     = data.content.filter(i => i.type==='text').map(i => i.text).join('');
+      const cleaned = raw.replace(/```json\n?/g,'').replace(/```\n?/g,'').trim();
+      showResult(JSON.parse(cleaned));
+
+    } catch(err){
+      console.error(err);
+      $('loading').classList.remove('show');
+      $('errorBox').classList.add('show');
+      $('errorText').innerHTML = `<strong>Couldn't generate response.</strong> ${err.message || 'Please try again.'}`;
+    } finally {
+      $('generateBtn').disabled = false;
+    }
+  }
+
+  $('generateBtn').addEventListener('click', generate);
+  $('regenBtn').addEventListener('click', generate);
+  $('editBtn').addEventListener('click', () => {
+    $('reviewText').focus();
+    $('reviewText').scrollIntoView({behavior:'smooth', block:'center'});
+  });
+
+  // Init
+  setStars(5);
+  setType('positive');
+})();
+</script>
+</body>
+</html>

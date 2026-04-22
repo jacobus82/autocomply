@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>National Minimum Wage Calculator 2026 — South Africa</title>
+<meta name="description" content="Free South African National Minimum Wage calculator for 2026. Calculate hourly, daily, weekly and monthly minimum pay. Check if an employee is being paid correctly. Effective 1 March 2026: R30.23/hour.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;700;800&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --navy:#0B1628;--blue:#1A56DB;--blue-soft:#EEF3FF;--blue-line:rgba(26,86,219,.15);
+  --green:#059669;--green-soft:#ECFDF5;--amber:#D97706;--amber-soft:#FEF3C7;
+  --red:#DC2626;--red-soft:#FEE2E2;
+  --muted:#5A6A82;--muted2:#8A96A8;--border:#DDE5F0;--border-strong:#C5D1E4;
+  --bg:#F8FAFF;--bg2:#EEF3FF;--white:#fff;
+  --sh:0 1px 4px rgba(11,22,40,.07);--sh-strong:0 4px 20px rgba(11,22,40,.10);
+}
+html,body{background:var(--bg);color:var(--navy);font-family:'Outfit',sans-serif;-webkit-font-smoothing:antialiased;min-height:100vh;font-size:15px;line-height:1.5;}
+
+.topbar{background:var(--navy);padding:14px 20px;}
+.topbar-inner{max-width:980px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;}
+.brand{font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;color:#fff;letter-spacing:-.3px;text-decoration:none;}
+.brand span{color:#60AEFF;}
+.back{font-size:12.5px;color:rgba(255,255,255,.55);text-decoration:none;}
+.back:hover{color:#fff;}
+
+.hero{background:var(--navy);padding:32px 20px 52px;position:relative;overflow:hidden;}
+.hero::before{content:"";position:absolute;top:-80px;right:-80px;width:360px;height:360px;background:radial-gradient(circle,rgba(26,86,219,.15),transparent 70%);pointer-events:none;}
+.hero-inner{max-width:980px;margin:0 auto;position:relative;z-index:1;}
+.hero-tag{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px;}
+.hero-h{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(26px,4.5vw,36px);font-weight:800;color:#fff;letter-spacing:-.5px;line-height:1.15;margin-bottom:10px;}
+.hero-sub{font-size:14.5px;color:rgba(255,255,255,.65);line-height:1.6;max-width:600px;}
+.hero-rate{display:inline-flex;align-items:baseline;gap:8px;margin-top:16px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:12px 18px;}
+.hero-rate-num{font-family:'Bricolage Grotesque',sans-serif;font-size:32px;font-weight:800;color:#fff;letter-spacing:-.5px;}
+.hero-rate-label{font-size:13px;color:rgba(255,255,255,.65);}
+.hero-rate-badge{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:1.5px;text-transform:uppercase;background:rgba(5,150,105,.25);color:#6EE7B7;border-radius:20px;padding:3px 9px;margin-left:4px;border:1px solid rgba(5,150,105,.3);}
+
+.wrap{max-width:980px;margin:0 auto;padding:0 20px;}
+.main{margin-top:-32px;margin-bottom:30px;position:relative;z-index:2;display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:start;}
+@media(max-width:700px){.main{grid-template-columns:1fr;}}
+
+.card{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:24px;box-shadow:var(--sh);}
+.card-h{font-family:'Bricolage Grotesque',sans-serif;font-size:17px;font-weight:700;color:var(--navy);margin-bottom:4px;letter-spacing:-.2px;}
+.card-sub{font-size:13px;color:var(--muted);margin-bottom:20px;line-height:1.55;}
+.section-tag{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:2.5px;text-transform:uppercase;color:var(--blue);margin-bottom:9px;display:block;}
+
+/* ─── INPUTS ─── */
+.fields{display:flex;flex-direction:column;gap:14px;}
+.field-label{font-size:12px;font-weight:600;color:var(--navy);margin-bottom:5px;display:flex;align-items:center;justify-content:space-between;}
+.field-hint{font-size:11px;color:var(--muted2);font-weight:500;}
+.select,.input{width:100%;padding:11px 12px;font-family:'Outfit',sans-serif;font-size:14px;color:var(--navy);background:var(--bg);border:1px solid var(--border);border-radius:9px;outline:none;transition:all .15s;}
+.select{padding-right:30px;background:var(--bg) url("data:image/svg+xml;charset=US-ASCII,%3Csvg width='11' height='7' viewBox='0 0 11 7' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4.5 4.5L10 1' stroke='%235A6A82' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat right 11px center;appearance:none;cursor:pointer;}
+.select:focus,.input:focus{border-color:var(--blue);background:var(--white);box-shadow:0 0 0 3px rgba(26,86,219,.12);}
+.input::placeholder{color:var(--muted2);}
+.input-prefix-wrap{position:relative;}
+.input-prefix{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;color:var(--muted);pointer-events:none;}
+.input.has-prefix{padding-left:28px;}
+
+/* worker type pills */
+.worker-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.worker-btn{font-family:'Outfit',sans-serif;font-size:12.5px;font-weight:600;padding:10px 12px;border-radius:9px;cursor:pointer;border:1.5px solid var(--border);background:var(--white);color:var(--muted);transition:all .15s;text-align:left;line-height:1.3;}
+.worker-btn:hover{background:var(--bg2);border-color:var(--border-strong);}
+.worker-btn.active{background:var(--navy);color:#fff;border-color:var(--navy);}
+.worker-btn .rate{display:block;font-family:'JetBrains Mono',monospace;font-size:11px;margin-top:3px;opacity:.7;}
+.worker-btn.active .rate{opacity:.6;}
+
+/* ─── RESULTS ─── */
+.results-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;}
+.result-cell{background:var(--bg);border-radius:10px;padding:14px;}
+.result-cell.primary{background:var(--navy);grid-column:span 2;}
+.result-label{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted2);margin-bottom:5px;}
+.result-cell.primary .result-label{color:rgba(255,255,255,.5);}
+.result-val{font-family:'Bricolage Grotesque',sans-serif;font-size:22px;font-weight:800;color:var(--navy);letter-spacing:-.4px;line-height:1;}
+.result-cell.primary .result-val{font-size:28px;color:#fff;}
+.result-sub{font-size:11px;color:var(--muted2);margin-top:4px;}
+.result-cell.primary .result-sub{color:rgba(255,255,255,.5);}
+
+/* compliance check */
+.compliance-section{border-top:1px solid var(--border);padding-top:16px;margin-top:4px;}
+.compliance-input-row{display:flex;align-items:flex-end;gap:10px;}
+.compliance-input-row .field-label{margin-bottom:5px;}
+.compliance-result{border-radius:10px;padding:14px 16px;display:flex;gap:12px;align-items:flex-start;margin-top:12px;font-size:13.5px;line-height:1.55;}
+.compliance-result.compliant{background:var(--green-soft);border:1px solid rgba(5,150,105,.2);color:#065F46;}
+.compliance-result.violation{background:var(--red-soft);border:1px solid rgba(220,38,38,.2);color:#991B1B;}
+.compliance-result.unknown{background:var(--bg);border:1px solid var(--border);color:var(--muted);}
+.compliance-ico{font-size:18px;flex-shrink:0;margin-top:1px;}
+.compliance-result strong{font-weight:700;}
+
+/* rate history table */
+.rate-table{width:100%;border-collapse:collapse;font-size:13px;}
+.rate-table th{background:var(--navy);color:#fff;padding:8px 12px;text-align:left;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;}
+.rate-table td{padding:8px 12px;border-bottom:1px solid var(--border);}
+.rate-table tr:last-child td{border-bottom:none;}
+.rate-table tr:nth-child(even) td{background:var(--bg);}
+.rate-table .current td{background:var(--green-soft)!important;font-weight:600;color:var(--green);}
+.rate-table .current td:first-child{color:var(--navy);}
+.current-badge{font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:1px;text-transform:uppercase;background:var(--green-soft);color:var(--green);border:1px solid rgba(5,150,105,.2);padding:2px 7px;border-radius:10px;margin-left:6px;}
+
+/* key facts */
+.facts-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+@media(max-width:500px){.facts-grid{grid-template-columns:1fr;}}
+.fact-card{background:var(--bg);border-radius:10px;padding:14px;}
+.fact-ico{font-size:20px;margin-bottom:6px;line-height:1;}
+.fact-title{font-size:13px;font-weight:700;color:var(--navy);margin-bottom:3px;}
+.fact-body{font-size:12px;color:var(--muted);line-height:1.55;}
+
+/* ─── CTA ─── */
+.cta-inner{background:var(--navy);border-radius:16px;padding:26px;text-align:center;position:relative;overflow:hidden;margin-bottom:28px;}
+.cta-inner::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 70% 50%,rgba(26,86,219,.22),transparent 60%);pointer-events:none;}
+.cta-h{font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:700;color:#fff;margin-bottom:7px;position:relative;z-index:1;}
+.cta-sub{font-size:13.5px;color:rgba(255,255,255,.65);margin-bottom:16px;position:relative;z-index:1;line-height:1.55;}
+.cta-btn{display:inline-flex;align-items:center;gap:7px;background:#25D366;color:#fff;font-family:'Outfit',sans-serif;font-size:13.5px;font-weight:600;padding:11px 20px;border-radius:9px;text-decoration:none;position:relative;z-index:1;transition:transform .15s;}
+.cta-btn:hover{transform:translateY(-1px);}
+
+.foot{max-width:980px;margin:0 auto;padding:22px 20px;text-align:center;font-size:12px;color:var(--muted2);border-top:1px solid var(--border);}
+.foot a{color:var(--muted);text-decoration:none;font-weight:600;}
+.fine{font-size:11px;margin-top:6px;line-height:1.55;}
+
+@media(max-width:600px){
+  .card{padding:18px 16px;}
+  .hero{padding:26px 20px 46px;}
+  .main{margin-top:-26px;}
+  .results-grid{grid-template-columns:1fr;}
+  .result-cell.primary{grid-column:span 1;}
+  .result-cell.primary .result-val{font-size:24px;}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <a href="https://autocomply.co.za" class="brand">Auto<span>Comply</span></a>
+    <a href="https://autocomply.co.za/#tools" class="back">← All tools</a>
+  </div>
+</div>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-tag">Free Tool · National Minimum Wage 2026</div>
+    <h1 class="hero-h">What is the minimum wage<br>in South Africa right now?</h1>
+    <p class="hero-sub">Calculate the legal minimum pay for any worker — hourly, daily, weekly and monthly. Check if a wage is compliant. Effective 1 March 2026.</p>
+    <div class="hero-rate">
+      <span class="hero-rate-num">R30.23</span>
+      <span class="hero-rate-label">per hour</span>
+      <span class="hero-rate-badge">From 1 March 2026</span>
+    </div>
+  </div>
+</section>
+
+<main class="wrap">
+<div class="main">
+
+  <!-- ─── INPUT CARD ─── -->
+  <div class="card">
+    <div class="card-h">Calculate minimum wage</div>
+    <div class="card-sub">Select the worker type and enter hours worked to see the legal minimum pay for any period.</div>
+
+    <div class="fields">
+
+      <div>
+        <span class="section-tag">Worker type</span>
+        <div class="worker-grid">
+          <button class="worker-btn active" data-rate="30.23" onclick="setWorker(this)" type="button">
+            Standard worker
+            <span class="rate">R30.23 / hour</span>
+          </button>
+          <button class="worker-btn" data-rate="30.23" onclick="setWorker(this)" type="button">
+            Domestic worker
+            <span class="rate">R30.23 / hour</span>
+          </button>
+          <button class="worker-btn" data-rate="30.23" onclick="setWorker(this)" type="button">
+            Farm worker
+            <span class="rate">R30.23 / hour</span>
+          </button>
+          <button class="worker-btn" data-rate="16.62" onclick="setWorker(this)" type="button">
+            EPWP worker
+            <span class="rate">R16.62 / hour</span>
+          </button>
+        </div>
+      </div>
+
+      <div>
+        <div class="field-label"><span>Hours worked per day</span></div>
+        <select id="hoursDay" class="select" onchange="calc()">
+          <option value="9">9 hours (standard — 45hr / 5-day week)</option>
+          <option value="8">8 hours</option>
+          <option value="7.5">7.5 hours</option>
+          <option value="7">7 hours</option>
+          <option value="6">6 hours</option>
+          <option value="4">4 hours (half day)</option>
+          <option value="custom">Custom</option>
+        </select>
+        <input id="hoursCustom" class="input" type="number" min="0.5" max="12" step="0.5" placeholder="Enter hours" style="display:none;margin-top:8px;" oninput="calc()">
+      </div>
+
+      <div>
+        <div class="field-label"><span>Days worked per week</span></div>
+        <select id="daysWeek" class="select" onchange="calc()">
+          <option value="5">5 days / week</option>
+          <option value="6">6 days / week</option>
+          <option value="4">4 days / week</option>
+          <option value="3">3 days / week</option>
+          <option value="2">2 days / week</option>
+          <option value="1">1 day / week</option>
+        </select>
+      </div>
+
+      <!-- Compliance checker -->
+      <div class="compliance-section">
+        <span class="section-tag">Compliance check (optional)</span>
+        <div class="field-label" style="margin-bottom:5px;"><span>What is the employee currently paid?</span></div>
+        <div class="compliance-input-row">
+          <div style="flex:1;">
+            <div class="input-prefix-wrap">
+              <span class="input-prefix">R</span>
+              <input id="actualWage" class="input has-prefix" type="number" min="0" step="0.01" placeholder="e.g. 4200" oninput="calc()">
+            </div>
+          </div>
+          <div style="width:110px;">
+            <select id="wagePeriod" class="select" onchange="calc()">
+              <option value="hourly">/ hour</option>
+              <option value="daily">/ day</option>
+              <option value="weekly">/ week</option>
+              <option value="monthly" selected>/ month</option>
+            </select>
+          </div>
+        </div>
+        <div id="complianceResult" class="compliance-result unknown" style="display:none;"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ─── RESULTS CARD ─── -->
+  <div>
+    <div class="card" style="margin-bottom:16px;">
+      <div class="card-h">Minimum wage entitlement</div>
+      <div class="card-sub" id="resultSub">Based on the 2026 rate effective from 1 March 2026.</div>
+      <div class="results-grid" id="resultsGrid">
+        <!-- populated by JS -->
+      </div>
+    </div>
+
+    <!-- Key facts card -->
+    <div class="card">
+      <div class="card-h" style="margin-bottom:14px;">Key NMW facts for employers</div>
+      <div class="facts-grid">
+        <div class="fact-card">
+          <div class="fact-ico">📅</div>
+          <div class="fact-title">Effective date</div>
+          <div class="fact-body">R30.23/hour applies from <strong>1 March 2026</strong>. Previous rate was R28.79 — a 5.0% increase.</div>
+        </div>
+        <div class="fact-card">
+          <div class="fact-ico">⚖️</div>
+          <div class="fact-title">Not negotiable</div>
+          <div class="fact-body">The NMW cannot be varied by contract, collective agreement, or any other law. It is the absolute floor.</div>
+        </div>
+        <div class="fact-card">
+          <div class="fact-ico">🚫</div>
+          <div class="fact-title">Tips don't count</div>
+          <div class="fact-body">Tips, bonuses, and gratuities may <strong>not</strong> be counted toward the NMW. Employers must pay at least R30.23 before tips.</div>
+        </div>
+        <div class="fact-card">
+          <div class="fact-ico">🏠</div>
+          <div class="fact-title">Accommodation deduction</div>
+          <div class="fact-body">Live-in domestic workers: employer may deduct a maximum of <strong>10%</strong> of the wage for accommodation provided.</div>
+        </div>
+        <div class="fact-card">
+          <div class="fact-ico">💰</div>
+          <div class="fact-title">Penalty for underpaying</div>
+          <div class="fact-body">Employers who pay below NMW face fines of up to <strong>twice the amount underpaid</strong> under the NMW Act s.73A.</div>
+        </div>
+        <div class="fact-card">
+          <div class="fact-ico">📞</div>
+          <div class="fact-title">Report underpayment</div>
+          <div class="fact-body">Call <strong>0800 030 007</strong> (toll-free) or visit your nearest Labour Centre. Reports can be made anonymously.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Rate history table -->
+<div class="card" style="margin-bottom:18px;">
+  <div class="card-h" style="margin-bottom:14px;">NMW rate history — South Africa</div>
+  <table class="rate-table">
+    <thead>
+      <tr>
+        <th>Effective Date</th>
+        <th>Standard Rate / Hour</th>
+        <th>Domestic &amp; Farm</th>
+        <th>EPWP</th>
+        <th>Increase</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="current">
+        <td>1 March 2026 <span class="current-badge">Current</span></td>
+        <td>R30.23</td>
+        <td>R30.23</td>
+        <td>R16.62</td>
+        <td>+5.0%</td>
+      </tr>
+      <tr>
+        <td>1 March 2025</td>
+        <td>R28.79</td>
+        <td>R28.79</td>
+        <td>R15.16</td>
+        <td>+8.5%</td>
+      </tr>
+      <tr>
+        <td>1 March 2024</td>
+        <td>R27.58</td>
+        <td>R27.58</td>
+        <td>R15.16</td>
+        <td>+8.5%</td>
+      </tr>
+      <tr>
+        <td>1 March 2023</td>
+        <td>R25.42</td>
+        <td>R25.42</td>
+        <td>R13.97</td>
+        <td>+9.6%</td>
+      </tr>
+      <tr>
+        <td>1 March 2022</td>
+        <td>R23.19</td>
+        <td>R23.19</td>
+        <td>R12.75</td>
+        <td>+6.9%</td>
+      </tr>
+      <tr>
+        <td>1 March 2021</td>
+        <td>R21.69</td>
+        <td>R21.69</td>
+        <td>R11.93</td>
+        <td>+3.8%</td>
+      </tr>
+      <tr>
+        <td>1 March 2020</td>
+        <td>R20.76</td>
+        <td>R20.76</td>
+        <td>R11.42</td>
+        <td>+3.8%</td>
+      </tr>
+      <tr>
+        <td>1 January 2019</td>
+        <td>R20.00</td>
+        <td>R15.57</td>
+        <td>R11.00</td>
+        <td>Introduced</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+</main>
+
+<div class="wrap">
+  <div class="cta-inner">
+    <div class="cta-h">Is your payroll NMW compliant?</div>
+    <p class="cta-sub">Underpaying even one employee exposes you to a fine of twice the underpaid amount plus retrospective pay. We can review your payroll and flag any compliance gaps.</p>
+    <a href="https://wa.me/27670113108?text=Hi%20AutoComply%2C%20I%20used%20the%20NMW%20Calculator%20and%20want%20to%20check%20my%20payroll%20compliance." class="cta-btn">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Chat on WhatsApp
+    </a>
+  </div>
+  <div class="foot">
+    AutoComply · <a href="https://autocomply.co.za">autocomply.co.za</a>
+    <div class="fine">Rates sourced from Government Gazette No. 54075, effective 1 March 2026, published under the National Minimum Wage Act No. 9 of 2018. Monthly calculations use 4.333 weeks per month (52 ÷ 12). This tool is for guidance only — always verify against the current gazette.</div>
+  </div>
+</div>
+
+<script>
+(function(){
+  let nmwRate = 30.23;
+
+  const fmtR = n => 'R ' + n.toLocaleString('en-ZA', {minimumFractionDigits:2, maximumFractionDigits:2});
+  const round2 = n => Math.round(n * 100) / 100;
+
+  window.setWorker = function(btn){
+    document.querySelectorAll('.worker-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    nmwRate = parseFloat(btn.dataset.rate);
+    calc();
+  };
+
+  document.getElementById('hoursDay').addEventListener('change', function(){
+    const custom = document.getElementById('hoursCustom');
+    custom.style.display = this.value === 'custom' ? 'block' : 'none';
+    calc();
+  });
+
+  function getHours(){
+    const sel = document.getElementById('hoursDay').value;
+    if(sel === 'custom'){
+      return parseFloat(document.getElementById('hoursCustom').value) || 0;
+    }
+    return parseFloat(sel);
+  }
+
+  function calc(){
+    const hrsDay  = getHours();
+    const daysWk  = parseFloat(document.getElementById('daysWeek').value) || 5;
+
+    if(!hrsDay || hrsDay <= 0){ clearResults(); return; }
+
+    const hrsWeek  = hrsDay * daysWk;
+    const hrsMonth = hrsWeek * 4.333;
+    const hrsYear  = hrsWeek * 52;
+
+    const perHour  = round2(nmwRate);
+    const perDay   = round2(nmwRate * hrsDay);
+    const perWeek  = round2(nmwRate * hrsWeek);
+    const perMonth = round2(nmwRate * hrsMonth);
+    const perYear  = round2(nmwRate * hrsYear);
+
+    // Update results grid
+    document.getElementById('resultsGrid').innerHTML = `
+      <div class="result-cell primary">
+        <div class="result-label">Monthly minimum wage</div>
+        <div class="result-val">${fmtR(perMonth)}</div>
+        <div class="result-sub">${hrsDay} hrs × ${daysWk} days × 4.333 weeks × R${nmwRate}/hr</div>
+      </div>
+      <div class="result-cell">
+        <div class="result-label">Per hour</div>
+        <div class="result-val">${fmtR(perHour)}</div>
+        <div class="result-sub">NMW rate</div>
+      </div>
+      <div class="result-cell">
+        <div class="result-label">Per day</div>
+        <div class="result-val">${fmtR(perDay)}</div>
+        <div class="result-sub">${hrsDay} hours</div>
+      </div>
+      <div class="result-cell">
+        <div class="result-label">Per week</div>
+        <div class="result-val">${fmtR(perWeek)}</div>
+        <div class="result-sub">${hrsWeek} hours</div>
+      </div>
+      <div class="result-cell">
+        <div class="result-label">Per year</div>
+        <div class="result-val">${fmtR(perYear)}</div>
+        <div class="result-sub">52 weeks</div>
+      </div>`;
+
+    document.getElementById('resultSub').textContent =
+      `NMW rate: R${nmwRate}/hr · ${hrsDay}hrs/day · ${daysWk} days/week · 4.333 weeks/month`;
+
+    // Compliance check
+    const actualRaw = parseFloat(document.getElementById('actualWage').value);
+    const period    = document.getElementById('wagePeriod').value;
+    const compDiv   = document.getElementById('complianceResult');
+
+    if(!actualRaw || actualRaw <= 0){ compDiv.style.display='none'; return; }
+
+    // Convert actual to hourly
+    let actualHourly;
+    if(period === 'hourly')       actualHourly = actualRaw;
+    else if(period === 'daily')   actualHourly = actualRaw / hrsDay;
+    else if(period === 'weekly')  actualHourly = actualRaw / hrsWeek;
+    else                          actualHourly = actualRaw / hrsMonth; // monthly
+
+    actualHourly = round2(actualHourly);
+    const shortfall = round2(nmwRate - actualHourly);
+    const shortfallMonthly = round2(shortfall * hrsMonth);
+
+    compDiv.style.display = 'flex';
+
+    if(actualHourly >= nmwRate){
+      const aboveBy = round2(actualHourly - nmwRate);
+      compDiv.className = 'compliance-result compliant';
+      compDiv.innerHTML = `<div class="compliance-ico">✅</div><div><strong>Compliant.</strong> The employee is being paid <strong>R${actualHourly}/hr</strong> — that is R${aboveBy}/hr above the legal minimum of R${nmwRate}/hr.</div>`;
+    } else {
+      compDiv.className = 'compliance-result violation';
+      compDiv.innerHTML = `<div class="compliance-ico">🚨</div><div><strong>Below minimum wage.</strong> R${actualHourly}/hr is R${shortfall}/hr below the legal minimum of R${nmwRate}/hr. This equals a monthly shortfall of approximately <strong>${fmtR(Math.abs(shortfallMonthly))}</strong>. Correct immediately — fines of up to twice the underpaid amount apply under the NMW Act.</div>`;
+    }
+  }
+
+  function clearResults(){
+    document.getElementById('resultsGrid').innerHTML = `
+      <div class="result-cell" style="grid-column:span 2;text-align:center;color:var(--muted);padding:20px;font-style:italic;">
+        Enter hours per day to calculate minimum wage
+      </div>`;
+    document.getElementById('complianceResult').style.display = 'none';
+  }
+
+  // Wire compliance inputs
+  document.getElementById('actualWage').addEventListener('input', calc);
+  document.getElementById('wagePeriod').addEventListener('change', calc);
+
+  // Init
+  calc();
+})();
+</script>
+</body>
+</html>

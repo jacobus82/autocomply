@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Retrenchment Process Checklist — South Africa</title>
+<meta name="description" content="Free interactive retrenchment checklist for South African employers. Section 189 and 189A LRA process, severance pay calculator, and step-by-step compliance guide.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;700;800&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --navy:#0B1628;--blue:#1A56DB;--blue-soft:#EEF3FF;--blue-line:rgba(26,86,219,.15);
+  --green:#059669;--green-soft:#ECFDF5;--amber:#D97706;--amber-soft:#FEF3C7;
+  --red:#DC2626;--red-soft:#FEE2E2;--purple:#7C3AED;--purple-soft:#EDE9FE;
+  --muted:#5A6A82;--muted2:#8A96A8;--border:#DDE5F0;--border-strong:#C5D1E4;
+  --bg:#F8FAFF;--bg2:#EEF3FF;--white:#fff;
+  --sh:0 1px 4px rgba(11,22,40,.07);--sh-strong:0 4px 20px rgba(11,22,40,.10);
+}
+html,body{background:var(--bg);color:var(--navy);font-family:'Outfit',sans-serif;-webkit-font-smoothing:antialiased;min-height:100vh;font-size:15px;line-height:1.5;}
+
+/* ─── TOPBAR ─── */
+.topbar{background:var(--navy);padding:14px 20px;}
+.topbar-inner{max-width:820px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;}
+.brand{font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;color:#fff;letter-spacing:-.3px;text-decoration:none;}
+.brand span{color:#60AEFF;}
+.back{font-size:12.5px;color:rgba(255,255,255,.55);text-decoration:none;}
+.back:hover{color:#fff;}
+
+/* ─── HERO ─── */
+.hero{background:var(--navy);padding:32px 20px 52px;position:relative;overflow:hidden;}
+.hero::before{content:"";position:absolute;top:-80px;right:-80px;width:360px;height:360px;background:radial-gradient(circle,rgba(220,38,38,.12),transparent 70%);pointer-events:none;}
+.hero::after{content:"";position:absolute;bottom:-60px;left:-60px;width:260px;height:260px;background:radial-gradient(circle,rgba(26,86,219,.1),transparent 70%);pointer-events:none;}
+.hero-inner{max-width:820px;margin:0 auto;position:relative;z-index:1;}
+.hero-tag{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px;}
+.hero-h{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(24px,4.5vw,34px);font-weight:800;color:#fff;letter-spacing:-.5px;line-height:1.15;margin-bottom:10px;}
+.hero-sub{font-size:14.5px;color:rgba(255,255,255,.65);line-height:1.6;max-width:580px;}
+.hero-pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;}
+.hero-pill{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:1.5px;text-transform:uppercase;padding:5px 11px;border-radius:20px;border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.7);}
+.hero-pill.red{border-color:rgba(220,38,38,.4);background:rgba(220,38,38,.1);color:#FCA5A5;}
+
+/* ─── LAYOUT ─── */
+.wrap{max-width:820px;margin:0 auto;padding:0 20px;}
+.main{margin-top:-32px;margin-bottom:32px;position:relative;z-index:2;}
+
+/* ─── PROGRESS ─── */
+.progress-card{background:var(--white);border:1px solid var(--border);border-radius:14px;padding:18px 22px;box-shadow:var(--sh);margin-bottom:18px;}
+.progress-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+.progress-title{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
+.progress-pct{font-family:'Bricolage Grotesque',sans-serif;font-size:16px;font-weight:700;color:var(--navy);}
+.prog-bar{height:6px;background:var(--border);border-radius:3px;overflow:hidden;margin-bottom:10px;}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--green));border-radius:3px;transition:width .4s ease;}
+.phase-dots{display:flex;gap:6px;}
+.pdot{height:6px;border-radius:3px;background:var(--border);transition:all .2s;flex:1;}
+.pdot.done{background:var(--green);}
+.pdot.active{background:var(--blue);}
+
+/* ─── SETUP CARD ─── */
+.setup-card{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:26px;box-shadow:var(--sh);margin-bottom:18px;}
+.card-h{font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:700;color:var(--navy);margin-bottom:4px;letter-spacing:-.3px;}
+.card-sub{font-size:13px;color:var(--muted);margin-bottom:22px;line-height:1.55;}
+
+.fields-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;}
+@media(max-width:560px){.fields-row{grid-template-columns:1fr;}}
+.field-label{font-size:12px;font-weight:600;color:var(--navy);margin-bottom:5px;}
+.select,.input{width:100%;padding:10px 12px;font-family:'Outfit',sans-serif;font-size:14px;color:var(--navy);background:var(--bg);border:1px solid var(--border);border-radius:8px;outline:none;transition:all .15s;}
+.select{padding-right:28px;background:var(--bg) url("data:image/svg+xml;charset=US-ASCII,%3Csvg width='11' height='7' viewBox='0 0 11 7' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4.5 4.5L10 1' stroke='%235A6A82' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat right 11px center;appearance:none;cursor:pointer;}
+.select:focus,.input:focus{border-color:var(--blue);background:var(--white);box-shadow:0 0 0 3px rgba(26,86,219,.12);}
+.input::placeholder{color:var(--muted2);}
+.input-prefix-wrap{position:relative;}
+.input-prefix{position:absolute;left:11px;top:50%;transform:translateY(-50%);font-family:'JetBrains Mono',monospace;font-size:12.5px;font-weight:600;color:var(--muted);pointer-events:none;}
+.input.hp{padding-left:26px;}
+
+/* Section determination badge */
+.section-badge{border-radius:12px;padding:14px 18px;margin-bottom:20px;display:flex;gap:12px;align-items:flex-start;}
+.section-badge.s189{background:var(--blue-soft);border:1px solid var(--blue-line);}
+.section-badge.s189a{background:#FFF1F2;border:1px solid rgba(220,38,38,.2);}
+.section-badge.unknown{background:var(--bg);border:1px solid var(--border);}
+.sb-ico{font-size:20px;flex-shrink:0;margin-top:2px;}
+.sb-title{font-family:'Bricolage Grotesque',sans-serif;font-size:15px;font-weight:700;color:var(--navy);margin-bottom:3px;}
+.sb-body{font-size:13px;color:var(--muted);line-height:1.55;}
+.section-badge.s189 .sb-title{color:var(--blue);}
+.section-badge.s189a .sb-title{color:var(--red);}
+
+/* ─── CHECKLIST PHASES ─── */
+.phase-card{background:var(--white);border:1px solid var(--border);border-radius:16px;box-shadow:var(--sh);overflow:hidden;margin-bottom:18px;animation:fadeUp .3s ease;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+.phase-header{padding:18px 22px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;}
+.phase-num{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:#fff;flex-shrink:0;}
+.phase-title-block{}
+.phase-lra{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted2);margin-bottom:2px;}
+.phase-title{font-family:'Bricolage Grotesque',sans-serif;font-size:16px;font-weight:700;color:var(--navy);letter-spacing:-.2px;}
+
+/* Checklist items */
+.checklist{padding:0;}
+.cli{border-bottom:1px solid var(--border);display:flex;gap:0;}
+.cli:last-child{border-bottom:none;}
+.cli-check{padding:14px 14px 14px 18px;flex-shrink:0;}
+.cli-check input[type=checkbox]{width:18px;height:18px;cursor:pointer;accent-color:var(--green);}
+.cli-body{padding:14px 18px 14px 0;flex:1;min-width:0;}
+.cli-text{font-size:13.5px;font-weight:600;color:var(--navy);line-height:1.4;margin-bottom:3px;}
+.cli-desc{font-size:12px;color:var(--muted);line-height:1.55;}
+.cli.checked .cli-text{color:var(--muted);text-decoration:line-through;text-decoration-color:var(--green);}
+.cli.critical .cli-text::before{content:"⚠ ";color:var(--red);}
+.cli-lra{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--blue);font-weight:600;margin-top:4px;}
+
+/* Critical notice */
+.critical-notice{background:var(--red-soft);border:1px solid rgba(220,38,38,.2);border-radius:10px;padding:12px 16px;margin:14px 22px;font-size:13px;color:#991B1B;line-height:1.55;}
+.critical-notice strong{font-weight:700;}
+
+/* Info block */
+.info-block{background:var(--blue-soft);border:1px solid var(--blue-line);border-radius:10px;padding:12px 16px;margin:14px 22px;font-size:13px;color:#1E3A8A;line-height:1.55;}
+.amber-block{background:var(--amber-soft);border:1px solid rgba(217,119,6,.2);border-radius:10px;padding:12px 16px;margin:14px 22px;font-size:13px;color:#78350F;line-height:1.55;}
+.info-block strong,.amber-block strong{font-weight:700;}
+
+/* ─── SEVERANCE CALCULATOR ─── */
+.sev-card{background:var(--navy);border-radius:14px;padding:22px;margin:14px 22px 22px;}
+.sev-title{font-family:'Bricolage Grotesque',sans-serif;font-size:16px;font-weight:700;color:#fff;margin-bottom:14px;letter-spacing:-.2px;}
+.sev-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;}
+@media(max-width:500px){.sev-grid{grid-template-columns:1fr;}}
+.sev-field{}
+.sev-label{font-size:11.5px;font-weight:600;color:rgba(255,255,255,.65);margin-bottom:5px;}
+.sev-input{width:100%;padding:9px 11px;font-family:'Outfit',sans-serif;font-size:14px;color:var(--navy);background:rgba(255,255,255,.9);border:1px solid rgba(255,255,255,.2);border-radius:7px;outline:none;}
+.sev-input:focus{background:#fff;border-color:rgba(255,255,255,.6);}
+.sev-input::placeholder{color:var(--muted2);}
+.sev-results{background:rgba(255,255,255,.08);border-radius:10px;padding:16px;border:1px solid rgba(255,255,255,.1);}
+.sev-result-row{display:flex;justify-content:space-between;align-items:center;padding:5px 0;font-size:13px;border-bottom:1px solid rgba(255,255,255,.08);}
+.sev-result-row:last-child{border-bottom:none;}
+.sev-result-label{color:rgba(255,255,255,.7);}
+.sev-result-val{font-family:'JetBrains Mono',monospace;font-weight:600;color:#fff;}
+.sev-total-row{background:rgba(255,255,255,.12);border-radius:8px;padding:10px 12px;margin-top:10px;display:flex;justify-content:space-between;align-items:center;}
+.sev-total-label{font-size:13px;font-weight:700;color:#fff;}
+.sev-total-val{font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;color:#fff;letter-spacing:-.4px;}
+.sev-note{font-size:11.5px;color:rgba(255,255,255,.5);margin-top:10px;line-height:1.5;}
+
+/* ─── PHASE NAV ─── */
+.phase-nav{display:flex;justify-content:space-between;gap:10px;padding:16px 22px;background:var(--bg);border-top:1px solid var(--border);}
+.nav-btn{font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;padding:10px 20px;border-radius:8px;cursor:pointer;border:1px solid var(--border);background:var(--white);color:var(--muted);transition:all .15s;display:inline-flex;align-items:center;gap:6px;}
+.nav-btn:hover{background:var(--bg2);color:var(--navy);border-color:var(--border-strong);}
+.nav-btn.primary{background:var(--blue);color:#fff;border-color:var(--blue);}
+.nav-btn.primary:hover{background:#1449B0;}
+.nav-btn.success{background:var(--green);color:#fff;border-color:var(--green);}
+.nav-btn.success:hover{background:#047857;}
+
+/* ─── COMPLETE STATE ─── */
+.complete-card{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:32px;box-shadow:var(--sh);text-align:center;margin-bottom:18px;}
+.complete-ico{font-size:52px;margin-bottom:16px;display:block;}
+.complete-h{font-family:'Bricolage Grotesque',sans-serif;font-size:22px;font-weight:700;color:var(--navy);margin-bottom:8px;}
+.complete-sub{font-size:14px;color:var(--muted);line-height:1.6;max-width:480px;margin:0 auto 20px;}
+.complete-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+.complete-btn{font-family:'Outfit',sans-serif;font-size:13.5px;font-weight:600;padding:11px 20px;border-radius:9px;cursor:pointer;border:1px solid var(--border);background:var(--white);color:var(--navy);transition:all .15s;display:inline-flex;align-items:center;gap:6px;}
+.complete-btn:hover{background:var(--bg2);}
+.complete-btn.primary{background:var(--blue);color:#fff;border-color:var(--blue);}
+.complete-btn.primary:hover{background:#1449B0;}
+
+/* ─── CTA ─── */
+.cta-inner{background:var(--navy);border-radius:16px;padding:26px;text-align:center;position:relative;overflow:hidden;margin-bottom:28px;}
+.cta-inner::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 30% 50%,rgba(220,38,38,.15),transparent 60%);pointer-events:none;}
+.cta-h{font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:700;color:#fff;margin-bottom:7px;position:relative;z-index:1;}
+.cta-sub{font-size:13.5px;color:rgba(255,255,255,.65);margin-bottom:16px;max-width:500px;margin-left:auto;margin-right:auto;position:relative;z-index:1;line-height:1.55;}
+.cta-btn{display:inline-flex;align-items:center;gap:7px;background:#25D366;color:#fff;font-family:'Outfit',sans-serif;font-size:13.5px;font-weight:600;padding:11px 20px;border-radius:9px;text-decoration:none;position:relative;z-index:1;transition:transform .15s;}
+.cta-btn:hover{transform:translateY(-1px);}
+
+.foot{max-width:820px;margin:0 auto;padding:22px 20px;text-align:center;font-size:12px;color:var(--muted2);border-top:1px solid var(--border);}
+.foot a{color:var(--muted);text-decoration:none;font-weight:600;}
+.fine{font-size:11px;margin-top:6px;line-height:1.55;}
+
+/* Print */
+@media print{
+  .topbar,.hero-pills,.nav-btn,.phase-nav,.cta-inner,.foot{display:none!important;}
+  .hero{background:white!important;color:black!important;padding:16px 0!important;}
+  .hero *{color:black!important;}
+  body{background:white;}
+  .cli-check input[type=checkbox]{display:none;}
+}
+
+@media(max-width:600px){
+  .setup-card,.phase-card{padding:20px 0;}
+  .phase-header{padding:16px 18px;}
+  .cli-body{padding-right:14px;}
+  .info-block,.critical-notice,.amber-block,.sev-card{margin:12px 16px;}
+  .phase-nav{padding:14px 16px;}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <a href="https://autocomply.co.za" class="brand">Auto<span>Comply</span></a>
+    <a href="https://autocomply.co.za/#tools" class="back">← All tools</a>
+  </div>
+</div>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-tag">Free Tool · LRA Section 189 / 189A</div>
+    <h1 class="hero-h">Retrenchment Process Checklist</h1>
+    <p class="hero-sub">Step-by-step compliance guide for South African employers. Covers both Section 189 and 189A of the LRA — with an integrated severance pay calculator.</p>
+    <div class="hero-pills">
+      <span class="hero-pill">LRA s.189 / 189A</span>
+      <span class="hero-pill">BCEA s.41 Severance</span>
+      <span class="hero-pill red">⚠ Seek legal advice for complex cases</span>
+    </div>
+  </div>
+</section>
+
+<main class="main wrap">
+
+  <!-- PROGRESS -->
+  <div class="progress-card" id="progressCard">
+    <div class="progress-top">
+      <span class="progress-title">Phase <span id="progPhase">1</span> of 6</span>
+      <span class="progress-pct" id="progPct">0% complete</span>
+    </div>
+    <div class="prog-bar"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
+    <div class="phase-dots" id="phaseDots"></div>
+  </div>
+
+  <!-- PHASES rendered here -->
+  <div id="phaseContainer"></div>
+
+</main>
+
+<div class="wrap">
+  <div class="cta-inner">
+    <div class="cta-h">Retrenchment is high-risk. Get it right.</div>
+    <p class="cta-sub">A procedurally unfair retrenchment can result in 12 months' compensation at the CCMA or Labour Court — plus legal costs. AutoComply can connect you with a qualified labour law practitioner before you start.</p>
+    <a href="https://wa.me/27670113108?text=Hi%20AutoComply%2C%20I%20am%20considering%20a%20retrenchment%20and%20need%20guidance%20on%20the%20s.189%20process." class="cta-btn">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Get expert guidance
+    </a>
+  </div>
+  <div class="foot">
+    AutoComply · <a href="https://autocomply.co.za">autocomply.co.za</a>
+    <div class="fine">This checklist is based on the Labour Relations Act 66 of 1995 (sections 189 and 189A), the Basic Conditions of Employment Act 75 of 1997 (section 41), and the Code of Good Practice: Dismissal (September 2025). It is a guidance tool only and does not constitute legal advice. Retrenchment processes are complex — always consult a qualified labour law practitioner for your specific situation.</div>
+  </div>
+</div>
+
+<script>
+(function(){
+
+// ═══════════════════════════════════════
+// PHASE DATA
+// ═══════════════════════════════════════
+
+const PHASES = [
+  {
+    id: 'setup',
+    num: 1,
+    color: '#1A56DB',
+    title: 'Setup — Determine Applicable Section',
+    lra: 'LRA s.189 / s.189A',
+    isSetup: true,
+  },
+  {
+    id: 'substantive',
+    num: 2,
+    color: '#7C3AED',
+    title: 'Before You Start — Substantive Fairness',
+    lra: 'LRA s.188 · Code of Good Practice (Sept 2025)',
+    items: [
+      { id:'sf1', critical:true, text:'Confirmed a genuine operational reason exists for the retrenchment', desc:'The reason must be economic (financial difficulty), technological (automation), or structural (reorganisation). The CCMA and Labour Court will scrutinise this. Retrenchment cannot be used to dismiss an employee for misconduct or poor performance.', lra:'LRA s.189(1)' },
+      { id:'sf2', critical:true, text:'Confirmed that retrenchment is a last resort — all alternatives have been genuinely explored', desc:'The 2025 Code of Good Practice explicitly requires documenting all alternatives considered. A court that finds retrenchment was not a last resort will find the dismissal substantively unfair.', lra:'Code of Good Practice (2025)' },
+      { id:'sf3', text:'Considered and documented alternatives to retrenchment', desc:'Document every alternative explored: reduced working hours (short time), salary cuts, temporary layoffs, freezing new hires, eliminating overtime, voluntary separation packages, redeployment to other roles, remote work arrangements.', lra:'LRA s.189(2)' },
+      { id:'sf4', text:'Confirmed retrenchment is not being used to target union members, pregnant employees, or employees exercising legal rights', desc:'Dismissing an employee for union membership, pregnancy, exercising a legal right, or making a complaint would constitute an automatically unfair dismissal — which carries a penalty of up to 24 months\' compensation.', lra:'LRA s.187' },
+      { id:'sf5', text:'Documented the business rationale in writing (for use in the s.189(3) notice and any future dispute)', desc:'The 2025 Code requires the rationale to be clearly articulated. Courts have overturned retrenchments where employers could not demonstrate a clear, documented business case.', lra:'Code of Good Practice (2025)' },
+    ],
+    notice: { type:'amber', text:'⚠ If an employee challenges the retrenchment at the CCMA, the employer bears the burden of proving both substantive and procedural fairness. Document every decision and alternative explored — courts have repeatedly held that a "checklist approach" to consultation without genuine engagement is procedurally unfair.' },
+  },
+  {
+    id: 'notice',
+    num: 3,
+    color: '#DC2626',
+    title: 'Issue the Section 189(3) Written Notice',
+    lra: 'LRA s.189(3) · Code of Good Practice (Sept 2025)',
+    items: [
+      { id:'n1', critical:true, text:'Prepared a written s.189(3) notice (in the prescribed format per the 2025 Code)', desc:'The notice must be in writing. It is the formal start of the consultation process. Verbal notification is not sufficient. The 2025 Code introduced a prescribed format — ensure your notice follows this structure.', lra:'LRA s.189(3) · Code (2025)' },
+      { id:'n2', critical:true, text:'Notice includes: the reasons for the proposed retrenchment', desc:'State the specific operational reason. Vague reasons like "business needs" are insufficient. Be specific: "The company has experienced a 40% reduction in revenue due to [reason], making it impossible to sustain the current headcount."', lra:'LRA s.189(3)(a)' },
+      { id:'n3', critical:true, text:'Notice includes: alternatives considered and why each was rejected', desc:'For each alternative explored (see Phase 2), state why it was not viable. Courts expect genuine engagement with alternatives — not a perfunctory list.', lra:'LRA s.189(3)(b)' },
+      { id:'n4', critical:true, text:'Notice includes: the number of employees likely to be affected and their job categories', desc:'Be specific. "Approximately 3 employees in the Administration department" is better than "some employees." If numbers are uncertain, state ranges.', lra:'LRA s.189(3)(c)' },
+      { id:'n5', critical:true, text:'Notice includes: the proposed method for selecting which employees will be retrenched', desc:'State your proposed selection criteria: LIFO (last in, first out), skills and qualifications, or a combination. Employees must be given the opportunity to challenge selection criteria during consultation.', lra:'LRA s.189(3)(d)' },
+      { id:'n6', critical:true, text:'Notice includes: the proposed time frame for the retrenchments', desc:'State the proposed date of retrenchment. This is a proposal — not a final decision. It remains open for consultation.', lra:'LRA s.189(3)(e)' },
+      { id:'n7', critical:true, text:'Notice includes: the proposed severance pay formula (at minimum: 1 week per completed year of service)', desc:'State clearly: "Severance pay of at least one week\'s remuneration per completed year of continuous service, as required by BCEA s.41." Any contractual or policy entitlement above this minimum must also be stated.', lra:'LRA s.189(3)(f) · BCEA s.41' },
+      { id:'n8', text:'Notice includes: any assistance the employer proposes to offer (retraining, outplacement support)', desc:'This is not legally mandatory but is required to be addressed. Offering support strengthens the employer\'s procedural fairness position.', lra:'LRA s.189(3)(g)' },
+      { id:'n9', text:'Notice includes: the possibility of future re-employment', desc:'State whether the employer would consider re-employing retrenched employees if circumstances change. While not mandatory, this is expected under the s.189(3) framework.', lra:'LRA s.189(3)(h)' },
+      { id:'n10', text:'Notice includes: the number of employees retrenched in the past 12 months', desc:'Disclose any retrenchments in the prior year. This information is relevant to determining whether s.189A (large-scale retrenchment) applies.', lra:'LRA s.189(3)(i)' },
+      { id:'n11', critical:true, text:'Notice includes: the date, time and place for the first consultation meeting', desc:'Give employees and/or their representatives reasonable time to prepare. Schedule the first consultation meeting and state this in the notice.', lra:'LRA s.189(3)(j)' },
+      { id:'n12', critical:true, text:'Notice issued to all affected employees and their trade union representatives (where applicable)', desc:'If employees belong to a trade union, the union must receive the notice. If no union: issue directly to the affected employees. If there is a workplace forum: also notify them.', lra:'LRA s.189(1)' },
+    ],
+    notice: { type:'critical', text:'⚠ Critical: A materially defective s.189(3) notice — one that omits required content — makes the entire process procedurally unfair and exposes the employer to a compensation award at the CCMA or Labour Court.' },
+  },
+  {
+    id: 'consultation',
+    num: 4,
+    color: '#059669',
+    title: 'Consultation Process',
+    lra: 'LRA s.189(1) / s.189(2) · s.189A (if applicable)',
+    items: [
+      { id:'c1', critical:true, text:'Conducted a genuine, good-faith consultation — not a mere formality', desc:'The 2025 Code emphasises that consultation must be a "meaningful joint consensus-seeking process." Courts have found retrenchments procedurally unfair where employers went through the motions without genuinely engaging. The outcome of the process cannot be predetermined.', lra:'LRA s.189(1)' },
+      { id:'c2', critical:true, text:'Allowed employees / representatives adequate time to consider the notice and prepare representations', desc:'Employees must be given a reasonable opportunity to respond. The law does not specify a minimum period, but courts expect at least a few days between the notice and the first meeting. For complex situations, more time may be required.', lra:'LRA s.189(1)' },
+      { id:'c3', critical:true, text:'Consulted on: measures to avoid or minimise retrenchments', desc:'This must be a genuine discussion — not a presentation. Employees may propose alternatives. The employer must consider them and respond in writing if they are rejected.', lra:'LRA s.189(2)(a)' },
+      { id:'c4', critical:true, text:'Consulted on: the selection criteria', desc:'Employees must have the opportunity to challenge the proposed selection criteria. If LIFO is used, show how it was applied. If skills-based criteria are used, the employer must justify any deviation from LIFO.', lra:'LRA s.189(2)(b)' },
+      { id:'c5', critical:true, text:'Consulted on: the severance pay', desc:'The minimum is 1 week per completed year of service (BCEA s.41), but employees may negotiate for more. The employer must engage genuinely on this — not simply state the minimum and move on.', lra:'LRA s.189(2)(c) · BCEA s.41' },
+      { id:'c6', text:'Consulted on: the timing of the retrenchment', desc:'The proposed date is not final. Employees may argue for a later date to allow them more time to find employment or for the business to recover. The employer must engage with this.', lra:'LRA s.189(2)(d)' },
+      { id:'c7', text:'Provided written reasons if employee proposals were rejected', desc:'If employees propose alternatives that the employer rejects, the employer must provide written reasons for the rejection. This is explicitly required and courts expect it.', lra:'LRA s.189(2)' },
+      { id:'c8', critical:true, text:'Kept detailed written minutes of every consultation meeting', desc:'Document: who attended, what was discussed, what proposals were made, what responses were given, and what was agreed. These minutes are critical evidence in any CCMA or Labour Court dispute.', lra:'Code of Good Practice (2025)' },
+      { id:'c9', text:'Disclosed all relevant financial and operational information to allow meaningful consultation', desc:'LRA s.16 requires disclosure of relevant information. Employees cannot meaningfully consult if they do not have access to the facts. Financial statements, projections, or operational data may be required.', lra:'LRA s.16 / s.189(3)' },
+    ],
+    notice: { type:'s189a', text:'' }, // rendered dynamically
+  },
+  {
+    id: 'selection',
+    num: 5,
+    color: '#D97706',
+    title: 'Selection, Notice Periods & Final Payments',
+    lra: 'LRA s.189(7) · BCEA s.37 / s.41',
+    items: [
+      { id:'s1', critical:true, text:'Applied fair and objective selection criteria consistently to all affected employees', desc:'Selection criteria must be agreed upon during consultation, or — if no agreement — must be fair and objective. Criteria based on operational requirements (skills needed going forward), qualifications, performance, and length of service are generally accepted. LIFO (last in, first out) is the default fair criterion.', lra:'LRA s.189(7)(b)' },
+      { id:'s2', critical:true, text:'Did not select based on any automatically unfair ground', desc:'Automatically unfair grounds: union membership, pregnancy, exercising a legal right, race, gender, sex, sexual orientation, age, disability, religion, conscience, belief, political opinion, culture, language, birth. Selection on any of these grounds = automatically unfair dismissal.', lra:'LRA s.187' },
+      { id:'s3', text:'Considered and genuinely explored alternative positions for affected employees', desc:'Before finalising dismissal, offer any suitable vacant positions within the organisation. If an employee unreasonably refuses a reasonable alternative position, they forfeit severance pay. Document the offer and response.', lra:'LRA s.189(7)(a) · BCEA s.41(4)' },
+      { id:'s4', critical:true, text:'Issued written notice of dismissal to each affected employee', desc:'Specify: the last working day, the date notice was given, and confirmation that retrenchment is for operational requirements. This triggers the notice period.', lra:'LRA s.189 · BCEA s.37' },
+      { id:'s5', critical:true, text:'Applied the correct notice period: 1 week (≤6 months), 2 weeks (6m–1yr), 4 weeks (>1yr)', desc:'Notice periods are set by BCEA s.37 or the employment contract — whichever is longer. The employee may either work the notice period or receive payment in lieu of notice. Farm workers and domestic workers are entitled to 4 weeks regardless of service length.', lra:'BCEA s.37' },
+      { id:'s6', critical:true, text:'Calculated and paid severance pay: minimum 1 week\'s remuneration per completed year of service', desc:'Calculate using gross remuneration (including cash allowances). For employees with commission or variable pay, use the average of the last 13 weeks (BCEA s.35(4)). Severance pay is not paid to employees who unreasonably refuse alternative employment.', lra:'BCEA s.41' },
+      { id:'s7', critical:true, text:'Paid out all outstanding annual leave', desc:'All accrued but untaken annual leave must be paid out in full on the last day of employment. This is a statutory obligation that cannot be waived.', lra:'BCEA s.20(11)' },
+      { id:'s8', text:'Paid notice pay (if employee is not working the notice period)', desc:'If the employee is placed on "garden leave" or asked not to work the notice period, full notice pay must be paid. This is in addition to severance pay — not instead of it.', lra:'BCEA s.37' },
+      { id:'s9', text:'Considered any pro-rata bonus entitlement per the employment contract', desc:'If the employment contract or company policy entitles the employee to a pro-rata bonus, this must be paid on exit. This is a contractual obligation — not automatic under BCEA.', lra:'Employment contract' },
+      { id:'s10', text:'Issued a certificate of service (letter of service) to each retrenched employee', desc:'Every departing employee is entitled to a certificate of service stating: duration of employment, job title, remuneration, and reason for leaving. This assists the employee in claiming UIF and seeking new employment.', lra:'BCEA s.42' },
+    ],
+    hasSeveranceCalc: true,
+  },
+  {
+    id: 'admin',
+    num: 6,
+    color: '#0891B2',
+    title: 'Post-Retrenchment Administration',
+    lra: 'UIF Act · BCEA · LRA',
+    items: [
+      { id:'a1', critical:true, text:'Notified the Department of Employment and Labour if 10+ employees retrenched', desc:'Large-scale retrenchments (10+ employees) require formal notification to the Department of Employment and Labour. Failure to notify is a compliance breach.', lra:'LRA s.189A' },
+      { id:'a2', critical:true, text:'Provided each retrenched employee with UI-19 (UIF termination form) and UI-2.7 (letter confirming retrenchment)', desc:'Employees need the UI-19 and UI-2.7 to claim UIF benefits. The employer completes these forms. Without them, employees cannot claim unemployment benefits — and failure to provide them can itself be a labour dispute.', lra:'UIF Act' },
+      { id:'a3', critical:true, text:'Updated UIF records with the Department of Employment and Labour', desc:'Report all terminations to the UIF within 30 days. Failure to comply exposes the employer to penalties under the UIF Act.', lra:'UIF Act s.56' },
+      { id:'a4', text:'Completed PAYE submissions and issued IRP5s reflecting severance pay at the end of the tax year', desc:'Severance pay receives preferential tax treatment under the retirement tax tables (first R500,000 is tax-free for first-time recipients). Ensure payroll processes this correctly and that the IRP5 reflects the correct source code.', lra:'Income Tax Act' },
+      { id:'a5', text:'Processed and paid out pension / provident fund benefits per the fund rules', desc:'Employees leaving on retrenchment have options for their fund savings: cash out (subject to tax), transfer to a new employer fund, or transfer to a preservation fund. The employer must facilitate the fund withdrawal or transfer within a reasonable time.', lra:'Pension Funds Act' },
+      { id:'a6', text:'Filed all consultation minutes, notices, and correspondence in a secure record', desc:'Retain all retrenchment documentation for at least 3 years. If a dispute is referred to the CCMA, these records are critical evidence. Employees have 12 months from the date of retrenchment to refer an unfair dismissal dispute.', lra:'BCEA s.31' },
+      { id:'a7', text:'Assessed re-employment obligation for retrenched employees', desc:'Although not enshrined in statute, the general principle is that employers should give retrenched employees preferential consideration for any suitable vacancy that arises within 6 months of the retrenchment. Some employment contracts make this obligation explicit.', lra:'General practice / Employment contract' },
+      { id:'a8', text:'Reviewed and updated the remaining employees\' employment contracts and job descriptions if roles have changed', desc:'Post-retrenchment restructuring may result in changed duties for remaining employees. Any material changes to employment conditions require employee agreement — unilateral changes can lead to constructive dismissal claims.', lra:'LRA s.186(1)(e)' },
+    ],
+    notice: { type:'info', text:'UIF benefits: Retrenched employees can claim up to 365 days of UIF benefits. The claim must be submitted within 6 months of retrenchment. Employees should contact their nearest Labour Centre or register online at uFiling (ufiling.labour.gov.za).' },
+  },
+];
+
+// ═══════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════
+let currentPhase = 0;
+let checks = {};
+let setupData = { employerSize: 50, retrenching: 1 };
+
+// ═══════════════════════════════════════
+// HELPERS
+// ═══════════════════════════════════════
+const $ = id => document.getElementById(id);
+const fmtR = n => 'R ' + Math.abs(n).toLocaleString('en-ZA',{minimumFractionDigits:2,maximumFractionDigits:2});
+
+function is189A(){
+  const size = parseInt($('empSize')?.value || setupData.employerSize);
+  const ret  = parseInt($('retNum')?.value  || setupData.retrenching);
+  if(size < 50) return false;
+  if(size >= 50  && size <= 200  && ret >= 10) return true;
+  if(size >= 201 && size <= 300  && ret >= 20) return true;
+  if(size >= 301 && size <= 400  && ret >= 30) return true;
+  if(size >= 401 && size <= 500  && ret >= 40) return true;
+  if(size >= 501               && ret >= 50) return true;
+  return false;
+}
+
+function sectionBadge(){
+  const a = is189A();
+  return {
+    cls: a ? 's189a' : 's189',
+    ico: a ? '🔴' : '🔵',
+    title: a ? 'Section 189A applies to this retrenchment' : 'Section 189 applies to this retrenchment',
+    body: a
+      ? 'Your retrenchment meets the Section 189A threshold. This means: a mandatory 60-day consultation period applies, the CCMA must be notified, and a facilitator may be involved. You should seek legal advice before proceeding.'
+      : 'Section 189 applies. Follow the steps below carefully. Ensure meaningful consultation, a compliant s.189(3) notice, fair selection, and correct final payments.',
+  };
+}
+
+function totalItems(){
+  return PHASES.filter(p=>p.items).reduce((s,p)=>s+p.items.length,0);
+}
+function checkedCount(){
+  return Object.values(checks).filter(Boolean).length;
+}
+function phaseProgress(phaseIdx){
+  const p = PHASES[phaseIdx];
+  if(!p.items) return 1;
+  const done = p.items.filter(it=>checks[it.id]).length;
+  return done / p.items.length;
+}
+
+// ═══════════════════════════════════════
+// RENDER PROGRESS
+// ═══════════════════════════════════════
+function renderProgress(){
+  const total   = totalItems();
+  const checked = checkedCount();
+  const pct     = total > 0 ? Math.round(checked/total*100) : 0;
+
+  $('progPhase').textContent = Math.min(currentPhase+1, PHASES.length);
+  $('progPct').textContent   = pct + '% complete';
+  $('progFill').style.width  = pct + '%';
+
+  const dots = $('phaseDots');
+  dots.innerHTML = '';
+  PHASES.forEach((_,i) => {
+    const d = document.createElement('div');
+    d.className = 'pdot';
+    if(i < currentPhase) d.classList.add('done');
+    else if(i === currentPhase) d.classList.add('active');
+    dots.appendChild(d);
+  });
+}
+
+// ═══════════════════════════════════════
+// RENDER PHASE
+// ═══════════════════════════════════════
+function renderPhase(idx){
+  currentPhase = idx;
+  const container = $('phaseContainer');
+  container.innerHTML = '';
+
+  if(idx >= PHASES.length){
+    renderComplete(container);
+    renderProgress();
+    return;
+  }
+
+  const phase = PHASES[idx];
+
+  if(phase.isSetup){
+    renderSetup(container);
+  } else {
+    renderChecklist(container, phase, idx);
+  }
+
+  renderProgress();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ═══════════════════════════════════════
+// RENDER SETUP
+// ═══════════════════════════════════════
+function renderSetup(container){
+  const badge = sectionBadge();
+
+  const div = document.createElement('div');
+  div.className = 'setup-card';
+  div.innerHTML = `
+    <div style="padding:0 0 22px;">
+      <div class="card-h" style="margin-bottom:4px;">⚠ Before you start — read this</div>
+      <div class="card-sub">Retrenchment is one of the highest-risk processes in South African employment law. A procedurally unfair retrenchment can result in up to 12 months' compensation at the CCMA. This checklist guides you through the correct process — but for complex situations, always consult a qualified labour law practitioner first.</div>
+
+      <div class="fields-row">
+        <div>
+          <div class="field-label">Total number of employees in your business</div>
+          <select id="empSize" class="select" onchange="updateBadge()">
+            <option value="10">Under 50 employees</option>
+            <option value="75" selected>50–200 employees</option>
+            <option value="250">201–300 employees</option>
+            <option value="350">301–400 employees</option>
+            <option value="450">401–500 employees</option>
+            <option value="600">More than 500 employees</option>
+          </select>
+        </div>
+        <div>
+          <div class="field-label">Number of employees you plan to retrench</div>
+          <input id="retNum" class="input" type="number" min="1" max="500" value="1" oninput="updateBadge()">
+        </div>
+      </div>
+
+      <div id="sectionBadgeEl" class="section-badge ${badge.cls}" style="margin-bottom:16px;">
+        <div class="sb-ico">${badge.ico}</div>
+        <div>
+          <div class="sb-title">${badge.title}</div>
+          <div class="sb-body">${badge.body}</div>
+        </div>
+      </div>
+
+      <div class="critical-notice" style="margin:0;">
+        <strong>This checklist does not replace legal advice.</strong> If any of the following apply, consult a labour law attorney before proceeding: more than 10 employees being retrenched, employees belonging to a trade union, retrenchment of an employee who is on sick leave / maternity leave / on light duty, or any situation involving a potential automatically unfair dismissal.
+      </div>
+    </div>
+
+    <div class="phase-nav" style="margin:0;border-radius:0 0 16px 16px;">
+      <div></div>
+      <button class="nav-btn primary" onclick="renderPhase(1)">Start checklist →</button>
+    </div>`;
+
+  container.appendChild(div);
+}
+
+window.updateBadge = function(){
+  const badge = sectionBadge();
+  const el = $('sectionBadgeEl');
+  if(!el) return;
+  el.className = `section-badge ${badge.cls}`;
+  el.innerHTML = `<div class="sb-ico">${badge.ico}</div><div><div class="sb-title">${badge.title}</div><div class="sb-body">${badge.body}</div></div>`;
+};
+
+// ═══════════════════════════════════════
+// RENDER CHECKLIST PHASE
+// ═══════════════════════════════════════
+function renderChecklist(container, phase, idx){
+  const div = document.createElement('div');
+  div.className = 'phase-card';
+
+  // Header
+  const hdr = document.createElement('div');
+  hdr.className = 'phase-header';
+  hdr.innerHTML = `
+    <div class="phase-num" style="background:${phase.color}">${phase.num}</div>
+    <div class="phase-title-block">
+      <div class="phase-lra">${phase.lra}</div>
+      <div class="phase-title">${phase.title}</div>
+    </div>`;
+  div.appendChild(hdr);
+
+  // s.189A special notice for consultation phase
+  if(phase.id === 'consultation'){
+    const a = is189A();
+    const noticeDiv = document.createElement('div');
+    if(a){
+      noticeDiv.className = 'critical-notice';
+      noticeDiv.innerHTML = `<strong>⚠ Section 189A applies.</strong> Your retrenchment requires a <strong>mandatory 60-day consultation period</strong>. The CCMA must be notified and may appoint a facilitator. Employers may only dismiss employees after the 60-day period has elapsed. You should not be using this checklist alone — seek qualified legal assistance immediately.`;
+    } else {
+      noticeDiv.className = 'info-block';
+      noticeDiv.innerHTML = `<strong>Section 189 consultation:</strong> There is no prescribed minimum consultation period for s.189 retrenchments — but courts expect it to be genuinely meaningful. Multiple meetings are usually required. The process ends when consensus is reached, or when it becomes clear that consensus cannot be reached.`;
+    }
+    div.appendChild(noticeDiv);
+  }
+
+  // Checklist items
+  const ul = document.createElement('div');
+  ul.className = 'checklist';
+  phase.items.forEach(item => {
+    const li = document.createElement('div');
+    li.className = 'cli' + (item.critical?' critical':'') + (checks[item.id]?' checked':'');
+    li.id = 'cli_' + item.id;
+    li.innerHTML = `
+      <div class="cli-check">
+        <input type="checkbox" id="chk_${item.id}" ${checks[item.id]?'checked':''} onchange="toggleCheck('${item.id}')">
+      </div>
+      <div class="cli-body">
+        <label class="cli-text" for="chk_${item.id}">${item.text}</label>
+        <div class="cli-desc">${item.desc}</div>
+        <div class="cli-lra">${item.lra}</div>
+      </div>`;
+    ul.appendChild(li);
+  });
+  div.appendChild(ul);
+
+  // Notice block
+  if(phase.notice && phase.notice.text){
+    const nb = document.createElement('div');
+    nb.className = phase.notice.type === 'critical' ? 'critical-notice' : phase.notice.type === 'amber' ? 'amber-block' : 'info-block';
+    nb.innerHTML = phase.notice.text;
+    div.appendChild(nb);
+  }
+
+  // Severance calculator
+  if(phase.hasSeveranceCalc){
+    div.appendChild(buildSeveranceCalc());
+  }
+
+  // Nav
+  const nav = document.createElement('div');
+  nav.className = 'phase-nav';
+  const isLast = idx === PHASES.length - 1;
+  nav.innerHTML = `
+    <button class="nav-btn" onclick="renderPhase(${idx-1})">← Back</button>
+    <button class="nav-btn ${isLast?'success':'primary'}" onclick="renderPhase(${idx+1})">
+      ${isLast ? '✓ Complete checklist' : 'Next phase →'}
+    </button>`;
+  div.appendChild(nav);
+
+  container.appendChild(div);
+}
+
+window.toggleCheck = function(id){
+  checks[id] = !checks[id];
+  const li = $('cli_'+id);
+  if(li) li.classList.toggle('checked', checks[id]);
+  renderProgress();
+};
+
+// ═══════════════════════════════════════
+// SEVERANCE CALCULATOR
+// ═══════════════════════════════════════
+function buildSeveranceCalc(){
+  const wrap = document.createElement('div');
+  wrap.innerHTML = `
+    <div class="sev-card">
+      <div class="sev-title">📊 Severance Pay Calculator — BCEA s.41</div>
+      <div class="sev-grid">
+        <div class="sev-field">
+          <div class="sev-label">Monthly gross remuneration (R)</div>
+          <input id="sevSalary" class="sev-input" type="number" min="0" step="100" placeholder="e.g. 15000" oninput="calcSev()">
+        </div>
+        <div class="sev-field">
+          <div class="sev-label">Completed years of service</div>
+          <input id="sevYears" class="sev-input" type="number" min="0" step="1" placeholder="e.g. 7" oninput="calcSev()">
+        </div>
+        <div class="sev-field">
+          <div class="sev-label">Accrued annual leave (days)</div>
+          <input id="sevLeave" class="sev-input" type="number" min="0" step="0.5" placeholder="e.g. 10" oninput="calcSev()">
+        </div>
+        <div class="sev-field">
+          <div class="sev-label">Notice period (weeks)</div>
+          <input id="sevNotice" class="sev-input" type="number" min="0" max="52" step="1" placeholder="e.g. 4" oninput="calcSev()">
+        </div>
+      </div>
+      <div class="sev-results" id="sevResults">
+        <div style="color:rgba(255,255,255,.5);font-size:13px;text-align:center;padding:8px 0;">Enter salary and years of service above</div>
+      </div>
+      <div class="sev-note">Minimum only — employment contract or company policy may provide for more. Commission/bonus earners: use 13-week average remuneration (BCEA s.35(4)). Severance pay receives preferential tax treatment — first R500,000 may be tax-free (lifetime limit, first-time).</div>
+    </div>`;
+  return wrap;
+}
+
+window.calcSev = function(){
+  const salary = parseFloat($('sevSalary')?.value)||0;
+  const years  = parseInt($('sevYears')?.value)||0;
+  const leave  = parseFloat($('sevLeave')?.value)||0;
+  const notice = parseFloat($('sevNotice')?.value)||0;
+  const el     = $('sevResults');
+  if(!el || !salary) return;
+  if(!salary){
+    el.innerHTML = '<div style="color:rgba(255,255,255,.5);font-size:13px;text-align:center;padding:8px 0;">Enter salary above</div>';
+    return;
+  }
+
+  const weekPay     = salary / 4.333;
+  const dayPay      = salary / (4.333 * 5);
+  const sevPay      = weekPay * Math.max(years,0);
+  const leavePay    = dayPay * leave;
+  const noticePay   = weekPay * notice;
+  const total       = sevPay + leavePay + noticePay;
+
+  el.innerHTML = `
+    <div class="sev-result-row">
+      <span class="sev-result-label">Severance pay (${years} wk${years!==1?'s':''})</span>
+      <span class="sev-result-val">${fmtR(sevPay)}</span>
+    </div>
+    <div class="sev-result-row">
+      <span class="sev-result-label">Annual leave payout (${leave} days)</span>
+      <span class="sev-result-val">${fmtR(leavePay)}</span>
+    </div>
+    <div class="sev-result-row">
+      <span class="sev-result-label">Notice pay (${notice} weeks)</span>
+      <span class="sev-result-val">${fmtR(noticePay)}</span>
+    </div>
+    <div class="sev-total-row">
+      <span class="sev-total-label">Total minimum payout</span>
+      <span class="sev-total-val">${fmtR(total)}</span>
+    </div>`;
+};
+
+// ═══════════════════════════════════════
+// COMPLETE STATE
+// ═══════════════════════════════════════
+function renderComplete(container){
+  const total   = totalItems();
+  const checked = checkedCount();
+  const pct     = Math.round(checked/total*100);
+  const unchecked = total - checked;
+
+  const div = document.createElement('div');
+  div.className = 'complete-card';
+  div.innerHTML = `
+    <span class="complete-ico">${pct===100?'✅':'📋'}</span>
+    <div class="complete-h">${pct===100 ? 'Checklist complete' : `${checked} of ${total} items completed`}</div>
+    <div class="complete-sub">
+      ${pct===100
+        ? 'You have worked through all 6 phases of the retrenchment process. Keep all documentation on file for at least 3 years. Remember: employees have 12 months to refer an unfair dismissal dispute to the CCMA.'
+        : `You have ${unchecked} item${unchecked!==1?'s':''} still to complete. Review the unchecked items before finalising the retrenchment. Do not proceed with dismissal until all critical items (marked ⚠) are addressed.`
+      }
+    </div>
+    <div class="complete-actions">
+      <button class="complete-btn primary" onclick="window.print()">🖨️ Print checklist</button>
+      <button class="complete-btn" onclick="renderPhase(0)">↺ Start over</button>
+    </div>`;
+  container.appendChild(div);
+}
+
+// ═══════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════
+renderPhase(0);
+
+})();
+</script>
+</body>
+</html>

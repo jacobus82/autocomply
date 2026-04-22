@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>SA Leave Calculator — AutoComply</title>
+<meta name="description" content="Free BCEA leave entitlement calculator for South African employers and employees. Calculate annual, sick, family responsibility and maternity leave correctly under the Basic Conditions of Employment Act.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;700;800&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --navy:#0B1628;--blue:#1A56DB;--blue-soft:#EEF3FF;--blue-line:rgba(26,86,219,.15);
+  --green:#059669;--green-soft:#ECFDF5;--amber:#D97706;--amber-soft:#FEF3C7;
+  --red:#DC2626;--red-soft:#FEE2E2;--purple:#7C3AED;--purple-soft:#EDE9FE;
+  --teal:#0891B2;--teal-soft:#ECFEFF;--pink:#DB2777;--pink-soft:#FDF2F8;
+  --muted:#5A6A82;--muted2:#8A96A8;--border:#DDE5F0;--border-strong:#C5D1E4;
+  --bg:#F8FAFF;--bg2:#EEF3FF;--white:#fff;
+  --sh:0 1px 4px rgba(11,22,40,.07);--sh-strong:0 4px 20px rgba(11,22,40,.10);
+}
+html,body{background:var(--bg);color:var(--navy);font-family:'Outfit',sans-serif;-webkit-font-smoothing:antialiased;min-height:100vh;font-size:15px;line-height:1.5;}
+
+/* ─── TOPBAR ─── */
+.topbar{background:var(--navy);padding:14px 20px;}
+.topbar-inner{max-width:1040px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;}
+.brand{font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;color:#fff;letter-spacing:-.3px;text-decoration:none;}
+.brand span{color:#60AEFF;}
+.back{font-size:12.5px;color:rgba(255,255,255,.55);text-decoration:none;display:inline-flex;align-items:center;gap:6px;}
+.back:hover{color:#fff;}
+
+/* ─── HERO ─── */
+.hero{background:var(--navy);padding:34px 20px 56px;position:relative;overflow:hidden;}
+.hero::before{content:"";position:absolute;top:-100px;right:-80px;width:380px;height:380px;background:radial-gradient(circle,rgba(26,86,219,.15),transparent 70%);pointer-events:none;}
+.hero::after{content:"";position:absolute;bottom:-60px;left:-60px;width:260px;height:260px;background:radial-gradient(circle,rgba(5,150,105,.12),transparent 70%);pointer-events:none;}
+.hero-inner{max-width:1040px;margin:0 auto;position:relative;z-index:1;}
+.hero-tag{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:14px;}
+.hero-h{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(26px,5vw,38px);font-weight:800;color:#fff;letter-spacing:-.6px;line-height:1.15;margin-bottom:12px;max-width:760px;}
+.hero-sub{font-size:clamp(14px,2.2vw,16px);color:rgba(255,255,255,.65);max-width:660px;line-height:1.55;}
+
+/* ─── LAYOUT ─── */
+.wrap{max-width:1040px;margin:0 auto;padding:0 20px;}
+.main{margin-top:-34px;margin-bottom:32px;position:relative;z-index:2;}
+.main-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start;}
+@media(max-width:760px){.main-grid{grid-template-columns:1fr;}}
+
+.card{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:24px;box-shadow:var(--sh);}
+.card-h{font-family:'Bricolage Grotesque',sans-serif;font-size:17px;font-weight:700;color:var(--navy);margin-bottom:4px;letter-spacing:-.2px;}
+.card-sub{font-size:13px;color:var(--muted);margin-bottom:20px;line-height:1.55;}
+.section-tag{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:2.5px;text-transform:uppercase;color:var(--blue);margin-bottom:8px;}
+
+/* ─── INPUTS ─── */
+.fields{display:flex;flex-direction:column;gap:14px;}
+.field-label{font-size:12px;font-weight:600;color:var(--navy);margin-bottom:5px;display:flex;align-items:center;justify-content:space-between;}
+.field-hint{font-size:11px;color:var(--muted2);font-weight:500;}
+.input{width:100%;padding:10px 12px;font-family:'Outfit',sans-serif;font-size:14px;color:var(--navy);background:var(--bg);border:1px solid var(--border);border-radius:8px;outline:none;transition:all .15s;}
+.input:focus{border-color:var(--blue);background:var(--white);box-shadow:0 0 0 3px rgba(26,86,219,.12);}
+.input::placeholder{color:var(--muted2);}
+.select{width:100%;padding:10px 30px 10px 12px;font-family:'Outfit',sans-serif;font-size:14px;color:var(--navy);background:var(--bg) url("data:image/svg+xml;charset=US-ASCII,%3Csvg width='12' height='8' viewBox='0 0 12 8' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%235A6A82' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat right 12px center;border:1px solid var(--border);border-radius:8px;appearance:none;cursor:pointer;outline:none;transition:all .15s;}
+.select:focus{border-color:var(--blue);background-color:var(--white);}
+
+.toggle-row{display:grid;grid-template-columns:1fr 1fr;gap:0;background:var(--bg);border:1px solid var(--border);border-radius:9px;padding:3px;}
+.toggle-btn{font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;padding:8px 10px;border-radius:7px;cursor:pointer;border:none;background:transparent;color:var(--muted);transition:all .15s;text-align:center;}
+.toggle-btn.active{background:var(--navy);color:#fff;box-shadow:0 1px 4px rgba(11,22,40,.15);}
+
+.calc-btn{width:100%;font-family:'Bricolage Grotesque',sans-serif;font-size:15px;font-weight:700;padding:14px;border-radius:10px;cursor:pointer;border:none;background:linear-gradient(135deg,var(--blue),#1449B0);color:#fff;margin-top:6px;transition:all .15s;letter-spacing:-.1px;}
+.calc-btn:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(26,86,219,.3);}
+
+/* ─── RESULTS COLUMN ─── */
+.results-panel{display:flex;flex-direction:column;gap:14px;}
+
+/* Leave type card */
+.leave-card{border-radius:12px;overflow:hidden;border:1px solid var(--border);}
+.leave-card-header{padding:12px 16px;display:flex;align-items:center;gap:10px;}
+.leave-ico{width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.leave-card-name{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:2px;text-transform:uppercase;font-weight:700;}
+.leave-card-title{font-size:14px;font-weight:700;color:var(--navy);}
+.leave-card-body{padding:14px 16px;background:var(--white);}
+
+/* Annual leave */
+.leave-card.annual .leave-card-header{background:#EBF5FF;border-bottom:1px solid rgba(26,86,219,.12);}
+.leave-card.annual .leave-card-name{color:var(--blue);}
+.leave-card.annual .leave-ico{background:rgba(26,86,219,.1);}
+
+/* Sick leave */
+.leave-card.sick .leave-card-header{background:#ECFDF5;border-bottom:1px solid rgba(5,150,105,.12);}
+.leave-card.sick .leave-card-name{color:var(--green);}
+.leave-card.sick .leave-ico{background:rgba(5,150,105,.1);}
+
+/* Family responsibility */
+.leave-card.family .leave-card-header{background:#FEF3C7;border-bottom:1px solid rgba(217,119,6,.12);}
+.leave-card.family .leave-card-name{color:var(--amber);}
+.leave-card.family .leave-ico{background:rgba(217,119,6,.1);}
+
+/* Maternity */
+.leave-card.maternity .leave-card-header{background:#FDF2F8;border-bottom:1px solid rgba(219,39,119,.12);}
+.leave-card.maternity .leave-card-name{color:var(--pink);}
+.leave-card.maternity .leave-ico{background:rgba(219,39,119,.1);}
+
+/* Parental */
+.leave-card.parental .leave-card-header{background:#EDE9FE;border-bottom:1px solid rgba(124,58,237,.12);}
+.leave-card.parental .leave-card-name{color:var(--purple);}
+.leave-card.parental .leave-ico{background:rgba(124,58,237,.1);}
+
+/* Figures */
+.leave-figures{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
+.leave-fig{background:var(--bg);border-radius:8px;padding:10px 12px;}
+.leave-fig-val{font-family:'Bricolage Grotesque',sans-serif;font-size:22px;font-weight:800;color:var(--navy);letter-spacing:-.5px;line-height:1;}
+.leave-fig-unit{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted2);margin-top:3px;}
+.leave-bcea{font-size:11.5px;color:var(--muted);line-height:1.55;}
+.leave-bcea strong{color:var(--navy);font-weight:600;}
+.leave-note{background:var(--amber-soft);border:1px solid rgba(217,119,6,.2);border-radius:7px;padding:8px 12px;font-size:12px;color:#78350F;line-height:1.5;margin-top:10px;}
+.leave-note.info{background:var(--blue-soft);border-color:var(--blue-line);color:#1E3A8A;}
+.leave-note.green{background:var(--green-soft);border-color:rgba(5,150,105,.2);color:#065F46;}
+
+/* Sick leave phases */
+.sick-phases{display:flex;flex-direction:column;gap:8px;margin-bottom:12px;}
+.sick-phase{border-radius:8px;padding:10px 12px;border:1px solid var(--border);}
+.sick-phase-label{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:5px;}
+.sick-phase-val{font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;color:var(--navy);letter-spacing:-.4px;}
+.sick-phase-sub{font-size:12px;color:var(--muted);margin-top:2px;}
+.sick-phase.active{background:var(--green-soft);border-color:rgba(5,150,105,.25);}
+.sick-phase.active .sick-phase-label{color:var(--green);}
+.sick-phase.active .sick-phase-val{color:var(--green);}
+
+/* Summary bar */
+.summary-card{background:var(--navy);border-radius:14px;padding:20px;color:#fff;}
+.summary-title{font-family:'Bricolage Grotesque',sans-serif;font-size:15px;font-weight:700;margin-bottom:14px;letter-spacing:-.2px;}
+.summary-rows{display:flex;flex-direction:column;gap:8px;}
+.summary-row{display:flex;align-items:center;justify-content:space-between;gap:8px;}
+.summary-row-label{font-size:13px;color:rgba(255,255,255,.7);display:flex;align-items:center;gap:7px;}
+.summary-row-val{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:#fff;}
+.summary-divider{height:1px;background:rgba(255,255,255,.1);margin:6px 0;}
+.copy-summary-btn{width:100%;font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;padding:10px;border-radius:8px;cursor:pointer;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.08);color:#fff;margin-top:14px;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:6px;}
+.copy-summary-btn:hover{background:rgba(255,255,255,.15);}
+.copy-summary-btn.copied{background:rgba(5,150,105,.3);border-color:rgba(5,150,105,.4);}
+
+/* Empty state */
+.empty-state{background:var(--white);border:1px dashed var(--border);border-radius:14px;padding:40px 24px;text-align:center;color:var(--muted);}
+.empty-icon{font-size:40px;margin-bottom:12px;opacity:.5;}
+.empty-text{font-size:14px;line-height:1.6;}
+
+/* ─── REFERENCE TABLE ─── */
+.ref-table{width:100%;border-collapse:collapse;font-size:13px;}
+.ref-table th{background:var(--navy);color:#fff;padding:9px 12px;text-align:left;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:1.5px;text-transform:uppercase;font-weight:600;}
+.ref-table td{padding:9px 12px;border-bottom:1px solid var(--border);color:var(--navy);vertical-align:top;}
+.ref-table tr:last-child td{border-bottom:none;}
+.ref-table tr:nth-child(even) td{background:var(--bg);}
+.ref-table .bcea-ref{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--blue);font-weight:600;}
+
+/* ─── CTA ─── */
+.cta-inner{background:var(--navy);border-radius:16px;padding:28px 26px;text-align:center;position:relative;overflow:hidden;margin-bottom:30px;}
+.cta-inner::before{content:"";position:absolute;top:-80px;left:-80px;width:240px;height:240px;background:radial-gradient(circle,rgba(26,86,219,.28),transparent 70%);pointer-events:none;}
+.cta-h{font-family:'Bricolage Grotesque',sans-serif;font-size:21px;font-weight:700;color:#fff;margin-bottom:8px;letter-spacing:-.3px;position:relative;z-index:1;}
+.cta-sub{font-size:14px;color:rgba(255,255,255,.65);margin-bottom:18px;max-width:520px;margin-left:auto;margin-right:auto;position:relative;z-index:1;line-height:1.55;}
+.cta-btn{display:inline-flex;align-items:center;gap:8px;background:#25D366;color:#fff;font-family:'Outfit',sans-serif;font-size:14px;font-weight:600;padding:12px 22px;border-radius:9px;text-decoration:none;position:relative;z-index:1;transition:transform .15s;}
+.cta-btn:hover{transform:translateY(-1px);}
+
+.foot{max-width:1040px;margin:0 auto;padding:26px 20px;text-align:center;font-size:12px;color:var(--muted2);border-top:1px solid var(--border);}
+.foot a{color:var(--muted);text-decoration:none;font-weight:600;}
+.fine{font-size:11px;margin-top:8px;line-height:1.55;max-width:660px;margin-left:auto;margin-right:auto;}
+
+@media(max-width:600px){
+  .card{padding:18px 16px;}
+  .hero{padding:28px 20px 50px;}
+  .main{margin-top:-28px;}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <a href="https://autocomply.co.za" class="brand">Auto<span>Comply</span></a>
+    <a href="https://autocomply.co.za/#tools" class="back">← All tools</a>
+  </div>
+</div>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-tag">Free Tool · BCEA Leave Calculator</div>
+    <h1 class="hero-h">Calculate employee leave correctly under the BCEA.</h1>
+    <p class="hero-sub">Annual, sick, family responsibility, maternity and parental leave — all calculated to the correct BCEA standard. Includes pro-rata for new starters and the often-misunderstood sick leave cycle.</p>
+  </div>
+</section>
+
+<main class="main wrap">
+<div class="main-grid">
+
+  <!-- ─── INPUTS ─── -->
+  <div>
+    <div class="card" style="margin-bottom:16px;">
+      <div class="card-h">Employee details</div>
+      <div class="card-sub">Fill in the employee's details to calculate their leave entitlements.</div>
+      <div class="fields">
+
+        <div>
+          <div class="field-label"><span>Employee start date</span><span class="field-hint">used for pro-rata + sick leave cycle</span></div>
+          <input id="startDate" class="input" type="date">
+        </div>
+
+        <div>
+          <div class="field-label"><span>Working days per week</span></div>
+          <div class="toggle-row">
+            <button class="toggle-btn active" id="btn5" onclick="setDays(5)">5 days / week</button>
+            <button class="toggle-btn" id="btn6" onclick="setDays(6)">6 days / week</button>
+          </div>
+        </div>
+
+        <div>
+          <div class="field-label"><span>Working hours per day</span><span class="field-hint">for hourly calculations</span></div>
+          <select id="hoursDay" class="select">
+            <option value="8" selected>8 hours (standard)</option>
+            <option value="9">9 hours</option>
+            <option value="10">10 hours</option>
+            <option value="7">7 hours</option>
+            <option value="6">6 hours</option>
+            <option value="4">4 hours (half day)</option>
+          </select>
+        </div>
+
+        <div>
+          <div class="field-label"><span>Annual leave cycle</span><span class="field-hint">usually 12 months from start date</span></div>
+          <select id="leaveCycle" class="select">
+            <option value="anniversary">Anniversary of start date (most common)</option>
+            <option value="jan">1 January – 31 December</option>
+            <option value="mar">1 March – 28 February</option>
+            <option value="jul">1 July – 30 June</option>
+          </select>
+        </div>
+
+        <div>
+          <div class="field-label"><span>Is this employee a domestic worker?</span><span class="field-hint">different rules apply under BCEA Sectoral Determination 7</span></div>
+          <div class="toggle-row">
+            <button class="toggle-btn active" id="btnNoDom" onclick="setDomestic(false)">No</button>
+            <button class="toggle-btn" id="btnDom" onclick="setDomestic(true)">Yes</button>
+          </div>
+        </div>
+
+        <button class="calc-btn" onclick="calculate()">Calculate leave entitlements</button>
+      </div>
+    </div>
+
+    <!-- Reference card -->
+    <div class="card">
+      <div class="card-h">BCEA Leave Reference</div>
+      <div class="card-sub" style="margin-bottom:14px;">Key entitlements under the Basic Conditions of Employment Act 75 of 1997.</div>
+      <table class="ref-table">
+        <thead>
+          <tr><th>Leave Type</th><th>Entitlement</th><th>BCEA</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Annual</strong></td>
+            <td>21 consecutive days (15 working days on 5-day week)</td>
+            <td class="bcea-ref">S.20</td>
+          </tr>
+          <tr>
+            <td><strong>Sick (cycle 1–6m)</strong></td>
+            <td>1 day per 26 days worked</td>
+            <td class="bcea-ref">S.22(2)</td>
+          </tr>
+          <tr>
+            <td><strong>Sick (after 6m)</strong></td>
+            <td>30 working days in 3-year cycle</td>
+            <td class="bcea-ref">S.22(1)</td>
+          </tr>
+          <tr>
+            <td><strong>Family Resp.</strong></td>
+            <td>3 days per year (5+ day/week employees)</td>
+            <td class="bcea-ref">S.27</td>
+          </tr>
+          <tr>
+            <td><strong>Maternity</strong></td>
+            <td>4 consecutive months (unpaid unless agreed)</td>
+            <td class="bcea-ref">S.25</td>
+          </tr>
+          <tr>
+            <td><strong>Parental</strong></td>
+            <td>10 consecutive days (unpaid / UIF)</td>
+            <td class="bcea-ref">S.25A</td>
+          </tr>
+          <tr>
+            <td><strong>Adoption</strong></td>
+            <td>10 consecutive days (primary caregiver, unpaid / UIF)</td>
+            <td class="bcea-ref">S.25B</td>
+          </tr>
+          <tr>
+            <td><strong>Commission Parental</strong></td>
+            <td>10 consecutive days (surrogacy, unpaid / UIF)</td>
+            <td class="bcea-ref">S.25C</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ─── RESULTS ─── -->
+  <div>
+    <div class="results-panel" id="resultsPanel">
+      <div class="empty-state">
+        <div class="empty-icon">📅</div>
+        <div class="empty-text">Fill in the employee details on the left and click<br><strong>"Calculate leave entitlements"</strong> to see results.</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</main>
+
+<div class="wrap">
+  <div class="cta-inner">
+    <div class="cta-h">Need help with employment contracts or leave policies?</div>
+    <p class="cta-sub">A correct leave calculation is the start. A properly structured leave policy — documented, signed, and BCEA-compliant — protects you at the CCMA. We can help you build one.</p>
+    <a href="https://wa.me/27670113108?text=Hi%20AutoComply%2C%20I%20used%20the%20Leave%20Calculator%20and%20need%20help%20with%20my%20leave%20policy%20or%20employment%20contracts." class="cta-btn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Chat on WhatsApp
+    </a>
+  </div>
+</div>
+
+<div class="foot">
+  AutoComply · <a href="https://autocomply.co.za">autocomply.co.za</a>
+  <div class="fine">Calculations are based on the Basic Conditions of Employment Act 75 of 1997 and its amendments. This tool is for guidance only and does not constitute legal advice. Sectoral Determinations, collective agreements, and individual employment contracts may provide more favourable terms — always apply the most beneficial condition for the employee. Consult a labour law specialist for complex situations.</div>
+</div>
+
+<script>
+(function(){
+  let workDays = 5;
+  let isDomestic = false;
+
+  window.setDays = function(d){
+    workDays = d;
+    document.getElementById('btn5').classList.toggle('active', d===5);
+    document.getElementById('btn6').classList.toggle('active', d===6);
+  };
+  window.setDomestic = function(v){
+    isDomestic = v;
+    document.getElementById('btnDom').classList.toggle('active', v);
+    document.getElementById('btnNoDom').classList.toggle('active', !v);
+  };
+
+  // ─── HELPERS ───
+  function today(){ return new Date(); }
+  function daysBetween(a,b){ return Math.floor((b-a)/(1000*60*60*24)); }
+  function monthsBetween(a,b){
+    let months = (b.getFullYear()-a.getFullYear())*12 + (b.getMonth()-a.getMonth());
+    if(b.getDate() < a.getDate()) months--;
+    return Math.max(0, months);
+  }
+  function fmt(n, decimals=1){
+    if(Number.isInteger(n)) return n.toString();
+    return n.toFixed(decimals).replace(/\.0$/,'');
+  }
+  function fmtDays(n){ return fmt(n) + (Math.abs(n)===1?' day':' days'); }
+
+  // ─── CALCULATE ───
+  window.calculate = function(){
+    const startInput = document.getElementById('startDate').value;
+    if(!startInput){ alert('Please select an employee start date.'); return; }
+
+    const start = new Date(startInput + 'T00:00:00');
+    const now   = today();
+    now.setHours(0,0,0,0);
+
+    if(start > now){ alert('Start date cannot be in the future.'); return; }
+
+    const hoursDay   = parseInt(document.getElementById('hoursDay').value);
+    const cycleType  = document.getElementById('leaveCycle').value;
+    const totalDaysWorked = daysBetween(start, now);
+    const monthsWorked    = monthsBetween(start, now);
+    const yearsWorked     = monthsWorked / 12;
+    const isOver6Months   = monthsWorked >= 6;
+    const isOver12Months  = monthsWorked >= 12;
+
+    // ─── ANNUAL LEAVE ───
+    // BCEA s.20: 21 consecutive days per cycle = 15 working days (5-day) or 18 working days (6-day)
+    // Domestic workers: 21 days regardless
+    const annualDaysPerCycle = workDays === 6 ? 18 : 15;
+    const annualHoursPerCycle = annualDaysPerCycle * hoursDay;
+
+    // Accrual rate: 1 day per 17 working days, or 1 hour per 17 hours
+    const accrualRateDays = 1 / 17; // days per day worked (working days only approx)
+
+    // Pro-rata: days worked * workDays/7 * accrualRate
+    // More precisely: BCEA allows 1 day per 17 days worked regardless
+    const workingDaysWorked = Math.round(totalDaysWorked * (workDays / 7));
+    let annualAccrued = Math.min(workingDaysWorked / 17, annualDaysPerCycle * Math.ceil(yearsWorked || 1));
+    // Cap at current cycle entitlement
+    annualAccrued = Math.min(annualAccrued, annualDaysPerCycle);
+    annualAccrued = Math.round(annualAccrued * 10) / 10;
+
+    // Annual leave cycle start for current year
+    let cycleStart;
+    if(cycleType === 'anniversary'){
+      cycleStart = new Date(start);
+      cycleStart.setFullYear(now.getFullYear());
+      if(cycleStart > now) cycleStart.setFullYear(now.getFullYear()-1);
+    } else {
+      const monthMap = {jan:0, mar:2, jul:6};
+      const cm = monthMap[cycleType];
+      cycleStart = new Date(now.getFullYear(), cm, 1);
+      if(cycleStart > now) cycleStart.setFullYear(now.getFullYear()-1);
+    }
+    const daysSinceCycleStart = daysBetween(cycleStart, now);
+    const workDaysSinceCycleStart = Math.round(daysSinceCycleStart * (workDays / 7));
+    let annualCurrentCycle = Math.min(workDaysSinceCycleStart / 17, annualDaysPerCycle);
+    annualCurrentCycle = Math.round(annualCurrentCycle * 10) / 10;
+
+    // ─── SICK LEAVE ───
+    // BCEA s.22: first 6 months: 1 day per 26 days worked
+    //            after 6 months: 30 days in 3-year cycle (36 if 6-day week)
+    const sickCycleFullDays = workDays === 6 ? 36 : 30;
+    // Current sick leave phase
+    let sickPhase, sickAccrued, sickCycleTotal, sickCycleRemaining;
+    const sickCycleStart3yr = new Date(start);
+    const sickCycleMark = monthsWorked % 36; // position in current 3-year cycle
+
+    if(!isOver6Months){
+      sickPhase = 1;
+      // 1 day per 26 days worked
+      sickAccrued = Math.floor(workingDaysWorked / 26);
+      sickCycleTotal = null;
+    } else {
+      sickPhase = 2;
+      // Which 3-year cycle are we in?
+      const cycleNumber = Math.floor(monthsWorked / 36);
+      const monthsIntoCurrentCycle = monthsWorked - (cycleNumber * 36);
+      const daysIntoCurrentCycle = Math.round(monthsIntoCurrentCycle * (workDays === 6 ? 26 : 21.7));
+      sickAccrued = Math.min(Math.round(daysIntoCurrentCycle / (workDays===6?36:30) * sickCycleFullDays * 10)/10, sickCycleFullDays);
+      sickCycleTotal = sickCycleFullDays;
+    }
+
+    // ─── FAMILY RESPONSIBILITY ───
+    // BCEA s.27: 3 days per year, only if employee works 4+ days per week
+    const familyEntitlement = workDays >= 4 ? 3 : 0;
+    // Qualified uses: birth of child, illness/death of family member
+    const familyAccrued = isOver12Months ? 3 : monthsWorked >= 1 ? 3 : 0;
+
+    // ─── MATERNITY ───
+    // BCEA s.25: 4 consecutive months. At least 4 weeks before expected date.
+    // Unpaid unless employment contract says otherwise. UIF pays 38–60% of salary.
+    const maternityWeeks = 16; // ~4 months
+
+    // ─── PARENTAL / ADOPTION / COMMISSIONING ───
+    // BCEA s.25A/B/C: 10 consecutive days (unpaid / UIF)
+
+    // ─── DOMESTIC WORKER ADJUSTMENTS ───
+    // Sectoral Determination 7: annual leave = 21 days regardless of work week pattern
+    // Sick leave same as BCEA
+    const annualDaysActual = isDomestic ? 21 : annualDaysPerCycle;
+
+    // ─── RENDER ───
+    renderResults({
+      start, now, monthsWorked, yearsWorked, isOver6Months, isOver12Months,
+      workDays, hoursDay, isDomestic,
+      annualDaysPerCycle: annualDaysActual,
+      annualHoursPerCycle: annualDaysActual * hoursDay,
+      annualCurrentCycle: isDomestic ? Math.min(annualCurrentCycle * (21/annualDaysPerCycle), 21) : annualCurrentCycle,
+      sickPhase, sickAccrued, sickCycleTotal, sickCycleFullDays,
+      familyEntitlement, familyAccrued,
+      maternityWeeks,
+      workingDaysWorked, totalDaysWorked
+    });
+  };
+
+  // ─── RENDER RESULTS ───
+  function renderResults(d){
+    const panel = document.getElementById('resultsPanel');
+
+    const monthsLabel = d.monthsWorked === 1 ? '1 month' : d.monthsWorked < 12
+      ? `${d.monthsWorked} months`
+      : `${Math.floor(d.monthsWorked/12)} yr ${d.monthsWorked%12} mo`;
+
+    const startFmt = d.start.toLocaleDateString('en-ZA', {day:'numeric',month:'long',year:'numeric'});
+
+    // ── ANNUAL LEAVE CARD ──
+    const annualNote = d.isDomestic
+      ? '<div class="leave-note">Domestic workers are entitled to 21 working days per year regardless of work week pattern — Sectoral Determination 7.</div>'
+      : d.workDays === 6
+        ? '<div class="leave-note info">6-day week employees accrue 18 working days of annual leave per cycle (= 21 consecutive calendar days including Saturdays). BCEA s.20.</div>'
+        : '';
+
+    const annualCard = `
+      <div class="leave-card annual">
+        <div class="leave-card-header">
+          <div class="leave-ico">🏖️</div>
+          <div>
+            <div class="leave-card-name">Annual Leave · BCEA s.20</div>
+            <div class="leave-card-title">Paid annual leave</div>
+          </div>
+        </div>
+        <div class="leave-card-body">
+          <div class="leave-figures">
+            <div class="leave-fig">
+              <div class="leave-fig-val">${d.annualDaysPerCycle}</div>
+              <div class="leave-fig-unit">days per cycle</div>
+            </div>
+            <div class="leave-fig">
+              <div class="leave-fig-val">${d.annualHoursPerCycle}</div>
+              <div class="leave-fig-unit">hours per cycle</div>
+            </div>
+          </div>
+          <div class="leave-bcea">
+            Accrual: <strong>1 day for every 17 days worked</strong> (1 hour per 17 hours worked). Leave cycle: <strong>${d.workDays === 6 ? '18 working days' : '15 working days'}</strong> = 21 consecutive days.<br><br>
+            ${d.isOver12Months
+              ? `Full cycle entitlement: <strong>${d.annualDaysPerCycle} days</strong>. Employee has been employed for <strong>${monthsLabel}</strong>.`
+              : `Pro-rata since ${startFmt}: <strong>${fmt(d.annualCurrentCycle)} days</strong> accrued so far this cycle (${d.workingDaysWorked} working days worked ÷ 17).`
+            }
+          </div>
+          ${annualNote}
+          <div class="leave-note" style="margin-top:10px;">⚠ Annual leave cannot be paid out instead of taken (except on termination). It must be taken within 6 months of the end of the leave cycle — BCEA s.20(4).</div>
+        </div>
+      </div>`;
+
+    // ── SICK LEAVE CARD ──
+    const phase1Active = !d.isOver6Months;
+    const phase2Active =  d.isOver6Months;
+    const phase1Val = phase1Active ? `${d.sickAccrued} day${d.sickAccrued!==1?'s':''}` : '—';
+    const phase1Sub = phase1Active
+      ? `${d.workingDaysWorked} days worked ÷ 26`
+      : 'First 6 months of employment only';
+    const phase2Val = phase2Active ? `${d.sickCycleFullDays} days` : '—';
+    const phase2Sub = phase2Active
+      ? `Per 3-year sick leave cycle — resets every 3 years`
+      : 'Starts after 6 months of employment';
+
+    const sickCard = `
+      <div class="leave-card sick">
+        <div class="leave-card-header">
+          <div class="leave-ico">🤒</div>
+          <div>
+            <div class="leave-card-name">Sick Leave · BCEA s.22</div>
+            <div class="leave-card-title">Paid sick leave</div>
+          </div>
+        </div>
+        <div class="leave-card-body">
+          <div class="sick-phases">
+            <div class="sick-phase ${phase1Active?'active':''}">
+              <div class="sick-phase-label">Phase 1 — First 6 months ${phase1Active?'· CURRENT':''}</div>
+              <div class="sick-phase-val">${phase1Val}</div>
+              <div class="sick-phase-sub">${phase1Sub}</div>
+            </div>
+            <div class="sick-phase ${phase2Active?'active':''}">
+              <div class="sick-phase-label">Phase 2 — After 6 months ${phase2Active?'· CURRENT':''}</div>
+              <div class="sick-phase-val">${phase2Val}</div>
+              <div class="sick-phase-sub">${phase2Sub}</div>
+            </div>
+          </div>
+          <div class="leave-bcea">
+            ${phase1Active
+              ? `<strong>Currently in Phase 1</strong> (employed ${monthsLabel}). Entitlement: <strong>1 day per 26 days worked</strong> = <strong>${d.sickAccrued} day${d.sickAccrued!==1?'s':''}</strong> so far.`
+              : `<strong>Currently in Phase 2</strong>. Full sick leave cycle: <strong>${d.sickCycleFullDays} days</strong> per 3-year cycle. The 3-year cycle resets from the start date.`
+            }
+          </div>
+          <div class="leave-note" style="margin-top:10px;">After 2 consecutive sick days (or on the first day of sick leave on a Monday or after a public holiday), the employer may require a medical certificate — BCEA s.23.</div>
+        </div>
+      </div>`;
+
+    // ── FAMILY RESPONSIBILITY ──
+    const famCard = `
+      <div class="leave-card family">
+        <div class="leave-card-header">
+          <div class="leave-ico">👨‍👩‍👧</div>
+          <div>
+            <div class="leave-card-name">Family Responsibility · BCEA s.27</div>
+            <div class="leave-card-title">Paid family responsibility leave</div>
+          </div>
+        </div>
+        <div class="leave-card-body">
+          <div class="leave-figures">
+            <div class="leave-fig">
+              <div class="leave-fig-val">${d.familyEntitlement}</div>
+              <div class="leave-fig-unit">days per year</div>
+            </div>
+            <div class="leave-fig">
+              <div class="leave-fig-val">${d.familyEntitlement}</div>
+              <div class="leave-fig-unit">unpaid (UIF claim)</div>
+            </div>
+          </div>
+          <div class="leave-bcea">
+            ${d.workDays < 4
+              ? '<strong>Note:</strong> Family responsibility leave only applies to employees who work <strong>4 or more days per week</strong>. This employee works fewer days and is therefore not entitled under BCEA s.27.'
+              : `<strong>3 days per year</strong>. Applicable when: (1) birth of the employee's child, (2) illness of a child, or (3) death of a spouse, life partner, parent, adopted parent, grandparent, child, adopted child, grandchild, or sibling.`
+            }
+          </div>
+          ${d.workDays >= 4 ? '<div class="leave-note">Unused family responsibility leave does not accumulate — it expires at the end of each year. Employer may require proof (e.g. death certificate, medical certificate for sick child).</div>' : ''}
+        </div>
+      </div>`;
+
+    // ── MATERNITY ──
+    const matCard = `
+      <div class="leave-card maternity">
+        <div class="leave-card-header">
+          <div class="leave-ico">🤱</div>
+          <div>
+            <div class="leave-card-name">Maternity Leave · BCEA s.25</div>
+            <div class="leave-card-title">Unpaid (UIF-funded) maternity leave</div>
+          </div>
+        </div>
+        <div class="leave-card-body">
+          <div class="leave-figures">
+            <div class="leave-fig">
+              <div class="leave-fig-val">4</div>
+              <div class="leave-fig-unit">consecutive months</div>
+            </div>
+            <div class="leave-fig">
+              <div class="leave-fig-val">≥6 wks</div>
+              <div class="leave-fig-unit">must be post-birth</div>
+            </div>
+          </div>
+          <div class="leave-bcea">
+            Any pregnant employee is entitled to <strong>4 consecutive months</strong> of maternity leave. Must start at least <strong>4 weeks before the expected birth date</strong>. At least <strong>6 weeks must be taken after the birth</strong>.
+          </div>
+          <div class="leave-note green">Maternity leave is <strong>unpaid by the employer</strong> under BCEA unless the employment contract provides otherwise. The employee can claim <strong>UIF maternity benefits</strong> (38–60% of salary for up to 17.32 weeks).</div>
+        </div>
+      </div>`;
+
+    // ── PARENTAL / OTHER ──
+    const parentCard = `
+      <div class="leave-card parental">
+        <div class="leave-card-header">
+          <div class="leave-ico">👶</div>
+          <div>
+            <div class="leave-card-name">Parental · Adoption · Commissioning · BCEA s.25A/B/C</div>
+            <div class="leave-card-title">Parental and other leave (unpaid / UIF)</div>
+          </div>
+        </div>
+        <div class="leave-card-body">
+          <div class="leave-figures">
+            <div class="leave-fig">
+              <div class="leave-fig-val">10</div>
+              <div class="leave-fig-unit">consecutive days</div>
+            </div>
+            <div class="leave-fig">
+              <div class="leave-fig-val">Unpaid</div>
+              <div class="leave-fig-unit">at full salary</div>
+            </div>
+          </div>
+          <div class="leave-bcea">
+            <strong>Parental leave (s.25A):</strong> 10 consecutive days for any employee who is a parent (but not on maternity leave). Applies from birth or adoption.<br><br>
+            <strong>Adoption leave (s.25B):</strong> 10 consecutive days — for the primary caregiver who is not the birth parent, on placement of a child under 2 years old.<br><br>
+            <strong>Commissioning parental leave (s.25C):</strong> 10 consecutive days for a commissioning parent in a surrogacy arrangement.
+          </div>
+          <div class="leave-note info"><strong>All parental leave under ss.25A/B/C is unpaid by the employer</strong> — the same as maternity leave. Employees claim UIF parental benefits (a percentage of salary for the leave period). Note a landmark ConCourt ruling (October 2025) entitles all parents collectively to 4 months + 10 days of parental leave, shareable between them — Parliament has 36 months to enact remedial legislation.</div>
+        </div>
+      </div>`;
+
+    // ── SUMMARY CARD ──
+    const annualDisp = d.isOver12Months ? `${d.annualDaysPerCycle} days / cycle` : `${fmt(d.annualCurrentCycle)} days (pro-rata)`;
+    const sickDisp   = d.isOver6Months ? `${d.sickCycleFullDays} days / 3-yr cycle` : `${d.sickAccrued} days (first 6m)`;
+
+    const summaryCard = `
+      <div class="summary-card">
+        <div class="summary-title">📋 Leave Summary</div>
+        <div class="summary-rows">
+          <div class="summary-row">
+            <span class="summary-row-label">🏖️ Annual leave</span>
+            <span class="summary-row-val">${annualDisp}</span>
+          </div>
+          <div class="summary-row">
+            <span class="summary-row-label">🤒 Sick leave</span>
+            <span class="summary-row-val">${sickDisp}</span>
+          </div>
+          <div class="summary-row">
+            <span class="summary-row-label">👨‍👩‍👧 Family resp.</span>
+            <span class="summary-row-val">${d.familyEntitlement} days / year</span>
+          </div>
+          <div class="summary-divider"></div>
+          <div class="summary-row">
+            <span class="summary-row-label" style="font-size:12px;color:rgba(255,255,255,.5);">Start date</span>
+            <span class="summary-row-val" style="font-size:12px;">${startFmt}</span>
+          </div>
+          <div class="summary-row">
+            <span class="summary-row-label" style="font-size:12px;color:rgba(255,255,255,.5);">Service length</span>
+            <span class="summary-row-val" style="font-size:12px;">${monthsLabel}</span>
+          </div>
+          <div class="summary-row">
+            <span class="summary-row-label" style="font-size:12px;color:rgba(255,255,255,.5);">Work pattern</span>
+            <span class="summary-row-val" style="font-size:12px;">${d.workDays} days × ${d.hoursDay}hrs</span>
+          </div>
+          <div class="summary-row">
+            <span class="summary-row-label" style="font-size:12px;color:rgba(255,255,255,.5);">Sick leave phase</span>
+            <span class="summary-row-val" style="font-size:12px;">${d.isOver6Months ? 'Phase 2 (3-yr cycle)' : 'Phase 1 (first 6m)'}</span>
+          </div>
+        </div>
+        <button class="copy-summary-btn" id="copySummaryBtn">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          Copy summary
+        </button>
+      </div>`;
+
+    panel.innerHTML = annualCard + sickCard + famCard + matCard + parentCard + summaryCard;
+
+    // Copy summary
+    document.getElementById('copySummaryBtn').addEventListener('click', async () => {
+      const text = [
+        'LEAVE ENTITLEMENT SUMMARY — AutoComply',
+        `Start date: ${startFmt}`,
+        `Service: ${monthsLabel}`,
+        `Work pattern: ${d.workDays} days/week × ${d.hoursDay} hours/day`,
+        '',
+        `Annual leave: ${annualDisp}`,
+        `Sick leave: ${sickDisp}`,
+        `Family responsibility: ${d.familyEntitlement} days / year`,
+        `Maternity leave: 4 consecutive months (unpaid / UIF claim)`,
+        `Parental leave: 10 consecutive days (unpaid / UIF)`,
+        '',
+        'Calculated under BCEA 75 of 1997',
+        'autocomply.co.za',
+      ].join('\n');
+      try { await navigator.clipboard.writeText(text); } catch {
+        const ta = document.createElement('textarea');
+        ta.value = text; document.body.appendChild(ta); ta.select();
+        try{document.execCommand('copy');}catch(_){} document.body.removeChild(ta);
+      }
+      const btn = document.getElementById('copySummaryBtn');
+      btn.classList.add('copied');
+      btn.textContent = '✓ Copied!';
+      setTimeout(() => {
+        btn.classList.remove('copied');
+        btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy summary';
+      }, 2000);
+    });
+
+    // Scroll to results on mobile
+    if(window.innerWidth < 760){
+      panel.scrollIntoView({behavior:'smooth', block:'start'});
+    }
+  }
+
+  // Set today's date as default start date
+  const d = new Date();
+  d.setMonth(d.getMonth() - 8); // default: 8 months ago for a useful demo
+  document.getElementById('startDate').valueAsDate = d;
+})();
+</script>
+</body>
+</html>

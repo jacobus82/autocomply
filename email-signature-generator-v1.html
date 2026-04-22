@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Business Email Signature Generator — AutoComply</title>
+<meta name="description" content="Free professional email signature generator for South African businesses. Fill in your details, pick a style, copy the HTML — ready in minutes.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;700;800&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --navy:#0B1628;--navy-soft:#1A2842;--blue:#1A56DB;--blue-soft:#EEF3FF;
+  --blue-line:rgba(26,86,219,.15);--green:#059669;--green-soft:#ECFDF5;
+  --amber:#D97706;--amber-soft:#FEF3C7;--red:#DC2626;--red-soft:#FEE2E2;
+  --muted:#5A6A82;--muted2:#8A96A8;--border:#DDE5F0;--border-strong:#C5D1E4;
+  --bg:#F8FAFF;--bg2:#EEF3FF;--white:#fff;
+  --sh:0 1px 4px rgba(11,22,40,.07);--sh-strong:0 4px 20px rgba(11,22,40,.10);
+}
+html,body{background:var(--bg);color:var(--navy);font-family:'Outfit',sans-serif;-webkit-font-smoothing:antialiased;min-height:100vh;font-size:15px;line-height:1.5;}
+
+/* ─── TOPBAR ─── */
+.topbar{background:var(--navy);padding:14px 20px;}
+.topbar-inner{max-width:1060px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;}
+.brand{font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;color:#fff;letter-spacing:-.3px;text-decoration:none;}
+.brand span{color:#60AEFF;}
+.back{font-size:12.5px;color:rgba(255,255,255,.55);text-decoration:none;display:inline-flex;align-items:center;gap:6px;}
+.back:hover{color:#fff;}
+
+/* ─── HERO ─── */
+.hero{background:var(--navy);padding:34px 20px 56px;position:relative;overflow:hidden;}
+.hero::before{content:"";position:absolute;top:-100px;right:-100px;width:400px;height:400px;background:radial-gradient(circle,rgba(26,86,219,.15),transparent 70%);pointer-events:none;}
+.hero-inner{max-width:1060px;margin:0 auto;position:relative;z-index:1;}
+.hero-tag{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:14px;}
+.hero-h{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(26px,5vw,38px);font-weight:800;color:#fff;letter-spacing:-.6px;line-height:1.15;margin-bottom:12px;max-width:720px;}
+.hero-sub{font-size:clamp(14px,2.2vw,16px);color:rgba(255,255,255,.65);max-width:640px;line-height:1.55;}
+
+/* ─── LAYOUT ─── */
+.wrap{max-width:1060px;margin:0 auto;padding:0 20px;}
+.main{margin-top:-34px;margin-bottom:32px;position:relative;z-index:2;}
+.main-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start;}
+@media(max-width:820px){.main-grid{grid-template-columns:1fr;}}
+
+.card{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:24px;box-shadow:var(--sh);}
+.card-h{font-family:'Bricolage Grotesque',sans-serif;font-size:16px;font-weight:700;color:var(--navy);margin-bottom:4px;letter-spacing:-.2px;}
+.card-sub{font-size:12.5px;color:var(--muted);margin-bottom:20px;line-height:1.55;}
+.section-tag{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:2.5px;text-transform:uppercase;color:var(--blue);margin-bottom:9px;}
+
+/* ─── FORM ─── */
+.fields{display:flex;flex-direction:column;gap:12px;}
+.field-label{display:flex;align-items:center;justify-content:space-between;font-size:12px;font-weight:600;color:var(--navy);margin-bottom:5px;}
+.field-hint{font-size:11px;color:var(--muted2);font-weight:500;}
+.input{width:100%;padding:9px 12px;font-family:'Outfit',sans-serif;font-size:13.5px;color:var(--navy);background:var(--bg);border:1px solid var(--border);border-radius:8px;outline:none;transition:all .15s;}
+.input:focus{border-color:var(--blue);background:var(--white);box-shadow:0 0 0 3px rgba(26,86,219,.12);}
+.input::placeholder{color:var(--muted2);}
+.divider{height:1px;background:var(--border);margin:8px 0;}
+
+/* ─── STYLE PICKER ─── */
+.style-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:18px;}
+.style-btn{font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;padding:10px 8px;border-radius:9px;cursor:pointer;border:1.5px solid var(--border);background:var(--white);color:var(--muted);transition:all .15s;text-align:center;line-height:1.3;}
+.style-btn:hover{background:var(--bg2);border-color:var(--border-strong);}
+.style-btn.active{background:var(--navy);color:#fff;border-color:var(--navy);}
+.style-btn-ico{font-size:16px;display:block;margin-bottom:4px;}
+
+/* ─── OUTPUT BUTTONS ─── */
+.output-btns{display:flex;gap:8px;flex-wrap:wrap;}
+.out-btn{font-family:'Outfit',sans-serif;font-size:12.5px;font-weight:600;padding:9px 16px;border-radius:8px;cursor:pointer;border:1px solid var(--border);display:inline-flex;align-items:center;gap:6px;transition:all .15s;}
+.out-btn.primary{background:var(--blue);color:#fff;border-color:var(--blue);}
+.out-btn.primary:hover{background:#1449B0;}
+.out-btn.ghost{background:var(--white);color:var(--muted);}
+.out-btn.ghost:hover{background:var(--bg2);color:var(--navy);border-color:var(--border-strong);}
+.out-btn.copied{background:var(--green)!important;color:#fff!important;border-color:var(--green)!important;}
+
+/* ─── PREVIEW ─── */
+.preview-wrap{background:var(--white);border:1px solid var(--border);border-radius:16px;box-shadow:var(--sh);overflow:hidden;}
+.preview-chrome{background:#f0f0f0;padding:10px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;}
+.preview-chrome-dots{display:flex;gap:5px;}
+.chrome-dot{width:10px;height:10px;border-radius:50%;}
+.chrome-dot.red{background:#FF5F57;}
+.chrome-dot.amber{background:#FFBD2E;}
+.chrome-dot.green{background:#28C840;}
+.preview-chrome-label{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);margin-left:4px;}
+.preview-email{padding:20px 24px;}
+.preview-email-meta{margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid var(--border);}
+.preview-meta-row{font-size:12px;color:var(--muted);margin-bottom:3px;display:flex;gap:6px;}
+.preview-meta-label{font-weight:700;color:var(--navy);min-width:36px;}
+.preview-body{font-size:13.5px;color:var(--navy);line-height:1.7;margin-bottom:20px;}
+.preview-divider{height:1px;background:var(--border);margin:16px 0;}
+.preview-sig{font-size:13px;line-height:1.6;}
+
+/* Signature preview styles (uses Outfit since it's in the browser) */
+.sig-name{font-family:'Outfit',sans-serif;font-size:15px;font-weight:700;color:#0B1628;display:block;margin-bottom:1px;}
+.sig-title{font-family:'Outfit',sans-serif;font-size:13px;color:#5A6A82;display:block;}
+.sig-company{font-family:'Outfit',sans-serif;font-size:13px;color:#1A56DB;font-weight:600;display:block;}
+.sig-line{height:1px;background:#DDE5F0;margin:10px 0;}
+.sig-contact{font-family:'Outfit',sans-serif;font-size:12.5px;color:#444;display:block;margin-bottom:3px;}
+.sig-contact a{color:#444;text-decoration:none;}
+.sig-tagline{font-family:'Outfit',sans-serif;font-size:12px;color:#8A96A8;font-style:italic;display:block;margin-top:6px;}
+
+/* Style: clean */
+.sig-clean .sig-name{font-size:14.5px;}
+.sig-clean .sig-title{color:#333;}
+.sig-clean .sig-company{color:#333;font-weight:600;}
+
+/* Style: professional (blue bar) */
+.sig-professional{border-left:3px solid #1A56DB;padding-left:14px;}
+
+/* Style: two-column */
+.sig-twocol{display:flex;gap:0;}
+.sig-twocol-left{padding-right:16px;border-right:1px solid #DDE5F0;flex-shrink:0;}
+.sig-twocol-right{padding-left:16px;}
+
+/* ─── INSTALL GUIDE ─── */
+.guide-details{}
+.guide-summary{font-family:'Bricolage Grotesque',sans-serif;font-size:16px;font-weight:700;color:var(--navy);cursor:pointer;list-style:none;display:flex;align-items:center;gap:8px;padding:0;letter-spacing:-.2px;}
+.guide-summary::-webkit-details-marker{display:none;}
+.guide-summary::after{content:"+";font-family:'Outfit',sans-serif;font-size:20px;font-weight:400;color:var(--blue);margin-left:auto;}
+details[open] .guide-summary::after{content:"−";}
+.guide-body{margin-top:18px;display:flex;flex-direction:column;gap:14px;}
+.guide-step{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:14px 16px;}
+.guide-step-header{display:flex;align-items:center;gap:10px;margin-bottom:6px;}
+.guide-step-ico{font-size:18px;}
+.guide-step-name{font-size:14px;font-weight:700;color:var(--navy);}
+.guide-step-body{font-size:13px;color:var(--muted);line-height:1.6;}
+.guide-step-body ol{padding-left:18px;}
+.guide-step-body li{margin-bottom:3px;}
+.guide-step-body .mono{font-family:'JetBrains Mono',monospace;font-size:11.5px;background:var(--bg2);padding:1px 6px;border-radius:4px;}
+
+/* ─── CTA ─── */
+.cta-inner{background:var(--navy);border-radius:16px;padding:28px 26px;text-align:center;position:relative;overflow:hidden;}
+.cta-inner::before{content:"";position:absolute;top:-80px;left:-80px;width:240px;height:240px;background:radial-gradient(circle,rgba(26,86,219,.28),transparent 70%);pointer-events:none;}
+.cta-inner::after{content:"";position:absolute;bottom:-80px;right:-80px;width:240px;height:240px;background:radial-gradient(circle,rgba(96,174,255,.18),transparent 70%);pointer-events:none;}
+.cta-h{font-family:'Bricolage Grotesque',sans-serif;font-size:21px;font-weight:700;color:#fff;margin-bottom:8px;letter-spacing:-.3px;position:relative;z-index:1;}
+.cta-sub{font-size:14px;color:rgba(255,255,255,.65);margin-bottom:18px;max-width:520px;margin-left:auto;margin-right:auto;position:relative;z-index:1;line-height:1.55;}
+.cta-btn{display:inline-flex;align-items:center;gap:8px;background:#25D366;color:#fff;font-family:'Outfit',sans-serif;font-size:14px;font-weight:600;padding:12px 22px;border-radius:9px;text-decoration:none;position:relative;z-index:1;transition:transform .15s;}
+.cta-btn:hover{transform:translateY(-1px);}
+
+/* ─── FOOTER ─── */
+.foot{max-width:1060px;margin:20px auto 0;padding:26px 20px;text-align:center;font-size:12px;color:var(--muted2);border-top:1px solid var(--border);}
+.foot a{color:var(--muted);text-decoration:none;font-weight:600;}
+
+@media(max-width:620px){
+  .card,.preview-wrap{padding:18px 14px;}
+  .hero{padding:28px 20px 50px;}
+  .main{margin-top:-28px;}
+  .preview-email{padding:16px;}
+}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="topbar-inner">
+    <a href="https://autocomply.co.za" class="brand">Auto<span>Comply</span></a>
+    <a href="https://autocomply.co.za/#tools" class="back">← All tools</a>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-tag">Free Tool · Email Signature Generator</div>
+    <h1 class="hero-h">A professional email signature — built in minutes, free forever.</h1>
+    <p class="hero-sub">Fill in your details, pick a style, and copy the signature HTML directly into Gmail, Outlook or Apple Mail. No design software. No account required.</p>
+  </div>
+</section>
+
+<!-- MAIN -->
+<main class="main wrap">
+<div class="main-grid">
+
+  <!-- FORM COLUMN -->
+  <div>
+    <div class="card" style="margin-bottom:16px;">
+      <div class="card-h">Your details</div>
+      <div class="card-sub">Fill in what you want to show. Everything except your name is optional.</div>
+
+      <div class="fields">
+        <!-- Name + title -->
+        <div>
+          <div class="field-label"><span>Full name <span style="color:var(--red);">*</span></span></div>
+          <input id="fName" class="input" type="text" placeholder="e.g. Thabo Nkosi" maxlength="60">
+        </div>
+        <div>
+          <div class="field-label"><span>Job title</span><span class="field-hint">optional</span></div>
+          <input id="fTitle" class="input" type="text" placeholder="e.g. Operations Manager" maxlength="60">
+        </div>
+        <div>
+          <div class="field-label"><span>Company name</span><span class="field-hint">optional</span></div>
+          <input id="fCompany" class="input" type="text" placeholder="e.g. Nkosi Electrical Services" maxlength="60">
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Contact -->
+        <div>
+          <div class="field-label"><span>Email address</span><span class="field-hint">optional</span></div>
+          <input id="fEmail" class="input" type="email" placeholder="e.g. thabo@nkosielectrical.co.za" maxlength="80">
+        </div>
+        <div>
+          <div class="field-label"><span>Mobile / phone</span><span class="field-hint">optional</span></div>
+          <input id="fPhone" class="input" type="tel" placeholder="e.g. 082 345 6789" maxlength="20">
+        </div>
+        <div>
+          <div class="field-label">
+            <span>WhatsApp number</span>
+            <span class="field-hint">leave blank if same as mobile</span>
+          </div>
+          <input id="fWhatsApp" class="input" type="tel" placeholder="e.g. 082 345 6789 (leave blank if same)" maxlength="20">
+        </div>
+        <div>
+          <div class="field-label"><span>Website</span><span class="field-hint">optional</span></div>
+          <input id="fWebsite" class="input" type="url" placeholder="e.g. www.nkosielectrical.co.za" maxlength="80">
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Optional extras -->
+        <div>
+          <div class="field-label"><span>LinkedIn URL</span><span class="field-hint">optional</span></div>
+          <input id="fLinkedIn" class="input" type="url" placeholder="e.g. linkedin.com/in/thabonkosi" maxlength="120">
+        </div>
+        <div>
+          <div class="field-label"><span>Company tagline</span><span class="field-hint">optional</span></div>
+          <input id="fTagline" class="input" type="text" placeholder="e.g. Reliable electrical solutions for SA businesses" maxlength="80">
+        </div>
+      </div>
+    </div>
+
+    <!-- Style picker -->
+    <div class="card" style="margin-bottom:16px;">
+      <div class="card-h">Style</div>
+      <div class="card-sub" style="margin-bottom:14px;">Pick the look that suits your brand.</div>
+      <div class="style-row">
+        <button class="style-btn" data-style="clean" type="button">
+          <span class="style-btn-ico">📝</span>
+          Clean
+          <span style="display:block;font-size:10.5px;font-weight:400;opacity:.7;margin-top:2px;">Simple, minimal</span>
+        </button>
+        <button class="style-btn active" data-style="professional" type="button">
+          <span class="style-btn-ico">💼</span>
+          Professional
+          <span style="display:block;font-size:10.5px;font-weight:400;opacity:.7;margin-top:2px;">Blue accent bar</span>
+        </button>
+        <button class="style-btn" data-style="twocol" type="button">
+          <span class="style-btn-ico">📐</span>
+          Two column
+          <span style="display:block;font-size:10.5px;font-weight:400;opacity:.7;margin-top:2px;">Structured layout</span>
+        </button>
+      </div>
+
+      <div class="section-tag">Copy your signature</div>
+      <div class="output-btns">
+        <button class="out-btn primary" id="copyHtml" type="button">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          Copy HTML signature
+        </button>
+        <button class="out-btn ghost" id="copyText" type="button">
+          Copy plain text
+        </button>
+      </div>
+      <p style="font-size:11.5px;color:var(--muted);margin-top:10px;">Paste the HTML directly into Gmail, Outlook or Apple Mail signature settings.</p>
+    </div>
+  </div>
+
+  <!-- PREVIEW COLUMN -->
+  <div style="position:sticky;top:20px;">
+    <div class="preview-wrap">
+      <div class="preview-chrome">
+        <div class="preview-chrome-dots">
+          <div class="chrome-dot red"></div>
+          <div class="chrome-dot amber"></div>
+          <div class="chrome-dot green"></div>
+        </div>
+        <div class="preview-chrome-label">Live preview</div>
+      </div>
+      <div class="preview-email">
+        <div class="preview-email-meta">
+          <div class="preview-meta-row"><span class="preview-meta-label">To:</span><span>client@example.co.za</span></div>
+          <div class="preview-meta-row"><span class="preview-meta-label">From:</span><span id="previewFrom" style="color:var(--muted);">—</span></div>
+          <div class="preview-meta-row"><span class="preview-meta-label">Re:</span><span>Your project quote</span></div>
+        </div>
+        <div class="preview-body">
+          Hi there,<br><br>
+          Please find the requested information attached. Let me know if you have any questions.<br><br>
+          Kind regards,
+        </div>
+        <div class="preview-divider"></div>
+        <div class="preview-sig" id="previewSig">
+          <span style="color:var(--muted2);font-style:italic;font-size:13px;">Fill in your details to see your signature here.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /main-grid -->
+
+<!-- INSTALL GUIDE -->
+<div class="card" style="margin-top:20px;">
+  <details class="guide-details">
+    <summary class="guide-summary">How to add this signature to your email client</summary>
+    <div class="guide-body">
+      <div class="guide-step">
+        <div class="guide-step-header">
+          <div class="guide-step-ico">📧</div>
+          <div class="guide-step-name">Gmail</div>
+        </div>
+        <div class="guide-step-body">
+          <ol>
+            <li>Click <span class="mono">Settings (⚙)</span> → <span class="mono">See all settings</span></li>
+            <li>Go to the <span class="mono">General</span> tab</li>
+            <li>Scroll to <span class="mono">Signature</span> → click <span class="mono">Create new</span></li>
+            <li>Click the <span class="mono">&lt;&gt;</span> (source) icon in the editor toolbar</li>
+            <li>Paste the copied HTML and click <span class="mono">OK</span></li>
+            <li>Scroll down and click <span class="mono">Save Changes</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="guide-step">
+        <div class="guide-step-header">
+          <div class="guide-step-ico">📨</div>
+          <div class="guide-step-name">Outlook (Desktop)</div>
+        </div>
+        <div class="guide-step-body">
+          <ol>
+            <li>Go to <span class="mono">File</span> → <span class="mono">Options</span> → <span class="mono">Mail</span> → <span class="mono">Signatures</span></li>
+            <li>Click <span class="mono">New</span> and name your signature</li>
+            <li>In the editor, click the <span class="mono">Source</span> button (or paste the plain text version for simplicity)</li>
+            <li>Paste the HTML and save</li>
+            <li>Set it as your default for new messages under <span class="mono">Choose default signature</span></li>
+          </ol>
+          <p style="margin-top:8px;font-size:12px;color:var(--muted);">Tip: Outlook's HTML support is limited — the Professional or Clean style works most reliably.</p>
+        </div>
+      </div>
+      <div class="guide-step">
+        <div class="guide-step-header">
+          <div class="guide-step-ico">🍎</div>
+          <div class="guide-step-name">Apple Mail</div>
+        </div>
+        <div class="guide-step-body">
+          <ol>
+            <li>Open Mail → <span class="mono">Preferences</span> (⌘,) → <span class="mono">Signatures</span> tab</li>
+            <li>Select your email account, click <span class="mono">+</span> to create a new signature</li>
+            <li>Paste the HTML into the signature area (or use plain text version)</li>
+            <li>Uncheck <span class="mono">Always match my default message font</span></li>
+          </ol>
+          <p style="margin-top:8px;font-size:12px;color:var(--muted);">Tip: For best Apple Mail results, paste the HTML into a text editor, save as .html, then drag the file into the signature panel.</p>
+        </div>
+      </div>
+      <div class="guide-step">
+        <div class="guide-step-header">
+          <div class="guide-step-ico">📱</div>
+          <div class="guide-step-name">Mobile / other clients</div>
+        </div>
+        <div class="guide-step-body">
+          Most mobile email apps don't support HTML signatures — use the <strong>plain text version</strong> for mobile. For Gmail app: Settings → your account → Signature settings.
+        </div>
+      </div>
+    </div>
+  </details>
+</div>
+
+</main>
+
+<!-- CTA -->
+<div class="wrap" style="margin-bottom:30px;">
+  <div class="cta-inner">
+    <div class="cta-h">Ready to register or set up your business properly?</div>
+    <p class="cta-sub">A professional email signature is one piece of the picture. If you need help with company registration, SARS setup, or getting your compliance calendar sorted — we handle all of it.</p>
+    <a href="https://wa.me/27670113108?text=Hi%20AutoComply%2C%20I%20used%20the%20Email%20Signature%20Generator%20and%20want%20help%20with%20my%20business%20setup." class="cta-btn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Chat on WhatsApp
+    </a>
+  </div>
+</div>
+
+<div class="foot">
+  AutoComply · Practical tools for South African business owners · <a href="https://autocomply.co.za">autocomply.co.za</a>
+</div>
+
+<script>
+(function(){
+  const $ = id => document.getElementById(id);
+
+  let activeStyle = 'professional';
+
+  // ─── FIELD IDS ───
+  const FIELDS = ['fName','fTitle','fCompany','fEmail','fPhone','fWhatsApp','fWebsite','fLinkedIn','fTagline'];
+
+  // ─── UTILS ───
+  function esc(str){ return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+  function fmtPhone(raw){
+    // Clean to digits
+    return raw.replace(/\D/g,'');
+  }
+
+  function waLink(raw){
+    const digits = fmtPhone(raw);
+    if(!digits) return '';
+    // If starts with 0, replace with 27
+    if(digits.startsWith('0')) return '27' + digits.slice(1);
+    if(digits.startsWith('27')) return digits;
+    return '27' + digits;
+  }
+
+  function cleanWebsite(url){
+    return url.replace(/^https?:\/\//,'').replace(/\/$/,'');
+  }
+
+  function getData(){
+    return {
+      name:     $('fName').value.trim(),
+      title:    $('fTitle').value.trim(),
+      company:  $('fCompany').value.trim(),
+      email:    $('fEmail').value.trim(),
+      phone:    $('fPhone').value.trim(),
+      whatsapp: $('fWhatsApp').value.trim(),
+      website:  $('fWebsite').value.trim(),
+      linkedin: $('fLinkedIn').value.trim(),
+      tagline:  $('fTagline').value.trim(),
+    };
+  }
+
+  // ─── PREVIEW RENDER ───
+  function renderPreview(){
+    const d = getData();
+    if(!d.name){ $('previewSig').innerHTML='<span style="color:#8A96A8;font-style:italic;font-size:13px;">Fill in your details to see your signature here.</span>'; $('previewFrom').textContent='—'; return; }
+
+    $('previewFrom').textContent = d.name + (d.company ? ' · ' + d.company : '');
+
+    const waNum = d.whatsapp || d.phone;
+    const waHref = waLink(waNum);
+    const websiteClean = d.website ? cleanWebsite(d.website) : '';
+
+    if(activeStyle === 'clean'){
+      let html = `<div class="sig-clean">`;
+      html += `<span class="sig-name" style="font-family:'Outfit',sans-serif;font-size:14.5px;font-weight:700;color:#111;display:block;margin-bottom:2px;">${esc(d.name)}</span>`;
+      if(d.title || d.company){
+        let sub = [d.title, d.company].filter(Boolean).join(' | ');
+        html += `<span style="font-family:'Outfit',sans-serif;font-size:13px;color:#444;display:block;margin-bottom:8px;">${esc(sub)}</span>`;
+      }
+      html += `<div style="height:1px;background:#ccc;margin:8px 0;"></div>`;
+      if(d.email) html += `<span style="display:block;font-family:'Outfit',sans-serif;font-size:12.5px;color:#444;margin-bottom:3px;">✉ ${esc(d.email)}</span>`;
+      if(d.phone) html += `<span style="display:block;font-family:'Outfit',sans-serif;font-size:12.5px;color:#444;margin-bottom:3px;">📱 ${esc(d.phone)}</span>`;
+      if(waNum && !d.whatsapp) html += '';
+      else if(d.whatsapp) html += `<span style="display:block;font-family:'Outfit',sans-serif;font-size:12.5px;color:#444;margin-bottom:3px;">💬 WhatsApp: ${esc(d.whatsapp)}</span>`;
+      if(websiteClean) html += `<span style="display:block;font-family:'Outfit',sans-serif;font-size:12.5px;color:#444;margin-bottom:3px;">🌐 ${esc(websiteClean)}</span>`;
+      if(d.linkedin) html += `<span style="display:block;font-family:'Outfit',sans-serif;font-size:12.5px;color:#444;margin-bottom:3px;">in ${esc(cleanWebsite(d.linkedin))}</span>`;
+      if(d.tagline) html += `<span style="display:block;font-family:'Outfit',sans-serif;font-size:12px;color:#888;font-style:italic;margin-top:6px;">${esc(d.tagline)}</span>`;
+      html += `</div>`;
+      $('previewSig').innerHTML = html;
+
+    } else if(activeStyle === 'professional'){
+      let html = `<div style="border-left:3px solid #1A56DB;padding-left:14px;">`;
+      html += `<span style="font-family:'Outfit',sans-serif;font-size:16px;font-weight:700;color:#0B1628;display:block;margin-bottom:2px;">${esc(d.name)}</span>`;
+      if(d.title) html += `<span style="font-family:'Outfit',sans-serif;font-size:13px;color:#5A6A82;display:block;">${esc(d.title)}</span>`;
+      if(d.company) html += `<span style="font-family:'Outfit',sans-serif;font-size:13px;color:#1A56DB;font-weight:600;display:block;margin-bottom:6px;">${esc(d.company)}</span>`;
+      html += `<div style="height:1px;background:#DDE5F0;margin:8px 0;"></div>`;
+      if(d.email) html += `<span style="display:block;font-family:'Outfit',sans-serif;font-size:12.5px;color:#444;margin-bottom:3px;">✉ <a href="mailto:${esc(d.email)}" style="color:#444;text-decoration:none;">${esc(d.email)}</a></span>`;
+      if(d.phone) html += `<span style="display:block;font-family:'Outfit',sans-serif;font-size:12.5px;color:#444;margin-bottom:3px;">📱 ${esc(d.phone)}</span>`;
+      if(d.whatsapp) html += `<span style="display:block;font-family:'Outfit',sans-serif;font-size:12.5px;color:#444;margin-bottom:3px;">💬 ${esc(d.whatsapp)}</span>`;
+      if(websiteClean) html += `<span style="display:block;font-family:'Outfit',sans-serif;font-size:12.5px;color:#444;margin-bottom:3px;">🌐 <a href="https://${esc(websiteClean)}" style="color:#1A56DB;text-decoration:none;">${esc(websiteClean)}</a></span>`;
+      if(d.linkedin) html += `<span style="display:block;font-family:'Outfit',sans-serif;font-size:12.5px;color:#444;margin-bottom:3px;">in <a href="https://${esc(cleanWebsite(d.linkedin))}" style="color:#1A56DB;text-decoration:none;">${esc(cleanWebsite(d.linkedin))}</a></span>`;
+      if(d.tagline) html += `<span style="display:block;font-family:'Outfit',sans-serif;font-size:12px;color:#8A96A8;font-style:italic;margin-top:6px;">${esc(d.tagline)}</span>`;
+      html += `</div>`;
+      $('previewSig').innerHTML = html;
+
+    } else { // twocol
+      let left = `<td style="vertical-align:top;padding-right:18px;border-right:1px solid #DDE5F0;">`;
+      left += `<span style="font-family:'Outfit',sans-serif;font-size:16px;font-weight:700;color:#0B1628;display:block;margin-bottom:2px;">${esc(d.name)}</span>`;
+      if(d.title) left += `<span style="font-family:'Outfit',sans-serif;font-size:13px;color:#5A6A82;display:block;">${esc(d.title)}</span>`;
+      if(d.company) left += `<span style="font-family:'Outfit',sans-serif;font-size:13px;color:#1A56DB;font-weight:600;display:block;">${esc(d.company)}</span>`;
+      if(d.tagline) left += `<span style="display:block;font-family:'Outfit',sans-serif;font-size:11.5px;color:#888;font-style:italic;margin-top:6px;max-width:160px;">${esc(d.tagline)}</span>`;
+      left += `</td>`;
+
+      let right = `<td style="vertical-align:top;padding-left:18px;">`;
+      if(d.email) right += `<span style="display:block;font-family:'Outfit',sans-serif;font-size:12.5px;color:#444;margin-bottom:4px;">✉ <a href="mailto:${esc(d.email)}" style="color:#444;text-decoration:none;">${esc(d.email)}</a></span>`;
+      if(d.phone) right += `<span style="display:block;font-family:'Outfit',sans-serif;font-size:12.5px;color:#444;margin-bottom:4px;">📱 ${esc(d.phone)}</span>`;
+      if(d.whatsapp) right += `<span style="display:block;font-family:'Outfit',sans-serif;font-size:12.5px;color:#444;margin-bottom:4px;">💬 ${esc(d.whatsapp)}</span>`;
+      if(websiteClean) right += `<span style="display:block;font-family:'Outfit',sans-serif;font-size:12.5px;color:#444;margin-bottom:4px;">🌐 <a href="https://${esc(websiteClean)}" style="color:#1A56DB;text-decoration:none;">${esc(websiteClean)}</a></span>`;
+      if(d.linkedin) right += `<span style="display:block;font-family:'Outfit',sans-serif;font-size:12.5px;color:#444;margin-bottom:4px;">in <a href="https://${esc(cleanWebsite(d.linkedin))}" style="color:#1A56DB;text-decoration:none;">${esc(cleanWebsite(d.linkedin))}</a></span>`;
+      right += `</td>`;
+
+      $('previewSig').innerHTML = `<table cellpadding="0" cellspacing="0" border="0"><tr>${left}${right}</tr></table>`;
+    }
+  }
+
+  // ─── HTML GENERATOR (email-safe) ───
+  function generateHTML(){
+    const d = getData();
+    if(!d.name) return '';
+    const waNum  = d.whatsapp || d.phone;
+    const waHref = waLink(waNum);
+    const websiteClean = d.website ? cleanWebsite(d.website) : '';
+    const websiteHref  = websiteClean ? 'https://' + websiteClean : '';
+    const linkedinHref = d.linkedin ? (d.linkedin.startsWith('http') ? d.linkedin : 'https://' + d.linkedin) : '';
+
+    function contactRow(icon, text, href, color){
+      const link = href ? `<a href="${esc(href)}" style="color:${color||'#444444'};text-decoration:none;">${esc(text)}</a>` : esc(text);
+      return `<tr><td style="padding:2px 0;font-family:Arial,sans-serif;font-size:13px;color:#444444;line-height:1.5;">${icon}&nbsp;${link}</td></tr>`;
+    }
+
+    let contactRows = '';
+    if(d.email)    contactRows += contactRow('&#x2709;', d.email, 'mailto:'+d.email);
+    if(d.phone)    contactRows += contactRow('&#128241;', d.phone, 'tel:'+d.phone.replace(/\s/g,''));
+    if(d.whatsapp) contactRows += contactRow('&#128172;', d.whatsapp, 'https://wa.me/'+waLink(d.whatsapp));
+    else if(d.phone && waHref) contactRows += ''; // phone already shown above
+    if(websiteClean) contactRows += contactRow('&#127760;', websiteClean, websiteHref, '#1A56DB');
+    if(linkedinHref) contactRows += contactRow('in', cleanWebsite(d.linkedin), linkedinHref, '#1A56DB');
+
+    if(activeStyle === 'clean'){
+      let nameBlock = `<strong style="font-family:Arial,sans-serif;font-size:15px;color:#111111;">${esc(d.name)}</strong>`;
+      let subParts  = [d.title, d.company].filter(Boolean).join(' &nbsp;|&nbsp; ');
+      return `<table cellpadding="0" cellspacing="0" border="0"><tr><td style="font-family:Arial,sans-serif;">
+        ${nameBlock}<br>
+        ${subParts ? `<span style="font-size:13px;color:#555555;">${subParts}</span><br>` : ''}
+        <table cellpadding="0" cellspacing="0" border="0"><tr><td style="padding:8px 0 0;"><hr style="border:none;border-top:1px solid #cccccc;margin:0 0 8px 0;width:200px;"></td></tr>
+        ${contactRows}
+        ${d.tagline ? `<tr><td style="padding:6px 0 0;font-family:Arial,sans-serif;font-size:12px;color:#888888;font-style:italic;">${esc(d.tagline)}</td></tr>` : ''}
+        </table>
+      </td></tr></table>`;
+
+    } else if(activeStyle === 'professional'){
+      return `<table cellpadding="0" cellspacing="0" border="0"><tr>
+        <td style="border-left:3px solid #1A56DB;padding-left:14px;font-family:Arial,sans-serif;">
+          <strong style="font-size:16px;color:#0B1628;display:block;margin-bottom:2px;">${esc(d.name)}</strong>
+          ${d.title ? `<span style="font-size:13px;color:#5A6A82;display:block;">${esc(d.title)}</span>` : ''}
+          ${d.company ? `<span style="font-size:13px;color:#1A56DB;font-weight:bold;display:block;margin-bottom:6px;">${esc(d.company)}</span>` : '<br>'}
+          <table cellpadding="0" cellspacing="0" border="0"><tr><td style="padding:0 0 8px;"><hr style="border:none;border-top:1px solid #DDE5F0;margin:0;width:220px;"></td></tr>
+          ${contactRows}
+          ${d.tagline ? `<tr><td style="padding-top:6px;font-size:12px;color:#888888;font-style:italic;">${esc(d.tagline)}</td></tr>` : ''}
+          </table>
+        </td>
+      </tr></table>`;
+
+    } else {
+      let leftTd = `<td style="vertical-align:top;padding-right:18px;border-right:1px solid #DDE5F0;font-family:Arial,sans-serif;">
+        <strong style="font-size:16px;color:#0B1628;display:block;margin-bottom:2px;">${esc(d.name)}</strong>
+        ${d.title ? `<span style="font-size:13px;color:#5A6A82;display:block;">${esc(d.title)}</span>` : ''}
+        ${d.company ? `<span style="font-size:13px;color:#1A56DB;font-weight:bold;display:block;">${esc(d.company)}</span>` : ''}
+        ${d.tagline ? `<span style="display:block;font-size:11px;color:#888888;font-style:italic;margin-top:6px;max-width:160px;">${esc(d.tagline)}</span>` : ''}
+      </td>`;
+      let rightTd = `<td style="vertical-align:top;padding-left:18px;font-family:Arial,sans-serif;">
+        <table cellpadding="0" cellspacing="0" border="0">${contactRows}</table>
+      </td>`;
+      return `<table cellpadding="0" cellspacing="0" border="0"><tr>${leftTd}${rightTd}</tr></table>`;
+    }
+  }
+
+  // ─── PLAIN TEXT ───
+  function generateText(){
+    const d = getData();
+    if(!d.name) return '';
+    const lines = [];
+    lines.push(d.name);
+    const sub = [d.title, d.company].filter(Boolean).join(' | ');
+    if(sub) lines.push(sub);
+    lines.push('──────────────────────');
+    if(d.email)   lines.push('Email: ' + d.email);
+    if(d.phone)   lines.push('Mobile: ' + d.phone);
+    if(d.whatsapp) lines.push('WhatsApp: ' + d.whatsapp);
+    if(d.website) lines.push('Web: ' + cleanWebsite(d.website));
+    if(d.linkedin) lines.push('LinkedIn: ' + cleanWebsite(d.linkedin));
+    if(d.tagline) lines.push('');
+    if(d.tagline) lines.push(d.tagline);
+    return lines.join('\n');
+  }
+
+  // ─── COPY ───
+  async function copyContent(text, btnId){
+    try { await navigator.clipboard.writeText(text); }
+    catch {
+      const ta = document.createElement('textarea');
+      ta.value = text; document.body.appendChild(ta); ta.select();
+      try { document.execCommand('copy'); } catch(_){} document.body.removeChild(ta);
+    }
+    const btn = $(btnId), orig = btn.innerHTML;
+    btn.classList.add('copied');
+    btn.textContent = '✓ Copied!';
+    setTimeout(() => { btn.classList.remove('copied'); btn.innerHTML = orig; }, 2000);
+  }
+
+  // ─── STYLE BUTTONS ───
+  document.querySelectorAll('.style-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.style-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      activeStyle = btn.dataset.style;
+      renderPreview();
+    });
+  });
+
+  // ─── OUTPUT BUTTONS ───
+  $('copyHtml').addEventListener('click', () => {
+    const html = generateHTML();
+    if(!html){ $('fName').focus(); return; }
+    copyContent(html, 'copyHtml');
+  });
+
+  $('copyText').addEventListener('click', () => {
+    const text = generateText();
+    if(!text){ $('fName').focus(); return; }
+    copyContent(text, 'copyText');
+  });
+
+  // ─── LIVE UPDATE ───
+  FIELDS.forEach(id => $(id).addEventListener('input', renderPreview));
+
+  // ─── INIT ───
+  renderPreview();
+})();
+</script>
+</body>
+</html>

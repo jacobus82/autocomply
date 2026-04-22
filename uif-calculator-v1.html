@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>UIF Contribution Calculator — AutoComply</title>
+<meta name="description" content="Free UIF calculator for South African employers. Enter an employee's gross monthly salary and get the exact UIF contribution — employee portion, employer portion, and total monthly payment to the Department of Labour.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;700;800&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --navy:#0B1628;--navy-soft:#1A2842;--blue:#1A56DB;--blue-soft:#EEF3FF;
+  --blue-line:rgba(26,86,219,.15);--green:#059669;--green-soft:#ECFDF5;
+  --amber:#D97706;--amber-soft:#FEF3C7;--red:#DC2626;--red-soft:#FEE2E2;
+  --muted:#5A6A82;--muted2:#8A96A8;--border:#DDE5F0;--border-strong:#C5D1E4;
+  --bg:#F8FAFF;--bg2:#EEF3FF;--white:#fff;
+  --sh:0 1px 4px rgba(11,22,40,.07);--sh-strong:0 4px 20px rgba(11,22,40,.10);
+  --ceiling:17712;
+}
+html,body{background:var(--bg);color:var(--navy);font-family:'Outfit',sans-serif;-webkit-font-smoothing:antialiased;min-height:100vh;font-size:15px;line-height:1.5;}
+
+/* ─── TOPBAR ─── */
+.topbar{background:var(--navy);padding:14px 20px;}
+.topbar-inner{max-width:1040px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;}
+.brand{font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;color:#fff;letter-spacing:-.3px;text-decoration:none;}
+.brand span{color:#60AEFF;}
+.back{font-size:12.5px;color:rgba(255,255,255,.55);text-decoration:none;display:inline-flex;align-items:center;gap:6px;transition:color .15s;}
+.back:hover{color:#fff;}
+
+/* ─── HERO ─── */
+.hero{background:var(--navy);padding:34px 20px 58px;position:relative;overflow:hidden;}
+.hero::before{content:"";position:absolute;top:-100px;right:-100px;width:400px;height:400px;background:radial-gradient(circle,rgba(26,86,219,.15),transparent 70%);pointer-events:none;}
+.hero-inner{max-width:1040px;margin:0 auto;position:relative;z-index:1;}
+.hero-tag{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:14px;}
+.hero-h{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(26px,5vw,38px);font-weight:800;color:#fff;letter-spacing:-.6px;line-height:1.15;margin-bottom:12px;max-width:740px;}
+.hero-sub{font-size:clamp(14px,2.2vw,16px);color:rgba(255,255,255,.65);max-width:640px;line-height:1.55;}
+
+/* ─── LAYOUT ─── */
+.wrap{max-width:1040px;margin:0 auto;padding:0 20px;}
+.main{margin-top:-36px;margin-bottom:32px;position:relative;z-index:2;}
+.card{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:26px;box-shadow:var(--sh);margin-bottom:20px;}
+.card-h{font-family:'Bricolage Grotesque',sans-serif;font-size:17px;font-weight:700;color:var(--navy);margin-bottom:4px;letter-spacing:-.2px;}
+.card-sub{font-size:13px;color:var(--muted);margin-bottom:22px;line-height:1.55;}
+.section-tag{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:2.5px;text-transform:uppercase;color:var(--blue);margin-bottom:6px;}
+
+/* ─── INPUTS ─── */
+.input-grid{display:grid;grid-template-columns:2fr 1fr;gap:16px;margin-bottom:18px;}
+@media(max-width:600px){.input-grid{grid-template-columns:1fr;}}
+.field-label{display:flex;align-items:center;justify-content:space-between;font-size:12px;font-weight:600;color:var(--navy);margin-bottom:6px;}
+.field-hint{font-size:11px;color:var(--muted2);font-weight:500;}
+.input-wrap{position:relative;}
+.input-prefix{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-family:'JetBrains Mono',monospace;font-size:12.5px;font-weight:600;color:var(--muted);pointer-events:none;}
+.input{width:100%;padding:11px 12px 11px 28px;font-family:'Outfit',sans-serif;font-size:14.5px;font-weight:500;color:var(--navy);background:var(--bg);border:1px solid var(--border);border-radius:9px;transition:all .15s;-moz-appearance:textfield;}
+.input.no-prefix{padding-left:12px;}
+.input::-webkit-outer-spin-button,.input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
+.input:focus{outline:none;border-color:var(--blue);background:var(--white);box-shadow:0 0 0 3px rgba(26,86,219,.12);}
+.input::placeholder{color:var(--muted2);font-weight:400;}
+
+/* emp type toggle */
+.emp-toggle{display:grid;grid-template-columns:1fr 1fr;background:var(--bg);border:1px solid var(--border);border-radius:9px;padding:3px;}
+.emp-btn{font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;color:var(--muted);background:transparent;border:none;padding:9px 10px;border-radius:7px;cursor:pointer;transition:all .18s;line-height:1.3;text-align:center;}
+.emp-btn.active{background:var(--white);color:var(--navy);box-shadow:0 1px 3px rgba(11,22,40,.08);}
+
+.optional-section{margin-top:16px;padding-top:16px;border-top:1px dashed var(--border);}
+.optional-label{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;}
+
+/* ─── EXCLUDED STATE ─── */
+.excluded-banner{background:var(--amber-soft);border:1px solid rgba(217,119,6,.25);border-radius:10px;padding:14px 16px;display:flex;gap:10px;align-items:flex-start;font-size:13.5px;color:#78350F;line-height:1.55;margin-bottom:20px;}
+.excluded-banner strong{font-weight:700;}
+
+/* ─── RESULTS PANEL ─── */
+.results-panel{background:linear-gradient(135deg,var(--navy) 0%,var(--navy-soft) 100%);border-radius:14px;padding:24px 26px;margin-bottom:20px;box-shadow:var(--sh-strong);position:relative;overflow:hidden;}
+.results-panel::before{content:"";position:absolute;top:-60px;right:-60px;width:200px;height:200px;background:radial-gradient(circle,rgba(96,174,255,.12),transparent 70%);pointer-events:none;}
+.results-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;position:relative;z-index:1;}
+@media(max-width:540px){.results-grid{grid-template-columns:1fr;gap:14px;}}
+.r-cell{}
+.r-label{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;}
+.r-label.emp{color:rgba(96,174,255,.7);}
+.r-label.eer{color:rgba(16,185,129,.7);}
+.r-label.tot{color:rgba(255,255,255,.5);}
+.r-value{font-family:'Bricolage Grotesque',sans-serif;font-size:28px;font-weight:800;letter-spacing:-.6px;line-height:1;}
+.r-value.emp{color:#60AEFF;}
+.r-value.eer{color:var(--green);}
+.r-value.tot{color:#fff;font-size:34px;}
+.r-value.dim{color:rgba(255,255,255,.3);}
+.r-sub{font-size:11.5px;color:rgba(255,255,255,.45);margin-top:5px;font-family:'JetBrains Mono',monospace;}
+
+/* ceiling pill */
+.ceiling-pill{display:inline-flex;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size:9.5px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;padding:4px 10px;border-radius:20px;margin-top:14px;position:relative;z-index:1;}
+.ceiling-pill::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor;flex-shrink:0;}
+.ceiling-pill.ok{background:rgba(16,185,129,.2);color:#34D399;}
+.ceiling-pill.capped{background:rgba(217,119,6,.25);color:#FCD34D;}
+
+/* ─── PAYSLIP ─── */
+.payslip{border:1px solid var(--border);border-radius:12px;overflow:hidden;}
+.payslip-header{background:var(--bg);padding:12px 18px;border-bottom:1px solid var(--border);}
+.payslip-title{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
+.payslip-body{padding:4px 0;}
+.ps-row{display:flex;align-items:center;justify-content:space-between;padding:11px 18px;border-bottom:1px solid var(--border);gap:12px;}
+.ps-row:last-child{border-bottom:none;}
+.ps-row.total{background:var(--bg);border-top:2px solid var(--border-strong);border-bottom:none;}
+.ps-row.sep{background:var(--bg2);border-color:var(--blue-line);}
+.ps-label{font-size:13px;color:var(--navy);display:flex;flex-direction:column;gap:2px;}
+.ps-label-sub{font-size:11px;color:var(--muted2);}
+.ps-value{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;color:var(--navy);white-space:nowrap;}
+.ps-value.deduct{color:var(--red);}
+.ps-value.add{color:var(--green);}
+.ps-value.net{color:var(--blue);font-size:15px;}
+.ps-value.total-val{color:var(--navy);font-size:15px;}
+.ps-value.dim{color:var(--muted2);}
+
+/* ─── ANNUAL + TEAM ─── */
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;}
+.kpi{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:14px 16px;}
+.kpi-label{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:5px;}
+.kpi-value{font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:700;color:var(--navy);letter-spacing:-.3px;}
+.kpi-sub{font-size:11px;color:var(--muted2);margin-top:3px;}
+
+.team-card{background:var(--blue-soft);border:1px solid var(--blue-line);border-radius:12px;padding:18px 20px;margin-top:18px;}
+.team-card-h{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--blue);margin-bottom:12px;}
+.team-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+@media(max-width:500px){.team-grid{grid-template-columns:1fr;}}
+.team-cell-label{font-size:11.5px;color:var(--muted);margin-bottom:3px;}
+.team-cell-value{font-family:'Bricolage Grotesque',sans-serif;font-size:22px;font-weight:700;color:var(--navy);letter-spacing:-.4px;}
+
+/* ─── REFERENCE CARDS ─── */
+.ref-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+@media(max-width:720px){.ref-grid{grid-template-columns:1fr;}}
+.ref-block-h{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--blue);margin-bottom:10px;}
+.ref-row{padding:11px 0;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;gap:12px;}
+.ref-row:last-child{border-bottom:none;}
+.ref-row-ico{font-size:15px;flex-shrink:0;margin-top:1px;}
+.ref-row-text{font-size:13px;color:var(--navy);line-height:1.55;}
+.ref-row-text strong{font-weight:700;}
+.ref-row-text .muted{color:var(--muted);}
+
+.excl-list{display:flex;flex-direction:column;gap:8px;}
+.excl-item{display:flex;gap:10px;font-size:13px;color:var(--navy);line-height:1.5;}
+.excl-dot{width:18px;height:18px;border-radius:50%;background:var(--amber-soft);color:var(--amber);font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;}
+
+.sdl-note{background:var(--blue-soft);border:1px solid var(--blue-line);border-radius:10px;padding:14px 16px;font-size:13px;color:var(--navy);line-height:1.6;display:flex;gap:10px;align-items:flex-start;}
+.sdl-note strong{font-weight:700;}
+
+/* actions */
+.actions{display:flex;justify-content:flex-end;gap:8px;margin-top:14px;}
+.action-btn{font-family:'Outfit',sans-serif;font-size:12.5px;font-weight:600;padding:9px 15px;border-radius:8px;cursor:pointer;border:1px solid var(--border);background:var(--white);color:var(--muted);transition:all .15s;display:inline-flex;align-items:center;gap:6px;}
+.action-btn.primary{background:var(--blue);color:#fff;border-color:var(--blue);}
+.action-btn.primary:hover{background:#1449B0;}
+.action-btn:hover{border-color:var(--border-strong);background:var(--bg);color:var(--navy);}
+
+/* ─── CTA ─── */
+.cta-inner{background:var(--navy);border-radius:16px;padding:28px 26px;text-align:center;position:relative;overflow:hidden;}
+.cta-inner::before{content:"";position:absolute;top:-80px;left:-80px;width:240px;height:240px;background:radial-gradient(circle,rgba(26,86,219,.28),transparent 70%);pointer-events:none;}
+.cta-inner::after{content:"";position:absolute;bottom:-80px;right:-80px;width:240px;height:240px;background:radial-gradient(circle,rgba(96,174,255,.18),transparent 70%);pointer-events:none;}
+.cta-h{font-family:'Bricolage Grotesque',sans-serif;font-size:21px;font-weight:700;color:#fff;margin-bottom:8px;letter-spacing:-.3px;position:relative;z-index:1;}
+.cta-sub{font-size:14px;color:rgba(255,255,255,.65);margin-bottom:18px;max-width:520px;margin-left:auto;margin-right:auto;position:relative;z-index:1;line-height:1.55;}
+.cta-btn{display:inline-flex;align-items:center;gap:8px;background:#25D366;color:#fff;font-family:'Outfit',sans-serif;font-size:14px;font-weight:600;padding:12px 22px;border-radius:9px;text-decoration:none;position:relative;z-index:1;transition:transform .15s;}
+.cta-btn:hover{transform:translateY(-1px);}
+
+/* ─── FOOTER ─── */
+.foot{max-width:1040px;margin:20px auto 0;padding:26px 20px;text-align:center;font-size:12px;color:var(--muted2);border-top:1px solid var(--border);}
+.foot a{color:var(--muted);text-decoration:none;font-weight:600;}
+.foot .fine{font-size:11px;margin-top:8px;max-width:620px;margin-left:auto;margin-right:auto;line-height:1.55;}
+
+@media(max-width:620px){
+  .card{padding:20px 16px;}
+  .hero{padding:28px 20px 52px;}
+  .main{margin-top:-32px;}
+  .results-panel{padding:22px 18px;}
+  .r-value.tot{font-size:28px;}
+}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="topbar-inner">
+    <a href="https://autocomply.co.za" class="brand">Auto<span>Comply</span></a>
+    <a href="https://autocomply.co.za/#tools" class="back">← All tools</a>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-tag">Free Tool · UIF Contribution Calculator</div>
+    <h1 class="hero-h">Calculate UIF contributions instantly — for any salary.</h1>
+    <p class="hero-sub">Enter an employee's gross monthly salary and get the exact UIF amounts — what gets deducted from the employee, what the employer adds, and the total monthly payment due to the Department of Labour.</p>
+  </div>
+</section>
+
+<!-- MAIN -->
+<main class="main wrap">
+
+  <!-- INPUTS -->
+  <div class="card">
+    <div class="card-h">Employee details</div>
+    <div class="card-sub">UIF applies to all employees working 24 or more hours per month. The 2025/2026 contribution ceiling is R 17,712/month.</div>
+
+    <div class="input-grid">
+      <div>
+        <div class="field-label">
+          <span>Gross monthly salary</span>
+          <span class="field-hint">before any deductions</span>
+        </div>
+        <div class="input-wrap">
+          <span class="input-prefix">R</span>
+          <input id="salary" class="input" type="number" inputmode="decimal" placeholder="25 000" min="0" step="500">
+        </div>
+      </div>
+      <div>
+        <div class="field-label">
+          <span>Employment type</span>
+          <span class="field-hint">hours per month</span>
+        </div>
+        <div class="emp-toggle">
+          <button class="emp-btn active" id="btnFull" type="button">Full-time<br><span style="font-size:10.5px;font-weight:500;color:inherit;opacity:.7;">24+ hrs/month</span></button>
+          <button class="emp-btn" id="btnPart" type="button">Part-time<br><span style="font-size:10.5px;font-weight:500;color:inherit;opacity:.7;">&lt;24 hrs/month</span></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Optional: team headcount -->
+    <div class="optional-section">
+      <div class="optional-label">Optional — team UIF estimate</div>
+      <div style="max-width:260px;">
+        <div class="field-label">
+          <span>Number of employees at this salary</span>
+        </div>
+        <div class="input-wrap">
+          <input id="headcount" class="input no-prefix" type="number" inputmode="numeric" placeholder="e.g. 5" min="1" max="9999" step="1">
+        </div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="action-btn primary" id="demoBtn" type="button">✦ Demo data</button>
+      <button class="action-btn" id="clearBtn" type="button">✕ Clear</button>
+    </div>
+  </div>
+
+  <!-- EXCLUDED BANNER (conditional) -->
+  <div id="excludedBanner" class="excluded-banner" style="display:none;">
+    <div style="font-size:18px;flex-shrink:0;">⚠️</div>
+    <div><strong>No UIF applicable.</strong> Employees working fewer than 24 hours per month are excluded from UIF contributions. Neither the employee nor the employer contributes. No UIF registration or declaration is required for this employee.</div>
+  </div>
+
+  <!-- RESULTS PANEL -->
+  <div class="results-panel" id="resultsPanel">
+    <div class="results-grid">
+      <div class="r-cell">
+        <div class="r-label emp">Employee deduction</div>
+        <div class="r-value emp" id="rEmployee">—</div>
+        <div class="r-sub" id="rEmployeeSub">1% of salary</div>
+      </div>
+      <div class="r-cell">
+        <div class="r-label eer">Employer contribution</div>
+        <div class="r-value eer" id="rEmployer">—</div>
+        <div class="r-sub" id="rEmployerSub">1% employer adds</div>
+      </div>
+      <div class="r-cell">
+        <div class="r-label tot">Total to pay DoL</div>
+        <div class="r-value tot" id="rTotal">—</div>
+        <div class="r-sub" id="rTotalSub">monthly EMP201</div>
+      </div>
+    </div>
+    <div id="ceilingPill"></div>
+  </div>
+
+  <!-- PAYSLIP BREAKDOWN -->
+  <div class="card" id="payslipCard">
+    <div class="card-h">What this means in practice</div>
+    <div class="card-sub">How UIF affects the employee's pay and the employer's total cost.</div>
+
+    <div class="payslip">
+      <div class="payslip-header">
+        <div class="payslip-title">Employee — monthly payslip impact</div>
+      </div>
+      <div class="payslip-body">
+        <div class="ps-row">
+          <div class="ps-label">Gross salary<div class="ps-label-sub">before deductions</div></div>
+          <div class="ps-value dim" id="psGross">—</div>
+        </div>
+        <div class="ps-row">
+          <div class="ps-label">UIF deduction (1%)<div class="ps-label-sub">deducted by employer, paid to DoL</div></div>
+          <div class="ps-value deduct" id="psDeduct">—</div>
+        </div>
+        <div class="ps-row total">
+          <div class="ps-label"><strong>Net to employee</strong><div class="ps-label-sub">after UIF deduction</div></div>
+          <div class="ps-value net" id="psNet">—</div>
+        </div>
+      </div>
+      <div class="payslip-header" style="margin-top:1px;">
+        <div class="payslip-title">Employer — monthly cost breakdown</div>
+      </div>
+      <div class="payslip-body">
+        <div class="ps-row">
+          <div class="ps-label">Gross salary paid<div class="ps-label-sub">what you pay the employee</div></div>
+          <div class="ps-value dim" id="psSalary">—</div>
+        </div>
+        <div class="ps-row">
+          <div class="ps-label">Employer UIF contribution (1%)<div class="ps-label-sub">your additional contribution</div></div>
+          <div class="ps-value add" id="psEmpUif">—</div>
+        </div>
+        <div class="ps-row total">
+          <div class="ps-label"><strong>Total monthly cost to employer</strong><div class="ps-label-sub">salary + UIF contribution</div></div>
+          <div class="ps-value total-val" id="psTotalCost">—</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Annual + Team totals -->
+    <div style="margin-top:22px;">
+      <div class="section-tag" style="margin-bottom:10px;">Annual totals</div>
+      <div class="kpi-grid">
+        <div class="kpi">
+          <div class="kpi-label">Employee pays / year</div>
+          <div class="kpi-value" id="kpiEmpYear">—</div>
+          <div class="kpi-sub">deducted from salary</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Employer pays / year</div>
+          <div class="kpi-value" id="kpiEerYear">—</div>
+          <div class="kpi-sub">employer's cost</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Total UIF / year</div>
+          <div class="kpi-value" id="kpiTotYear">—</div>
+          <div class="kpi-sub">paid to DoL annually</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">EMP201 submissions</div>
+          <div class="kpi-value">12</div>
+          <div class="kpi-sub">monthly, due by 7th</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Team total (conditional) -->
+    <div class="team-card" id="teamCard" style="display:none;">
+      <div class="team-card-h">Team UIF estimate</div>
+      <div class="team-grid">
+        <div>
+          <div class="team-cell-label">Monthly UIF total</div>
+          <div class="team-cell-value" id="teamMonthly">—</div>
+        </div>
+        <div>
+          <div class="team-cell-label">Annual UIF total</div>
+          <div class="team-cell-value" id="teamAnnual">—</div>
+        </div>
+        <div>
+          <div class="team-cell-label">Employees included</div>
+          <div class="team-cell-value" id="teamCount">—</div>
+        </div>
+        <div>
+          <div class="team-cell-label">Average per employee</div>
+          <div class="team-cell-value" id="teamAvg">—</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- REFERENCE PANEL -->
+  <div class="card">
+    <div class="card-h">UIF compliance quick reference</div>
+    <div class="card-sub">Everything you need to know to stay compliant as an employer.</div>
+
+    <div class="ref-grid">
+      <div>
+        <div class="ref-block-h">Payment &amp; submission</div>
+        <div class="ref-row">
+          <div class="ref-row-ico">📅</div>
+          <div class="ref-row-text"><strong>Due by the 7th</strong> of every following month. If the 7th falls on a weekend or public holiday, pay on the last business day before.</div>
+        </div>
+        <div class="ref-row">
+          <div class="ref-row-ico">💻</div>
+          <div class="ref-row-text"><strong>How to pay:</strong> via your monthly EMP201 declaration on <a href="https://www.sars.gov.za" target="_blank" style="color:var(--blue);">SARS eFiling</a>. UIF is declared alongside PAYE and SDL on the same form. If you're not registered for PAYE, use <a href="https://www.ufiling.co.za" target="_blank" style="color:var(--blue);">uFiling.co.za</a>.</div>
+        </div>
+        <div class="ref-row">
+          <div class="ref-row-ico">⚡</div>
+          <div class="ref-row-text"><strong>Late payments</strong> attract interest and penalties from the Department of Labour. Back-registration is possible but will result in accumulated arrears.</div>
+        </div>
+        <div class="ref-row">
+          <div class="ref-row-ico">📋</div>
+          <div class="ref-row-text"><strong>UI-19 form</strong> — when an employee leaves, you must complete a UI-19 (declaration of service) within 4 days. This is required for the employee to claim UIF benefits.</div>
+        </div>
+      </div>
+
+      <div>
+        <div class="ref-block-h">Who is excluded from UIF</div>
+        <div class="excl-list">
+          <div class="excl-item"><div class="excl-dot">✕</div><div>Employees working <strong>fewer than 24 hours per month</strong> — no contributions, no registration required for these employees</div></div>
+          <div class="excl-item"><div class="excl-dot">✕</div><div><strong>Government employees</strong> covered by the Government Employees Pension Fund (GEPF)</div></div>
+          <div class="excl-item"><div class="excl-dot">✕</div><div><strong>Learners on learnerships</strong> registered under the Skills Development Act and receiving only a stipend</div></div>
+          <div class="excl-item"><div class="excl-dot">✕</div><div><strong>Independent contractors</strong> — if there is no employment relationship (no PAYE, independent operation), UIF does not apply</div></div>
+        </div>
+
+        <div class="sdl-note" style="margin-top:16px;">
+          <div style="font-size:16px;flex-shrink:0;">💡</div>
+          <div><strong>SDL — the other employer levy:</strong> If your total annual payroll exceeds <strong>R 500,000</strong>, you also owe the Skills Development Levy — 1% of payroll, employer only (not deducted from employees). Declared on the same EMP201 as UIF. <a href="https://autocomply.co.za/#contact" style="color:var(--blue);">Chat to us</a> if you're unsure whether SDL applies to your business.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<!-- CTA -->
+<div class="wrap" style="margin-bottom:30px;">
+  <div class="cta-inner">
+    <div class="cta-h">Not registered for UIF yet?</div>
+    <p class="cta-sub">If you've taken on staff without registering, back-registration is possible but penalties and arrears apply from the date of first employment. We can guide you through UIF registration, eFiling setup and monthly EMP201 submissions.</p>
+    <a href="https://wa.me/27670113108?text=Hi%20AutoComply%2C%20I%20used%20the%20UIF%20Calculator%20and%20need%20help%20with%20UIF%20registration%20or%20submissions." class="cta-btn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Chat on WhatsApp
+    </a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="foot">
+  AutoComply · Practical tools for South African business owners · <a href="https://autocomply.co.za">autocomply.co.za</a>
+  <div class="fine">UIF contribution ceiling: R 17,712/month (effective 1 June 2021). Rate: 1% employee + 1% employer. Figures are for guidance — always confirm your specific payroll treatment with a registered HR or payroll practitioner.</div>
+</div>
+
+<script>
+(function(){
+  const $ = id => document.getElementById(id);
+  const CEILING = 17712;
+  const RATE = 0.01;
+  let isPartTime = false;
+
+  const fmtR  = n => 'R ' + n.toLocaleString('en-ZA', {minimumFractionDigits:2, maximumFractionDigits:2});
+  const fmtR0 = n => 'R ' + Math.round(n).toLocaleString('en-ZA');
+  const num   = id => { const v = parseFloat($(id).value); return (isNaN(v) || v < 0) ? null : v; };
+
+  // Employment type toggle
+  $('btnFull').addEventListener('click', () => {
+    isPartTime = false;
+    $('btnFull').classList.add('active');
+    $('btnPart').classList.remove('active');
+    update();
+  });
+  $('btnPart').addEventListener('click', () => {
+    isPartTime = true;
+    $('btnPart').classList.add('active');
+    $('btnFull').classList.remove('active');
+    update();
+  });
+
+  function update() {
+    const gross     = num('salary');
+    const headcount = num('headcount');
+
+    // Part-time exclusion
+    if (isPartTime) {
+      $('excludedBanner').style.display = 'flex';
+      $('resultsPanel').style.opacity = '0.3';
+      $('payslipCard').style.opacity = '0.3';
+      clearResults();
+      return;
+    }
+
+    $('excludedBanner').style.display = 'none';
+    $('resultsPanel').style.opacity = '1';
+    $('payslipCard').style.opacity = '1';
+
+    if (gross === null) {
+      clearResults();
+      return;
+    }
+
+    const uifBase = Math.min(gross, CEILING);
+    const capped  = gross > CEILING;
+    const emp     = uifBase * RATE;
+    const eer     = uifBase * RATE;
+    const total   = emp + eer;
+    const net     = gross - emp;
+    const empCost = gross + eer;
+
+    // Results panel
+    $('rEmployee').textContent   = fmtR(emp);
+    $('rEmployee').classList.remove('dim');
+    $('rEmployeeSub').textContent = capped ? 'capped at ceiling' : '1% of R ' + gross.toLocaleString('en-ZA');
+    $('rEmployer').textContent   = fmtR(eer);
+    $('rEmployer').classList.remove('dim');
+    $('rEmployerSub').textContent = capped ? 'capped at ceiling' : '1% employer cost';
+    $('rTotal').textContent      = fmtR(total);
+    $('rTotal').classList.remove('dim');
+    $('rTotalSub').textContent   = 'EMP201 monthly';
+
+    // Ceiling pill
+    if (capped) {
+      $('ceilingPill').innerHTML = `<span class="ceiling-pill capped">⚡ Capped — contributions calculated on R 17,712, not full salary</span>`;
+    } else {
+      $('ceilingPill').innerHTML = `<span class="ceiling-pill ok">✓ Below ceiling — full salary used for UIF calculation</span>`;
+    }
+
+    // Payslip
+    $('psGross').textContent   = fmtR(gross);
+    $('psDeduct').textContent  = '− ' + fmtR(emp);
+    $('psNet').textContent     = fmtR(net);
+    $('psSalary').textContent  = fmtR(gross);
+    $('psEmpUif').textContent  = '+ ' + fmtR(eer);
+    $('psTotalCost').textContent = fmtR(empCost);
+
+    // Annual
+    $('kpiEmpYear').textContent  = fmtR0(emp * 12);
+    $('kpiEerYear').textContent  = fmtR0(eer * 12);
+    $('kpiTotYear').textContent  = fmtR0(total * 12);
+
+    // Team
+    if (headcount !== null && headcount >= 1) {
+      $('teamCard').style.display = '';
+      $('teamMonthly').textContent = fmtR0(total * headcount);
+      $('teamAnnual').textContent  = fmtR0(total * headcount * 12);
+      $('teamCount').textContent   = Math.round(headcount).toLocaleString('en-ZA');
+      $('teamAvg').textContent     = fmtR(total);
+    } else {
+      $('teamCard').style.display = 'none';
+    }
+  }
+
+  function clearResults() {
+    ['rEmployee','rEmployer','rTotal'].forEach(id => {
+      $(id).textContent = '—';
+      $(id).classList.add('dim');
+    });
+    $('rEmployeeSub').textContent = '1% of salary';
+    $('rEmployerSub').textContent = '1% employer adds';
+    $('rTotalSub').textContent    = 'monthly EMP201';
+    $('ceilingPill').innerHTML    = '';
+    ['psGross','psDeduct','psNet','psSalary','psEmpUif','psTotalCost'].forEach(id => $(id).textContent = '—');
+    ['kpiEmpYear','kpiEerYear','kpiTotYear'].forEach(id => $(id).textContent = '—');
+    $('teamCard').style.display = 'none';
+  }
+
+  // Input listeners
+  $('salary').addEventListener('input', update);
+  $('headcount').addEventListener('input', update);
+
+  // Demo
+  $('demoBtn').addEventListener('click', () => {
+    $('salary').value    = 25000;
+    $('headcount').value = 5;
+    isPartTime = false;
+    $('btnFull').classList.add('active');
+    $('btnPart').classList.remove('active');
+    update();
+  });
+
+  // Clear
+  $('clearBtn').addEventListener('click', () => {
+    $('salary').value    = '';
+    $('headcount').value = '';
+    isPartTime = false;
+    $('btnFull').classList.add('active');
+    $('btnPart').classList.remove('active');
+    update();
+  });
+
+  update();
+})();
+</script>
+</body>
+</html>

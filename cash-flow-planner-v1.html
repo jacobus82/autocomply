@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Cash Flow Planner — AutoComply</title>
+<meta name="description" content="Free 12-month cash flow planner for South African SMEs. Plan income and expenses, spot cash gaps before they become a crisis.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;700;800&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+
+:root{
+  --navy:#0B1628;
+  --navy-soft:#1A2842;
+  --blue:#1A56DB;
+  --blue-soft:#EEF3FF;
+  --blue-line:rgba(26,86,219,.15);
+  --green:#059669;
+  --green-soft:#ECFDF5;
+  --amber:#D97706;
+  --amber-soft:#FEF3C7;
+  --red:#DC2626;
+  --red-soft:#FEE2E2;
+  --muted:#5A6A82;
+  --muted2:#8A96A8;
+  --border:#DDE5F0;
+  --border-strong:#C5D1E4;
+  --bg:#F8FAFF;
+  --bg2:#EEF3FF;
+  --white:#fff;
+  --sh:0 1px 4px rgba(11,22,40,.07);
+  --sh-strong:0 4px 20px rgba(11,22,40,.10);
+}
+
+html,body{background:var(--bg);color:var(--navy);font-family:'Outfit',sans-serif;-webkit-font-smoothing:antialiased;min-height:100vh;font-size:15px;line-height:1.5;}
+
+/* ─────────── TOPBAR ─────────── */
+.topbar{background:var(--navy);padding:14px 20px;border-bottom:1px solid rgba(255,255,255,.05);}
+.topbar-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;}
+.brand{font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;color:#fff;letter-spacing:-.3px;text-decoration:none;}
+.brand span{color:#60AEFF;}
+.back{font-size:12.5px;color:rgba(255,255,255,.55);text-decoration:none;display:inline-flex;align-items:center;gap:6px;transition:color .15s;}
+.back:hover{color:#fff;}
+
+/* ─────────── HERO ─────────── */
+.hero{background:var(--navy);padding:34px 20px 54px;position:relative;overflow:hidden;}
+.hero::before{content:"";position:absolute;top:-100px;right:-100px;width:400px;height:400px;background:radial-gradient(circle,rgba(26,86,219,.15),transparent 70%);pointer-events:none;}
+.hero-inner{max-width:1100px;margin:0 auto;position:relative;z-index:1;}
+.hero-tag{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:14px;}
+.hero-h{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(26px,5vw,38px);font-weight:800;color:#fff;letter-spacing:-.6px;line-height:1.15;margin-bottom:12px;max-width:760px;}
+.hero-sub{font-size:clamp(14px,2.2vw,16px);color:rgba(255,255,255,.65);max-width:680px;line-height:1.55;}
+
+/* ─────────── LAYOUT ─────────── */
+.wrap{max-width:1100px;margin:0 auto;padding:0 20px;}
+.main{margin-top:-32px;margin-bottom:36px;position:relative;z-index:2;}
+
+.card{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:24px;box-shadow:var(--sh);margin-bottom:20px;}
+.card-h{font-family:'Bricolage Grotesque',sans-serif;font-size:17px;font-weight:700;color:var(--navy);margin-bottom:4px;letter-spacing:-.2px;display:flex;align-items:center;gap:10px;}
+.card-sub{font-size:13px;color:var(--muted);margin-bottom:20px;line-height:1.55;}
+
+/* ─────────── SETUP ─────────── */
+.setup-grid{display:grid;grid-template-columns:2fr 1fr;gap:16px;}
+@media (max-width:620px){.setup-grid{grid-template-columns:1fr;}}
+
+.field-label{display:flex;align-items:center;justify-content:space-between;font-size:12px;font-weight:600;color:var(--navy);margin-bottom:6px;}
+.field-hint{font-size:11px;color:var(--muted2);font-weight:500;}
+.input-wrap{position:relative;}
+.input-prefix{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;color:var(--muted);pointer-events:none;}
+.input{width:100%;padding:10px 12px 10px 28px;font-family:'Outfit',sans-serif;font-size:14px;font-weight:500;color:var(--navy);background:var(--bg);border:1px solid var(--border);border-radius:8px;transition:all .15s;-moz-appearance:textfield;}
+.input::-webkit-outer-spin-button,.input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
+.input:focus{outline:none;border-color:var(--blue);background:var(--white);box-shadow:0 0 0 3px rgba(26,86,219,.12);}
+.input.no-prefix{padding-left:12px;}
+
+.select{width:100%;padding:10px 32px 10px 12px;font-family:'Outfit',sans-serif;font-size:14px;font-weight:500;color:var(--navy);background:var(--bg) url("data:image/svg+xml;charset=US-ASCII,%3Csvg width='12' height='8' viewBox='0 0 12 8' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%235A6A82' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat right 12px center;border:1px solid var(--border);border-radius:8px;appearance:none;cursor:pointer;transition:all .15s;}
+.select:focus{outline:none;border-color:var(--blue);background-color:var(--white);box-shadow:0 0 0 3px rgba(26,86,219,.12);}
+
+/* ─────────── LINE ITEMS ─────────── */
+.items-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+@media (max-width:820px){.items-grid{grid-template-columns:1fr;}}
+
+.items-card .card-h-ico{width:28px;height:28px;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+.items-card.income .card-h-ico{background:var(--green-soft);color:var(--green);}
+.items-card.expense .card-h-ico{background:var(--red-soft);color:var(--red);}
+
+.items-total{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;color:var(--muted);margin-left:auto;}
+.items-total .rand{color:var(--navy);font-weight:700;font-size:13.5px;}
+
+.items-list{display:flex;flex-direction:column;gap:10px;margin-bottom:12px;}
+
+.item{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:10px 12px;transition:all .15s;}
+.item:hover{border-color:var(--border-strong);}
+.item.expanded{background:var(--white);border-color:var(--blue-line);}
+
+.item-row{display:flex;align-items:center;gap:8px;}
+.item-name{flex:1;min-width:0;font-family:'Outfit',sans-serif;font-size:13.5px;font-weight:500;color:var(--navy);background:transparent;border:none;padding:5px 0;outline:none;}
+.item-name:focus{border-bottom:1px dashed var(--blue);}
+.item-name::placeholder{color:var(--muted2);}
+
+.item-amount-wrap{position:relative;width:120px;flex-shrink:0;}
+@media (max-width:480px){.item-amount-wrap{width:100px;}}
+.item-amount-prefix{position:absolute;left:9px;top:50%;transform:translateY(-50%);font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;color:var(--muted);pointer-events:none;}
+.item-amount{width:100%;padding:7px 9px 7px 22px;font-family:'JetBrains Mono',monospace;font-size:12.5px;font-weight:600;color:var(--navy);background:var(--white);border:1px solid var(--border);border-radius:7px;-moz-appearance:textfield;text-align:right;}
+.item-amount::-webkit-outer-spin-button,.item-amount::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
+.item-amount:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 2px rgba(26,86,219,.12);}
+
+.item-btn{background:transparent;border:none;width:28px;height:28px;border-radius:6px;cursor:pointer;color:var(--muted);display:flex;align-items:center;justify-content:center;font-size:13px;transition:all .15s;flex-shrink:0;}
+.item-btn:hover{background:var(--bg2);color:var(--navy);}
+.item-btn.delete:hover{background:var(--red-soft);color:var(--red);}
+.item-btn.active{background:var(--blue-soft);color:var(--blue);}
+
+.item-months{display:none;margin-top:12px;padding-top:12px;border-top:1px dashed var(--border);grid-template-columns:repeat(4,1fr);gap:7px;}
+.item.expanded .item-months{display:grid;}
+@media (max-width:540px){.item-months{grid-template-columns:repeat(3,1fr);}}
+
+.month-input-wrap{}
+.month-label{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--muted2);margin-bottom:3px;display:block;}
+.month-input{width:100%;padding:6px 7px;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;color:var(--navy);background:var(--bg);border:1px solid var(--border);border-radius:6px;text-align:right;-moz-appearance:textfield;}
+.month-input::-webkit-outer-spin-button,.month-input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
+.month-input:focus{outline:none;border-color:var(--blue);background:var(--white);}
+
+.add-btn{width:100%;padding:10px;font-family:'Outfit',sans-serif;font-size:12.5px;font-weight:600;color:var(--blue);background:var(--blue-soft);border:1px dashed var(--blue-line);border-radius:8px;cursor:pointer;transition:all .15s;}
+.add-btn:hover{background:rgba(26,86,219,.08);border-color:var(--blue);}
+
+/* ─────────── PROJECTION ─────────── */
+.chart-wrap{position:relative;background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:18px;}
+.chart-svg{display:block;width:100%;height:200px;overflow:visible;}
+
+.chart-axis-label{font-family:'JetBrains Mono',monospace;font-size:9px;fill:var(--muted2);}
+.chart-month-label{font-family:'JetBrains Mono',monospace;font-size:9px;fill:var(--muted);text-anchor:middle;}
+.chart-zero-line{stroke:var(--border-strong);stroke-width:1;stroke-dasharray:3,3;}
+.chart-line{fill:none;stroke:var(--blue);stroke-width:2.5;stroke-linejoin:round;stroke-linecap:round;}
+.chart-area{fill:rgba(26,86,219,.08);}
+.chart-dot{fill:var(--white);stroke:var(--blue);stroke-width:2;}
+.chart-dot.neg{stroke:var(--red);}
+
+/* monthly breakdown */
+.months-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:0 -24px;padding:0 24px 4px;}
+.months-grid{display:grid;grid-template-columns:repeat(12,minmax(110px,1fr));gap:8px;min-width:min-content;}
+.month-card{background:var(--bg);border:1px solid var(--border);border-radius:9px;padding:10px 12px;transition:all .15s;}
+.month-card.neg{background:var(--red-soft);border-color:rgba(220,38,38,.25);}
+.month-card.tight{background:var(--amber-soft);border-color:rgba(217,119,6,.25);}
+.mc-name{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;}
+.mc-closing{font-family:'Bricolage Grotesque',sans-serif;font-size:15px;font-weight:700;color:var(--navy);margin-bottom:2px;letter-spacing:-.3px;}
+.mc-closing.neg{color:var(--red);}
+.mc-closing.tight{color:var(--amber);}
+.mc-closing-label{font-size:10px;color:var(--muted2);text-transform:uppercase;letter-spacing:.5px;font-weight:600;margin-bottom:8px;}
+.mc-break{height:1px;background:var(--border);margin:8px -4px;}
+.mc-row{display:flex;justify-content:space-between;align-items:center;font-size:11px;padding:1px 0;}
+.mc-row-label{color:var(--muted);}
+.mc-row-val{font-family:'JetBrains Mono',monospace;font-weight:600;color:var(--navy);}
+.mc-row-val.pos{color:var(--green);}
+.mc-row-val.neg{color:var(--red);}
+
+/* summary strip */
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+@media (max-width:640px){.kpis{grid-template-columns:repeat(2,1fr);}}
+.kpi{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:14px;}
+.kpi-label{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;}
+.kpi-value{font-family:'Bricolage Grotesque',sans-serif;font-size:19px;font-weight:700;color:var(--navy);letter-spacing:-.3px;line-height:1.1;}
+.kpi-value.pos{color:var(--green);}
+.kpi-value.neg{color:var(--red);}
+.kpi-sub{font-size:11px;color:var(--muted2);margin-top:3px;}
+
+/* alerts */
+.alerts{margin-bottom:18px;}
+.alert{padding:12px 14px;border-radius:10px;font-size:13px;line-height:1.55;margin-bottom:10px;display:flex;gap:10px;align-items:flex-start;}
+.alert:last-child{margin-bottom:0;}
+.alert-ico{font-size:14px;line-height:1;flex-shrink:0;margin-top:1px;}
+.alert.red{background:var(--red-soft);color:#991B1B;border:1px solid rgba(220,38,38,.2);}
+.alert.amber{background:var(--amber-soft);color:#92400E;border:1px solid rgba(217,119,6,.2);}
+.alert.green{background:var(--green-soft);color:#065F46;border:1px solid rgba(5,150,105,.2);}
+.alert strong{font-weight:700;}
+
+/* ─────────── EXPLAINER ─────────── */
+.explainer-inner{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:26px;box-shadow:var(--sh);}
+.explainer-h{font-family:'Bricolage Grotesque',sans-serif;font-size:19px;font-weight:700;color:var(--navy);margin-bottom:18px;letter-spacing:-.2px;}
+.explainer-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;}
+.explainer-item-h{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--blue);margin-bottom:7px;}
+.explainer-item-body{font-size:13px;color:var(--navy);line-height:1.6;}
+.explainer-item-body .mono{font-family:'JetBrains Mono',monospace;font-size:12px;background:var(--bg2);padding:1px 6px;border-radius:4px;}
+
+/* ─────────── CTA ─────────── */
+.cta-inner{background:var(--navy);border-radius:16px;padding:28px 26px;text-align:center;position:relative;overflow:hidden;}
+.cta-inner::before{content:"";position:absolute;top:-80px;left:-80px;width:240px;height:240px;background:radial-gradient(circle,rgba(26,86,219,.28),transparent 70%);pointer-events:none;}
+.cta-inner::after{content:"";position:absolute;bottom:-80px;right:-80px;width:240px;height:240px;background:radial-gradient(circle,rgba(96,174,255,.18),transparent 70%);pointer-events:none;}
+.cta-h{font-family:'Bricolage Grotesque',sans-serif;font-size:21px;font-weight:700;color:#fff;margin-bottom:8px;letter-spacing:-.3px;position:relative;z-index:1;}
+.cta-sub{font-size:14px;color:rgba(255,255,255,.65);margin-bottom:18px;max-width:500px;margin-left:auto;margin-right:auto;position:relative;z-index:1;}
+.cta-btn{display:inline-flex;align-items:center;gap:8px;background:#25D366;color:#fff;font-family:'Outfit',sans-serif;font-size:14px;font-weight:600;padding:12px 22px;border-radius:9px;text-decoration:none;position:relative;z-index:1;transition:transform .15s;}
+.cta-btn:hover{transform:translateY(-1px);}
+
+/* actions bar */
+.actions{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:20px;flex-wrap:wrap;}
+.action-btn{font-family:'Outfit',sans-serif;font-size:12.5px;font-weight:600;padding:8px 14px;border-radius:8px;cursor:pointer;border:1px solid var(--border);background:var(--white);color:var(--navy);transition:all .15s;display:inline-flex;align-items:center;gap:6px;}
+.action-btn:hover{border-color:var(--border-strong);background:var(--bg);}
+.action-btn.ghost{color:var(--muted);}
+
+/* ─────────── FOOTER ─────────── */
+.foot{max-width:1100px;margin:20px auto 0;padding:26px 20px;text-align:center;font-size:12px;color:var(--muted2);border-top:1px solid var(--border);}
+.foot a{color:var(--muted);text-decoration:none;font-weight:600;}
+
+/* ─────────── RESPONSIVE TWEAKS ─────────── */
+@media (max-width:620px){
+  .card{padding:20px 18px;}
+  .hero{padding:28px 20px 48px;}
+  .main{margin-top:-28px;}
+  .cta-inner{padding:24px 20px;}
+  .explainer-inner{padding:22px 18px;}
+}
+</style>
+</head>
+<body>
+
+<!-- ─── TOPBAR ─── -->
+<div class="topbar">
+  <div class="topbar-inner">
+    <a href="https://autocomply.co.za" class="brand">Auto<span>Comply</span></a>
+    <a href="https://autocomply.co.za/#tools" class="back">← All tools</a>
+  </div>
+</div>
+
+<!-- ─── HERO ─── -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-tag">Free Tool · Cash Flow Planner</div>
+    <h1 class="hero-h">See the next 12 months of cash flow —<br>spot the gaps before they bite.</h1>
+    <p class="hero-sub">Plug in your expected income and expenses by month. Get a live 12-month projection with every cash gap, tight runway and surplus month flagged before it happens.</p>
+  </div>
+</section>
+
+<!-- ─── MAIN ─── -->
+<main class="main wrap">
+
+  <!-- SETUP -->
+  <div class="card">
+    <div class="card-h">Set up your starting point</div>
+    <div class="card-sub">Enter what you have in the bank today and pick your starting month.</div>
+    <div class="setup-grid">
+      <div>
+        <div class="field-label">
+          <span>Opening cash balance</span>
+          <span class="field-hint">bank + petty cash today</span>
+        </div>
+        <div class="input-wrap">
+          <span class="input-prefix">R</span>
+          <input id="openingBalance" class="input" type="number" inputmode="decimal" value="100000" min="-99999999" step="1000">
+        </div>
+      </div>
+      <div>
+        <div class="field-label">
+          <span>Starting month</span>
+          <span class="field-hint">month 1 of projection</span>
+        </div>
+        <select id="startMonth" class="select">
+          <option value="0">January</option>
+          <option value="1">February</option>
+          <option value="2">March</option>
+          <option value="3">April</option>
+          <option value="4">May</option>
+          <option value="5">June</option>
+          <option value="6">July</option>
+          <option value="7">August</option>
+          <option value="8">September</option>
+          <option value="9">October</option>
+          <option value="10">November</option>
+          <option value="11">December</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- INCOME + EXPENSES -->
+  <div class="items-grid">
+    <div class="card items-card income">
+      <div class="card-h">
+        <span class="card-h-ico">↑</span>
+        Money coming in
+        <span class="items-total">Avg / month <span class="rand" id="incomeTotal">R 0</span></span>
+      </div>
+      <div class="card-sub">Add all income streams. Use flat amount for steady income, expand any row to customise month by month.</div>
+      <div class="items-list" id="incomeList"></div>
+      <button class="add-btn" id="addIncome" type="button">+ Add income source</button>
+    </div>
+
+    <div class="card items-card expense">
+      <div class="card-h">
+        <span class="card-h-ico">↓</span>
+        Money going out
+        <span class="items-total">Avg / month <span class="rand" id="expenseTotal">R 0</span></span>
+      </div>
+      <div class="card-sub">Add every recurring and expected one-off expense. Expand any row to set different amounts for specific months.</div>
+      <div class="items-list" id="expenseList"></div>
+      <button class="add-btn" id="addExpense" type="button">+ Add expense</button>
+    </div>
+  </div>
+
+  <!-- ACTIONS -->
+  <div class="actions">
+    <button class="action-btn ghost" id="resetBtn" type="button">↺ Reset to defaults</button>
+    <button class="action-btn ghost" id="clearBtn" type="button">✕ Clear everything</button>
+  </div>
+
+  <!-- PROJECTION -->
+  <div class="card">
+    <div class="card-h">12-month cash flow projection</div>
+    <div class="card-sub">Closing bank balance month by month. Scroll horizontally on the cards below to see all months.</div>
+
+    <div class="chart-wrap">
+      <svg class="chart-svg" id="chart" viewBox="0 0 1000 200" preserveAspectRatio="none"></svg>
+    </div>
+
+    <div class="months-scroll">
+      <div class="months-grid" id="monthsGrid"></div>
+    </div>
+  </div>
+
+  <!-- ALERTS -->
+  <div id="alertsBlock"></div>
+
+  <!-- ANNUAL SUMMARY -->
+  <div class="card">
+    <div class="card-h">Annual summary</div>
+    <div class="card-sub">Full 12-month total position.</div>
+    <div class="kpis">
+      <div class="kpi">
+        <div class="kpi-label">Total in</div>
+        <div class="kpi-value pos" id="kpiIn">R 0</div>
+        <div class="kpi-sub">across 12 months</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Total out</div>
+        <div class="kpi-value neg" id="kpiOut">R 0</div>
+        <div class="kpi-sub">across 12 months</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Net change</div>
+        <div class="kpi-value" id="kpiNet">R 0</div>
+        <div class="kpi-sub" id="kpiNetSub">year on year</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Final balance</div>
+        <div class="kpi-value" id="kpiFinal">R 0</div>
+        <div class="kpi-sub" id="kpiFinalSub">end of month 12</div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- ─── EXPLAINER ─── -->
+<div class="wrap" style="margin-bottom:26px;">
+  <div class="explainer-inner">
+    <h2 class="explainer-h">How this works</h2>
+    <div class="explainer-grid">
+      <div>
+        <div class="explainer-item-h">Net cash flow</div>
+        <div class="explainer-item-body"><span class="mono">Income − Expenses</span>. What each month adds or subtracts from your bank balance. Positive months build runway, negative months eat into it.</div>
+      </div>
+      <div>
+        <div class="explainer-item-h">Closing balance</div>
+        <div class="explainer-item-body"><span class="mono">Opening + Net</span>. Your bank balance at month-end. Each month's closing becomes the next month's opening. This compounds — small monthly losses become large annual ones.</div>
+      </div>
+      <div>
+        <div class="explainer-item-h">Cash gaps</div>
+        <div class="explainer-item-body">Any month where closing balance goes below zero. You'll need to arrange overdraft, delay payments or bring forward income. Spotting them 6 months out gives you options — 6 days out does not.</div>
+      </div>
+      <div>
+        <div class="explainer-item-h">Runway buffer</div>
+        <div class="explainer-item-body">Closing balance divided by monthly expenses. Under 1 month is tight — one late invoice can hurt. Over 3 months is healthy. This is more important than profit for SME survival.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── CTA ─── -->
+<div class="wrap" style="margin-bottom:30px;">
+  <div class="cta-inner">
+    <div class="cta-h">Projection showing cash gaps?</div>
+    <p class="cta-sub">Seeing red months ahead means you have time to act. We help SMEs restructure cash flow, time big expenses, and secure facilities before the gap hits.</p>
+    <a href="https://wa.me/27670113108?text=Hi%20AutoComply%2C%20I%20used%20the%20Cash%20Flow%20Planner%20and%20want%20help%20with%20my%20cash%20flow." class="cta-btn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Chat on WhatsApp
+    </a>
+  </div>
+</div>
+
+<!-- ─── FOOTER ─── -->
+<div class="foot">
+  AutoComply · Practical tools for South African business owners · <a href="https://autocomply.co.za">autocomply.co.za</a>
+</div>
+
+<script>
+(function(){
+  // ─────────── STATE ───────────
+  const DEFAULTS = {
+    opening: 100000,
+    startMonth: 0,
+    income: [
+      { name:'Sales',        flat:95000, months:null, expanded:false },
+      { name:'Other income', flat:5000,  months:null, expanded:false }
+    ],
+    expenses: [
+      { name:'Rent',                flat:15000, months:null, expanded:false },
+      { name:'Salaries & wages',    flat:35000, months:null, expanded:false },
+      { name:'Stock / COGS',        flat:25000, months:null, expanded:false },
+      { name:'Utilities',           flat:3000,  months:null, expanded:false },
+      { name:'Marketing',           flat:2500,  months:null, expanded:false },
+      { name:'Professional fees',   flat:1500,  months:null, expanded:false },
+      { name:'Other',               flat:2000,  months:null, expanded:false }
+    ]
+  };
+
+  const state = {
+    opening: DEFAULTS.opening,
+    startMonth: DEFAULTS.startMonth,
+    income: DEFAULTS.income.map(x => ({...x})),
+    expenses: DEFAULTS.expenses.map(x => ({...x}))
+  };
+
+  let _nextId = 1;
+  state.income.forEach(i => i._id = _nextId++);
+  state.expenses.forEach(e => e._id = _nextId++);
+
+  const MONTHS_FULL = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  const MONTHS_ABR  = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+  // ─────────── UTILITIES ───────────
+  const $ = id => document.getElementById(id);
+  const fmtR = n => (n < 0 ? '−R ' : 'R ') + Math.abs(Math.round(n)).toLocaleString('en-ZA');
+  const fmtRsmall = n => (n < 0 ? '−R' : 'R') + Math.abs(Math.round(n)).toLocaleString('en-ZA');
+  const fmtRcompact = n => {
+    const abs = Math.abs(n);
+    const sign = n < 0 ? '−R ' : 'R ';
+    if(abs >= 1000000) return sign + (abs/1000000).toFixed(1).replace(/\.0$/,'') + 'M';
+    if(abs >= 1000)    return sign + (abs/1000).toFixed(1).replace(/\.0$/,'') + 'k';
+    return sign + Math.round(abs).toLocaleString('en-ZA');
+  };
+  const monthLabelAt = (i) => MONTHS_ABR[(state.startMonth + i) % 12];
+  const monthFullAt  = (i) => MONTHS_FULL[(state.startMonth + i) % 12];
+
+  // ─────────── ITEM RENDERING ───────────
+  function renderItem(item, type){
+    const row = document.createElement('div');
+    row.className = 'item' + (item.expanded ? ' expanded' : '');
+    row.dataset.id = item._id;
+    row.dataset.type = type;
+
+    // Top row
+    const top = document.createElement('div');
+    top.className = 'item-row';
+
+    const nameInput = document.createElement('input');
+    nameInput.type = 'text';
+    nameInput.className = 'item-name';
+    nameInput.value = item.name;
+    nameInput.placeholder = type === 'income' ? 'Income source' : 'Expense name';
+    nameInput.addEventListener('input', (e) => { item.name = e.target.value; });
+    top.appendChild(nameInput);
+
+    // Amount field (only shown when collapsed)
+    if(!item.expanded){
+      const aw = document.createElement('div');
+      aw.className = 'item-amount-wrap';
+      aw.innerHTML = `<span class="item-amount-prefix">R</span>`;
+      const amtInput = document.createElement('input');
+      amtInput.type = 'number';
+      amtInput.inputMode = 'decimal';
+      amtInput.className = 'item-amount';
+      amtInput.value = item.flat || 0;
+      amtInput.min = '0';
+      amtInput.step = '100';
+      amtInput.addEventListener('input', (e) => {
+        const v = parseFloat(e.target.value);
+        item.flat = isNaN(v) ? 0 : v;
+        recompute();
+      });
+      aw.appendChild(amtInput);
+      top.appendChild(aw);
+    }
+
+    // Toggle button
+    const tbtn = document.createElement('button');
+    tbtn.type = 'button';
+    tbtn.className = 'item-btn' + (item.expanded ? ' active' : '');
+    tbtn.innerHTML = item.expanded ? '⟲' : '📅';
+    tbtn.title = item.expanded ? 'Use single amount' : 'Edit per month';
+    tbtn.addEventListener('click', () => {
+      if(item.expanded){
+        // Collapse: take month 1's value as new flat
+        item.flat = item.months ? (item.months[0] || 0) : item.flat;
+        item.expanded = false;
+      } else {
+        // Expand: seed months with flat value if not already custom
+        if(!item.months) item.months = Array(12).fill(item.flat || 0);
+        item.expanded = true;
+      }
+      renderAll();
+    });
+    top.appendChild(tbtn);
+
+    // Delete button
+    const dbtn = document.createElement('button');
+    dbtn.type = 'button';
+    dbtn.className = 'item-btn delete';
+    dbtn.innerHTML = '✕';
+    dbtn.title = 'Delete';
+    dbtn.addEventListener('click', () => {
+      const arr = state[type === 'income' ? 'income' : 'expenses'];
+      const idx = arr.findIndex(x => x._id === item._id);
+      if(idx !== -1) arr.splice(idx, 1);
+      renderAll();
+    });
+    top.appendChild(dbtn);
+
+    row.appendChild(top);
+
+    // Months panel
+    if(item.expanded){
+      const monthsPanel = document.createElement('div');
+      monthsPanel.className = 'item-months';
+      for(let i = 0; i < 12; i++){
+        const wrap = document.createElement('div');
+        wrap.className = 'month-input-wrap';
+        const lbl = document.createElement('span');
+        lbl.className = 'month-label';
+        lbl.textContent = monthLabelAt(i);
+        const inp = document.createElement('input');
+        inp.type = 'number';
+        inp.inputMode = 'decimal';
+        inp.className = 'month-input';
+        inp.min = '0';
+        inp.step = '100';
+        inp.value = item.months[i] || 0;
+        inp.addEventListener('input', (e) => {
+          const v = parseFloat(e.target.value);
+          item.months[i] = isNaN(v) ? 0 : v;
+          recompute();
+        });
+        wrap.appendChild(lbl);
+        wrap.appendChild(inp);
+        monthsPanel.appendChild(wrap);
+      }
+      row.appendChild(monthsPanel);
+    }
+
+    return row;
+  }
+
+  function renderList(listEl, arr, type){
+    listEl.innerHTML = '';
+    arr.forEach(item => listEl.appendChild(renderItem(item, type)));
+  }
+
+  function renderAll(){
+    renderList($('incomeList'), state.income, 'income');
+    renderList($('expenseList'), state.expenses, 'expense');
+    recompute();
+  }
+
+  // ─────────── CALC ENGINE ───────────
+  function getItemMonthly(item){
+    if(item.expanded && item.months) return item.months;
+    return Array(12).fill(item.flat || 0);
+  }
+
+  function computeProjection(){
+    const incMonths = Array(12).fill(0);
+    const expMonths = Array(12).fill(0);
+
+    state.income.forEach(i => {
+      const m = getItemMonthly(i);
+      for(let j = 0; j < 12; j++) incMonths[j] += (m[j] || 0);
+    });
+    state.expenses.forEach(e => {
+      const m = getItemMonthly(e);
+      for(let j = 0; j < 12; j++) expMonths[j] += (m[j] || 0);
+    });
+
+    const net = Array(12), opening = Array(12), closing = Array(12);
+    let prev = state.opening;
+    for(let j = 0; j < 12; j++){
+      opening[j] = prev;
+      net[j] = incMonths[j] - expMonths[j];
+      closing[j] = opening[j] + net[j];
+      prev = closing[j];
+    }
+
+    const totalIn  = incMonths.reduce((a,b) => a+b, 0);
+    const totalOut = expMonths.reduce((a,b) => a+b, 0);
+    const netChange = totalIn - totalOut;
+    const avgMonthlyExp = totalOut / 12;
+
+    let lowestVal = Infinity, lowestIdx = 0;
+    let highestVal = -Infinity, highestIdx = 0;
+    closing.forEach((c, i) => {
+      if(c < lowestVal){ lowestVal = c; lowestIdx = i; }
+      if(c > highestVal){ highestVal = c; highestIdx = i; }
+    });
+
+    return {
+      incMonths, expMonths, net, opening, closing,
+      totalIn, totalOut, netChange,
+      avgMonthlyExp,
+      lowestVal, lowestIdx, highestVal, highestIdx,
+      finalBalance: closing[11]
+    };
+  }
+
+  // ─────────── RENDER OUTPUTS ───────────
+  function renderChart(proj){
+    const svg = $('chart');
+    const W = 1000, H = 200;
+    const padL = 50, padR = 20, padT = 16, padB = 28;
+    const plotW = W - padL - padR;
+    const plotH = H - padT - padB;
+
+    // Calculate y range
+    const closings = proj.closing;
+    let min = Math.min(0, ...closings);
+    let max = Math.max(0, ...closings);
+    if(min === max){ min -= 1000; max += 1000; }
+    const range = max - min;
+    // Add 10% padding
+    const yMin = min - range * 0.05;
+    const yMax = max + range * 0.05;
+    const yRange = yMax - yMin;
+
+    const xAt = i => padL + (plotW * i) / 11;
+    const yAt = v => padT + plotH * (1 - (v - yMin) / yRange);
+
+    // Build polyline points
+    const pts = closings.map((c, i) => `${xAt(i)},${yAt(c)}`).join(' ');
+    // Area path
+    const areaPath = `M ${xAt(0)},${yAt(yMin)} L ${closings.map((c,i) => `${xAt(i)},${yAt(c)}`).join(' L ')} L ${xAt(11)},${yAt(yMin)} Z`;
+
+    const zeroY = yAt(0);
+
+    // Y axis labels (3 lines: max, 0 if in range, min)
+    const yTicks = [yMax, (yMax+yMin)/2, yMin];
+    if(yMin < 0 && yMax > 0) yTicks.push(0);
+
+    let svgContent = '';
+
+    // Horizontal gridlines
+    yTicks.forEach(t => {
+      const y = yAt(t);
+      svgContent += `<line x1="${padL}" y1="${y}" x2="${W - padR}" y2="${y}" stroke="${t === 0 ? 'var(--border-strong)' : 'var(--border)'}" stroke-width="1" ${t === 0 ? 'stroke-dasharray="3,3"' : ''}/>`;
+      svgContent += `<text x="${padL - 6}" y="${y + 3}" class="chart-axis-label" text-anchor="end">${fmtRcompact(t)}</text>`;
+    });
+
+    // Area
+    if(closings.length > 0){
+      svgContent += `<path d="${areaPath}" class="chart-area"/>`;
+    }
+
+    // Line
+    svgContent += `<polyline points="${pts}" class="chart-line"/>`;
+
+    // Dots
+    closings.forEach((c, i) => {
+      svgContent += `<circle cx="${xAt(i)}" cy="${yAt(c)}" r="3.5" class="chart-dot ${c < 0 ? 'neg' : ''}"/>`;
+    });
+
+    // Month labels
+    for(let i = 0; i < 12; i++){
+      svgContent += `<text x="${xAt(i)}" y="${H - 10}" class="chart-month-label">${monthLabelAt(i)}</text>`;
+    }
+
+    svg.innerHTML = svgContent;
+  }
+
+  function renderMonths(proj){
+    const grid = $('monthsGrid');
+    grid.innerHTML = '';
+    const tightThreshold = proj.avgMonthlyExp;
+
+    for(let i = 0; i < 12; i++){
+      const c = proj.closing[i];
+      let cls = '';
+      if(c < 0) cls = 'neg';
+      else if(c < tightThreshold && tightThreshold > 0) cls = 'tight';
+
+      const card = document.createElement('div');
+      card.className = 'month-card ' + cls;
+
+      const netCls = proj.net[i] > 0 ? 'pos' : proj.net[i] < 0 ? 'neg' : '';
+
+      card.innerHTML = `
+        <div class="mc-name">${monthLabelAt(i)}</div>
+        <div class="mc-closing-label">Closing</div>
+        <div class="mc-closing ${cls}">${fmtRsmall(c)}</div>
+        <div class="mc-break"></div>
+        <div class="mc-row"><span class="mc-row-label">Open</span><span class="mc-row-val">${fmtRsmall(proj.opening[i])}</span></div>
+        <div class="mc-row"><span class="mc-row-label">In</span><span class="mc-row-val pos">${fmtRsmall(proj.incMonths[i])}</span></div>
+        <div class="mc-row"><span class="mc-row-label">Out</span><span class="mc-row-val neg">${fmtRsmall(proj.expMonths[i])}</span></div>
+        <div class="mc-row"><span class="mc-row-label">Net</span><span class="mc-row-val ${netCls}">${proj.net[i] >= 0 ? '+' : ''}${fmtRsmall(proj.net[i]).replace('−','')}</span></div>
+      `;
+      grid.appendChild(card);
+    }
+  }
+
+  function renderAlerts(proj){
+    const block = $('alertsBlock');
+    block.innerHTML = '';
+    const alerts = [];
+
+    // Red: negative months
+    const negMonths = [];
+    for(let i = 0; i < 12; i++){
+      if(proj.closing[i] < 0) negMonths.push({idx:i, val:proj.closing[i]});
+    }
+    if(negMonths.length > 0){
+      const list = negMonths.map(m => `<strong>${monthFullAt(m.idx)}</strong> (short ${fmtR(Math.abs(m.val))})`).join(', ');
+      alerts.push({type:'red', ico:'⚠️', msg:`<strong>Cash gap detected.</strong> Your bank balance goes negative in: ${list}. You'll need overdraft, delayed payments or brought-forward income to cover this.`});
+    }
+
+    // Amber: tight runway (closing positive but below 1 month of avg expenses)
+    if(negMonths.length === 0 && proj.avgMonthlyExp > 0){
+      const tight = [];
+      for(let i = 0; i < 12; i++){
+        if(proj.closing[i] >= 0 && proj.closing[i] < proj.avgMonthlyExp) tight.push({idx:i, val:proj.closing[i]});
+      }
+      if(tight.length > 0){
+        const list = tight.map(m => `<strong>${monthFullAt(m.idx)}</strong> (${fmtR(m.val)})`).join(', ');
+        alerts.push({type:'amber', ico:'⚡', msg:`<strong>Tight runway ahead.</strong> In ${list}, your balance drops below one month of average expenses (${fmtR(proj.avgMonthlyExp)}). One late invoice or surprise bill could trigger a real cash gap.`});
+      }
+    }
+
+    // Declining trend
+    if(negMonths.length === 0 && proj.finalBalance < state.opening && proj.netChange < 0){
+      alerts.push({type:'amber', ico:'📉', msg:`<strong>Balance trending down.</strong> You end the year ${fmtR(state.opening - proj.finalBalance)} lower than you started. Without a revenue increase or cost cut, the situation compounds year on year.`});
+    }
+
+    // Healthy
+    if(alerts.length === 0 && proj.finalBalance > state.opening){
+      alerts.push({type:'green', ico:'✓', msg:`<strong>Looking healthy.</strong> You stay above zero in every month, and finish ${fmtR(proj.finalBalance - state.opening)} up on where you started. Keep building that buffer.`});
+    }
+
+    alerts.forEach(a => {
+      const el = document.createElement('div');
+      el.className = 'alert ' + a.type;
+      el.innerHTML = `<div class="alert-ico">${a.ico}</div><div>${a.msg}</div>`;
+      block.appendChild(el);
+    });
+  }
+
+  function renderKpis(proj){
+    $('kpiIn').textContent = fmtR(proj.totalIn);
+    $('kpiOut').textContent = fmtR(proj.totalOut);
+
+    const netEl = $('kpiNet');
+    netEl.textContent = (proj.netChange >= 0 ? '+' : '−') + 'R ' + Math.abs(Math.round(proj.netChange)).toLocaleString('en-ZA');
+    netEl.className = 'kpi-value ' + (proj.netChange > 0 ? 'pos' : proj.netChange < 0 ? 'neg' : '');
+    $('kpiNetSub').textContent = proj.netChange > 0 ? 'surplus for the year' : proj.netChange < 0 ? 'deficit for the year' : 'break-even year';
+
+    const finEl = $('kpiFinal');
+    finEl.textContent = fmtR(proj.finalBalance);
+    finEl.className = 'kpi-value ' + (proj.finalBalance > state.opening ? 'pos' : proj.finalBalance < 0 ? 'neg' : '');
+    $('kpiFinalSub').textContent = proj.finalBalance > state.opening ? 'up from opening' : proj.finalBalance < state.opening ? 'down from opening' : 'same as opening';
+
+    // Section totals (avg per month)
+    let incTotal = 0, expTotal = 0;
+    state.income.forEach(i => { incTotal += getItemMonthly(i).reduce((a,b) => a+b, 0); });
+    state.expenses.forEach(e => { expTotal += getItemMonthly(e).reduce((a,b) => a+b, 0); });
+    $('incomeTotal').textContent = fmtR(incTotal / 12);
+    $('expenseTotal').textContent = fmtR(expTotal / 12);
+  }
+
+  // ─────────── MASTER RECOMPUTE ───────────
+  function recompute(){
+    const proj = computeProjection();
+    renderChart(proj);
+    renderMonths(proj);
+    renderAlerts(proj);
+    renderKpis(proj);
+  }
+
+  // ─────────── EVENTS ───────────
+  $('openingBalance').addEventListener('input', (e) => {
+    const v = parseFloat(e.target.value);
+    state.opening = isNaN(v) ? 0 : v;
+    recompute();
+  });
+
+  $('startMonth').addEventListener('change', (e) => {
+    state.startMonth = parseInt(e.target.value) || 0;
+    renderAll();
+  });
+
+  $('addIncome').addEventListener('click', () => {
+    state.income.push({ _id:_nextId++, name:'New income source', flat:0, months:null, expanded:false });
+    renderAll();
+  });
+
+  $('addExpense').addEventListener('click', () => {
+    state.expenses.push({ _id:_nextId++, name:'New expense', flat:0, months:null, expanded:false });
+    renderAll();
+  });
+
+  $('resetBtn').addEventListener('click', () => {
+    if(!confirm('Reset all values to defaults? Your current entries will be lost.')) return;
+    state.opening = DEFAULTS.opening;
+    state.startMonth = DEFAULTS.startMonth;
+    state.income = DEFAULTS.income.map(x => ({...x, _id:_nextId++}));
+    state.expenses = DEFAULTS.expenses.map(x => ({...x, _id:_nextId++}));
+    $('openingBalance').value = state.opening;
+    $('startMonth').value = state.startMonth;
+    renderAll();
+  });
+
+  $('clearBtn').addEventListener('click', () => {
+    if(!confirm('Clear everything and start from scratch?')) return;
+    state.opening = 0;
+    state.startMonth = 0;
+    state.income = [];
+    state.expenses = [];
+    $('openingBalance').value = 0;
+    $('startMonth').value = 0;
+    renderAll();
+  });
+
+  // Initial render
+  renderAll();
+
+  // Set start month to current month as a nicer default
+  const now = new Date();
+  state.startMonth = now.getMonth();
+  $('startMonth').value = state.startMonth;
+  renderAll();
+})();
+</script>
+
+</body>
+</html>

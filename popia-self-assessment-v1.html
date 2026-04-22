@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>POPIA Compliance Self-Assessment — AutoComply</title>
+<meta name="description" content="Free POPIA compliance self-assessment for South African businesses. Answer 30 questions across 8 sections and get a scored compliance report with specific gaps and remediation steps.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;700;800&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --navy:#0B1628;--navy2:#1A2842;--blue:#1A56DB;--blue-soft:#EEF3FF;
+  --blue-line:rgba(26,86,219,.15);--green:#059669;--green-soft:#ECFDF5;
+  --amber:#D97706;--amber-soft:#FEF3C7;--red:#DC2626;--red-soft:#FEE2E2;
+  --muted:#5A6A82;--muted2:#8A96A8;--border:#DDE5F0;--border-strong:#C5D1E4;
+  --bg:#F8FAFF;--bg2:#EEF3FF;--white:#fff;
+  --sh:0 1px 4px rgba(11,22,40,.07);--sh-strong:0 6px 24px rgba(11,22,40,.12);
+  --compliant:#059669;--partial:#D97706;--atrisk:#DC2626;
+}
+html,body{background:var(--bg);color:var(--navy);font-family:'Outfit',sans-serif;-webkit-font-smoothing:antialiased;min-height:100vh;font-size:15px;line-height:1.5;}
+
+/* ─── TOPBAR ─── */
+.topbar{background:var(--navy);padding:14px 20px;position:sticky;top:0;z-index:100;}
+.topbar-inner{max-width:800px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;}
+.brand{font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;color:#fff;letter-spacing:-.3px;text-decoration:none;}
+.brand span{color:#60AEFF;}
+.back{font-size:12.5px;color:rgba(255,255,255,.55);text-decoration:none;display:inline-flex;align-items:center;gap:6px;}
+.back:hover{color:#fff;}
+
+/* ─── HERO ─── */
+.hero{background:var(--navy);padding:36px 20px 52px;position:relative;overflow:hidden;}
+.hero::before{content:"";position:absolute;top:-80px;right:-80px;width:380px;height:380px;background:radial-gradient(circle,rgba(26,86,219,.18),transparent 70%);pointer-events:none;}
+.hero::after{content:"";position:absolute;bottom:-60px;left:-60px;width:260px;height:260px;background:radial-gradient(circle,rgba(5,150,105,.12),transparent 70%);pointer-events:none;}
+.hero-inner{max-width:800px;margin:0 auto;position:relative;z-index:1;}
+.hero-tag{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px;}
+.hero-h{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(26px,5vw,36px);font-weight:800;color:#fff;letter-spacing:-.5px;line-height:1.15;margin-bottom:10px;}
+.hero-sub{font-size:14.5px;color:rgba(255,255,255,.65);line-height:1.6;max-width:580px;}
+.hero-pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;}
+.hero-pill{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;padding:5px 11px;border-radius:20px;border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.7);}
+
+/* ─── LAYOUT ─── */
+.wrap{max-width:800px;margin:0 auto;padding:0 20px;}
+.main{margin-top:-30px;margin-bottom:40px;position:relative;z-index:2;}
+
+/* ─── PROGRESS BAR ─── */
+.progress-wrap{background:var(--white);border:1px solid var(--border);border-radius:14px;padding:18px 22px;box-shadow:var(--sh);margin-bottom:20px;}
+.progress-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+.progress-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
+.progress-count{font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:700;color:var(--navy);}
+.progress-bar-wrap{height:6px;background:var(--border);border-radius:3px;overflow:hidden;}
+.progress-bar-fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--green));border-radius:3px;transition:width .4s ease;}
+.section-dots{display:flex;gap:6px;margin-top:10px;}
+.sdot{width:8px;height:8px;border-radius:50%;background:var(--border);transition:all .2s;flex-shrink:0;}
+.sdot.done{background:var(--green);}
+.sdot.active{background:var(--blue);transform:scale(1.3);}
+
+/* ─── SECTION CARD ─── */
+.section-card{background:var(--white);border:1px solid var(--border);border-radius:16px;box-shadow:var(--sh);overflow:hidden;animation:fadeUp .3s ease;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+
+.section-header{padding:22px 26px;border-bottom:1px solid var(--border);}
+.section-header-top{display:flex;align-items:flex-start;gap:14px;margin-bottom:8px;}
+.section-ico{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;background:var(--blue-soft);}
+.section-num{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:2px;text-transform:uppercase;color:var(--blue);margin-bottom:4px;}
+.section-title{font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:700;color:var(--navy);letter-spacing:-.3px;line-height:1.2;}
+.section-desc{font-size:13px;color:var(--muted);line-height:1.55;margin-top:6px;}
+
+/* ─── QUESTIONS ─── */
+.questions{padding:6px 0;}
+.question{padding:18px 26px;border-bottom:1px solid var(--border);}
+.question:last-child{border-bottom:none;}
+.q-text{font-size:14px;font-weight:600;color:var(--navy);line-height:1.55;margin-bottom:4px;}
+.q-critical{display:inline-flex;align-items:center;gap:4px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--red);margin-bottom:8px;}
+.q-sub{font-size:12.5px;color:var(--muted);line-height:1.5;margin-bottom:12px;}
+.q-options{display:flex;gap:8px;flex-wrap:wrap;}
+.q-opt{font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;padding:8px 18px;border-radius:8px;cursor:pointer;border:1.5px solid var(--border);background:var(--white);color:var(--muted);transition:all .15s;display:inline-flex;align-items:center;gap:6px;}
+.q-opt:hover{border-color:var(--border-strong);background:var(--bg);color:var(--navy);}
+.q-opt.selected-yes{background:var(--green-soft);border-color:rgba(5,150,105,.35);color:var(--green);}
+.q-opt.selected-partial{background:var(--amber-soft);border-color:rgba(217,119,6,.35);color:var(--amber);}
+.q-opt.selected-no{background:var(--red-soft);border-color:rgba(220,38,38,.25);color:var(--red);}
+
+/* ─── NAV BUTTONS ─── */
+.section-nav{padding:20px 26px;display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--bg);border-top:1px solid var(--border);}
+.nav-btn{font-family:'Outfit',sans-serif;font-size:13.5px;font-weight:600;padding:11px 22px;border-radius:9px;cursor:pointer;border:1px solid var(--border);background:var(--white);color:var(--muted);display:inline-flex;align-items:center;gap:7px;transition:all .15s;}
+.nav-btn:hover{background:var(--bg2);color:var(--navy);border-color:var(--border-strong);}
+.nav-btn.primary{background:var(--blue);color:#fff;border-color:var(--blue);}
+.nav-btn.primary:hover{background:#1449B0;}
+.nav-btn.primary:disabled{opacity:.5;cursor:not-allowed;}
+.nav-btn.finish{background:var(--green);color:#fff;border-color:var(--green);}
+.nav-btn.finish:hover{background:#047857;}
+.q-incomplete-note{font-size:12px;color:var(--red);font-style:italic;display:none;}
+.q-incomplete-note.show{display:block;}
+
+/* ════════════════════════════════
+   RESULTS
+════════════════════════════════ */
+.results-view{display:none;animation:fadeUp .4s ease;}
+.results-view.show{display:block;}
+
+/* Score hero */
+.score-hero{background:var(--navy);border-radius:16px;padding:32px;margin-bottom:20px;position:relative;overflow:hidden;display:grid;grid-template-columns:auto 1fr;gap:28px;align-items:center;}
+.score-hero::before{content:"";position:absolute;top:-80px;right:-80px;width:280px;height:280px;background:radial-gradient(circle,rgba(26,86,219,.25),transparent 70%);pointer-events:none;}
+@media(max-width:560px){.score-hero{grid-template-columns:1fr;}}
+
+/* Ring */
+.score-ring-wrap{position:relative;width:120px;height:120px;flex-shrink:0;}
+.score-ring-wrap svg{width:100%;height:100%;transform:rotate(-90deg);}
+.sr-bg{fill:none;stroke:rgba(255,255,255,.1);stroke-width:10;}
+.sr-fg{fill:none;stroke-width:10;stroke-linecap:round;transition:stroke-dashoffset 1.2s cubic-bezier(.4,0,.2,1),stroke .3s;}
+.score-num{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.score-pct{font-family:'Bricolage Grotesque',sans-serif;font-size:32px;font-weight:800;color:#fff;letter-spacing:-1px;line-height:1;}
+.score-label{font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.5);margin-top:3px;}
+
+.score-content{position:relative;z-index:1;}
+.score-rating{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border-radius:20px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;font-weight:700;margin-bottom:12px;}
+.score-rating.compliant{background:rgba(5,150,105,.2);color:#6EE7B7;}
+.score-rating.partial{background:rgba(217,119,6,.2);color:#FCD34D;}
+.score-rating.atrisk{background:rgba(220,38,38,.2);color:#FCA5A5;}
+.score-heading{font-family:'Bricolage Grotesque',sans-serif;font-size:22px;font-weight:700;color:#fff;letter-spacing:-.3px;margin-bottom:6px;line-height:1.2;}
+.score-body{font-size:13.5px;color:rgba(255,255,255,.65);line-height:1.55;}
+
+/* Section bars */
+.section-breakdown{background:var(--white);border:1px solid var(--border);border-radius:14px;padding:24px;box-shadow:var(--sh);margin-bottom:20px;}
+.sb-title{font-family:'Bricolage Grotesque',sans-serif;font-size:16px;font-weight:700;color:var(--navy);margin-bottom:18px;letter-spacing:-.2px;}
+.sb-row{display:flex;align-items:center;gap:12px;margin-bottom:12px;}
+.sb-row:last-child{margin-bottom:0;}
+.sb-ico{font-size:16px;flex-shrink:0;width:24px;text-align:center;}
+.sb-name{font-size:13px;font-weight:600;color:var(--navy);min-width:180px;flex-shrink:0;}
+@media(max-width:560px){.sb-name{min-width:120px;}}
+.sb-bar-wrap{flex:1;height:8px;background:var(--border);border-radius:4px;overflow:hidden;}
+.sb-bar-fill{height:100%;border-radius:4px;transition:width 1s ease;}
+.sb-pct{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;width:36px;text-align:right;flex-shrink:0;}
+
+/* Gaps */
+.gaps-section{background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden;box-shadow:var(--sh);margin-bottom:20px;}
+.gaps-header{padding:18px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;}
+.gaps-header-ico{font-size:18px;}
+.gaps-header-title{font-family:'Bricolage Grotesque',sans-serif;font-size:16px;font-weight:700;color:var(--navy);letter-spacing:-.2px;}
+.gaps-list{padding:0;}
+.gap-item{padding:16px 24px;border-bottom:1px solid var(--border);display:grid;grid-template-columns:auto 1fr;gap:12px;}
+.gap-item:last-child{border-bottom:none;}
+.gap-sev{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;margin-top:2px;}
+.gap-sev.critical{background:var(--red-soft);}
+.gap-sev.high{background:var(--amber-soft);}
+.gap-sev.medium{background:var(--blue-soft);}
+.gap-question{font-size:13.5px;font-weight:600;color:var(--navy);margin-bottom:4px;line-height:1.4;}
+.gap-fix{font-size:12.5px;color:var(--muted);line-height:1.55;}
+.gap-fix strong{color:var(--navy);font-weight:600;}
+.gap-badge{display:inline-flex;align-items:center;gap:4px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;padding:2px 8px;border-radius:10px;margin-bottom:6px;font-weight:700;}
+.gap-badge.critical{background:var(--red-soft);color:var(--red);}
+.gap-badge.high{background:var(--amber-soft);color:var(--amber);}
+.gap-badge.medium{background:var(--blue-soft);color:var(--blue);}
+
+/* no gaps */
+.no-gaps{padding:28px 24px;text-align:center;color:var(--muted);font-size:14px;}
+.no-gaps .check{font-size:36px;margin-bottom:10px;}
+
+/* Next steps */
+.next-steps{background:linear-gradient(135deg,#0D1E3F,var(--navy));border-radius:14px;padding:24px;margin-bottom:20px;border:1px solid rgba(255,255,255,.06);}
+.ns-title{font-family:'Bricolage Grotesque',sans-serif;font-size:16px;font-weight:700;color:#fff;margin-bottom:16px;letter-spacing:-.2px;}
+.ns-item{display:flex;gap:12px;margin-bottom:14px;align-items:flex-start;}
+.ns-item:last-child{margin-bottom:0;}
+.ns-num{width:26px;height:26px;border-radius:50%;background:rgba(26,86,219,.3);color:#93C5FD;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.ns-text{font-size:13.5px;color:rgba(255,255,255,.8);line-height:1.55;}
+.ns-text strong{color:#fff;font-weight:700;}
+
+/* Actions */
+.result-actions{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:28px;}
+.action-btn{font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;padding:10px 18px;border-radius:8px;cursor:pointer;border:1px solid var(--border);background:var(--white);color:var(--navy);display:inline-flex;align-items:center;gap:6px;transition:all .15s;}
+.action-btn:hover{background:var(--bg2);border-color:var(--border-strong);}
+.action-btn.primary{background:var(--blue);color:#fff;border-color:var(--blue);}
+.action-btn.primary:hover{background:#1449B0;}
+
+/* ─── CTA ─── */
+.cta-inner{background:var(--navy);border-radius:16px;padding:28px 26px;text-align:center;position:relative;overflow:hidden;margin-bottom:30px;}
+.cta-inner::before{content:"";position:absolute;top:-80px;left:-80px;width:240px;height:240px;background:radial-gradient(circle,rgba(26,86,219,.28),transparent 70%);pointer-events:none;}
+.cta-h{font-family:'Bricolage Grotesque',sans-serif;font-size:21px;font-weight:700;color:#fff;margin-bottom:8px;letter-spacing:-.3px;position:relative;z-index:1;}
+.cta-sub{font-size:14px;color:rgba(255,255,255,.65);margin-bottom:18px;max-width:500px;margin-left:auto;margin-right:auto;position:relative;z-index:1;line-height:1.55;}
+.cta-btn{display:inline-flex;align-items:center;gap:8px;background:#25D366;color:#fff;font-family:'Outfit',sans-serif;font-size:14px;font-weight:600;padding:12px 22px;border-radius:9px;text-decoration:none;position:relative;z-index:1;transition:transform .15s;}
+.cta-btn:hover{transform:translateY(-1px);}
+
+/* ─── FOOTER ─── */
+.foot{max-width:800px;margin:0 auto;padding:26px 20px;text-align:center;font-size:12px;color:var(--muted2);border-top:1px solid var(--border);margin-top:10px;}
+.foot a{color:var(--muted);text-decoration:none;font-weight:600;}
+.fine{font-size:11px;margin-top:8px;line-height:1.55;max-width:600px;margin-left:auto;margin-right:auto;}
+
+/* ─── PRINT ─── */
+@media print{
+  .topbar,.hero-pills,.section-nav,.result-actions,.cta-inner,.foot,#printBtn,#restartBtn{display:none!important;}
+  .hero{padding:20px;background:white!important;color:black!important;}
+  .hero *{color:black!important;}
+  .score-hero{background:white!important;border:2px solid #333;color:black!important;}
+  .score-heading,.score-body,.score-pct,.score-label,.score-rating{color:black!important;}
+  body{background:white;}
+  .results-view{display:block!important;}
+}
+
+@media(max-width:600px){
+  .section-header,.question{padding:16px 18px;}
+  .section-nav{padding:16px 18px;}
+  .section-breakdown,.gaps-section,.next-steps{padding:18px;}
+  .gap-item{padding:14px 18px;}
+  .score-hero{padding:22px;}
+  .sb-name{min-width:100px;font-size:12px;}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <a href="https://autocomply.co.za" class="brand">Auto<span>Comply</span></a>
+    <a href="https://autocomply.co.za/#tools" class="back">← All tools</a>
+  </div>
+</div>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-tag">Free Assessment · POPIA Compliance</div>
+    <h1 class="hero-h">Is your business POPIA compliant?</h1>
+    <p class="hero-sub">Answer 30 questions across 8 sections of the Protection of Personal Information Act. Get a scored compliance report with your specific gaps — and exactly what to do about them.</p>
+    <div class="hero-pills">
+      <span class="hero-pill">30 questions</span>
+      <span class="hero-pill">8 POPIA sections</span>
+      <span class="hero-pill">~10 minutes</span>
+      <span class="hero-pill">Free · No sign-up</span>
+    </div>
+  </div>
+</section>
+
+<main class="main wrap">
+
+  <!-- ASSESSMENT VIEW -->
+  <div id="assessmentView">
+
+    <!-- Progress -->
+    <div class="progress-wrap">
+      <div class="progress-top">
+        <span class="progress-label">Section <span id="progCurrent">1</span> of 8</span>
+        <span class="progress-count" id="progTitle">Information Officer</span>
+      </div>
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-fill" id="progBar" style="width:12.5%"></div>
+      </div>
+      <div class="section-dots" id="sectionDots"></div>
+    </div>
+
+    <!-- Section card -->
+    <div class="section-card" id="sectionCard"></div>
+
+  </div>
+
+  <!-- RESULTS VIEW -->
+  <div class="results-view" id="resultsView">
+
+    <!-- Score hero -->
+    <div class="score-hero">
+      <div class="score-ring-wrap">
+        <svg viewBox="0 0 120 120">
+          <circle class="sr-bg" cx="60" cy="60" r="50"/>
+          <circle class="sr-fg" id="scoreRing" cx="60" cy="60" r="50"
+            stroke-dasharray="314.16" stroke-dashoffset="314.16"/>
+        </svg>
+        <div class="score-num">
+          <div class="score-pct" id="scorePct">0%</div>
+          <div class="score-label">Score</div>
+        </div>
+      </div>
+      <div class="score-content">
+        <div class="score-rating" id="scoreRating"></div>
+        <div class="score-heading" id="scoreHeading"></div>
+        <div class="score-body" id="scoreBody"></div>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="result-actions">
+      <button class="action-btn primary" id="printBtn" onclick="window.print()">🖨️ Print report</button>
+      <button class="action-btn" id="restartBtn">↺ Start over</button>
+    </div>
+
+    <!-- Section breakdown -->
+    <div class="section-breakdown">
+      <div class="sb-title">Score by section</div>
+      <div id="sectionBreakdown"></div>
+    </div>
+
+    <!-- Gaps -->
+    <div class="gaps-section">
+      <div class="gaps-header">
+        <span class="gaps-header-ico">⚠️</span>
+        <span class="gaps-header-title" id="gapsTitle">Compliance Gaps & Remediation</span>
+      </div>
+      <div class="gaps-list" id="gapsList"></div>
+    </div>
+
+    <!-- Next steps -->
+    <div class="next-steps" id="nextSteps"></div>
+
+    <!-- CTA -->
+    <div class="cta-inner">
+      <div class="cta-h">Need help fixing your POPIA gaps?</div>
+      <p class="cta-sub">We can help you draft a POPIA-compliant Privacy Notice, appoint your Information Officer, and build a data processing register — everything you need to move from assessment to compliance.</p>
+      <a href="https://wa.me/27670113108?text=Hi%20AutoComply%2C%20I%20completed%20the%20POPIA%20self-assessment%20and%20need%20help%20with%20my%20compliance%20gaps." class="cta-btn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Chat on WhatsApp
+      </a>
+    </div>
+
+  </div>
+</main>
+
+<div class="foot">
+  AutoComply · autocomply.co.za
+  <div class="fine">This self-assessment is a guidance tool based on the Protection of Personal Information Act 4 of 2013. It does not constitute legal advice and does not guarantee POPIA compliance. For binding legal advice, consult a qualified attorney or registered Information Officer. AutoComply is not a law firm.</div>
+</div>
+
+<script>
+(function(){
+
+// ═══════════════════════════════════════
+// QUESTION BANK
+// ═══════════════════════════════════════
+// sev: 'critical' | 'high' | 'medium'
+// fix: what to do if answered No/Partial
+
+const SECTIONS = [
+  {
+    id: 'io',
+    title: 'Information Officer',
+    icon: '👤',
+    desc: 'POPIA requires every responsible party (business that processes personal information) to appoint an Information Officer (IO). This person is responsible for ensuring your business complies with POPIA.',
+    questions: [
+      {
+        id: 'io1',
+        text: 'Have you appointed an Information Officer (IO) for your business?',
+        sub: 'The IO can be the CEO, owner, or any senior person formally assigned responsibility for POPIA compliance. It does not need to be a separate role.',
+        critical: true,
+        sev: 'critical',
+        fix: 'Formally appoint an Information Officer in writing. For small businesses, this is typically the owner or a senior manager. Document the appointment with a letter or board resolution.',
+      },
+      {
+        id: 'io2',
+        text: 'Has your Information Officer been registered with the Information Regulator?',
+        sub: 'All Information Officers must be registered on the Information Regulator\'s online portal (inforegulator.org.za). Failure to register is a POPIA violation.',
+        critical: true,
+        sev: 'critical',
+        fix: 'Register your IO on the Information Regulator portal at inforegulator.org.za. The registration is free and takes approximately 10–15 minutes. You will receive a registration number.',
+      },
+      {
+        id: 'io3',
+        text: 'Does your Information Officer understand their key POPIA responsibilities?',
+        sub: 'The IO must understand the 8 conditions for lawful processing, data subject rights, how to handle complaints, and what constitutes a security compromise.',
+        critical: false,
+        sev: 'high',
+        fix: 'Train your Information Officer. The Information Regulator provides free online guidance. As a minimum, your IO must be able to explain your privacy policy, handle data access requests, and know how to report a data breach.',
+      },
+      {
+        id: 'io4',
+        text: 'Do you have a POPIA compliance framework or manual in place?',
+        sub: 'A POPIA compliance framework documents how your business complies with each of POPIA\'s conditions — processing limitations, security measures, data subject rights etc.',
+        critical: false,
+        sev: 'medium',
+        fix: 'Develop a basic POPIA compliance manual. At minimum, this should include your data processing register, privacy notice, security policy, and data breach response procedure.',
+      },
+    ]
+  },
+  {
+    id: 'lawful',
+    title: 'Lawful Processing',
+    icon: '⚖️',
+    desc: 'Under POPIA, you may only process personal information if you have a lawful basis for doing so. The most common lawful bases are: consent, contract, legal obligation, legitimate interest, or protecting vital interests.',
+    questions: [
+      {
+        id: 'lp1',
+        text: 'Do you have a documented lawful basis for processing the personal information of your clients and contacts?',
+        sub: 'For most SA businesses, the lawful basis will be "contract" (you need the info to perform a service) or "consent" (the person agreed). You must be able to state which applies to each category of information you process.',
+        critical: true,
+        sev: 'critical',
+        fix: 'Document your lawful basis for each category of personal information. Most business relationships use "contract" (processing is necessary to provide the service). Marketing communication typically requires "consent".',
+      },
+      {
+        id: 'lp2',
+        text: 'If you rely on consent as your lawful basis, do you obtain that consent before collecting personal information?',
+        sub: 'Consent must be given before you collect information, it must be specific to the purpose, and it must be easy to withdraw. Pre-ticked boxes or blanket consent forms are not valid under POPIA.',
+        critical: false,
+        sev: 'high',
+        fix: 'If your basis is consent, update your intake process to collect explicit, specific, and informed consent before you collect any personal data. Use opt-in checkboxes (not pre-ticked). Record when and how consent was given.',
+      },
+      {
+        id: 'lp3',
+        text: 'Do you maintain a record of what personal information you process, from whom, for what purpose, and on what legal basis?',
+        sub: 'This is called a "data processing register" or "record of processing activities". POPIA requires you to be able to demonstrate compliance — which requires keeping this register.',
+        critical: false,
+        sev: 'high',
+        fix: 'Create a data processing register. This is a simple document (a spreadsheet is fine) listing: what personal information you collect, whose it is, why you collect it, where it is stored, who has access, and how long you keep it.',
+      },
+      {
+        id: 'lp4',
+        text: 'Do you process any special categories of personal information (health data, race, religion, biometrics, criminal records, political views)?',
+        sub: 'Special categories of personal information have additional restrictions under POPIA and require explicit consent or a specific legal authorisation. If you process any of these, stricter rules apply.',
+        critical: false,
+        sev: 'high',
+        fix: 'If you process special categories, ensure you have explicit consent for each, keep it separate and more secure, and limit access strictly. Consider whether you truly need to collect this information at all.',
+      },
+    ]
+  },
+  {
+    id: 'purpose',
+    title: 'Purpose Specification',
+    icon: '🎯',
+    desc: 'POPIA requires that you collect personal information for a specific, explicitly defined, and legitimate purpose — and that you tell the data subject what that purpose is at the time of collection.',
+    questions: [
+      {
+        id: 'ps1',
+        text: 'When you collect personal information, do you tell people what you will use it for at the time of collection?',
+        sub: 'For example, when a client fills in a form on your website or in person, do they receive a clear explanation of why you need their information and what you will do with it?',
+        critical: true,
+        sev: 'critical',
+        fix: 'Add a clear, plain-language statement at every point where you collect personal information. Example: "We collect your name, email and phone number to provide our services, contact you about your account, and send relevant updates. We do not sell your information."',
+      },
+      {
+        id: 'ps2',
+        text: 'Do you only use the personal information you collect for the purpose you originally stated?',
+        sub: 'Using client contact information for a different purpose (e.g. adding someone who enquired about a quote to your marketing list without consent) is a POPIA violation.',
+        critical: false,
+        sev: 'high',
+        fix: 'Audit how you use personal information. If you want to use information for a new purpose not covered by your original collection notice, you must get fresh consent from the data subject.',
+      },
+      {
+        id: 'ps3',
+        text: 'Do you have a data retention policy that specifies how long you keep personal information?',
+        sub: 'POPIA requires that personal information is not kept for longer than necessary for the purpose for which it was collected. You must have a documented policy and actually delete or anonymise data after the retention period.',
+        critical: false,
+        sev: 'medium',
+        fix: 'Create a data retention schedule. Common retention periods: client records — 5 years after last transaction (for accounting); employee records — 5 years; marketing contacts who have opted out — delete or anonymise immediately.',
+      },
+    ]
+  },
+  {
+    id: 'minimisation',
+    title: 'Information Quality & Minimisation',
+    icon: '📊',
+    desc: 'POPIA requires that you collect only the minimum personal information necessary for your stated purpose, and that you keep it accurate and up to date.',
+    questions: [
+      {
+        id: 'im1',
+        text: 'Do you collect only the personal information that is strictly necessary for your stated business purpose?',
+        sub: 'Collecting unnecessary fields "just in case" is a POPIA violation. For example, if you only need an email to send a receipt, you don\'t need a date of birth.',
+        critical: false,
+        sev: 'high',
+        fix: 'Audit every form, intake process, and data collection point. Remove fields that are not strictly necessary for the purpose. Ask yourself: "Would we be unable to provide the service without this information?" If no — remove it.',
+      },
+      {
+        id: 'im2',
+        text: 'Do you have a process to keep the personal information you hold accurate and up to date?',
+        sub: 'If client contact information changes and you don\'t update it, you are holding inaccurate personal information — which is a POPIA condition violation.',
+        critical: false,
+        sev: 'medium',
+        fix: 'Implement a process to periodically verify and update client information. For active clients, confirm contact details annually. Enable clients to update their own details easily.',
+      },
+      {
+        id: 'im3',
+        text: 'Do you have a process to securely delete or anonymise personal information when it is no longer needed?',
+        sub: 'Keeping personal information indefinitely, even in old emails or spreadsheets, is a POPIA violation if it is past your retention period.',
+        critical: false,
+        sev: 'medium',
+        fix: 'Establish a data disposal process. Old client records beyond your retention period should be securely deleted (not just moved to trash). For digital records, use secure deletion tools. For paper records, use a cross-cut shredder.',
+      },
+    ]
+  },
+  {
+    id: 'privacy',
+    title: 'Privacy Notice',
+    icon: '📋',
+    desc: 'A Privacy Notice (or Privacy Policy) is the document that tells your clients, employees, and other data subjects what personal information you collect, how you use it, and what their rights are. POPIA requires you to have one and to make it accessible.',
+    questions: [
+      {
+        id: 'pn1',
+        text: 'Do you have a Privacy Notice (Privacy Policy) that is accessible to your clients and contacts?',
+        sub: 'If you have a website, it should be linked from the footer. If you operate in person, it should be available on request. It must be written in plain language that is easy to understand.',
+        critical: true,
+        sev: 'critical',
+        fix: 'Draft a POPIA-compliant Privacy Notice. It must include: who you are, what information you collect, why you collect it, who you share it with, how long you keep it, and how data subjects can exercise their rights. AutoComply can assist with drafting.',
+      },
+      {
+        id: 'pn2',
+        text: 'Does your Privacy Notice explain what rights data subjects have under POPIA?',
+        sub: 'Data subjects have the right to: access their personal information, correct inaccurate information, object to processing, request deletion, and lodge a complaint with the Information Regulator.',
+        critical: false,
+        sev: 'high',
+        fix: 'Update your Privacy Notice to include a "Your Rights" section. Explain each right in plain language and provide contact details for how to exercise each right.',
+      },
+      {
+        id: 'pn3',
+        text: 'Does your Privacy Notice identify your Information Officer as the contact person for POPIA-related queries?',
+        sub: 'POPIA requires that data subjects can contact the responsible party (your business) with privacy queries. The Information Officer\'s contact details must be accessible.',
+        critical: false,
+        sev: 'medium',
+        fix: 'Add your Information Officer\'s name, email address, and phone number to your Privacy Notice. You can use a generic privacy@yourbusiness.co.za email address that forwards to the IO.',
+      },
+      {
+        id: 'pn4',
+        text: 'Is your Privacy Notice written in plain, simple language that an ordinary person can understand?',
+        sub: 'A Privacy Notice full of legal jargon does not meet POPIA\'s requirement of transparency. It must be understandable to the average person without a legal background.',
+        critical: false,
+        sev: 'medium',
+        fix: 'Rewrite your Privacy Notice using plain language. Test it: can a 14-year-old understand it? Aim for short sentences, no legal jargon, and clear headings. The Information Regulator has guidance on plain language requirements.',
+      },
+    ]
+  },
+  {
+    id: 'security',
+    title: 'Security Safeguards',
+    icon: '🔒',
+    desc: 'POPIA requires you to implement appropriate, reasonable technical and organisational security measures to protect personal information against loss, damage, or unauthorised access. Security breaches must be reported to the Information Regulator and affected data subjects.',
+    questions: [
+      {
+        id: 'ss1',
+        text: 'Do you have reasonable security measures in place to protect the personal information you hold?',
+        sub: 'Security measures include: password protection, antivirus software, encrypted file storage, locked filing cabinets for paper records, limited access to personal data on a need-to-know basis.',
+        critical: true,
+        sev: 'critical',
+        fix: 'Implement a baseline security posture: (1) All devices with personal data must have passwords. (2) Use encrypted storage or a reputable cloud provider. (3) Install antivirus software. (4) Limit access — only staff who need personal data to do their job should have it.',
+      },
+      {
+        id: 'ss2',
+        text: 'Do you have a documented procedure for responding to a personal information breach?',
+        sub: 'Under POPIA, if personal information is unlawfully accessed, lost, or compromised, you must notify the Information Regulator and the affected data subjects as soon as reasonably possible.',
+        critical: true,
+        sev: 'critical',
+        fix: 'Create a Data Breach Response Procedure. It must include: (1) How to identify a breach, (2) Who to notify internally, (3) How to assess the risk to data subjects, (4) How to notify the Information Regulator (form available on inforegulator.org.za), (5) How to notify affected individuals.',
+      },
+      {
+        id: 'ss3',
+        text: 'Are staff who handle personal information trained on basic data security practices?',
+        sub: 'Staff who handle personal information must understand how to protect it. This includes not sharing passwords, recognising phishing emails, not emailing sensitive data unencrypted, and not leaving paper records unattended.',
+        critical: false,
+        sev: 'high',
+        fix: 'Conduct a basic POPIA and data security training session for all staff who handle personal information. Document the training (date, attendees, content covered). Repeat annually.',
+      },
+      {
+        id: 'ss4',
+        text: 'If you use cloud services or software to store personal information, have you confirmed the provider complies with POPIA (or GDPR for international providers)?',
+        sub: 'Examples: if you use Xero, Sage, HubSpot, Gmail, Google Drive, Dropbox etc. to store client information, these providers must offer adequate data protection. Most major international providers are GDPR-compliant, which is accepted under POPIA.',
+        critical: false,
+        sev: 'medium',
+        fix: 'Review the privacy policies of all software and cloud services you use to store personal data. Confirm they have: data processing agreements, appropriate security certifications, and are either POPIA-compliant or GDPR-compliant.',
+      },
+    ]
+  },
+  {
+    id: 'rights',
+    title: 'Data Subject Rights',
+    icon: '🙋',
+    desc: 'POPIA gives individuals (data subjects) specific rights over their personal information. Your business must be able to handle requests from clients, employees, or any other person whose data you hold.',
+    questions: [
+      {
+        id: 'dr1',
+        text: 'Do you have a process for handling requests from individuals who want to access the personal information you hold about them?',
+        sub: 'Any person has the right to ask what personal information you hold about them, receive a copy, and know who it has been shared with. You must respond within a reasonable time (generally accepted as 30 days).',
+        critical: true,
+        sev: 'critical',
+        fix: 'Document a Data Subject Access Request (DSAR) procedure. Define: where to send requests, who processes them, how to verify the identity of the requester, how to compile and deliver the information, and your target response time (maximum 30 days).',
+      },
+      {
+        id: 'dr2',
+        text: 'Do you have a process for handling requests from individuals who want to correct or update their personal information?',
+        sub: 'Data subjects have the right to have inaccurate personal information corrected. You must have a way to receive and action these requests.',
+        critical: false,
+        sev: 'medium',
+        fix: 'Add a "Correction Request" process to your POPIA procedures. Confirm the identity of the requester, correct the information in all systems where it is held, and notify the person within 30 days.',
+      },
+      {
+        id: 'dr3',
+        text: 'Do you have a process for handling requests from individuals who want to object to or withdraw consent for processing of their personal information?',
+        sub: 'If your lawful basis is consent, a data subject can withdraw that consent at any time. You must stop processing their personal information for the purposes covered by that consent.',
+        critical: false,
+        sev: 'high',
+        fix: 'Create an Opt-Out/Consent Withdrawal procedure. For marketing: include an "Unsubscribe" mechanism in all marketing communications. For other processing: document how to handle withdrawal requests and what you will stop doing as a result.',
+      },
+      {
+        id: 'dr4',
+        text: 'Do you have a way for data subjects to lodge a complaint with your Information Officer?',
+        sub: 'Before a data subject can complain to the Information Regulator, they must first have had the opportunity to raise their concern with you directly. Your IO must be reachable.',
+        critical: false,
+        sev: 'medium',
+        fix: 'Publish your Information Officer\'s contact details in your Privacy Notice and on your website. Create a dedicated privacy contact email (e.g. privacy@yourbusiness.co.za). Aim to respond to all privacy complaints within 14 days.',
+      },
+    ]
+  },
+  {
+    id: 'operators',
+    title: 'Third Parties & Operators',
+    icon: '🤝',
+    desc: 'If you share personal information with other businesses (suppliers, contractors, payment processors, accountants, email marketing platforms etc.), POPIA requires you to ensure they also protect that information appropriately. These third parties are called "operators".',
+    questions: [
+      {
+        id: 'op1',
+        text: 'Do you know which third parties (suppliers, contractors, software providers) receive or access the personal information you collect?',
+        sub: 'Examples: your accountant (payroll data), your email marketing platform (contact list), your cloud storage provider (client files), CIPC submission service (director information).',
+        critical: false,
+        sev: 'high',
+        fix: 'Create a list of all third parties who receive personal information from your business. Include: name, what data they receive, why, and where they are located. This forms part of your data processing register.',
+      },
+      {
+        id: 'op2',
+        text: 'Do you have written agreements (or data processing agreements) with the third parties who process personal information on your behalf?',
+        sub: 'POPIA requires that operators (third parties who process data on your behalf) are bound by written agreements that prohibit them from processing the data without your authorisation and require them to maintain appropriate security measures.',
+        critical: true,
+        sev: 'critical',
+        fix: 'Obtain or sign Data Processing Agreements with all operators. Many large providers (Google, Microsoft, Xero, Sage) provide these as standard — check their terms. For local suppliers (e.g. your payroll bureau), request a DPA. Do not share personal information with third parties who refuse to sign one.',
+      },
+      {
+        id: 'op3',
+        text: 'If you transfer personal information outside South Africa, do you ensure the receiving country has adequate data protection laws?',
+        sub: 'Transferring personal data to another country is only permitted under POPIA if the receiving country has adequate protection, the data subject consents, or the transfer is necessary for a contract. Most EU/EEA countries are acceptable. Some countries (with no data protection laws) are not.',
+        critical: false,
+        sev: 'medium',
+        fix: 'If you use international cloud services or share data with overseas parties, confirm: (1) The country has adequate protection (EU/EEA = yes), or (2) You have explicit consent from the data subject for the transfer, or (3) The transfer is necessary for a contract with the data subject.',
+      },
+      {
+        id: 'op4',
+        text: 'Do you have a process for informing your clients when their personal information will be shared with a third party?',
+        sub: 'POPIA requires openness — data subjects must know if their information will be shared with third parties and who those parties are. This should be disclosed in your Privacy Notice.',
+        critical: false,
+        sev: 'medium',
+        fix: 'Update your Privacy Notice to list the categories of third parties who receive personal information (e.g. "We share your information with: our cloud accounting software, our email service provider, our IT support company"). You do not need to name each provider individually, but categories should be clear.',
+      },
+    ]
+  }
+];
+
+// ═══════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════
+const answers = {}; // { questionId: 'yes'|'partial'|'no' }
+let currentSection = 0;
+
+// ═══════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════
+function init(){
+  buildDots();
+  renderSection(0);
+}
+
+function buildDots(){
+  const container = document.getElementById('sectionDots');
+  container.innerHTML = '';
+  SECTIONS.forEach((s,i) => {
+    const d = document.createElement('div');
+    d.className = 'sdot' + (i===0?' active':'');
+    d.title = s.title;
+    container.appendChild(d);
+  });
+}
+
+// ═══════════════════════════════════════
+// RENDER SECTION
+// ═══════════════════════════════════════
+function renderSection(idx){
+  currentSection = idx;
+  const sec = SECTIONS[idx];
+  const isLast = idx === SECTIONS.length - 1;
+
+  // Update progress
+  document.getElementById('progCurrent').textContent = idx + 1;
+  document.getElementById('progTitle').textContent = sec.title;
+  document.getElementById('progBar').style.width = ((idx + 1) / SECTIONS.length * 100) + '%';
+
+  // Update dots
+  document.querySelectorAll('.sdot').forEach((d,i) => {
+    d.className = 'sdot';
+    if(i < idx) d.classList.add('done');
+    else if(i === idx) d.classList.add('active');
+  });
+
+  // Build card
+  const card = document.getElementById('sectionCard');
+  card.innerHTML = '';
+
+  // Header
+  const hdr = document.createElement('div');
+  hdr.className = 'section-header';
+  hdr.innerHTML = `
+    <div class="section-header-top">
+      <div class="section-ico">${sec.icon}</div>
+      <div>
+        <div class="section-num">Section ${idx + 1} of ${SECTIONS.length}</div>
+        <div class="section-title">${sec.title}</div>
+      </div>
+    </div>
+    <div class="section-desc">${sec.desc}</div>`;
+  card.appendChild(hdr);
+
+  // Questions
+  const qList = document.createElement('div');
+  qList.className = 'questions';
+  sec.questions.forEach(q => {
+    const qEl = document.createElement('div');
+    qEl.className = 'question';
+    const ans = answers[q.id] || null;
+    qEl.innerHTML = `
+      <div class="q-text">${q.text}</div>
+      ${q.critical ? '<div class="q-critical">⚠ Critical requirement</div>' : ''}
+      <div class="q-sub">${q.sub}</div>
+      <div class="q-options">
+        <button class="q-opt ${ans==='yes'?'selected-yes':''}" data-q="${q.id}" data-v="yes">✓ Yes</button>
+        <button class="q-opt ${ans==='partial'?'selected-partial':''}" data-q="${q.id}" data-v="partial">~ Partially</button>
+        <button class="q-opt ${ans==='no'?'selected-no':''}" data-q="${q.id}" data-v="no">✕ No</button>
+      </div>`;
+    qList.appendChild(qEl);
+  });
+  card.appendChild(qList);
+
+  // Nav
+  const nav = document.createElement('div');
+  nav.className = 'section-nav';
+  nav.innerHTML = `
+    <div>
+      ${idx > 0 ? '<button class="nav-btn" id="backBtn">← Back</button>' : '<div></div>'}
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;">
+      <span class="q-incomplete-note" id="incompleteNote">Please answer all questions</span>
+      ${isLast
+        ? '<button class="nav-btn finish" id="finishBtn">View my results →</button>'
+        : '<button class="nav-btn primary" id="nextBtn">Next section →</button>'
+      }
+    </div>`;
+  card.appendChild(nav);
+
+  // Bind option clicks
+  card.querySelectorAll('.q-opt').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const qId = btn.dataset.q;
+      const val  = btn.dataset.v;
+      answers[qId] = val;
+      // Update UI for this question
+      btn.closest('.q-options').querySelectorAll('.q-opt').forEach(b => {
+        b.className = 'q-opt';
+        if(b.dataset.v === val) b.classList.add(`selected-${val}`);
+      });
+    });
+  });
+
+  // Back
+  const backBtn = document.getElementById('backBtn');
+  if(backBtn) backBtn.addEventListener('click', () => renderSection(idx - 1));
+
+  // Next / Finish
+  const nextBtn = document.getElementById('nextBtn');
+  const finBtn  = document.getElementById('finishBtn');
+
+  function handleNext(){
+    const unanswered = sec.questions.filter(q => !answers[q.id]);
+    if(unanswered.length > 0){
+      document.getElementById('incompleteNote').classList.add('show');
+      return;
+    }
+    document.getElementById('incompleteNote').classList.remove('show');
+    renderSection(idx + 1);
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  function handleFinish(){
+    const unanswered = sec.questions.filter(q => !answers[q.id]);
+    if(unanswered.length > 0){
+      document.getElementById('incompleteNote').classList.add('show');
+      return;
+    }
+    showResults();
+  }
+
+  if(nextBtn) nextBtn.addEventListener('click', handleNext);
+  if(finBtn)  finBtn.addEventListener('click',  handleFinish);
+
+  // Animate
+  card.style.animation = 'none';
+  card.offsetHeight;
+  card.style.animation = 'fadeUp .3s ease';
+}
+
+// ═══════════════════════════════════════
+// CALCULATE SCORES
+// ═══════════════════════════════════════
+function scoreVal(a){ return a==='yes' ? 2 : a==='partial' ? 1 : 0; }
+function maxVal(){ return 2; }
+
+function calcResults(){
+  const sectionScores = SECTIONS.map(sec => {
+    const total = sec.questions.length * 2;
+    const scored = sec.questions.reduce((sum, q) => sum + scoreVal(answers[q.id]||'no'), 0);
+    return { ...sec, scored, total, pct: Math.round(scored/total*100) };
+  });
+
+  const totalScored = sectionScores.reduce((s,ss) => s + ss.scored, 0);
+  const totalMax    = sectionScores.reduce((s,ss) => s + ss.total, 0);
+  const overallPct  = Math.round(totalScored / totalMax * 100);
+
+  // Gather gaps
+  const gaps = [];
+  SECTIONS.forEach(sec => {
+    sec.questions.forEach(q => {
+      const a = answers[q.id] || 'no';
+      if(a !== 'yes'){
+        gaps.push({ ...q, answer: a, section: sec.title });
+      }
+    });
+  });
+
+  // Sort gaps: critical first, then high, then medium; within each: 'no' before 'partial'
+  const sevOrder = { critical: 0, high: 1, medium: 2 };
+  gaps.sort((a,b) => {
+    const sd = sevOrder[a.sev] - sevOrder[b.sev];
+    if(sd !== 0) return sd;
+    return (a.answer === 'no' ? 0 : 1) - (b.answer === 'no' ? 0 : 1);
+  });
+
+  return { sectionScores, overallPct, gaps };
+}
+
+// ═══════════════════════════════════════
+// SHOW RESULTS
+// ═══════════════════════════════════════
+function showResults(){
+  document.getElementById('assessmentView').style.display = 'none';
+  const rv = document.getElementById('resultsView');
+  rv.classList.add('show');
+  window.scrollTo({top:0, behavior:'smooth'});
+
+  const { sectionScores, overallPct, gaps } = calcResults();
+
+  // Animate ring
+  const circumference = 2 * Math.PI * 50;
+  const ring = document.getElementById('scoreRing');
+  ring.setAttribute('stroke-dasharray', circumference.toFixed(2));
+
+  let ratingClass, ratingLabel, ratingColor, heading, body, ringColor;
+  if(overallPct >= 80){
+    ratingClass = 'compliant'; ratingLabel = '✓ Compliant';
+    ringColor = '#10B981';
+    heading = 'Strong compliance posture';
+    body = 'Your business has solid POPIA foundations in place. Focus on closing the remaining gaps below and ensure your documentation stays current. Review annually.';
+  } else if(overallPct >= 55){
+    ratingClass = 'partial'; ratingLabel = '⚡ Partially Compliant';
+    ringColor = '#F59E0B';
+    heading = 'Good start — significant gaps to address';
+    body = 'You have some POPIA measures in place, but material gaps exist that expose you to risk. Prioritise the Critical and High severity items below immediately.';
+  } else if(overallPct >= 30){
+    ratingClass = 'atrisk'; ratingLabel = '⚠ At Risk';
+    ringColor = '#EF4444';
+    heading = 'Significant compliance gaps — action required';
+    body = 'Your business has substantial POPIA compliance gaps. The Information Regulator can impose fines of up to R10 million or prison terms. Address the Critical items below urgently.';
+  } else {
+    ratingClass = 'atrisk'; ratingLabel = '🚨 Non-Compliant';
+    ringColor = '#DC2626';
+    heading = 'Material non-compliance — immediate action required';
+    body = 'Your business currently has little or no POPIA compliance in place. This represents significant legal and reputational risk. You need a structured POPIA implementation programme.';
+  }
+
+  // Animate score counter and ring
+  let displayed = 0;
+  const target = overallPct;
+  const duration = 1200;
+  const step = duration / target;
+  const counterEl = document.getElementById('scorePct');
+
+  setTimeout(() => {
+    const interval = setInterval(() => {
+      displayed = Math.min(displayed + 1, target);
+      counterEl.textContent = displayed + '%';
+      const offset = circumference * (1 - displayed / 100);
+      ring.setAttribute('stroke-dashoffset', offset.toFixed(2));
+      ring.style.stroke = ringColor;
+      if(displayed >= target) clearInterval(interval);
+    }, step);
+  }, 300);
+
+  document.getElementById('scoreRating').className = `score-rating ${ratingClass}`;
+  document.getElementById('scoreRating').textContent = ratingLabel;
+  document.getElementById('scoreHeading').textContent = heading;
+  document.getElementById('scoreBody').textContent = body;
+
+  // Section breakdown
+  const breakdown = document.getElementById('sectionBreakdown');
+  breakdown.innerHTML = '';
+  sectionScores.forEach(ss => {
+    const barColor = ss.pct >= 80 ? '#10B981' : ss.pct >= 50 ? '#F59E0B' : '#EF4444';
+    const row = document.createElement('div');
+    row.className = 'sb-row';
+    row.innerHTML = `
+      <div class="sb-ico">${ss.icon}</div>
+      <div class="sb-name">${ss.title}</div>
+      <div class="sb-bar-wrap"><div class="sb-bar-fill" style="width:0%;background:${barColor}" data-target="${ss.pct}"></div></div>
+      <div class="sb-pct" style="color:${barColor}">${ss.pct}%</div>`;
+    breakdown.appendChild(row);
+  });
+
+  // Animate bars
+  setTimeout(() => {
+    document.querySelectorAll('.sb-bar-fill').forEach(bar => {
+      bar.style.width = bar.dataset.target + '%';
+    });
+  }, 400);
+
+  // Gaps list
+  const gapsList = document.getElementById('gapsList');
+  const gapsTitle = document.getElementById('gapsTitle');
+  gapsList.innerHTML = '';
+
+  if(gaps.length === 0){
+    gapsList.innerHTML = '<div class="no-gaps"><div class="check">✅</div>No compliance gaps identified. Excellent work! Review annually.</div>';
+    gapsTitle.textContent = 'No Gaps Found';
+  } else {
+    gapsTitle.textContent = `${gaps.length} Compliance Gap${gaps.length>1?'s':''} Found`;
+    gaps.forEach(gap => {
+      const sevLabel = gap.answer === 'partial'
+        ? (gap.sev === 'critical' ? '⚠ Critical — Partial' : gap.sev === 'high' ? '↑ High — Partial' : '· Medium — Partial')
+        : (gap.sev === 'critical' ? '⚠ Critical — Not in place' : gap.sev === 'high' ? '↑ High — Not in place' : '· Medium — Not in place');
+      const item = document.createElement('div');
+      item.className = 'gap-item';
+      item.innerHTML = `
+        <div class="gap-sev ${gap.sev}">${gap.sev==='critical'?'⚠':gap.sev==='high'?'↑':'·'}</div>
+        <div>
+          <div class="gap-badge ${gap.sev}">${sevLabel}</div>
+          <div class="gap-question">${gap.text}</div>
+          <div class="gap-fix"><strong>What to do:</strong> ${gap.fix}</div>
+        </div>`;
+      gapsList.appendChild(item);
+    });
+  }
+
+  // Next steps
+  const criticalGaps = gaps.filter(g => g.sev === 'critical' && g.answer === 'no');
+  const hasIO        = answers['io1'] === 'yes' && answers['io2'] === 'yes';
+  const hasPrivacy   = answers['pn1'] === 'yes';
+  const hasSecurity  = answers['ss1'] === 'yes' && answers['ss2'] === 'yes';
+
+  const steps = [];
+  if(!hasIO)        steps.push({ n:1, text:'<strong>Appoint and register your Information Officer</strong> — this is the first step required by POPIA and unlocks all other compliance actions.' });
+  if(!hasPrivacy)   steps.push({ n:steps.length+1, text:'<strong>Draft and publish a POPIA-compliant Privacy Notice</strong> — every business must have one. AutoComply can assist with a template.' });
+  if(!hasSecurity)  steps.push({ n:steps.length+1, text:'<strong>Implement basic security safeguards and a breach response plan</strong> — password protection, device security, and a documented breach notification procedure.' });
+  if(steps.length < 3) steps.push({ n:steps.length+1, text:'<strong>Create a Data Processing Register</strong> — document what personal information you hold, why, how long, and who can access it.' });
+  if(steps.length < 4) steps.push({ n:steps.length+1, text:'<strong>Review and update annually</strong> — POPIA compliance is not a one-time exercise. Review your practices, retrain staff, and update your Privacy Notice each year.' });
+
+  const ns = document.getElementById('nextSteps');
+  ns.innerHTML = `<div class="ns-title">📋 Your Priority Actions</div>` +
+    steps.slice(0,4).map(s => `<div class="ns-item"><div class="ns-num">${s.n}</div><div class="ns-text">${s.text}</div></div>`).join('');
+
+  // Restart
+  document.getElementById('restartBtn').addEventListener('click', () => {
+    Object.keys(answers).forEach(k => delete answers[k]);
+    rv.classList.remove('show');
+    document.getElementById('assessmentView').style.display = '';
+    renderSection(0);
+    window.scrollTo({top:0,behavior:'smooth'});
+  });
+}
+
+init();
+})();
+</script>
+</body>
+</html>

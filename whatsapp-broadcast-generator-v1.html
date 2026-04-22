@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>WhatsApp Broadcast Message Generator — AutoComply</title>
+<meta name="description" content="Free AI-powered WhatsApp broadcast message generator for South African businesses. Get two ready-to-send broadcast messages — shorter and longer versions — for any situation.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;700;800&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --navy:#0B1628;--navy-soft:#1A2842;--blue:#1A56DB;--blue-soft:#EEF3FF;
+  --blue-line:rgba(26,86,219,.15);--green:#059669;--green-soft:#ECFDF5;
+  --amber:#D97706;--amber-soft:#FEF3C7;--red:#DC2626;--red-soft:#FEE2E2;
+  --muted:#5A6A82;--muted2:#8A96A8;--border:#DDE5F0;--border-strong:#C5D1E4;
+  --bg:#F8FAFF;--bg2:#EEF3FF;--white:#fff;
+  --wa:#25D366;--wa-dark:#128C7E;--wa-light:#DCF8C6;--wa-bg:#E5DDD5;
+  --sh:0 1px 4px rgba(11,22,40,.07);--sh-strong:0 4px 20px rgba(11,22,40,.10);
+}
+html,body{background:var(--bg);color:var(--navy);font-family:'Outfit',sans-serif;-webkit-font-smoothing:antialiased;min-height:100vh;font-size:15px;line-height:1.5;}
+
+/* ─── TOPBAR ─── */
+.topbar{background:var(--navy);padding:14px 20px;}
+.topbar-inner{max-width:1040px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;}
+.brand{font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;color:#fff;letter-spacing:-.3px;text-decoration:none;}
+.brand span{color:#60AEFF;}
+.back{font-size:12.5px;color:rgba(255,255,255,.55);text-decoration:none;display:inline-flex;align-items:center;gap:6px;}
+.back:hover{color:#fff;}
+
+/* ─── HERO ─── */
+.hero{background:linear-gradient(135deg,#075E54 0%,#128C7E 60%,#25D366 100%);padding:34px 20px 58px;position:relative;overflow:hidden;}
+.hero::before{content:"";position:absolute;top:-80px;right:-80px;width:320px;height:320px;background:radial-gradient(circle,rgba(255,255,255,.12),transparent 70%);pointer-events:none;}
+.hero::after{content:"";position:absolute;bottom:-60px;left:-60px;width:240px;height:240px;background:radial-gradient(circle,rgba(255,255,255,.08),transparent 70%);pointer-events:none;}
+.hero-inner{max-width:1040px;margin:0 auto;position:relative;z-index:1;}
+.ai-badge{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);border-radius:20px;padding:5px 12px;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.9);margin-bottom:16px;}
+.ai-badge::before{content:"";width:6px;height:6px;border-radius:50%;background:#fff;animation:pulse 2s ease-in-out infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.4;}}
+.hero-tag{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,.6);margin-bottom:14px;}
+.hero-h{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(26px,5vw,38px);font-weight:800;color:#fff;letter-spacing:-.6px;line-height:1.15;margin-bottom:12px;max-width:760px;text-shadow:0 2px 8px rgba(0,0,0,.15);}
+.hero-sub{font-size:clamp(14px,2.2vw,16px);color:rgba(255,255,255,.85);max-width:660px;line-height:1.55;}
+
+/* ─── LAYOUT ─── */
+.wrap{max-width:1040px;margin:0 auto;padding:0 20px;}
+.main{margin-top:-36px;margin-bottom:32px;position:relative;z-index:2;}
+.card{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:26px;box-shadow:var(--sh);margin-bottom:20px;}
+.card-h{font-family:'Bricolage Grotesque',sans-serif;font-size:17px;font-weight:700;color:var(--navy);margin-bottom:4px;letter-spacing:-.2px;}
+.card-sub{font-size:13px;color:var(--muted);margin-bottom:22px;line-height:1.55;}
+.section-tag{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:2.5px;text-transform:uppercase;color:var(--wa-dark);margin-bottom:10px;}
+
+/* ─── CATEGORY TABS ─── */
+.cat-tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:24px;}
+@media(max-width:500px){.cat-tabs{grid-template-columns:1fr;}}
+.cat-tab{border:2px solid var(--border);border-radius:12px;padding:14px 12px;cursor:pointer;background:var(--white);text-align:center;transition:all .15s;}
+.cat-tab:hover{border-color:var(--wa);background:#F0FFF8;}
+.cat-tab.active{border-color:var(--wa);background:#E8FFF2;}
+.cat-tab-ico{font-size:24px;display:block;margin-bottom:6px;line-height:1;}
+.cat-tab-name{font-size:13px;font-weight:700;color:var(--navy);}
+.cat-tab.active .cat-tab-name{color:var(--wa-dark);}
+.cat-tab-desc{font-size:11.5px;color:var(--muted);margin-top:3px;line-height:1.4;}
+
+/* ─── TYPE CHIPS ─── */
+.type-chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px;}
+.type-chip{font-family:'Outfit',sans-serif;font-size:12.5px;font-weight:600;padding:7px 13px;border-radius:20px;cursor:pointer;border:1.5px solid var(--border);background:var(--white);color:var(--muted);transition:all .15s;display:inline-flex;align-items:center;gap:5px;}
+.type-chip:hover{background:#F0FFF8;border-color:var(--wa);}
+.type-chip.active{background:var(--wa);color:#fff;border-color:var(--wa);}
+
+/* ─── INPUTS ─── */
+.field-label{font-size:12.5px;font-weight:600;color:var(--navy);margin-bottom:6px;display:flex;align-items:center;justify-content:space-between;}
+.field-hint{font-size:11px;color:var(--muted2);font-weight:500;}
+.textarea{width:100%;padding:13px 15px;font-family:'Outfit',sans-serif;font-size:14px;color:var(--navy);background:var(--bg);border:1px solid var(--border);border-radius:10px;resize:vertical;min-height:100px;outline:none;transition:all .15s;line-height:1.6;}
+.textarea:focus{border-color:var(--wa);background:var(--white);box-shadow:0 0 0 3px rgba(37,211,102,.15);}
+.textarea::placeholder{color:var(--muted2);}
+.char-count{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--muted2);text-align:right;margin-top:4px;}
+.char-count.warn{color:var(--amber);}
+
+.options-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px;}
+@media(max-width:560px){.options-row{grid-template-columns:1fr;}}
+.input{width:100%;padding:10px 12px;font-family:'Outfit',sans-serif;font-size:14px;color:var(--navy);background:var(--bg);border:1px solid var(--border);border-radius:8px;outline:none;transition:all .15s;}
+.input:focus{border-color:var(--wa);background:var(--white);box-shadow:0 0 0 3px rgba(37,211,102,.15);}
+.input::placeholder{color:var(--muted2);}
+.select{width:100%;padding:10px 30px 10px 12px;font-family:'Outfit',sans-serif;font-size:14px;color:var(--navy);background:var(--bg) url("data:image/svg+xml;charset=US-ASCII,%3Csvg width='12' height='8' viewBox='0 0 12 8' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%235A6A82' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat right 12px center;border:1px solid var(--border);border-radius:8px;appearance:none;cursor:pointer;outline:none;transition:all .15s;}
+.select:focus{border-color:var(--wa);background-color:var(--white);}
+
+/* ─── GENERATE ─── */
+.generate-row{display:flex;justify-content:center;margin-top:22px;}
+.generate-btn{font-family:'Bricolage Grotesque',sans-serif;font-size:15px;font-weight:700;padding:14px 36px;border-radius:10px;cursor:pointer;border:none;background:linear-gradient(135deg,var(--wa-dark),var(--wa));color:#fff;display:inline-flex;align-items:center;gap:9px;transition:all .15s;letter-spacing:-.1px;}
+.generate-btn:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 4px 16px rgba(37,211,102,.35);}
+.generate-btn:disabled{opacity:.6;cursor:not-allowed;transform:none;}
+
+/* ─── LOADING ─── */
+.loading{display:none;flex-direction:column;align-items:center;gap:16px;padding:40px 20px;}
+.loading.show{display:flex;}
+.loading-dots{display:flex;gap:6px;}
+.loading-dot{width:8px;height:8px;border-radius:50%;background:var(--wa);animation:bounce 1.4s ease-in-out infinite;}
+.loading-dot:nth-child(2){animation-delay:.2s;}
+.loading-dot:nth-child(3){animation-delay:.4s;}
+@keyframes bounce{0%,80%,100%{transform:scale(.8);opacity:.5;}40%{transform:scale(1.2);opacity:1;}}
+.loading-text{font-size:14px;color:var(--muted);}
+
+/* ─── OUTPUT ─── */
+.output-area{display:none;}
+.output-area.show{display:block;}
+
+.out-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px;}
+@media(max-width:680px){.out-grid{grid-template-columns:1fr;}}
+
+/* WA phone mock */
+.wa-phone{border:2px solid var(--border);border-radius:14px;overflow:hidden;box-shadow:var(--sh-strong);}
+.wa-header{background:var(--wa-dark);padding:10px 14px;display:flex;align-items:center;gap:10px;}
+.wa-avatar{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.wa-header-name{font-family:'Outfit',sans-serif;font-size:13.5px;font-weight:700;color:#fff;}
+.wa-header-sub{font-size:11px;color:rgba(255,255,255,.7);margin-top:1px;}
+.wa-body{background:var(--wa-bg);padding:14px;min-height:120px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' opacity='0.03'%3E%3Cpath d='M0 0h100v100H0z' fill='%23000'/%3E%3C/svg%3E");}
+.wa-bubble{background:var(--wa-light);border-radius:8px 8px 8px 2px;padding:10px 12px;max-width:92%;font-family:'Outfit',sans-serif;font-size:13.5px;line-height:1.65;color:#111;white-space:pre-wrap;word-break:break-word;box-shadow:0 1px 2px rgba(0,0,0,.13);}
+.wa-bubble-time{display:flex;align-items:center;justify-content:flex-end;gap:4px;margin-top:4px;font-size:10.5px;color:#667781;}
+.wa-placeholder{font-style:italic;color:#999;font-size:13px;padding:20px 0;text-align:center;}
+
+/* variant label */
+.variant-label{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:2px;text-transform:uppercase;font-weight:700;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;}
+.variant-a .variant-label{color:var(--wa-dark);}
+.variant-b .variant-label{color:var(--wa);}
+
+/* copy + meta row */
+.out-actions-row{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 14px;background:var(--bg);border-top:1px solid var(--border);flex-wrap:wrap;}
+.char-info{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted2);}
+.char-info.ok{color:var(--green);}
+.char-info.warn{color:var(--amber);}
+.copy-btn{font-family:'Outfit',sans-serif;font-size:11.5px;font-weight:600;padding:6px 12px;border-radius:7px;cursor:pointer;border:none;background:rgba(37,211,102,.15);color:var(--wa-dark);display:inline-flex;align-items:center;gap:5px;transition:all .15s;}
+.copy-btn:hover{background:rgba(37,211,102,.25);}
+.copy-btn.copied{background:var(--green-soft)!important;color:var(--green)!important;}
+
+/* timing suggestion */
+.timing-card{background:var(--amber-soft);border:1px solid rgba(217,119,6,.2);border-radius:10px;padding:12px 16px;margin-bottom:16px;display:flex;gap:10px;align-items:flex-start;font-size:13px;color:#78350F;line-height:1.55;}
+.timing-card strong{font-weight:700;}
+
+/* personalise note */
+.personalise-note{background:var(--blue-soft);border:1px solid var(--blue-line);border-radius:10px;padding:12px 16px;font-size:13px;color:#1E3A8A;line-height:1.55;margin-bottom:16px;display:flex;gap:10px;align-items:flex-start;}
+.personalise-note strong{font-weight:700;}
+
+.regen-row{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:6px;}
+.regen-btn{font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;padding:9px 18px;border-radius:8px;cursor:pointer;border:1px solid var(--border);background:var(--white);color:var(--navy);display:inline-flex;align-items:center;gap:6px;transition:all .15s;}
+.regen-btn:hover{background:#F0FFF8;border-color:var(--wa);}
+
+/* error */
+.error-box{background:var(--red-soft);border:1px solid rgba(220,38,38,.2);border-radius:10px;padding:14px 16px;font-size:13.5px;color:#991B1B;display:none;align-items:flex-start;gap:10px;line-height:1.55;margin-top:14px;}
+.error-box.show{display:flex;}
+.error-box strong{font-weight:700;}
+
+/* ─── BROADCAST RULES ─── */
+.rules-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;}
+.rule{display:flex;gap:10px;}
+.rule-ico{font-size:20px;flex-shrink:0;line-height:1;margin-top:2px;}
+.rule-title{font-size:13.5px;font-weight:700;color:var(--navy);margin-bottom:3px;}
+.rule-body{font-size:12.5px;color:var(--muted);line-height:1.6;}
+.rule-body strong{color:var(--navy);font-weight:600;}
+
+/* ─── CTA ─── */
+.cta-inner{background:linear-gradient(135deg,#075E54,#128C7E);border-radius:16px;padding:28px 26px;text-align:center;position:relative;overflow:hidden;}
+.cta-inner::before{content:"";position:absolute;top:-80px;left:-80px;width:240px;height:240px;background:radial-gradient(circle,rgba(255,255,255,.1),transparent 70%);pointer-events:none;}
+.cta-h{font-family:'Bricolage Grotesque',sans-serif;font-size:21px;font-weight:700;color:#fff;margin-bottom:8px;letter-spacing:-.3px;position:relative;z-index:1;}
+.cta-sub{font-size:14px;color:rgba(255,255,255,.8);margin-bottom:18px;max-width:520px;margin-left:auto;margin-right:auto;position:relative;z-index:1;line-height:1.55;}
+.cta-btn{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.9);color:var(--wa-dark);font-family:'Outfit',sans-serif;font-size:14px;font-weight:700;padding:12px 22px;border-radius:9px;text-decoration:none;position:relative;z-index:1;transition:transform .15s;}
+.cta-btn:hover{transform:translateY(-1px);}
+
+.foot{max-width:1040px;margin:20px auto 0;padding:26px 20px;text-align:center;font-size:12px;color:var(--muted2);border-top:1px solid var(--border);}
+.foot a{color:var(--muted);text-decoration:none;font-weight:600;}
+.foot .fine{font-size:11px;margin-top:8px;max-width:640px;margin-left:auto;margin-right:auto;line-height:1.55;}
+
+@media(max-width:620px){
+  .card{padding:20px 16px;}
+  .hero{padding:28px 20px 52px;}
+  .main{margin-top:-32px;}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <a href="https://autocomply.co.za" class="brand">Auto<span>Comply</span></a>
+    <a href="https://autocomply.co.za/#tools" class="back">← All tools</a>
+  </div>
+</div>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div class="ai-badge">✦ AI-Powered</div>
+    <div class="hero-tag">Free Tool · WhatsApp Broadcast Generator</div>
+    <h1 class="hero-h">Broadcast messages that get replies — not blocked.</h1>
+    <p class="hero-sub">Most WA broadcasts are ignored because they read like bulk SMS. This tool generates messages that feel personal, land in private chat, and give people a reason to respond.</p>
+  </div>
+</section>
+
+<main class="main wrap">
+
+  <!-- INPUT CARD -->
+  <div class="card">
+    <div class="card-h">Build your broadcast message</div>
+    <div class="card-sub">Choose your category, pick the message type, and describe what you want to say. You'll get two versions — shorter and longer — to choose from.</div>
+
+    <!-- Category tabs -->
+    <div class="section-tag">1 — What kind of message?</div>
+    <div class="cat-tabs">
+      <button class="cat-tab active" data-cat="sales" type="button">
+        <span class="cat-tab-ico">🏷️</span>
+        <span class="cat-tab-name">Sales & Promotions</span>
+        <span class="cat-tab-desc">Offers, deals, limited availability</span>
+      </button>
+      <button class="cat-tab" data-cat="updates" type="button">
+        <span class="cat-tab-ico">📢</span>
+        <span class="cat-tab-name">Updates & Announcements</span>
+        <span class="cat-tab-desc">Business news, new services, hours</span>
+      </button>
+      <button class="cat-tab" data-cat="relationship" type="button">
+        <span class="cat-tab-ico">🤝</span>
+        <span class="cat-tab-name">Relationship & Retention</span>
+        <span class="cat-tab-desc">Check-ins, thank yous, referrals</span>
+      </button>
+    </div>
+
+    <!-- Message type chips -->
+    <div class="section-tag">2 — Specific message type</div>
+    <div class="type-chips" id="typeChips">
+      <!-- Rendered by JS based on category -->
+    </div>
+
+    <!-- Context -->
+    <div class="section-tag">3 — What do you want to say?</div>
+    <div>
+      <div class="field-label">
+        <span id="contextLabel">Describe the offer or promotion</span>
+        <span class="field-hint">More detail = more personalised message</span>
+      </div>
+      <textarea id="contextInput" class="textarea" maxlength="500"
+        placeholder="e.g. 20% off all electrical call-outs booked this week only. Normal R850 call-out drops to R680 including first hour labour. Pretoria and Johannesburg only. Book by Friday."></textarea>
+      <div class="char-count" id="charCount">0 / 500</div>
+    </div>
+
+    <!-- Options -->
+    <div class="options-row">
+      <div>
+        <div class="field-label"><span>Your name / business</span><span class="field-hint">for the sign-off</span></div>
+        <input id="senderName" class="input" type="text" placeholder="e.g. Thabo | Nkosi Electrical">
+      </div>
+      <div>
+        <div class="field-label"><span>Tone</span></div>
+        <select id="tone" class="select">
+          <option value="warm-personal">Warm &amp; personal</option>
+          <option value="direct" selected>Direct &amp; clear</option>
+          <option value="excited">Excited &amp; enthusiastic</option>
+          <option value="professional">Professional</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="error-box" id="errorBox">
+      <div style="font-size:16px;flex-shrink:0;">⚠️</div>
+      <div id="errorText"><strong>Something went wrong.</strong> Please try again.</div>
+    </div>
+
+    <div class="generate-row">
+      <button class="generate-btn" id="generateBtn" type="button">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Generate broadcast messages
+      </button>
+    </div>
+  </div>
+
+  <!-- OUTPUT CARD -->
+  <div class="card" id="outputCard" style="display:none;">
+    <div class="card-h">Your broadcast messages</div>
+    <div class="card-sub">Two versions — pick the one that feels right, or mix elements from both. Replace <strong>[Name]</strong> with each recipient's first name before sending.</div>
+
+    <div class="loading" id="loading">
+      <div class="loading-dots">
+        <div class="loading-dot"></div>
+        <div class="loading-dot"></div>
+        <div class="loading-dot"></div>
+      </div>
+      <div class="loading-text">Writing your broadcast messages…</div>
+    </div>
+
+    <div class="output-area" id="outputArea">
+
+      <div class="personalise-note">
+        <div style="font-size:16px;flex-shrink:0;">💡</div>
+        <div><strong>Personalise before sending:</strong> Replace <strong>[Name]</strong> with each recipient's first name. Even one word of personalisation dramatically improves reply rates in WA broadcasts.</div>
+      </div>
+
+      <div class="timing-card" id="timingCard">
+        <div style="font-size:16px;flex-shrink:0;">⏰</div>
+        <div id="timingText"></div>
+      </div>
+
+      <!-- Two variant previews -->
+      <div class="out-grid">
+        <div class="variant-a">
+          <div class="variant-label">
+            <span>Version A — Shorter</span>
+            <span style="font-size:10px;color:var(--muted2);" id="charA">0 chars</span>
+          </div>
+          <div class="wa-phone">
+            <div class="wa-header">
+              <div class="wa-avatar">🏢</div>
+              <div>
+                <div class="wa-header-name" id="waNameA">Your Business</div>
+                <div class="wa-header-sub">Broadcast list</div>
+              </div>
+            </div>
+            <div class="wa-body">
+              <div class="wa-bubble" id="bubbleA"><span class="wa-placeholder">Your message will appear here</span></div>
+              <div class="wa-bubble-time" style="margin-top:6px;">Now ✓✓</div>
+            </div>
+            <div class="out-actions-row">
+              <span class="char-info" id="charInfoA">0 chars</span>
+              <button class="copy-btn" id="copyA" type="button">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                Copy
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="variant-b">
+          <div class="variant-label">
+            <span>Version B — More detail</span>
+            <span style="font-size:10px;color:var(--muted2);" id="charB">0 chars</span>
+          </div>
+          <div class="wa-phone">
+            <div class="wa-header">
+              <div class="wa-avatar">🏢</div>
+              <div>
+                <div class="wa-header-name" id="waNameB">Your Business</div>
+                <div class="wa-header-sub">Broadcast list</div>
+              </div>
+            </div>
+            <div class="wa-body">
+              <div class="wa-bubble" id="bubbleB"><span class="wa-placeholder">Your message will appear here</span></div>
+              <div class="wa-bubble-time" style="margin-top:6px;">Now ✓✓</div>
+            </div>
+            <div class="out-actions-row">
+              <span class="char-info" id="charInfoB">0 chars</span>
+              <button class="copy-btn" id="copyB" type="button">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                Copy
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="regen-row">
+        <button class="regen-btn" id="regenBtn" type="button">↺ Generate new versions</button>
+        <button class="regen-btn" id="editBtn" type="button">← Edit details</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- BROADCAST RULES -->
+  <div class="card">
+    <div class="card-h">WhatsApp broadcast rules that get more replies</div>
+    <div class="card-sub">The difference between a broadcast that gets blocked and one that gets replies is technique — not luck.</div>
+    <div class="rules-grid">
+      <div class="rule">
+        <div class="rule-ico">👤</div>
+        <div>
+          <div class="rule-title">First name matters more than anything</div>
+          <div class="rule-body">A message that starts with someone's name gets read. One that starts "Dear Customer" gets ignored. <strong>Always personalise</strong> with at least a first name — even if you send 200 messages.</div>
+        </div>
+      </div>
+      <div class="rule">
+        <div class="rule-ico">🎯</div>
+        <div>
+          <div class="rule-title">One ask, one action</div>
+          <div class="rule-body">Don't ask someone to call, WhatsApp, visit your website AND follow you. <strong>One CTA only</strong> — reply to this message, or call this number. Make it effortless to respond.</div>
+        </div>
+      </div>
+      <div class="rule">
+        <div class="rule-ico">⏱</div>
+        <div>
+          <div class="rule-title">Timing is a lever</div>
+          <div class="rule-body">SA WA broadcast best windows: <strong>Tuesday–Thursday, 8–10am</strong> (before daily grind sets in) or <strong>6–8pm</strong> (after work). Avoid Mondays before 9am and Fridays after 3pm.</div>
+        </div>
+      </div>
+      <div class="rule">
+        <div class="rule-ico">📋</div>
+        <div>
+          <div class="rule-title">Only broadcast to opted-in contacts</div>
+          <div class="rule-body">POPIA requires consent for marketing messages. <strong>Only send to contacts who have given consent</strong> — customers, previous enquiries, or opted-in lists. Cold broadcasts risk being reported as spam and your account blocked.</div>
+        </div>
+      </div>
+      <div class="rule">
+        <div class="rule-ico">🔁</div>
+        <div>
+          <div class="rule-title">Max twice a month to any list</div>
+          <div class="rule-body">More frequent than that and reply rates drop, unsubscribes increase, and spam reports follow. <strong>Quality over frequency.</strong> One great broadcast beats four forgettable ones.</div>
+        </div>
+      </div>
+      <div class="rule">
+        <div class="rule-ico">🚫</div>
+        <div>
+          <div class="rule-title">No links in the first message</div>
+          <div class="rule-body">Links in broadcast messages reduce deliverability and read rates. <strong>Get a reply first</strong> — then send the link in the private conversation that follows. Conversation beats cold click-through.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<div class="wrap" style="margin-bottom:30px;">
+  <div class="cta-inner">
+    <div class="cta-h">Need a WhatsApp marketing system?</div>
+    <p class="cta-sub">Individual broadcasts are a start. A system — segmented lists, scheduled sends, reply workflows — is what makes WhatsApp a consistent revenue channel. We can help you build it.</p>
+    <a href="https://wa.me/27670113108?text=Hi%20AutoComply%2C%20I%20used%20the%20WhatsApp%20Broadcast%20Generator%20and%20want%20help%20with%20my%20WhatsApp%20marketing." class="cta-btn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Chat to us on WhatsApp
+    </a>
+  </div>
+</div>
+
+<div class="foot">
+  AutoComply · Practical tools for South African business owners · <a href="https://autocomply.co.za">autocomply.co.za</a>
+  <div class="fine">Messages are generated by AI — review before sending. Ensure all recipients have consented to receive marketing messages from you as required by POPIA. Nothing is stored after your session ends.</div>
+</div>
+
+<script>
+(function(){
+  const $ = id => document.getElementById(id);
+
+  let activeCat  = 'sales';
+  let activeType = '';
+  let lastResult = null;
+
+  // ─── CONFIG ───
+  const CATS = {
+    sales: {
+      types: [
+        { key:'limited-offer',   label:'🏷️ Limited-time offer',     placeholder:'e.g. 20% off all electrical call-outs this week only. Normal R850 drops to R680 including first hour labour. Pretoria and Johannesburg. Book by Friday.' },
+        { key:'new-product',     label:'🆕 New product / service',   placeholder:'e.g. We\'ve just launched a monthly maintenance contract for small businesses. Includes 2 site visits, priority call-out and a 15% discount on all parts.' },
+        { key:'seasonal',        label:'🗓️ Seasonal promotion',      placeholder:'e.g. End of financial year special — all accounting packages discounted 25% for March registrations. R1,500 down from R2,000 for the full year.' },
+        { key:'referral-promo',  label:'👥 Referral incentive',      placeholder:'e.g. Refer a friend to us this month and get R500 credit on your next service. No limit on referrals.' },
+        { key:'urgency',         label:'⚡ Scarcity / urgency',      placeholder:'e.g. Only 3 installation slots left in April. After that we\'re fully booked until June. First come first served.' },
+      ],
+      timing: 'Sales broadcasts perform best <strong>Tuesday–Thursday, 8–10am</strong> — before the daily grind sets in and decision-making capacity is high.',
+    },
+    updates: {
+      types: [
+        { key:'new-service',     label:'🚀 New service launch',      placeholder:'e.g. We\'re now offering CCTV installation in addition to electrical. Same trusted team, new capability. Residential and commercial.' },
+        { key:'hours-change',    label:'🕐 Hours or availability',   placeholder:'e.g. Closing from 20–26 December for the holiday break. Back fully operational 2 January. Emergency call-outs still available over the period at a surcharge.' },
+        { key:'price-change',    label:'📈 Price adjustment notice',  placeholder:'e.g. Effective 1 March, our rates increase by 8% to keep pace with material and fuel costs. Current pricing remains valid for all bookings made before the end of this month.' },
+        { key:'team-update',     label:'👋 Team or business news',   placeholder:'e.g. Excited to share that we\'ve taken on a 3rd technician — which means faster response times for existing clients. Welcome Sipho to the Nkosi Electrical team.' },
+        { key:'system-update',   label:'⚙️ Process / system change', placeholder:'e.g. From next month we\'re moving to EFT only for payments. Cash will no longer be accepted on site. Please ensure your bank details are updated in our system.' },
+      ],
+      timing: 'Update messages work at any time — <strong>mid-week mornings (9–11am)</strong> maximise read rates when people are settled into their day.',
+    },
+    relationship: {
+      types: [
+        { key:'check-in',        label:'👋 Warm check-in',           placeholder:'e.g. It\'s been a few months since we last did work together. Just checking in to see how things are going and whether there\'s anything we can help with.' },
+        { key:'thank-you',       label:'🙏 Thank you message',       placeholder:'e.g. Thank you for being a loyal client for [X years]. We genuinely value your business and want to make sure we\'re always delivering for you.' },
+        { key:'referral-ask',    label:'🤝 Ask for a referral',      placeholder:'e.g. We\'re growing and looking for more great clients like you. If you know someone who might need electrical work, we\'d love an introduction.' },
+        { key:'review-ask',      label:'⭐ Ask for a review',         placeholder:'e.g. We recently completed your installation and hope you were happy with the work. A Google review would mean a lot to our small business — takes 2 minutes.' },
+        { key:'reactivation',    label:'🔄 Re-engage inactive client', placeholder:'e.g. We noticed it\'s been a while since your last service. We\'re offering existing clients a priority booking rate this month — want to book a check-up?' },
+      ],
+      timing: 'Relationship messages work best <strong>mid-week, late morning (10am–12pm)</strong> — avoid Mondays (busy) and Fridays (mentally checked out).',
+    },
+  };
+
+  const TONE_LABELS = {
+    'warm-personal':  'warm and personal — like a message from someone the recipient knows and trusts',
+    'direct':         'direct and clear — professional, no fluff, gets to the point quickly',
+    'excited':        'enthusiastic and energetic — conveys genuine excitement without being over the top',
+    'professional':   'professional and respectful — formal tone appropriate for business-to-business',
+  };
+
+  // ─── RENDER TYPE CHIPS ───
+  function renderTypeChips(){
+    const chips = $('typeChips');
+    chips.innerHTML = '';
+    const types = CATS[activeCat].types;
+    types.forEach((t, i) => {
+      const btn = document.createElement('button');
+      btn.className = 'type-chip' + (i === 0 ? ' active' : '');
+      btn.dataset.key = t.key;
+      btn.textContent = t.label;
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.type-chip').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        activeType = t.key;
+        $('contextLabel').textContent = 'Tell the AI what you want to say';
+        $('contextInput').placeholder = t.placeholder;
+      });
+      chips.appendChild(btn);
+    });
+    // Set first as active
+    activeType = types[0].key;
+    $('contextInput').placeholder = types[0].placeholder;
+  }
+
+  // ─── CATEGORY TABS ───
+  document.querySelectorAll('.cat-tab').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.cat-tab').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      activeCat = btn.dataset.cat;
+      renderTypeChips();
+      $('contextInput').value = '';
+      $('charCount').textContent = '0 / 500';
+    });
+  });
+
+  $('contextInput').addEventListener('input', () => {
+    const len = $('contextInput').value.length;
+    $('charCount').textContent = `${len} / 500`;
+    $('charCount').className = 'char-count' + (len > 420 ? ' warn' : '');
+  });
+
+  // ─── COPY ───
+  async function copyText(text, btn){
+    try { await navigator.clipboard.writeText(text); }
+    catch {
+      const ta = document.createElement('textarea');
+      ta.value = text; document.body.appendChild(ta); ta.select();
+      try { document.execCommand('copy'); } catch(_){} document.body.removeChild(ta);
+    }
+    const orig = btn.innerHTML;
+    btn.classList.add('copied');
+    btn.innerHTML = btn.innerHTML.replace('Copy','Copied ✓');
+    setTimeout(() => { btn.classList.remove('copied'); btn.innerHTML = orig; }, 1800);
+  }
+
+  function charClass(len){
+    if(len <= 250) return 'ok';
+    if(len <= 400) return '';
+    return 'warn';
+  }
+
+  // ─── SHOW RESULT ───
+  function showResult(result){
+    lastResult = result;
+    const a = result.version_a || '';
+    const b = result.version_b || '';
+
+    const sender = $('senderName').value.trim() || 'Your Business';
+
+    ['waNameA','waNameB'].forEach(id => $(id).textContent = sender);
+
+    $('bubbleA').textContent = a;
+    $('bubbleB').textContent = b;
+
+    $('charA').textContent = a.length + ' chars';
+    $('charB').textContent = b.length + ' chars';
+    $('charInfoA').textContent = a.length + ' chars';
+    $('charInfoB').textContent = b.length + ' chars';
+    $('charInfoA').className = 'char-info ' + charClass(a.length);
+    $('charInfoB').className = 'char-info ' + charClass(b.length);
+
+    // Timing suggestion
+    $('timingText').innerHTML = CATS[activeCat].timing;
+
+    $('copyA').onclick = () => copyText(a, $('copyA'));
+    $('copyB').onclick = () => copyText(b, $('copyB'));
+
+    $('loading').classList.remove('show');
+    $('outputArea').classList.add('show');
+  }
+
+  // ─── GENERATE ───
+  async function generate(){
+    const context = $('contextInput').value.trim();
+    if(!context){
+      $('contextInput').focus();
+      $('contextInput').style.borderColor = 'var(--red)';
+      setTimeout(() => $('contextInput').style.borderColor = '', 1500);
+      return;
+    }
+
+    const sender = $('senderName').value.trim();
+    const tone   = $('tone').value;
+    const catLabel  = activeCat.charAt(0).toUpperCase() + activeCat.slice(1);
+    const typeLabel = CATS[activeCat].types.find(t => t.key === activeType)?.label || activeType;
+
+    $('outputCard').style.display = '';
+    $('loading').classList.add('show');
+    $('outputArea').classList.remove('show');
+    $('errorBox').classList.remove('show');
+    $('generateBtn').disabled = true;
+    setTimeout(() => $('outputCard').scrollIntoView({behavior:'smooth', block:'start'}), 100);
+
+    const userPrompt = `Category: ${catLabel}
+Message type: ${typeLabel}
+Tone: ${TONE_LABELS[tone]}
+${sender ? `Sender name / business: ${sender}` : ''}
+
+What to communicate:
+${context}
+
+Write two WhatsApp broadcast message variants and return ONLY valid JSON.`;
+
+    try {
+      const response = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-20250514',
+          max_tokens: 1000,
+          system: `You are an expert WhatsApp marketing specialist for South African small businesses. You write broadcast messages that feel personal and get genuine replies — not messages that feel like bulk SMS.
+
+CRITICAL: Return ONLY valid JSON. No markdown. No explanation. Just:
+{"version_a":"shorter version","version_b":"longer version"}
+
+BROADCAST MESSAGE RULES:
+- Always start with [Name] as the personalisation placeholder — the sender will replace this manually
+- Version A: 100–180 characters — punchy, direct, one clear ask
+- Version B: 200–350 characters — adds one layer of context or reason, still one clear CTA
+- CTA must be a reply (e.g. "Reply YES" or "Reply to this message") NOT a link click
+- No hashtags — they look spammy in WA
+- 1–2 emojis max — SA WA culture accepts emojis but hates walls of them
+- Never use: "Dear valued customer", "We are pleased to inform you", "As per our records"
+- Never start with the business name — start with the person's name placeholder
+- Sign off with sender name only — short and personal
+- South African business context — use Rands, SA references, SA warmth
+- The message must feel like it came from a person who knows them, not from a marketing department
+
+TONE CALIBRATION:
+- warm-personal: conversational, like a friend who happens to run a business
+- direct: gets to the point in the first sentence, no small talk, still polite
+- excited: genuine energy, can use one exclamation mark, still professional
+- professional: business-formal but still human, no corporate jargon`,
+          messages: [{ role:'user', content: userPrompt }]
+        })
+      });
+
+      if(!response.ok){
+        const err = await response.json().catch(() => ({}));
+        throw new Error(err.error?.message || `API error ${response.status}`);
+      }
+
+      const data    = await response.json();
+      const raw     = data.content.filter(i => i.type==='text').map(i => i.text).join('');
+      const cleaned = raw.replace(/```json\n?/g,'').replace(/```\n?/g,'').trim();
+      showResult(JSON.parse(cleaned));
+
+    } catch(err){
+      console.error(err);
+      $('loading').classList.remove('show');
+      $('errorBox').classList.add('show');
+      $('errorText').innerHTML = `<strong>Couldn't generate messages.</strong> ${err.message || 'Please try again.'}`;
+    } finally {
+      $('generateBtn').disabled = false;
+    }
+  }
+
+  // ─── EVENTS ───
+  $('generateBtn').addEventListener('click', generate);
+  $('regenBtn').addEventListener('click', generate);
+  $('editBtn').addEventListener('click', () => {
+    $('contextInput').focus();
+    $('contextInput').scrollIntoView({behavior:'smooth', block:'center'});
+  });
+  $('contextInput').addEventListener('keydown', e => {
+    if(e.key==='Enter' && (e.ctrlKey||e.metaKey)) generate();
+  });
+
+  // Init
+  renderTypeChips();
+})();
+</script>
+</body>
+</html>

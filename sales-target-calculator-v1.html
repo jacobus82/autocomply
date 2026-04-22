@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Sales Target Calculator — AutoComply</title>
+<meta name="description" content="Free sales target calculator for South African businesses. Convert your monthly revenue goal into a daily activity plan — deals, quotes and leads needed every day.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;700;800&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --navy:#0B1628;--navy-soft:#1A2842;--blue:#1A56DB;--blue-soft:#EEF3FF;
+  --blue-line:rgba(26,86,219,.15);--green:#059669;--green-soft:#ECFDF5;
+  --green-mid:#10B981;--amber:#D97706;--amber-soft:#FEF3C7;
+  --red:#DC2626;--red-soft:#FEE2E2;--muted:#5A6A82;--muted2:#8A96A8;
+  --border:#DDE5F0;--border-strong:#C5D1E4;--bg:#F8FAFF;--bg2:#EEF3FF;
+  --white:#fff;--sh:0 1px 4px rgba(11,22,40,.07);
+  --sh-strong:0 4px 20px rgba(11,22,40,.10);
+}
+html,body{background:var(--bg);color:var(--navy);font-family:'Outfit',sans-serif;-webkit-font-smoothing:antialiased;min-height:100vh;font-size:15px;line-height:1.5;}
+
+/* ─── TOPBAR ─── */
+.topbar{background:var(--navy);padding:14px 20px;}
+.topbar-inner{max-width:1040px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;}
+.brand{font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;color:#fff;letter-spacing:-.3px;text-decoration:none;}
+.brand span{color:#60AEFF;}
+.back{font-size:12.5px;color:rgba(255,255,255,.55);text-decoration:none;display:inline-flex;align-items:center;gap:6px;transition:color .15s;}
+.back:hover{color:#fff;}
+
+/* ─── HERO ─── */
+.hero{background:var(--navy);padding:34px 20px 58px;position:relative;overflow:hidden;}
+.hero::before{content:"";position:absolute;top:-100px;right:-100px;width:400px;height:400px;background:radial-gradient(circle,rgba(26,86,219,.15),transparent 70%);pointer-events:none;}
+.hero-inner{max-width:1040px;margin:0 auto;position:relative;z-index:1;}
+.hero-tag{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:14px;}
+.hero-h{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(26px,5vw,38px);font-weight:800;color:#fff;letter-spacing:-.6px;line-height:1.15;margin-bottom:12px;max-width:760px;}
+.hero-sub{font-size:clamp(14px,2.2vw,16px);color:rgba(255,255,255,.65);max-width:660px;line-height:1.55;}
+
+/* ─── LAYOUT ─── */
+.wrap{max-width:1040px;margin:0 auto;padding:0 20px;}
+.main{margin-top:-36px;margin-bottom:32px;position:relative;z-index:2;}
+.card{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:26px;box-shadow:var(--sh);margin-bottom:20px;}
+.card-h{font-family:'Bricolage Grotesque',sans-serif;font-size:17px;font-weight:700;color:var(--navy);margin-bottom:4px;letter-spacing:-.2px;display:flex;align-items:center;gap:8px;}
+.card-sub{font-size:13px;color:var(--muted);margin-bottom:22px;line-height:1.55;}
+.section-tag{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:2.5px;text-transform:uppercase;color:var(--blue);margin-bottom:6px;}
+
+/* ─── INPUTS ─── */
+.inputs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;margin-bottom:18px;}
+.input-group{margin-bottom:14px;}
+.input-group:last-child{margin-bottom:0;}
+.field-label{display:flex;align-items:center;justify-content:space-between;font-size:12px;font-weight:600;color:var(--navy);margin-bottom:6px;}
+.field-hint{font-size:11px;color:var(--muted2);font-weight:500;}
+.input-wrap{position:relative;}
+.input-prefix{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-family:'JetBrains Mono',monospace;font-size:12.5px;font-weight:600;color:var(--muted);pointer-events:none;}
+.input-suffix{position:absolute;right:12px;top:50%;transform:translateY(-50%);font-family:'JetBrains Mono',monospace;font-size:12.5px;font-weight:600;color:var(--muted);pointer-events:none;}
+.input{width:100%;padding:10px 12px 10px 28px;font-family:'Outfit',sans-serif;font-size:14px;font-weight:500;color:var(--navy);background:var(--bg);border:1px solid var(--border);border-radius:8px;transition:all .15s;-moz-appearance:textfield;}
+.input.no-prefix{padding-left:12px;}
+.input.has-suffix{padding-right:30px;}
+.input::-webkit-outer-spin-button,.input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
+.input:focus{outline:none;border-color:var(--blue);background:var(--white);box-shadow:0 0 0 3px rgba(26,86,219,.12);}
+.input::placeholder{color:var(--muted2);font-weight:400;}
+
+.optional-toggle{display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:600;color:var(--blue);cursor:pointer;background:transparent;border:none;padding:8px 0 0;transition:opacity .15s;}
+.optional-toggle:hover{opacity:.75;}
+.optional-panel{margin-top:16px;padding-top:16px;border-top:1px dashed var(--border);display:none;}
+.optional-panel.open{display:block;}
+
+/* ─── HEADLINE RESULTS ─── */
+.headline{background:linear-gradient(135deg,var(--navy) 0%,var(--navy-soft) 100%);border-radius:14px;padding:26px 28px;margin-bottom:20px;box-shadow:var(--sh-strong);position:relative;overflow:hidden;}
+.headline::before{content:"";position:absolute;top:-60px;right:-60px;width:200px;height:200px;background:radial-gradient(circle,rgba(96,174,255,.12),transparent 70%);pointer-events:none;}
+.headline-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;position:relative;z-index:1;}
+@media(max-width:540px){.headline-grid{grid-template-columns:1fr;gap:16px;}}
+
+.hl-cell{}
+.hl-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:6px;}
+.hl-value{font-family:'Bricolage Grotesque',sans-serif;font-size:30px;font-weight:800;color:#fff;letter-spacing:-.7px;line-height:1;}
+.hl-value.big{font-size:42px;}
+.hl-value.dim{color:rgba(255,255,255,.3);}
+.hl-sub{font-size:11.5px;color:rgba(255,255,255,.5);margin-top:5px;font-family:'JetBrains Mono',monospace;}
+
+/* ─── FUNNEL PIPELINE ─── */
+.funnel{display:flex;align-items:stretch;gap:0;margin-bottom:20px;flex-wrap:wrap;}
+
+.funnel-stage{flex:1;min-width:160px;border-radius:12px;padding:18px 16px;border:2px solid;position:relative;}
+.funnel-stage.leads{border-color:var(--border-strong);background:var(--bg);}
+.funnel-stage.quotes{border-color:var(--blue);background:var(--blue-soft);}
+.funnel-stage.deals{border-color:var(--green);background:var(--green-soft);}
+
+.funnel-arrow{display:flex;align-items:center;justify-content:center;padding:0 8px;flex-shrink:0;min-width:44px;}
+@media(max-width:680px){
+  .funnel{flex-direction:column;gap:0;}
+  .funnel-arrow{transform:rotate(90deg);min-width:unset;padding:6px 0;align-self:center;}
+  .funnel-stage{min-width:unset;}
+}
+.funnel-arrow-inner{display:flex;flex-direction:column;align-items:center;gap:3px;}
+.funnel-arrow-line{width:1px;height:28px;background:var(--border-strong);}
+@media(max-width:680px){
+  .funnel-arrow-line{width:28px;height:1px;}
+  .funnel-arrow-inner{flex-direction:row;}
+}
+.funnel-arrow-rate{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;letter-spacing:.5px;color:var(--muted);white-space:nowrap;background:var(--white);border:1px solid var(--border);border-radius:4px;padding:2px 5px;}
+.funnel-arrow-ico{font-size:12px;color:var(--muted2);}
+
+.stage-tag{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;}
+.stage-tag.quotes{color:var(--blue);}
+.stage-tag.deals{color:var(--green);}
+.stage-main{font-family:'Bricolage Grotesque',sans-serif;font-size:30px;font-weight:800;letter-spacing:-.7px;line-height:1;color:var(--navy);margin-bottom:2px;}
+.stage-unit{font-size:12px;color:var(--muted);margin-bottom:12px;}
+.stage-break{height:1px;background:var(--border);margin-bottom:10px;}
+.stage-row{display:flex;justify-content:space-between;font-size:12px;padding:2px 0;}
+.stage-row-label{color:var(--muted);}
+.stage-row-val{font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--navy);font-size:12.5px;}
+
+/* ─── GAP CARD ─── */
+.gap-card{background:linear-gradient(135deg,#FEF3C7 0%,#FFFBEB 100%);border:1px solid rgba(217,119,6,.25);border-radius:14px;padding:22px 24px;margin-bottom:20px;}
+.gap-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
+@media(max-width:540px){.gap-grid{grid-template-columns:1fr 1fr;}}
+.gap-cell-label{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:1.8px;text-transform:uppercase;color:var(--amber);margin-bottom:5px;}
+.gap-cell-value{font-family:'Bricolage Grotesque',sans-serif;font-size:22px;font-weight:800;letter-spacing:-.5px;color:var(--navy);}
+.gap-cell-sub{font-size:11px;color:var(--muted2);margin-top:3px;}
+
+/* ─── DAILY PLAN ─── */
+.plan{background:var(--navy);border-radius:14px;padding:24px 26px;margin-bottom:20px;position:relative;overflow:hidden;}
+.plan::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,rgba(255,255,255,.01) 0,rgba(255,255,255,.01) 1px,transparent 1px,transparent 60px);pointer-events:none;}
+.plan-tag{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:10px;}
+.plan-h{font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:700;color:#fff;letter-spacing:-.2px;margin-bottom:16px;}
+.plan-steps{display:flex;flex-direction:column;gap:10px;}
+.plan-step{display:flex;gap:12px;align-items:flex-start;}
+.plan-step-num{width:26px;height:26px;border-radius:50%;background:rgba(26,86,219,.5);border:1px solid rgba(96,174,255,.3);color:#fff;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.plan-step-text{font-size:14px;color:rgba(255,255,255,.85);line-height:1.55;}
+.plan-step-text strong{color:#fff;font-weight:700;}
+
+/* ─── INSIGHTS ─── */
+.insights{display:flex;flex-direction:column;gap:10px;}
+.insight{display:flex;gap:10px;align-items:flex-start;padding:13px 14px;border-radius:10px;border:1px solid;font-size:13.5px;line-height:1.55;}
+.insight-ico{font-size:14px;line-height:1;flex-shrink:0;margin-top:1px;}
+.insight.blue{background:var(--blue-soft);color:#1E3A8A;border-color:var(--blue-line);}
+.insight.amber{background:var(--amber-soft);color:#92400E;border-color:rgba(217,119,6,.2);}
+.insight.green{background:var(--green-soft);color:#065F46;border-color:rgba(5,150,105,.2);}
+.insight.red{background:var(--red-soft);color:#991B1B;border-color:rgba(220,38,38,.2);}
+.insight strong{font-weight:700;}
+.insights-empty{text-align:center;padding:22px;color:var(--muted);font-size:13px;font-style:italic;background:var(--bg);border:1px dashed var(--border);border-radius:10px;}
+
+/* ─── ACTIONS ─── */
+.actions{display:flex;justify-content:flex-end;gap:8px;margin-top:14px;}
+.action-btn{font-family:'Outfit',sans-serif;font-size:12.5px;font-weight:600;padding:9px 15px;border-radius:8px;cursor:pointer;border:1px solid var(--border);background:var(--white);color:var(--muted);transition:all .15s;display:inline-flex;align-items:center;gap:6px;}
+.action-btn.primary{background:var(--blue);color:#fff;border-color:var(--blue);}
+.action-btn.primary:hover{background:#1449B0;}
+.action-btn:hover{border-color:var(--border-strong);background:var(--bg);color:var(--navy);}
+
+/* ─── CTA ─── */
+.cta-inner{background:var(--navy);border-radius:16px;padding:28px 26px;text-align:center;position:relative;overflow:hidden;}
+.cta-inner::before{content:"";position:absolute;top:-80px;left:-80px;width:240px;height:240px;background:radial-gradient(circle,rgba(26,86,219,.28),transparent 70%);pointer-events:none;}
+.cta-inner::after{content:"";position:absolute;bottom:-80px;right:-80px;width:240px;height:240px;background:radial-gradient(circle,rgba(96,174,255,.18),transparent 70%);pointer-events:none;}
+.cta-h{font-family:'Bricolage Grotesque',sans-serif;font-size:21px;font-weight:700;color:#fff;margin-bottom:8px;letter-spacing:-.3px;position:relative;z-index:1;}
+.cta-sub{font-size:14px;color:rgba(255,255,255,.65);margin-bottom:18px;max-width:520px;margin-left:auto;margin-right:auto;position:relative;z-index:1;line-height:1.55;}
+.cta-btn{display:inline-flex;align-items:center;gap:8px;background:#25D366;color:#fff;font-family:'Outfit',sans-serif;font-size:14px;font-weight:600;padding:12px 22px;border-radius:9px;text-decoration:none;position:relative;z-index:1;transition:transform .15s;}
+.cta-btn:hover{transform:translateY(-1px);}
+
+/* ─── FOOTER ─── */
+.foot{max-width:1040px;margin:20px auto 0;padding:26px 20px;text-align:center;font-size:12px;color:var(--muted2);border-top:1px solid var(--border);}
+.foot a{color:var(--muted);text-decoration:none;font-weight:600;}
+
+@media(max-width:620px){
+  .card{padding:20px 16px;}
+  .hero{padding:28px 20px 50px;}
+  .main{margin-top:-32px;}
+  .headline{padding:22px 18px;}
+  .plan{padding:22px 18px;}
+  .hl-value.big{font-size:34px;}
+}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="topbar-inner">
+    <a href="https://autocomply.co.za" class="brand">Auto<span>Comply</span></a>
+    <a href="https://autocomply.co.za/#tools" class="back">← All tools</a>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-tag">Free Tool · Sales Target Calculator</div>
+    <h1 class="hero-h">Turn your revenue goal into a daily plan.</h1>
+    <p class="hero-sub">Enter your monthly income goal and average deal size — get the exact number of clients, quotes and leads you need each day and week to hit your target. No guesswork, no vague "work harder" advice.</p>
+  </div>
+</section>
+
+<!-- MAIN -->
+<main class="main wrap">
+
+  <!-- INPUTS -->
+  <div class="card">
+    <div class="card-h">Your sales numbers</div>
+    <div class="card-sub">Start with your target and deal size. Unlock the activity funnel by adding your conversion rates below.</div>
+
+    <div class="inputs-grid">
+      <div>
+        <div class="field-label">
+          <span>Monthly revenue target</span>
+          <span class="field-hint">what you want to earn</span>
+        </div>
+        <div class="input-wrap">
+          <span class="input-prefix">R</span>
+          <input id="target" class="input" type="number" inputmode="decimal" placeholder="150 000" min="0" step="1000">
+        </div>
+      </div>
+      <div>
+        <div class="field-label">
+          <span>Average deal / sale size</span>
+          <span class="field-hint">typical invoice or sale value</span>
+        </div>
+        <div class="input-wrap">
+          <span class="input-prefix">R</span>
+          <input id="dealSize" class="input" type="number" inputmode="decimal" placeholder="15 000" min="1" step="100">
+        </div>
+      </div>
+      <div>
+        <div class="field-label">
+          <span>Working days per month</span>
+          <span class="field-hint">your available selling days</span>
+        </div>
+        <div class="input-wrap">
+          <input id="workDays" class="input no-prefix" type="number" inputmode="numeric" value="22" min="1" max="31">
+        </div>
+      </div>
+    </div>
+
+    <!-- Optional: current revenue -->
+    <button class="optional-toggle" id="toggleCurrent" type="button">+ Add current revenue to see growth gap</button>
+    <div class="optional-panel" id="panelCurrent">
+      <div>
+        <div class="field-label">
+          <span>Current monthly revenue</span>
+          <span class="field-hint">your typical month right now</span>
+        </div>
+        <div class="input-wrap" style="max-width:240px;">
+          <span class="input-prefix">R</span>
+          <input id="current" class="input" type="number" inputmode="decimal" placeholder="90 000" min="0" step="1000">
+        </div>
+      </div>
+    </div>
+
+    <!-- Optional: conversion rates -->
+    <button class="optional-toggle" id="toggleConv" type="button" style="margin-top:10px;">+ Add conversion rates to unlock your activity plan</button>
+    <div class="optional-panel" id="panelConv">
+      <div class="inputs-grid" style="margin-bottom:0;">
+        <div>
+          <div class="field-label">
+            <span>Quote-to-close rate</span>
+            <span class="field-hint">% of quotes you win</span>
+          </div>
+          <div class="input-wrap">
+            <input id="closeRate" class="input no-prefix has-suffix" type="number" inputmode="decimal" placeholder="33" min="1" max="100" step="1">
+            <span class="input-suffix">%</span>
+          </div>
+        </div>
+        <div>
+          <div class="field-label">
+            <span>Lead-to-quote rate</span>
+            <span class="field-hint">% of enquiries you quote</span>
+          </div>
+          <div class="input-wrap">
+            <input id="leadRate" class="input no-prefix has-suffix" type="number" inputmode="decimal" placeholder="50" min="1" max="100" step="1">
+            <span class="input-suffix">%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="action-btn primary" id="demoBtn" type="button">✦ Demo data</button>
+      <button class="action-btn" id="clearBtn" type="button">✕ Clear</button>
+    </div>
+  </div>
+
+  <!-- HEADLINE RESULTS -->
+  <div class="headline" id="headlineBlock">
+    <div class="headline-grid">
+      <div class="hl-cell">
+        <div class="hl-label">Deals needed / month</div>
+        <div class="hl-value big" id="hlDeals">—</div>
+        <div class="hl-sub" id="hlDealsSub">Enter your target and deal size</div>
+      </div>
+      <div class="hl-cell">
+        <div class="hl-label">Per week</div>
+        <div class="hl-value" id="hlWeekly">—</div>
+        <div class="hl-sub" id="hlWeeklySub">working weeks</div>
+      </div>
+      <div class="hl-cell">
+        <div class="hl-label">Per day</div>
+        <div class="hl-value" id="hlDaily">—</div>
+        <div class="hl-sub" id="hlDailySub">selling days</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FUNNEL PIPELINE (conditional) -->
+  <div id="funnelBlock" style="display:none;margin-bottom:20px;">
+    <div class="card" style="margin-bottom:0;">
+      <div class="section-tag">Activity pipeline</div>
+      <div class="card-h" style="margin-bottom:4px;">How many activities you need to hit your target</div>
+      <div class="card-sub">Each stage converts into the next. Work backwards from your deal target to find what you need to do every day.</div>
+
+      <div class="funnel" id="funnelStages">
+        <!-- rendered by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- GAP ANALYSIS (conditional) -->
+  <div id="gapBlock" style="display:none;">
+    <div class="gap-card">
+      <div class="section-tag" style="color:var(--amber);margin-bottom:8px;">Revenue gap</div>
+      <div class="card-h" style="margin-bottom:14px;color:var(--navy);">The distance between where you are and where you want to be</div>
+      <div class="gap-grid">
+        <div>
+          <div class="gap-cell-label">Current</div>
+          <div class="gap-cell-value" id="gapCurrent">—</div>
+          <div class="gap-cell-sub">per month</div>
+        </div>
+        <div>
+          <div class="gap-cell-label">Target</div>
+          <div class="gap-cell-value" id="gapTarget">—</div>
+          <div class="gap-cell-sub">per month</div>
+        </div>
+        <div>
+          <div class="gap-cell-label">The gap</div>
+          <div class="gap-cell-value" id="gapAmount">—</div>
+          <div class="gap-cell-sub" id="gapPct">growth needed</div>
+        </div>
+        <div>
+          <div class="gap-cell-label">Extra deals/mo</div>
+          <div class="gap-cell-value" id="gapDeals">—</div>
+          <div class="gap-cell-sub">to close the gap</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DAILY PLAN (conditional) -->
+  <div class="plan" id="planBlock" style="display:none;">
+    <div class="plan-tag">Your daily activity target</div>
+    <div class="plan-h" id="planH">To hit your monthly target, every working day:</div>
+    <div class="plan-steps" id="planSteps"></div>
+  </div>
+
+  <!-- INSIGHTS -->
+  <div class="card">
+    <div class="card-h">What this means for your business</div>
+    <div class="card-sub">Plain-English reads of your sales numbers.</div>
+    <div class="insights" id="insights">
+      <div class="insights-empty">Enter your monthly revenue target and deal size above to see insights.</div>
+    </div>
+  </div>
+
+</main>
+
+<!-- CTA -->
+<div class="wrap" style="margin-bottom:30px;">
+  <div class="cta-inner">
+    <div class="cta-h">Target feels out of reach?</div>
+    <p class="cta-sub">Sometimes the numbers reveal that the goal is right but the model is wrong — deal size is too small, close rate is too low, or the pipeline isn't big enough. We can help you find the lever that's most likely to move the number.</p>
+    <a href="https://wa.me/27670113108?text=Hi%20AutoComply%2C%20I%20used%20the%20Sales%20Target%20Calculator%20and%20want%20help%20building%20a%20plan%20to%20hit%20my%20revenue%20goal." class="cta-btn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Chat on WhatsApp
+    </a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="foot">
+  AutoComply · Practical tools for South African business owners · <a href="https://autocomply.co.za">autocomply.co.za</a>
+</div>
+
+<script>
+(function(){
+  const $ = id => document.getElementById(id);
+
+  // ─── FORMAT ───
+  const fmtR  = n => 'R ' + Math.round(n).toLocaleString('en-ZA');
+  const fmtR0 = n => 'R ' + n.toLocaleString('en-ZA',{minimumFractionDigits:0,maximumFractionDigits:0});
+  const fmtN  = n => n.toLocaleString('en-ZA',{minimumFractionDigits:1,maximumFractionDigits:1});
+  const fmtN0 = n => Math.ceil(n).toLocaleString('en-ZA');
+  const fmtPct= n => n.toLocaleString('en-ZA',{minimumFractionDigits:0,maximumFractionDigits:0})+'%';
+  const num   = id => { const v=parseFloat($(id).value); return (isNaN(v)||v<=0)?null:v; };
+
+  // ─── OPTIONAL PANELS ───
+  $('toggleCurrent').addEventListener('click',()=>{
+    const p=$('panelCurrent'); const open=p.classList.toggle('open');
+    $('toggleCurrent').textContent=open?'− Hide current revenue':'+ Add current revenue to see growth gap';
+    if(!open){ $('current').value=''; update(); }
+  });
+  $('toggleConv').addEventListener('click',()=>{
+    const p=$('panelConv'); const open=p.classList.toggle('open');
+    $('toggleConv').textContent=open?'− Hide conversion rates':'+ Add conversion rates to unlock your activity plan';
+    if(!open){ $('closeRate').value=''; $('leadRate').value=''; update(); }
+  });
+
+  // ─── FUNNEL BUILDER ───
+  function buildFunnelStage(tag, tagCls, value, unit, daily, weekly, extra){
+    const rows = [
+      {l:'Per week', v: fmtN(weekly)},
+      {l:'Per day',  v: fmtN(daily)},
+    ];
+    if(extra) rows.push(extra);
+    return `
+      <div class="funnel-stage ${tagCls}">
+        <div class="stage-tag ${tagCls}">${tag}</div>
+        <div class="stage-main">${fmtN0(value)}</div>
+        <div class="stage-unit">${unit} per month</div>
+        <div class="stage-break"></div>
+        ${rows.map(r=>`<div class="stage-row"><span class="stage-row-label">${r.l}</span><span class="stage-row-val">${r.v}</span></div>`).join('')}
+      </div>`;
+  }
+
+  function buildArrow(rate, label){
+    return `
+      <div class="funnel-arrow">
+        <div class="funnel-arrow-inner">
+          <div class="funnel-arrow-line"></div>
+          <div class="funnel-arrow-rate">${label ? label : (rate ? fmtPct(rate)+' close' : '→')}</div>
+          <div class="funnel-arrow-line"></div>
+        </div>
+      </div>`;
+  }
+
+  // ─── MAIN UPDATE ───
+  function update(){
+    const target   = num('target');
+    const dealSize = num('dealSize');
+    const workDays = parseFloat($('workDays').value)||22;
+    const current  = num('current');
+    const closeRate= num('closeRate');
+    const leadRate = num('leadRate');
+
+    const hasCore   = target!==null && dealSize!==null;
+    const hasClose  = hasCore && closeRate!==null;
+    const hasLeads  = hasClose && leadRate!==null;
+    const hasCurrent= hasCore && current!==null;
+
+    const workWeeks = workDays / 5;
+
+    // ─── HEADLINE ───
+    if(!hasCore){
+      $('hlDeals').textContent='—'; $('hlDeals').classList.add('dim');
+      $('hlDealsSub').textContent='Enter your target and deal size';
+      $('hlWeekly').textContent='—'; $('hlWeekly').classList.add('dim');
+      $('hlWeeklySub').textContent='working weeks';
+      $('hlDaily').textContent='—'; $('hlDaily').classList.add('dim');
+      $('hlDailySub').textContent='selling days';
+    } else {
+      const deals    = target / dealSize;
+      const weekly   = deals / workWeeks;
+      const daily    = deals / workDays;
+
+      $('hlDeals').textContent = fmtN(deals);
+      $('hlDeals').classList.remove('dim');
+      $('hlDealsSub').textContent = 'to reach ' + fmtR(target) + '/month';
+      $('hlWeekly').textContent = fmtN(weekly);
+      $('hlWeekly').classList.remove('dim');
+      $('hlWeeklySub').textContent = 'deals per week';
+      $('hlDaily').textContent = fmtN(daily);
+      $('hlDaily').classList.remove('dim');
+      $('hlDailySub').textContent = 'deals per working day';
+    }
+
+    // ─── FUNNEL ───
+    if(!hasCore){ $('funnelBlock').style.display='none'; }
+    else if(hasClose){
+      $('funnelBlock').style.display='';
+      const deals  = target / dealSize;
+      const quotes = deals / (closeRate/100);
+      const leads  = hasLeads ? quotes / (leadRate/100) : null;
+      const dDeals  = deals / workDays;
+      const wDeals  = deals / workWeeks;
+      const dQuotes = quotes / workDays;
+      const wQuotes = quotes / workWeeks;
+
+      let html = buildFunnelStage('Deals / Sales','deals', deals, 'deals', dDeals, wDeals);
+
+      // Arrow deals ← quotes
+      html = buildArrow(closeRate, fmtPct(closeRate)+' close rate') + html;
+
+      // Quotes stage
+      html = buildFunnelStage('Quotes / Proposals','quotes', quotes, 'quotes', dQuotes, wQuotes) + html;
+
+      if(hasLeads){
+        const dLeads = leads / workDays;
+        const wLeads = leads / workWeeks;
+        html = buildFunnelStage('Leads / Enquiries','leads', leads, 'leads', dLeads, wLeads) +
+               buildArrow(leadRate, fmtPct(leadRate)+' quote rate') + html;
+      }
+
+      $('funnelStages').innerHTML = html;
+    } else {
+      $('funnelBlock').style.display='none';
+    }
+
+    // ─── GAP ───
+    if(hasCurrent && target!==null){
+      $('gapBlock').style.display='';
+      const gap    = target - current;
+      const gapPct = current>0 ? ((gap/current)*100) : 0;
+      const gapDeals = dealSize ? gap/dealSize : 0;
+      $('gapCurrent').textContent = fmtR0(current);
+      $('gapTarget').textContent  = fmtR0(target);
+      $('gapAmount').textContent  = (gap>0?'+':'')+fmtR0(gap);
+      $('gapPct').textContent     = (gap>0?'+':'')+fmtN(gapPct)+'% growth needed';
+      $('gapDeals').textContent   = (gap>0?'+':'')+fmtN(gapDeals);
+    } else {
+      $('gapBlock').style.display='none';
+    }
+
+    // ─── DAILY PLAN ───
+    if(hasCore){
+      $('planBlock').style.display='';
+      const deals  = target / dealSize;
+      const daily  = deals / workDays;
+      const closeR = closeRate || null;
+      const leadR  = leadRate  || null;
+      const steps  = [];
+
+      if(hasLeads){
+        const quotes = deals / (closeR/100);
+        const leads  = quotes / (leadR/100);
+        const dLeads  = leads / workDays;
+        const dQuotes = quotes / workDays;
+        steps.push(`<strong>Generate ${fmtN(dLeads)} new leads</strong> — enquiries, referrals, WhatsApp messages, cold calls, or walk-ins. This is your pipeline fuel.`);
+        steps.push(`<strong>Send ${fmtN(dQuotes)} quotes or proposals</strong> — converting warm leads into priced-up opportunities.`);
+        steps.push(`<strong>Follow up on open quotes</strong> — most sales are lost to silence, not rejection. Follow up the day before the deadline and 48 hours after sending.`);
+        steps.push(`<strong>Close ${fmtN(daily)} deals</strong> — your daily target, achieved by executing the steps above consistently.`);
+      } else if(hasClose){
+        const quotes = deals / (closeR/100);
+        const dQuotes = quotes / workDays;
+        steps.push(`<strong>Send ${fmtN(dQuotes)} quotes or proposals</strong> — this is your key daily output.`);
+        steps.push(`<strong>Follow up on every open quote</strong> — proactively, not reactively.`);
+        steps.push(`<strong>Close ${fmtN(daily)} deals</strong> — at your ${fmtPct(closeR)} close rate, the quotes pipeline drives the result.`);
+        steps.push(`Add your lead-to-quote rate above to unlock <strong>what daily outreach activity</strong> you need to fill that quote pipeline.`);
+      } else {
+        steps.push(`<strong>Close ${fmtN(daily)} deals per day</strong> — at ${fmtR(dealSize)} average, that hits your ${fmtR(target)} target.`);
+        steps.push(`Add your quote-to-close rate above to see <strong>how many quotes</strong> you need to send each day.`);
+        steps.push(`Add your lead-to-quote rate to unlock the <strong>full activity pipeline</strong> — from first contact to closed deal.`);
+      }
+
+      $('planH').textContent = 'To hit ' + fmtR(target) + ' this month, every working day:';
+      $('planSteps').innerHTML = steps.map((s,i)=>`
+        <div class="plan-step">
+          <div class="plan-step-num">${i+1}</div>
+          <div class="plan-step-text">${s}</div>
+        </div>`).join('');
+    } else {
+      $('planBlock').style.display='none';
+    }
+
+    // ─── INSIGHTS ───
+    renderInsights(target, dealSize, workDays, current, closeRate, leadRate);
+  }
+
+  function renderInsights(target, dealSize, workDays, current, closeRate, leadRate){
+    const el = $('insights');
+    if(!target||!dealSize){
+      el.innerHTML='<div class="insights-empty">Enter your monthly revenue target and deal size above to see insights.</div>';
+      return;
+    }
+
+    const ins = [];
+    const deals = target / dealSize;
+    const daily = deals / workDays;
+    const workWeeks = workDays / 5;
+
+    // Deal volume
+    if(daily < 0.5){
+      ins.push({t:'green',i:'✓',m:`<strong>Low deal frequency — high-stakes business.</strong> At ${fmtN(daily)} deals/day you're closing roughly ${fmtN(deals)} per month. Every deal matters. Invest serious time in each proposal and protect your close rate above all else.`});
+    } else if(daily <= 3){
+      ins.push({t:'blue',i:'💡',m:`<strong>Manageable target: ${fmtN(daily)} deals per day.</strong> This is achievable with a consistent daily routine — don't let admin and operations crowd out selling time.`});
+    } else if(daily <= 8){
+      ins.push({t:'amber',i:'⚡',m:`<strong>High deal velocity required: ${fmtN(daily)} deals/day.</strong> At this pace, you need a reliable pipeline system — CRM, follow-up automation, or a dedicated sales function.`});
+    } else {
+      ins.push({t:'amber',i:'⚡',m:`<strong>Very high volume target: ${fmtN(daily)} deals per day.</strong> This level requires either a team, an online sales channel, or a fundamentally different sales process.`});
+    }
+
+    // Deal size insight
+    if(dealSize < 1000){
+      ins.push({t:'blue',i:'📊',m:`<strong>Low-ticket business.</strong> At ${fmtR(dealSize)} average deal size you need volume and consistency. Even a 10% daily shortfall compounds quickly — track daily output rigorously.`});
+    } else if(dealSize > 50000){
+      ins.push({t:'blue',i:'📊',m:`<strong>High-ticket business.</strong> At ${fmtR(dealSize)} per deal, your pipeline only needs to produce ${fmtN(deals)} sales per month. The critical metric is lead quality over lead quantity.`});
+    }
+
+    // Close rate insight
+    if(closeRate!==null){
+      if(closeRate < 20){
+        ins.push({t:'amber',i:'⚡',m:`<strong>Close rate of ${fmtPct(closeRate)} is low.</strong> This is often a lead quality problem — you're getting enquiries from people who are browsing, not buying. Qualify harder before investing in a full proposal.`});
+      } else if(closeRate > 60){
+        ins.push({t:'green',i:'✓',m:`<strong>Strong close rate of ${fmtPct(closeRate)}.</strong> Your main lever is generating enough leads — the conversion from quote to deal is working well. Focus pipeline activity on top-of-funnel.`});
+      }
+    }
+
+    // Lead volume
+    if(closeRate && leadRate){
+      const quotes = deals / (closeRate/100);
+      const leads  = quotes / (leadRate/100);
+      const dLeads = leads / workDays;
+      if(dLeads > 50){
+        ins.push({t:'red',i:'⚠️',m:`<strong>You need ${fmtN(dLeads)} new leads per day.</strong> That's a very high volume to generate organically. Paid advertising, a referral programme, or a lead generation system are likely necessary at this target.`});
+      } else if(dLeads > 10){
+        ins.push({t:'amber',i:'⚡',m:`<strong>${fmtN(dLeads)} leads per day</strong> is achievable but requires disciplined daily outreach. WhatsApp broadcast, Google Ads, or a referral system would make this sustainable.`});
+      } else {
+        ins.push({t:'blue',i:'💡',m:`<strong>${fmtN(dLeads)} leads per day</strong> is manageable for most active business owners through consistent outreach, follow-ups and referrals.`});
+      }
+    }
+
+    // Gap insight
+    if(current && target){
+      const gap = target - current;
+      const gapPct = current > 0 ? (gap/current)*100 : 0;
+      if(gap <= 0){
+        ins.push({t:'green',i:'✓',m:`<strong>You're already at or above target.</strong> Your current revenue of ${fmtR(current)} meets or exceeds the goal. Consider increasing the target or focusing on protecting margin.`});
+      } else if(gapPct < 20){
+        ins.push({t:'green',i:'✓',m:`<strong>Small gap — ${fmtPct(gapPct)} growth needed.</strong> You're close. A focused push on conversion rate or deal size could close this without significant structural change.`});
+      } else if(gapPct < 50){
+        ins.push({t:'blue',i:'💡',m:`<strong>${fmtPct(gapPct)} revenue growth needed.</strong> Achievable, but it likely requires a deliberate change — new channel, pricing increase, or an additional revenue stream.`});
+      } else {
+        ins.push({t:'amber',i:'⚡',m:`<strong>${fmtPct(gapPct)} growth gap.</strong> This is a significant jump. Worth asking whether the gap closes faster by raising average deal size (less volume needed) or by adding a new client segment.`});
+      }
+    }
+
+    // Annual context
+    const annual = target * 12;
+    ins.push({t:'blue',i:'📅',m:`Your target implies <strong>${fmtR(annual)}</strong> in annual revenue. Break it into quarters and review monthly — missing one month by 20% is recoverable; missing three months compounds.`});
+
+    el.innerHTML = ins.map(({t,i,m})=>`<div class="insight ${t}"><div class="insight-ico">${i}</div><div>${m}</div></div>`).join('');
+  }
+
+  // ─── EVENTS ───
+  ['target','dealSize','workDays','current','closeRate','leadRate'].forEach(id=>{
+    $(id).addEventListener('input', update);
+  });
+
+  // Demo
+  $('demoBtn').addEventListener('click',()=>{
+    $('target').value   = 150000;
+    $('dealSize').value = 15000;
+    $('workDays').value = 22;
+    // Open and fill optional panels
+    const pCurrent = $('panelCurrent');
+    if(!pCurrent.classList.contains('open')){ $('toggleCurrent').click(); }
+    $('current').value  = 90000;
+    const pConv = $('panelConv');
+    if(!pConv.classList.contains('open')){ $('toggleConv').click(); }
+    $('closeRate').value= 33;
+    $('leadRate').value = 50;
+    update();
+  });
+
+  // Clear
+  $('clearBtn').addEventListener('click',()=>{
+    if(!confirm('Clear all inputs?')) return;
+    ['target','dealSize','workDays','current','closeRate','leadRate'].forEach(id=>{
+      $(id).value = id==='workDays'?'22':'';
+    });
+    update();
+  });
+
+  update();
+})();
+</script>
+</body>
+</html>

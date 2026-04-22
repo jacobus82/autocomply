@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Social Media Content Calendar — AutoComply</title>
+<meta name="description" content="Free 30-day social media content calendar for South African businesses. Choose your industry and get 30 ready-to-use post ideas with caption starters and hashtags.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;700;800&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --navy:#0B1628;--blue:#1A56DB;--blue-soft:#EEF3FF;--blue-line:rgba(26,86,219,.15);
+  --green:#059669;--green-soft:#ECFDF5;--amber:#D97706;--amber-soft:#FEF3C7;
+  --red:#DC2626;--red-soft:#FEE2E2;--purple:#7C3AED;--purple-soft:#EDE9FE;
+  --muted:#5A6A82;--muted2:#8A96A8;--border:#DDE5F0;--border-strong:#C5D1E4;
+  --bg:#F8FAFF;--bg2:#EEF3FF;--white:#fff;
+  --sh:0 1px 4px rgba(11,22,40,.07);--sh-strong:0 4px 20px rgba(11,22,40,.10);
+  --p-edu:#1A56DB;--p-bts:#D97706;--p-promo:#DC2626;--p-proof:#059669;
+  --p-engage:#7C3AED;--p-local:#0891B2;--p-spot:#DB2777;
+}
+html,body{background:var(--bg);color:var(--navy);font-family:'Outfit',sans-serif;-webkit-font-smoothing:antialiased;min-height:100vh;font-size:15px;line-height:1.5;}
+
+.topbar{background:var(--navy);padding:14px 20px;}
+.topbar-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;}
+.brand{font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;color:#fff;letter-spacing:-.3px;text-decoration:none;}
+.brand span{color:#60AEFF;}
+.back{font-size:12.5px;color:rgba(255,255,255,.55);text-decoration:none;display:inline-flex;align-items:center;gap:6px;}
+.back:hover{color:#fff;}
+
+.hero{background:linear-gradient(135deg,#1A0B3D 0%,#0B1628 50%,#0D2557 100%);padding:34px 20px 58px;position:relative;overflow:hidden;}
+.hero::before{content:"";position:absolute;top:-100px;right:-80px;width:380px;height:380px;background:radial-gradient(circle,rgba(124,58,237,.2),transparent 70%);pointer-events:none;}
+.hero::after{content:"";position:absolute;bottom:-60px;left:-60px;width:280px;height:280px;background:radial-gradient(circle,rgba(26,86,219,.15),transparent 70%);pointer-events:none;}
+.hero-inner{max-width:1100px;margin:0 auto;position:relative;z-index:1;}
+.hero-tag{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:14px;}
+.hero-h{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(26px,5vw,38px);font-weight:800;color:#fff;letter-spacing:-.6px;line-height:1.15;margin-bottom:12px;max-width:780px;}
+.hero-sub{font-size:clamp(14px,2.2vw,16px);color:rgba(255,255,255,.65);max-width:660px;line-height:1.55;}
+
+.wrap{max-width:1100px;margin:0 auto;padding:0 20px;}
+.main{margin-top:-36px;margin-bottom:32px;position:relative;z-index:2;}
+.card{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:26px;box-shadow:var(--sh);margin-bottom:20px;}
+.card-h{font-family:'Bricolage Grotesque',sans-serif;font-size:17px;font-weight:700;color:var(--navy);margin-bottom:4px;letter-spacing:-.2px;}
+.card-sub{font-size:13px;color:var(--muted);margin-bottom:22px;line-height:1.55;}
+.section-tag{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:2.5px;text-transform:uppercase;color:var(--purple);margin-bottom:10px;}
+
+/* ─── SETUP ─── */
+.setup-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:20px;}
+@media(max-width:680px){.setup-grid{grid-template-columns:1fr;}}
+.field-label{font-size:12.5px;font-weight:600;color:var(--navy);margin-bottom:5px;}
+.select{width:100%;padding:11px 30px 11px 13px;font-family:'Outfit',sans-serif;font-size:14px;font-weight:500;color:var(--navy);background:var(--bg) url("data:image/svg+xml;charset=US-ASCII,%3Csvg width='12' height='8' viewBox='0 0 12 8' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%235A6A82' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat right 12px center;border:1px solid var(--border);border-radius:9px;appearance:none;cursor:pointer;outline:none;transition:all .15s;}
+.select:focus{border-color:var(--purple);background-color:var(--white);box-shadow:0 0 0 3px rgba(124,58,237,.1);}
+
+.gen-row{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+.gen-btn{font-family:'Bricolage Grotesque',sans-serif;font-size:14px;font-weight:700;padding:12px 28px;border-radius:10px;cursor:pointer;border:none;background:linear-gradient(135deg,var(--purple),#5B21B6);color:#fff;display:inline-flex;align-items:center;gap:8px;transition:all .15s;}
+.gen-btn:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(124,58,237,.35);}
+.view-toggle{display:flex;gap:0;background:var(--bg);border:1px solid var(--border);border-radius:8px;overflow:hidden;}
+.view-btn{font-family:'Outfit',sans-serif;font-size:12.5px;font-weight:600;padding:8px 14px;cursor:pointer;border:none;background:transparent;color:var(--muted);transition:all .15s;}
+.view-btn.active{background:var(--navy);color:#fff;}
+
+/* ─── PILLAR LEGEND ─── */
+.pillar-legend{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px;}
+.pleg{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:600;padding:4px 10px;border-radius:14px;}
+.pleg-edu{background:#EFF6FF;color:var(--p-edu);}
+.pleg-bts{background:#FFFBEB;color:var(--p-bts);}
+.pleg-promo{background:#FEF2F2;color:var(--p-promo);}
+.pleg-proof{background:#F0FDF4;color:var(--p-proof);}
+.pleg-engage{background:#F5F3FF;color:var(--p-engage);}
+.pleg-local{background:#ECFEFF;color:var(--p-local);}
+.pleg-spot{background:#FDF2F8;color:var(--p-spot);}
+
+/* ─── CALENDAR GRID ─── */
+.cal-header{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-bottom:3px;}
+.cal-day-name{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted2);text-align:center;padding:4px 0;}
+.cal-day-name.weekend{color:rgba(90,106,130,.5);}
+
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;}
+.cal-cell{border-radius:8px;min-height:80px;cursor:pointer;transition:all .15s;padding:7px;position:relative;border:2px solid transparent;}
+.cal-cell.empty{background:transparent;cursor:default;min-height:80px;}
+.cal-cell.weekend-cell{background:var(--bg);opacity:.6;}
+.cal-cell.has-post{background:var(--white);border-color:var(--border);box-shadow:var(--sh);}
+.cal-cell.has-post:hover{border-color:var(--border-strong);box-shadow:var(--sh-strong);transform:translateY(-1px);}
+.cal-cell.selected{border-color:var(--purple)!important;box-shadow:0 0 0 3px rgba(124,58,237,.15)!important;}
+.cal-cell.weekend-cell.has-post{background:var(--bg);}
+
+.cell-day{font-family:'JetBrains Mono',monospace;font-size:10.5px;font-weight:600;color:var(--muted2);margin-bottom:5px;}
+.cell-pillar{font-size:10px;font-weight:700;padding:2px 6px;border-radius:8px;display:inline-block;margin-bottom:4px;}
+.cell-pillar.edu{background:#EFF6FF;color:var(--p-edu);}
+.cell-pillar.bts{background:#FFFBEB;color:var(--p-bts);}
+.cell-pillar.promo{background:#FEF2F2;color:var(--p-promo);}
+.cell-pillar.proof{background:#F0FDF4;color:var(--p-proof);}
+.cell-pillar.engage{background:#F5F3FF;color:var(--p-engage);}
+.cell-pillar.local{background:#ECFEFF;color:var(--p-local);}
+.cell-pillar.spot{background:#FDF2F8;color:var(--p-spot);}
+
+.cell-title{font-size:11.5px;font-weight:600;color:var(--navy);line-height:1.35;}
+.cell-opt{font-size:10px;color:var(--muted2);margin-top:4px;font-style:italic;}
+.cell-platform{position:absolute;bottom:6px;right:7px;font-size:10px;}
+
+/* ─── LIST VIEW ─── */
+.list-view{display:none;flex-direction:column;gap:10px;}
+.list-view.show{display:flex;}
+.cal-view.hide{display:none;}
+
+.list-item{border:1px solid var(--border);border-radius:10px;padding:14px 16px;display:grid;grid-template-columns:40px 80px 1fr;gap:12px;align-items:start;cursor:pointer;transition:all .15s;background:var(--white);}
+.list-item:hover{border-color:var(--border-strong);background:var(--bg);}
+.list-item.selected{border-color:var(--purple);background:var(--purple-soft);}
+.list-item.weekend-item{opacity:.65;background:var(--bg);}
+.list-num{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:var(--muted2);padding-top:1px;}
+.list-pillar{padding-top:1px;}
+.list-body{}
+.list-title{font-size:14px;font-weight:700;color:var(--navy);margin-bottom:2px;}
+.list-preview{font-size:12.5px;color:var(--muted);line-height:1.45;}
+
+/* ─── DETAIL PANEL ─── */
+.detail-panel{background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:20px;margin-top:16px;display:none;}
+.detail-panel.show{display:block;}
+.detail-header{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:16px;flex-wrap:wrap;}
+.detail-day{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;color:var(--muted2);}
+.detail-close{font-size:18px;cursor:pointer;color:var(--muted);line-height:1;background:none;border:none;padding:0;}
+.detail-close:hover{color:var(--navy);}
+.detail-title{font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:700;color:var(--navy);margin-bottom:10px;letter-spacing:-.2px;}
+.detail-idea{font-size:14px;color:var(--navy);line-height:1.7;margin-bottom:16px;}
+.detail-starter-label{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted2);margin-bottom:5px;}
+.detail-starter{font-size:14px;font-style:italic;color:var(--navy);background:var(--white);border:1px solid var(--border);border-left:3px solid var(--purple);border-radius:0 8px 8px 0;padding:10px 14px;line-height:1.6;margin-bottom:16px;}
+.detail-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;}
+.detail-tag{font-family:'JetBrains Mono',monospace;font-size:11.5px;font-weight:600;padding:4px 9px;border-radius:5px;background:var(--white);border:1px solid var(--border);color:var(--blue);}
+.detail-actions{display:flex;gap:8px;flex-wrap:wrap;}
+.detail-btn{font-family:'Outfit',sans-serif;font-size:12.5px;font-weight:600;padding:8px 14px;border-radius:8px;cursor:pointer;border:1px solid var(--border);background:var(--white);color:var(--navy);display:inline-flex;align-items:center;gap:5px;transition:all .15s;}
+.detail-btn:hover{background:var(--purple-soft);border-color:var(--purple);color:var(--purple);}
+.detail-btn.primary{background:var(--purple);color:#fff;border-color:var(--purple);}
+.detail-btn.primary:hover{background:#6D28D9;}
+.detail-btn.copied{background:var(--green-soft)!important;color:var(--green)!important;border-color:var(--green)!important;}
+.detail-platform-note{font-size:12px;color:var(--muted);margin-top:10px;}
+
+/* ─── FOOTER ACTIONS ─── */
+.cal-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;}
+.cal-action-btn{font-family:'Outfit',sans-serif;font-size:12.5px;font-weight:600;padding:9px 16px;border-radius:8px;cursor:pointer;border:1px solid var(--border);background:var(--white);color:var(--navy);display:inline-flex;align-items:center;gap:6px;transition:all .15s;}
+.cal-action-btn:hover{background:var(--purple-soft);border-color:var(--purple);color:var(--purple);}
+.cal-action-btn.copied{background:var(--green-soft);color:var(--green);border-color:var(--green);}
+
+/* ─── HOW-TO ─── */
+.howto-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px;}
+.howto-item{display:flex;gap:10px;}
+.howto-num{width:28px;height:28px;border-radius:50%;background:var(--purple);color:#fff;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.howto-title{font-size:13.5px;font-weight:700;color:var(--navy);margin-bottom:3px;}
+.howto-body{font-size:13px;color:var(--muted);line-height:1.55;}
+
+/* ─── CTA ─── */
+.cta-inner{background:var(--navy);border-radius:16px;padding:28px 26px;text-align:center;position:relative;overflow:hidden;}
+.cta-inner::before{content:"";position:absolute;top:-80px;left:-80px;width:240px;height:240px;background:radial-gradient(circle,rgba(124,58,237,.2),transparent 70%);pointer-events:none;}
+.cta-inner::after{content:"";position:absolute;bottom:-80px;right:-80px;width:240px;height:240px;background:radial-gradient(circle,rgba(96,174,255,.18),transparent 70%);pointer-events:none;}
+.cta-h{font-family:'Bricolage Grotesque',sans-serif;font-size:21px;font-weight:700;color:#fff;margin-bottom:8px;letter-spacing:-.3px;position:relative;z-index:1;}
+.cta-sub{font-size:14px;color:rgba(255,255,255,.65);margin-bottom:18px;max-width:520px;margin-left:auto;margin-right:auto;position:relative;z-index:1;line-height:1.55;}
+.cta-btn{display:inline-flex;align-items:center;gap:8px;background:#25D366;color:#fff;font-family:'Outfit',sans-serif;font-size:14px;font-weight:600;padding:12px 22px;border-radius:9px;text-decoration:none;position:relative;z-index:1;transition:transform .15s;}
+.cta-btn:hover{transform:translateY(-1px);}
+
+.foot{max-width:1100px;margin:20px auto 0;padding:26px 20px;text-align:center;font-size:12px;color:var(--muted2);border-top:1px solid var(--border);}
+.foot a{color:var(--muted);text-decoration:none;font-weight:600;}
+
+@media(max-width:680px){
+  .card{padding:20px 16px;}
+  .hero{padding:28px 20px 52px;}
+  .main{margin-top:-32px;}
+  .cal-cell{min-height:60px;padding:5px;}
+  .cell-title{font-size:10.5px;}
+  .list-item{grid-template-columns:30px 70px 1fr;gap:8px;}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <a href="https://autocomply.co.za" class="brand">Auto<span>Comply</span></a>
+    <a href="https://autocomply.co.za/#tools" class="back">← All tools</a>
+  </div>
+</div>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-tag">Free Tool · 30-Day Content Calendar</div>
+    <h1 class="hero-h">30 days of social media content ideas — built for your industry.</h1>
+    <p class="hero-sub">Choose your industry and get a full month of ready-to-use post ideas, complete with caption starters, hashtags and platform recommendations. No AI, no sign-up, works offline.</p>
+  </div>
+</section>
+
+<main class="main wrap">
+
+  <!-- SETUP CARD -->
+  <div class="card">
+    <div class="card-h">Set up your calendar</div>
+    <div class="card-sub">Choose your industry and month. The calendar generates instantly — no AI, no waiting.</div>
+
+    <div class="setup-grid">
+      <div>
+        <div class="field-label">Your industry</div>
+        <select id="industrySelect" class="select">
+          <option value="general">🏢 General SME / Business</option>
+          <option value="retail">🛍️ Retail / Shop</option>
+          <option value="food">🍽️ Food & Beverage / Restaurant</option>
+          <option value="trades">🔧 Trades / Construction</option>
+          <option value="professional">📊 Professional Services</option>
+          <option value="beauty">💄 Beauty & Wellness</option>
+          <option value="property">🏠 Property / Real Estate</option>
+          <option value="education">🎓 Education & Coaching</option>
+        </select>
+      </div>
+      <div>
+        <div class="field-label">Month</div>
+        <select id="monthSelect" class="select"></select>
+      </div>
+      <div>
+        <div class="field-label">Primary platform</div>
+        <select id="platformSelect" class="select">
+          <option value="all">All platforms</option>
+          <option value="ig">Instagram</option>
+          <option value="li">LinkedIn</option>
+          <option value="fb">Facebook</option>
+          <option value="wa">WhatsApp</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="gen-row">
+      <button class="gen-btn" id="genBtn" type="button">
+        📅 Generate calendar
+      </button>
+      <div class="view-toggle" id="viewToggle" style="display:none;">
+        <button class="view-btn active" id="calViewBtn" type="button">📅 Calendar</button>
+        <button class="view-btn" id="listViewBtn" type="button">📋 List</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CALENDAR CARD -->
+  <div class="card" id="calCard" style="display:none;">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:16px;">
+      <div>
+        <div class="card-h" id="calTitle">May 2026</div>
+        <div style="font-size:13px;color:var(--muted);" id="calSubtitle">30 post ideas for your industry</div>
+      </div>
+    </div>
+
+    <!-- Pillar legend -->
+    <div class="pillar-legend">
+      <span class="pleg pleg-edu">💡 Educational</span>
+      <span class="pleg pleg-bts">📷 Behind the Scenes</span>
+      <span class="pleg pleg-promo">🏷️ Promotional</span>
+      <span class="pleg pleg-proof">⭐ Social Proof</span>
+      <span class="pleg pleg-engage">❓ Engagement</span>
+      <span class="pleg pleg-local">🌍 Community</span>
+      <span class="pleg pleg-spot">✨ Spotlight</span>
+    </div>
+
+    <!-- Calendar view -->
+    <div class="cal-view" id="calView">
+      <div class="cal-header">
+        <div class="cal-day-name">Mon</div>
+        <div class="cal-day-name">Tue</div>
+        <div class="cal-day-name">Wed</div>
+        <div class="cal-day-name">Thu</div>
+        <div class="cal-day-name">Fri</div>
+        <div class="cal-day-name weekend">Sat</div>
+        <div class="cal-day-name weekend">Sun</div>
+      </div>
+      <div class="cal-grid" id="calGrid"></div>
+    </div>
+
+    <!-- List view -->
+    <div class="list-view" id="listView"></div>
+
+    <!-- Detail panel -->
+    <div class="detail-panel" id="detailPanel">
+      <div class="detail-header">
+        <div>
+          <div class="detail-day" id="detailDay"></div>
+          <span class="cell-pillar" id="detailPillarBadge"></span>
+        </div>
+        <button class="detail-close" id="detailClose" type="button">✕</button>
+      </div>
+      <div class="detail-title" id="detailTitle"></div>
+      <div class="detail-idea" id="detailIdea"></div>
+      <div class="detail-starter-label">Caption opener</div>
+      <div class="detail-starter" id="detailStarter"></div>
+      <div class="detail-tags" id="detailTags"></div>
+      <div class="detail-actions">
+        <button class="detail-btn primary" id="copyFullIdea" type="button">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          Copy this idea
+        </button>
+        <button class="detail-btn" id="copyTagsOnly" type="button">Copy hashtags</button>
+      </div>
+      <div class="detail-platform-note" id="detailPlatformNote"></div>
+    </div>
+
+    <!-- Footer actions -->
+    <div class="cal-actions">
+      <button class="cal-action-btn" id="copyAllBtn" type="button">📋 Copy all 30 ideas</button>
+      <button class="cal-action-btn" id="printBtn" type="button">🖨️ Print calendar</button>
+    </div>
+  </div>
+
+  <!-- HOW TO USE -->
+  <div class="card">
+    <div class="card-h">How to use this calendar effectively</div>
+    <div class="card-sub">A content calendar only works if it becomes a habit. These four practices make the difference.</div>
+    <div class="howto-grid">
+      <div class="howto-item">
+        <div class="howto-num">1</div>
+        <div>
+          <div class="howto-title">Batch-create on one day</div>
+          <div class="howto-body">Pick one day a week — Sunday evening or Monday morning — and create content for the next 5 days. Batching eliminates daily decision fatigue and keeps quality consistent.</div>
+        </div>
+      </div>
+      <div class="howto-item">
+        <div class="howto-num">2</div>
+        <div>
+          <div class="howto-title">Adapt, don't copy verbatim</div>
+          <div class="howto-body">These ideas are starting points. The best content references your specific clients, jobs, and experiences. Add real details — real names (with permission), real numbers, real photos.</div>
+        </div>
+      </div>
+      <div class="howto-item">
+        <div class="howto-num">3</div>
+        <div>
+          <div class="howto-title">Don't skip engagement posts</div>
+          <div class="howto-body">Most businesses only post promotional content. Engagement posts (questions, polls) generate comments — and comments tell the algorithm your content is worth showing to more people.</div>
+        </div>
+      </div>
+      <div class="howto-item">
+        <div class="howto-num">4</div>
+        <div>
+          <div class="howto-title">Consistency beats perfection</div>
+          <div class="howto-body">A consistent, imperfect post beats a perfect post that never goes out. Set a target of 3–5 posts per week and hit it every week. After 90 days, results compound significantly.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<div class="wrap" style="margin-bottom:30px;">
+  <div class="cta-inner">
+    <div class="cta-h">Want a social media strategy, not just a calendar?</div>
+    <p class="cta-sub">A calendar tells you what to post. A strategy tells you why, how to measure it, and how to turn followers into paying clients. We can help you build both.</p>
+    <a href="https://wa.me/27670113108?text=Hi%20AutoComply%2C%20I%20used%20the%20Content%20Calendar%20and%20want%20help%20with%20my%20social%20media%20strategy." class="cta-btn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Chat on WhatsApp
+    </a>
+  </div>
+</div>
+
+<div class="foot">
+  AutoComply · Practical tools for South African business owners · <a href="https://autocomply.co.za">autocomply.co.za</a>
+</div>
+
+<script>
+(function(){
+  const $ = id => document.getElementById(id);
+
+  // ─── CONTENT BANK ───
+  // Each industry: 5 ideas per pillar (edu, bts, promo, proof, engage, local, spot)
+  // idea: {title, idea, starter, rec, tags[]}
+
+  const B = {
+    general: {
+      edu: [
+        {title:'3 mistakes to avoid',idea:'Share the 3 most common mistakes you see business owners make in your industry. Frame it as protection — "I see this every week and it costs people money." Be specific with real examples from your experience.',starter:'Most business owners make this mistake at least once…',rec:'li',tags:['#businesstips','#saentrepreneur','#southafricanbusiness','#smetips','#businessadvice']},
+        {title:'Industry myth busted',idea:'Identify a common belief in your industry that\'s actually wrong. Explain why the myth exists, what the truth is, and what your clients should do instead. Contrarian content performs extremely well.',starter:'I need to debunk something I hear constantly…',rec:'li',tags:['#businessmyths','#saentrepreneur','#southafricanbusiness','#businessfacts']},
+        {title:'A stat that surprises people',idea:'Share one industry statistic that would surprise most people. Explain what it means for SA businesses and what they should do about it. Source it if you can — credibility matters.',starter:'Here\'s a number that surprises most business owners:',rec:'all',tags:['#businessstats','#didyouknow','#saentrepreneur','#southafricanbusiness']},
+        {title:'What I\'d tell my younger self',idea:'If you could give yourself one piece of business advice when you started out, what would it be? Keep it honest and specific — no generic platitudes. These posts build connection and trust.',starter:'If I could go back to when I started, I\'d tell myself one thing…',rec:'li',tags:['#entrepreneurlessons','#saentrepreneur','#businesslessons','#smallbusiness']},
+        {title:'The practical how-to',idea:'Teach your audience something they can actually do themselves — a basic skill or check that\'s genuinely useful. Being helpful builds trust faster than any promotion. "Here\'s how to check if your X is Y" style content.',starter:'Here\'s something you can check yourself in under 5 minutes…',rec:'ig',tags:['#howtosa','#businesstips','#southafricanbusiness','#diy','#practical']},
+      ],
+      bts: [
+        {title:'Morning setup',idea:'Show what your morning looks like before the first client or before you open. The mundane details — making coffee, checking the schedule, loading the van — are more interesting than people expect. Real is engaging.',starter:'This is what 7am looks like for us…',rec:'ig',tags:['#behindthescenes','#smallbusiness','#southafricanbusiness','#dayinthelife']},
+        {title:'Meet the team',idea:'Introduce one team member with 3 genuine facts about them — not just their job title. What do they do outside work? What are they unexpectedly good at? What surprised you about them? People buy from people.',starter:'You talk to us, but you should know who\'s behind the work…',rec:'all',tags:['#teamwork','#smallbusiness','#meettheteam','#southafricanbusiness']},
+        {title:'How you prep for a job',idea:'Walk through your pre-job preparation. What do you check, confirm, or prepare before you start? This demonstrates professionalism and reassures potential clients that you\'re thorough. Process = trust.',starter:'Before we ever start a job, here\'s what happens first…',rec:'ig',tags:['#behindthescenes','#processmatter','#smallbusiness','#southafricanbusiness']},
+        {title:'A real workday moment',idea:'Capture an honest, unpolished moment from your working day. Not the highlight reel — the actual grind. Loading the vehicle, the messy desk, the lunch break. Authenticity outperforms perfection consistently.',starter:'Not every day looks like the marketing photos. Today looked like this…',rec:'ig',tags:['#reallife','#smallbizlife','#southafricanbusiness','#entrepreneurlife']},
+      ],
+      promo: [
+        {title:'Your most popular service',idea:'Feature your most popular or highest-value product or service with clear pricing, what\'s included and a direct booking/purchase CTA. No vague "contact for a quote" — make it easy to say yes.',starter:'Our most-requested service, and what it includes:',rec:'all',tags:['#smallbusiness','#supportsmallbusiness','#southafricanbusiness','#shoplocal']},
+        {title:'Limited-time offer',idea:'A time-limited offer with a specific deadline. The deadline must be real — pick one 7–10 days away. Explain the value, the price, the expiry. One clear CTA: "Reply YES" or "DM to book". No vague urgency.',starter:'This week only, we\'re offering something we don\'t usually do…',rec:'all',tags:['#sale','#offer','#southafricanbusiness','#sabusiness','#limitedtime']},
+        {title:'Bundle or package deal',idea:'Create and announce a bundle of two or three products or services at a combined price. Show the individual values vs the bundle price. Bundles increase average transaction value and feel like a gift.',starter:'We\'ve just put together something that doesn\'t usually come together…',rec:'fb',tags:['#bundle','#deal','#southafricanbusiness','#savingsouthafrica','#offer']},
+        {title:'Referral programme',idea:'Explain your referral incentive clearly. What does the referring person get? How does it work? When do they get it? Make it simple enough that someone can explain it to a friend in one sentence.',starter:'Know someone who needs [your service]? Here\'s what you get for the introduction…',rec:'wa',tags:['#referral','#smallbusiness','#southafricanbusiness','#wordofmouth']},
+      ],
+      proof: [
+        {title:'Client win or result',idea:'Share a specific, measurable result you achieved for a client. Not "we helped them improve" — "they went from X to Y in Z weeks." Numbers build credibility faster than any description of your services.',starter:'A client came to us with a problem. Here\'s what happened:',rec:'li',tags:['#clientresults','#casestudy','#southafricanbusiness','#saentrepreneur','#results']},
+        {title:'Share a 5-star review',idea:'Take a screenshot of a real Google or Facebook review and share it. Add context — what you did for this client and what it meant to your team. Make the review feel like a story, not just a rating.',starter:'This review came in this week and it made our day:',rec:'all',tags:['#reviews','#testimonial','#southafricanbusiness','#5stars','#smallbusiness']},
+        {title:'Milestone achievement',idea:'Celebrate a business milestone — years in business, number of clients served, number of jobs completed, or a Google review count. Keep it humble: share what it took and thank the people who made it possible.',starter:'We just hit a number we\'re proud of, and we want to share it with you…',rec:'all',tags:['#milestone','#grateful','#southafricanbusiness','#businessgrowth','#saentrepreneur']},
+        {title:'Before and after',idea:'If your work has a visual element, before and after posts consistently outperform everything else. The transformation is the content. Add a brief description of the challenge and how you solved it.',starter:'Same space. Different story. Here\'s what changed:',rec:'ig',tags:['#beforeandafter','#transformation','#southafricanbusiness','#smallbusiness']},
+      ],
+      engage: [
+        {title:'Question of the week',idea:'Ask a direct, specific question relevant to your audience\'s life or business. Avoid abstract questions — ask something with a strong opinion attached. "What time do you start work?" gets more replies than "What do you think about productivity?"',starter:'Quick question for the business owners in my network…',rec:'li',tags:['#poll','#saentrepreneur','#southafricanbusiness','#businessowners','#discussion']},
+        {title:'This or that poll',idea:'Give your audience two clear options and ask them to choose. "Coffee or tea to start the day?" / "Phone call or WhatsApp for quotes?" / "Fixed fee or hourly?" Easy to answer = more responses.',starter:'We need your honest opinion. Which do you prefer:',rec:'all',tags:['#thisoртhat','#poll','#southafricanbusiness','#vote','#opinion']},
+        {title:'Share your experience',idea:'Ask followers to share their experience of a relatable business situation. "What\'s the hardest part of running a small business in SA?" The comments become content. Engage with every reply.',starter:'We want to hear from you — and we\'ll reply to every comment:',rec:'li',tags:['#community','#saentrepreneur','#southafricanbusiness','#share','#conversation']},
+        {title:'Caption this',idea:'Share an interesting, funny or relatable photo from your business and ask followers to caption it. Light and fun content breaks up the professional posts and increases comment volume, which boosts reach.',starter:'We couldn\'t decide on a caption for this one. Help us out:',rec:'ig',tags:['#captionthis','#fun','#southafricanbusiness','#smallbiz']},
+        {title:'What do you want to see?',idea:'Ask your followers what content they want next month. Gives you real insights AND shows your audience you value their input. End by promising to deliver the most-requested content next month.',starter:'Help us make next month\'s content better. What would you like more of?',rec:'all',tags:['#feedback','#community','#southafricanbusiness','#contentvoting']},
+      ],
+      local: [
+        {title:'SA business shout-out',idea:'Tag a SA business you genuinely use and trust — not a competitor. Say why you recommend them. This builds goodwill, often gets reshared, and introduces you to their audience. Make it genuine, not transactional.',starter:'We want to introduce you to a local business we genuinely love…',rec:'ig',tags:['#supportlocal','#shoplocalsouthafrica','#southafricanbusiness','#localislekker']},
+        {title:'Load-shedding reality',idea:'Share how load shedding affects your business and how you manage it. South Africans bond over the shared struggle. Light humour works well. If you have a solution (generator, solar) — now is the time to mention it.',starter:'Load shedding stage 4 hits differently when you\'re trying to finish a job…',rec:'all',tags:['#loadshedding','#southafrica','#keepingtheightson','#southafricanbusiness']},
+        {title:'Local area love',idea:'Post about something you love about your local area — a neighbouring business, a community initiative, or a local landmark. Hyperlocal content builds community and attracts nearby clients.',starter:'This is why we love operating in [your area]:',rec:'fb',tags:['#shoplocal','#community','#southafrica','#localisbest','#proudlysouthafrican']},
+        {title:'SA business news reaction',idea:'Comment on a SA business news story relevant to your industry. Share your take in 2–3 sentences. Thought leadership on current events builds credibility. Keep it professional — no politics.',starter:'There\'s something in the news this week that\'s relevant to every SA business owner…',rec:'li',tags:['#saeconomy','#southafricabusiness','#businessnews','#sabusiness','#opinion']},
+      ],
+      spot: [
+        {title:'Full service spotlight',idea:'Put one product or service in the spotlight with full detail: what it is, who it\'s for, what\'s included, the price, and how to book. More detail = more trust. Treat it like a mini landing page.',starter:'Everything you need to know about our most popular offering:',rec:'all',tags:['#spotlight','#southafricanbusiness','#sabusiness','#shoplocal']},
+        {title:'FAQ post',idea:'Answer the single most common question you get asked. "People ask us this every week, so here\'s the definitive answer." FAQ content is highly shareable and works for SEO on LinkedIn.',starter:'The question we get asked more than any other:',rec:'li',tags:['#faq','#businesstips','#southafricanbusiness','#saentrepreneur']},
+        {title:'Compare two options',idea:'Create a comparison between two options your clients face — your service vs DIY, product A vs product B, one approach vs another. Position one clearly as the better option (yours, presumably) with specific reasons.',starter:'People often ask us: should I choose X or Y? Here\'s the honest answer:',rec:'all',tags:['#comparison','#businesstips','#southafricanbusiness','#help']},
+        {title:'The value deep-dive',idea:'Explain in detail what makes your main product or service worth what you charge. Break down the process, the expertise involved, and the outcome. This is particularly effective for price-sensitive markets.',starter:'Here\'s exactly what you\'re getting when you hire us — and why it matters:',rec:'li',tags:['#value','#quality','#southafricanbusiness','#whyus','#transparent']},
+      ],
+    },
+    retail: {
+      edu: [
+        {title:'How to spot quality',idea:'Teach your customers how to identify quality in what you sell. What should they look for? What are the signs of a lower-quality alternative? This builds expertise and justifies your price point.',starter:'Not all [product] is created equal. Here\'s what to look for:',rec:'ig',tags:['#shoplocal','#qualitymatters','#southafricanshopping','#retailsa','#buylocal']},
+        {title:'Product care tips',idea:'Share care and maintenance tips for your best-selling product. How do customers get the most out of what they buy? This adds value post-purchase and generates organic shares from existing customers.',starter:'Want to make your [product] last twice as long? Here\'s how:',rec:'ig',tags:['#producttips','#careguide','#southafricaretail','#shoplocal']},
+        {title:'How to choose the right size/fit',idea:'One of the biggest barriers to online or in-store purchase is uncertainty about size, fit or specification. Create a simple guide. More informed customers convert better and return less.',starter:'Choosing the right [size/spec] doesn\'t have to be complicated. Here\'s our guide:',rec:'ig',tags:['#sizeguide','#shoppingtips','#southafrica','#retailsa']},
+        {title:'What\'s trending this season',idea:'Show your customers what\'s popular right now and why. Link trends to actual products in stock. Trend content performs well and drives footfall or online visits.',starter:'Here\'s what everyone is buying right now — and why:',rec:'ig',tags:['#trending','#southafricastyle','#retailsa','#shoplocal','#newstock']},
+        {title:'Behind the label',idea:'Explain something interesting about where your product comes from, how it\'s made, or what the ingredients/materials are. Origin stories and transparency build trust and justify premium pricing.',starter:'Ever wondered what\'s actually in [product]? Let us tell you:',rec:'ig',tags:['#transparency','#madewithcare','#retailsa','#shoplocal','#southafrica']},
+      ],
+      bts: [
+        {title:'Restocking day',idea:'Film or photograph the process of restocking shelves, unpacking new stock, or receiving a delivery. New stock posts generate genuine excitement. Tease what\'s coming before it\'s available.',starter:'New stock day is honestly one of our favourite days. Look what just arrived:',rec:'ig',tags:['#newstock','#shoplocal','#retailsa','#newdelivery','#southafrica']},
+        {title:'Visual merchandising',idea:'Show your team rearranging the store display, creating a new window feature, or refreshing a section. The effort that goes into presentation demonstrates care — and often inspires people to visit in person.',starter:'We spent the morning completely rethinking this section of the store:',rec:'ig',tags:['#visualmerchandising','#retaildesign','#shoplocal','#southafrica']},
+        {title:'Opening routine',idea:'Show what opening the store looks like. The preparation before customers arrive — cleaning, setting up the till, arranging products — demonstrates professionalism and reliability.',starter:'Our store opens at [time]. Here\'s what happens in the hour before:',rec:'ig',tags:['#retaillife','#shoplocal','#behindthescenes','#southafrica']},
+        {title:'Staff pick of the week',idea:'Let a team member choose their favourite product this week and explain why. Authentic product recommendations from staff feel more genuine than marketing copy. Rotate through different team members.',starter:'This week\'s team favourite comes from [name]:',rec:'all',tags:['#staffpick','#recommendation','#shoplocal','#retailsa','#southafrica']},
+      ],
+      promo: [
+        {title:'Weekend special',idea:'Announce a weekend-only special with a clear start and end time. Urgency drives action. Show the product, the normal price, and the special price. Include how to purchase — in store, online, or via WhatsApp.',starter:'This weekend only — and it\'s one we\'ve been planning for a while:',rec:'wa',tags:['#weekendspecial','#sale','#shoplocal','#southafrica','#retailsa']},
+        {title:'Bundle and save',idea:'Combine two complementary products into a bundle at a saving. Show the individual prices and the bundle price clearly. Bundles move slower-selling stock and increase basket size simultaneously.',starter:'Two of our bestsellers, bundled together at a price that makes sense:',rec:'all',tags:['#bundledeal','#savingsouthafrica','#shoplocal','#southafrica']},
+        {title:'New arrival announcement',idea:'Formally announce new stock with excitement. Show the products, explain what\'s new about them, and give a clear CTA. "First come first served" and "limited stock" are honest urgency triggers if they\'re true.',starter:'We\'ve been waiting to share this with you. New stock just landed:',rec:'ig',tags:['#newarrival','#newstock','#shoplocal','#retailsa','#southafrica']},
+        {title:'End-of-season clearance',idea:'Announce end-of-season or end-of-line clearance honestly. Show real discounts. Limited stock creates genuine urgency. This also keeps your inventory fresh and frees up cash.',starter:'We\'re making space for new stock — and you benefit:',rec:'all',tags:['#clearance','#sale','#shoplocal','#southafricaretail','#stockclearance']},
+      ],
+      proof: [
+        {title:'Customer purchase photo',idea:'Share a photo of a customer with their purchase (with permission). Happy customers with your product are more convincing than any marketing photo. The more genuine and unposed, the better.',starter:'When customers share their purchases with us, it makes our day. Look at this:',rec:'ig',tags:['#happycustomer','#customerphoto','#shoplocal','#southafrica']},
+        {title:'5-star review spotlight',idea:'Screenshot and share a 5-star Google or Facebook review with context. Add a sentence about the product or service the customer reviewed. Tag them if they\'re a public account.',starter:'Reviews like this remind us why we do what we do:',rec:'all',tags:['#5stars','#review','#shoplocal','#southafrica','#customerreview']},
+        {title:'Return customer story',idea:'Feature a customer who has been coming back for years. How did you first meet? What do they buy? What do they say they love most? Long-term customers are your most powerful social proof.',starter:'Some customers become friends. [Name] has been shopping with us since [year]:',rec:'fb',tags:['#loyalcustomer','#shoplocal','#southafrica','#community']},
+        {title:'Sales milestone',idea:'Share a sales milestone — your 1,000th customer, your 5th year in business, your 10,000th unit sold. Be specific with the number and grateful in the tone. Invite your community to share in the moment.',starter:'We just hit a number we\'ve been working towards for years:',rec:'all',tags:['#milestone','#thankful','#shoplocal','#southafricaretail','#5yearsstrong']},
+      ],
+      engage: [
+        {title:'"Which would you choose?"',idea:'Show two products side by side and ask followers to choose. This generates comments (good for reach), gives you genuine market data, and is one of the easiest posts to create. Use it weekly.',starter:'We can\'t decide which one you\'d prefer. Help us out:',rec:'ig',tags:['#vote','#thisoртhat','#shoplocal','#southafrica','#poll']},
+        {title:'Describe your style',idea:'Ask customers to describe their style in 3 words. Replies let you understand your audience better and create conversations in the comments. Follow up by showing products that match the most common answers.',starter:'If you had to describe your style in 3 words, what would they be?',rec:'ig',tags:['#style','#fashion','#southafrica','#shoplocal','#poll']},
+        {title:'What should we stock next?',idea:'Ask customers what product or brand they want to see in your store. This generates valuable market research while making customers feel heard. Act on the most common response if you can.',starter:'You run the store for a day. What\'s the first thing you\'d add?',rec:'fb',tags:['#suggestion','#youdecide','#shoplocal','#southafrica','#retail']},
+        {title:'Rate our new display',idea:'Show your new store layout or window display and ask for a rating out of 10. Simple, fun, gets comments. Show you took feedback on board in a follow-up post next week.',starter:'We spent the whole morning on this new display. Rate it out of 10:',rec:'ig',tags:['#rating','#storefront','#shoplocal','#southafrica','#visual']},
+        {title:'Gift guide crowdsource',idea:'Ask followers what they\'re looking for as a gift for someone in their life. Respond to each comment with a product recommendation. This is marketing disguised as service.',starter:'Tell us who you\'re shopping for and we\'ll tell you exactly what to get:',rec:'fb',tags:['#giftguide','#shoplocal','#southafrica','#gifting','#help']},
+      ],
+      local: [
+        {title:'Local area shout-out',idea:'Tag a local business or community initiative near your store that you support. Build real community presence. These posts are often reshared, getting you exposure to a new local audience.',starter:'Here\'s a local business that deserves more recognition:',rec:'ig',tags:['#supportlocal','#shoplocalsouthafrica','#community','#localislekker']},
+        {title:'Load-shedding hours notice',idea:'Use load shedding as a hook — share your trading hours during high load shedding stages and how you\'re managing (UPS, generator, rescheduling). Practical info + shows you\'re reliable.',starter:'Loadshedding has been rough this week. Here\'s how we\'re handling it:',rec:'wa',tags:['#loadshedding','#southafrica','#openforbusiness','#shoplocal']},
+        {title:'Community event spotlight',idea:'Share a local community event, market, or initiative and tag the organiser. Attending local events builds brand presence offline. Community-focused content outperforms promotional content on Facebook.',starter:'This weekend there\'s something happening in [area] worth knowing about:',rec:'fb',tags:['#community','#localevents','#southafrica','#shoplocal']},
+        {title:'Back-to-school / seasonal moment',idea:'Connect your products to the current SA seasonal moment — back to school (January/July), Easter, Heritage Day, Women\'s Day, Human Rights Day. Local relevance resonates strongly with SA audiences.',starter:'It\'s that time of year again. Here\'s how we\'re helping:',rec:'all',tags:['#southafrica','#seasonal','#shoplocal','#proudlysouthafrican']},
+      ],
+      spot: [
+        {title:'Hero product deep-dive',idea:'Take your top-selling product and give it a full feature post. Show multiple angles, share detailed specs or features, explain who it\'s perfect for, include pricing and stock level. This is a mini product page in a post.',starter:'Our best-seller, in full detail. Here\'s everything you need to know:',rec:'ig',tags:['#productspotlight','#shoplocal','#southafrica','#musthave','#retailsa']},
+        {title:'Product vs alternatives',idea:'Compare your product to a cheaper alternative honestly. Show the difference in quality, durability or value over time. Defending your price point with facts builds trust and converts price-sensitive buyers.',starter:'Why is ours R[X] when the other option is R[Y]? Fair question. Here\'s the answer:',rec:'li',tags:['#quality','#value','#shoplocal','#southafrica','#comparison']},
+        {title:'How to use or style it',idea:'Create a "how to" or styling guide for one of your products. Show it in context — styled in a home, worn with an outfit, used in a real situation. Usage content drives purchase intent.',starter:'Most people buy this and immediately wonder how to use it best. Here\'s our guide:',rec:'ig',tags:['#howto','#styling','#shoplocal','#southafrica','#tips']},
+        {title:'The product backstory',idea:'Share the story of where this product comes from, why you chose to stock it, and what makes the maker, supplier or brand worth supporting. Storytelling converts browsers into buyers.',starter:'Every product in our store has a reason it\'s here. Here\'s this one\'s story:',rec:'fb',tags:['#backstory','#shoplocal','#southafrica','#localproduct','#story']},
+      ],
+    },
+    food: {
+      edu: [
+        {title:'Ingredient spotlight',idea:'Feature one key ingredient from your menu. Where does it come from? Why do you use it? What makes it special? Ingredient transparency builds trust and justifies premium pricing.',starter:'One ingredient we never compromise on — and why:',rec:'ig',tags:['#foodie','#southafricanfood','#freshingredients','#restaurant','#capetownfood']},
+        {title:'Food safety fact',idea:'Share a food safety fact that\'s relevant to home cooking or restaurant dining. Position your kitchen as one that takes hygiene seriously. Educational content from restaurants builds significant trust.',starter:'Here\'s something most people don\'t think about when they eat out:',rec:'fb',tags:['#foodsafety','#restaurant','#southafricanfood','#cleankitchen','#transparency']},
+        {title:'Cooking tip from the kitchen',idea:'Share a practical cooking tip from your chef that customers can use at home. Generosity with knowledge builds trust and loyalty. "Professional secrets" framing makes this very shareable.',starter:'Our head chef shared this tip with the team this week. Now we\'re sharing it with you:',rec:'all',tags:['#cookingtips','#cheftips','#southafricanfood','#foodie','#kitchen']},
+        {title:'Nutrition or pairing guide',idea:'Share a simple pairing guide (wine with food, coffee with dessert, sides with mains) or a brief nutritional breakdown of a popular dish. Useful content keeps your page top of mind between visits.',starter:'Not sure what to pair with your [dish]? Here\'s what we recommend:',rec:'ig',tags:['#foodpairing','#southafricanfood','#wineandFood','#restaurant','#jozifoodies']},
+        {title:'The story behind the dish',idea:'Share the origin story of a signature dish — who created it, when, what inspired it. Every dish has a story. Storytelling transforms a meal into an experience worth having.',starter:'This dish has been on our menu since day one. Here\'s why:',rec:'all',tags:['#foodstory','#restaurant','#southafricanfood','#signatureDish','#culinary']},
+      ],
+      bts: [
+        {title:'Kitchen prep in the morning',idea:'Show what your kitchen looks like before service — the prep, the mise en place, the organised chaos. Customers love seeing the work that goes into their meal. It makes them feel their money is well spent.',starter:'You come in at [time]. We start getting ready at [time]. Here\'s what that looks like:',rec:'ig',tags:['#kitchenlife','#cheflife','#southafricanfood','#restaurant','#behindthescenes']},
+        {title:'Plating process',idea:'Film or photograph the plating of one of your signature dishes. The transformation from raw preparation to final plate is genuinely fascinating. Short videos perform extremely well for food content.',starter:'From prep to plate. This is how [dish name] comes together:',rec:'ig',tags:['#plating','#chefsofinstagram','#foodphotography','#restaurant','#southafricanfood']},
+        {title:'Sourcing the produce',idea:'Show where your key ingredients come from — the supplier, the farm, the market. If you use local or SA suppliers, highlight them. Provenance matters to a growing segment of SA diners.',starter:'Good food starts before the kitchen. Here\'s where ours begins:',rec:'ig',tags:['#farmtotable','#localproduce','#southafricanfood','#freshingredients','#restaurant']},
+        {title:'Day in the life of the team',idea:'Follow a team member through a full shift — arriving, prepping, serving, winding down. Humanise your business. People eat at restaurants where they like the people, not just the food.',starter:'[Name] has worked with us for [X] years. Here\'s what their Tuesday looks like:',rec:'ig',tags:['#dayinthelife','#restaurant','#teamwork','#southafricanfood','#behindthescenes']},
+      ],
+      promo: [
+        {title:'Daily or weekly special',idea:'Post your daily or weekly special with a clear photo, price, and availability. "Only 20 portions" creates real urgency. This should be a recurring post format every week — consistency builds anticipation.',starter:'Today\'s special is one we look forward to every time it comes around:',rec:'wa',tags:['#dailyspecial','#restaurant','#southafricanfood','#jozifoodies','#capetownfood']},
+        {title:'Combo deal',idea:'Create a combo deal that combines a main, a side, and a drink at a saving. Combos make decisions easier for customers and increase average spend. Show the value clearly.',starter:'We put together a combination that makes sense — here\'s the deal:',rec:'wa',tags:['#combo','#deal','#restaurant','#southafricanfood','#valuemeal']},
+        {title:'Private dining / catering offer',idea:'Promote your catering or private dining offering. Many customers don\'t know their favourite restaurant does events. Lead with capacity, menu options, and how to enquire. Function bookings have high margins.',starter:'If you\'re planning a function, we can do more than you think:',rec:'fb',tags:['#catering','#privatdining','#events','#restaurant','#southafrica']},
+        {title:'Loyalty reward announcement',idea:'Announce a loyalty reward, birthday perk or returning customer offer. Customer retention costs a fraction of acquisition. Make your regulars feel seen — they\'re your most profitable clients.',starter:'If you\'ve eaten with us more than once, this is for you:',rec:'wa',tags:['#loyalty','#regulars','#restaurant','#southafrica','#repeat']},
+      ],
+      proof: [
+        {title:'Customer food photo',idea:'Reshare a customer\'s photo of their meal (with credit). User-generated content is the most trusted form of social proof. Encourage it by asking customers to tag you or use your hashtag.',starter:'When customers share photos like this, we know we got it right:',rec:'ig',tags:['#customerphoto','#foodphotography','#restaurant','#southafricanfood','#usergeneratedcontent']},
+        {title:'Trip Advisor / Google review',idea:'Share a great online review with context. Which dish did they order? What do they usually get? Turn a review into a story. Other potential diners read reviews before booking.',starter:'This review came in over the weekend and we had to share it:',rec:'fb',tags:['#review','#restaurant','#5stars','#southafricanfood','#dining']},
+        {title:'Full house moment',idea:'Show a packed restaurant, a full booking, or a sold-out event. Social proof isn\'t only testimonials — a full house tells potential diners: "others have already decided this is worth it."',starter:'When it looks like this on a [day], we know we\'re doing something right:',rec:'ig',tags:['#fullhouse','#restaurant','#southafrica','#booking','#popular']},
+        {title:'Catering success story',idea:'Share a recent event or catering job with photos. The scale of the event, the number of people fed, the type of occasion. This positions you for more bookings of the same type.',starter:'We catered for [X] guests last weekend. Here\'s how it looked:',rec:'fb',tags:['#catering','#events','#restaurant','#southafrica','#functioncatering']},
+      ],
+      engage: [
+        {title:'"Rate our dish" post',idea:'Post a photo of one of your dishes and ask followers to rate it out of 10 in the comments. People love to share opinions about food. Respond to every comment — your engagement matters for reach.',starter:'Be honest. Rate this out of 10 in the comments:',rec:'ig',tags:['#foodrating','#restaurant','#southafricanfood','#opinion','#foodie']},
+        {title:'Suggest a new menu item',idea:'Ask followers what they\'d add to your menu if they could. Take the most popular suggestion seriously — and if you can execute it, make a post about it. This is co-creation and it builds loyalty.',starter:'If you could add one dish to our menu, what would it be?',rec:'fb',tags:['#newmenu','#suggestion','#restaurant','#southafricanfood','#yourinput']},
+        {title:'"What do you order?" question',idea:'Ask your followers what they always order when they come in. This generates replies, highlights your most-loved dishes, and shows new followers what other people recommend.',starter:'What\'s your go-to when you come in? We love hearing this:',rec:'ig',tags:['#favs','#restaurant','#southafrica','#foodie','#whatsyours']},
+        {title:'Braai vs Oven poll',idea:'For SA food businesses, a "braai vs oven" or "sauce A vs sauce B" debate is guaranteed engagement. Pick a food opinion that divides your audience and let them argue it out in the comments.',starter:'SA opinion needed. And we know this one is going to divide people:',rec:'fb',tags:['#braai','#southafrica','#fooddebate','#poll','#safood']},
+        {title:'Table for how many?',idea:'Ask followers to share their usual group size when they come in — solo, couple, family of 4, big group. Practical info AND genuine engagement. Use it to plan seating and family-friendly offerings.',starter:'Quick question before the weekend rush. Who are you usually here with?',rec:'ig',tags:['#dining','#restaurant','#southafrica','#weekenddining','#fun']},
+      ],
+      local: [
+        {title:'Local supplier shout-out',idea:'Feature a local SA supplier, farm or producer that provides your ingredients. Tag them. These cross-promotions are mutually beneficial and tell customers their money supports SA producers.',starter:'Good food needs good suppliers. Here\'s one we couldn\'t do without:',rec:'ig',tags:['#localsuppliers','#southafricanfood','#supportlocal','#farmfresh','#southafrica']},
+        {title:'Area food scene feature',idea:'Comment on something happening in your local food scene — a new restaurant, a food market, a chef\'s achievement. Be generous. Community-first content generates more goodwill than self-promotion.',starter:'Something happening in [city] right now that we think you should know about:',rec:'fb',tags:['#jozifoodies','#capetownfood','#southafricanfood','#foodscene','#local']},
+        {title:'Heritage or cultural dish moment',idea:'Tie a dish or menu item to a SA cultural moment — Heritage Day, Family Day, a religious occasion. Show how food connects to SA culture. Cultural content gets shared within communities.',starter:'This time of year means one thing in South Africa. Here\'s our take on it:',rec:'all',tags:['#southafrica','#heritage','#heritageday','#safood','#culture']},
+        {title:'Community feed / charity',idea:'If your restaurant donates food, supports a community initiative, or participates in feeding programmes — share it. Not boastfully but honestly. SA communities respond strongly to businesses that give back.',starter:'We do this quietly, but today we wanted to share it:',rec:'fb',tags:['#givingback','#community','#southafrica','#foodforthought','#restaurant']},
+      ],
+      spot: [
+        {title:'Signature dish showcase',idea:'Give your most iconic dish a full feature. History, ingredients, how it\'s made, who orders it most, what it pairs with. A well-told dish story generates shares and bookings.',starter:'If you\'ve ever wondered why people keep coming back for this one dish, here\'s the story:',rec:'ig',tags:['#signatureDish','#restaurant','#foodstory','#southafricanfood','#chefspecial']},
+        {title:'New menu item launch',idea:'Formally launch a new menu item with a story — why you added it, how long it took to develop, what the chef was trying to achieve. Make it feel like an event. Offer a first-week discount to drive trial.',starter:'Months of testing, tweaking and tasting. It\'s finally ready:',rec:'all',tags:['#newmenu','#launch','#restaurant','#southafricanfood','#newdish']},
+        {title:'Drinks and cocktail spotlight',idea:'Feature a signature drink, wine pairing or cocktail. Drinks margins are high — driving cocktail or wine orders via social content is direct revenue. Show it being made for maximum appeal.',starter:'This one always gets a second look when it comes out of the kitchen. Meet [drink name]:',rec:'ig',tags:['#cocktails','#drinks','#restaurant','#southafrica','#wineSA']},
+        {title:'Seasonal menu announcement',idea:'Announce a seasonal or limited menu with excitement and urgency. "Only available through the end of the month" is a genuine reason to book now rather than later.',starter:'Our [season] menu is only here for [X] weeks. Here\'s what\'s on it:',rec:'all',tags:['#seasonalmenu','#limitedtime','#restaurant','#southafricanfood','#booking']},
+      ],
+    },
+    trades: {
+      edu: [
+        {title:'Warning sign to never ignore',idea:'Share one warning sign your clients should look out for in their home or business — a sign that something needs attention from a professional. Frame it as protection. Never name-drop your service directly.',starter:'If you see this in your home, don\'t ignore it. Here\'s why:',rec:'fb',tags:['#safety','#homeowner','#maintenance','#southafrica','#trades']},
+        {title:'DIY vs professional guide',idea:'Be honest about what homeowners can safely do themselves vs what requires a qualified professional. This builds trust — it shows you\'re not just trying to create work. And the professional list is your sales content.',starter:'We get asked this a lot: "Can I do it myself?" Here\'s our honest answer:',rec:'fb',tags:['#diy','#professional','#homeowner','#southafrica','#tradespeople']},
+        {title:'Seasonal maintenance checklist',idea:'Share a seasonal maintenance checklist relevant to your trade — things to check before summer, winter, or rainy season. Downloadable or shareable content gets the most traction.',starter:'This time of year, here\'s what you should be checking in your home:',rec:'all',tags:['#maintenance','#homeowner','#seasonal','#southafrica','#checklist']},
+        {title:'How to choose a reputable tradesperson',idea:'Teach homeowners how to choose a qualified, legitimate tradesperson — registration, certificates, written quotes, reviews. This positions you as the standard to measure others against.',starter:'Before you hire anyone to work on your home, ask for these things:',rec:'fb',tags:['#homeowner','#trades','#southafrica','#qualifiedcontractor','#hiringadvice']},
+        {title:'Cost vs consequence',idea:'Show the true cost of ignoring a small problem. "This leak cost R800 to fix when first reported. Left for 6 months, it cost R22,000." Specific numbers are far more compelling than general warnings.',starter:'A small problem ignored becomes a big problem fast. Here\'s the real cost:',rec:'fb',tags:['#maintenance','#homeowner','#southafrica','#costsaving','#prevention']},
+      ],
+      bts: [
+        {title:'Job site photo',idea:'Share a photo from today\'s job site — in progress. Real work, real context. This demonstrates you\'re busy, you\'re skilled, and you work on real jobs. Before photos are often more interesting than finished jobs.',starter:'On site today. Here\'s what we\'re working on:',rec:'ig',tags:['#onsite','#trades','#southafrica','#worklife','#skilled']},
+        {title:'Van or workshop setup',idea:'Show your van packed, your tools organised, or your workshop set up. A well-organised tradesperson signals professionalism before the first conversation. This reassures homeowners who are nervous about letting strangers in.',starter:'Some people ask how we always arrive prepared. Here\'s the answer:',rec:'ig',tags:['#tradelife','#tools','#southafrica','#professionaltrades','#workvan']},
+        {title:'Tool of the trade',idea:'Feature one tool you use every day — what it\'s called, why it matters, and how it\'s improved your work. Tool content is popular in the trades community and builds credibility with knowledgeable clients.',starter:'This one tool has paid for itself a hundred times over. Let me show you why:',rec:'ig',tags:['#tools','#trades','#southafrica','#tradesperson','#toolsofthetrade']},
+        {title:'Apprentice or team growth story',idea:'If you\'ve trained someone up or hired a new team member, share the story. SA skills development is an important topic. This positions you as a responsible employer and builds community goodwill.',starter:'We hired [name] as an apprentice [X] years ago. Look where they are now:',rec:'li',tags:['#skillsdevelopment','#apprenticeship','#southafrica','#trades','#teamgrowth']},
+      ],
+      promo: [
+        {title:'Seasonal service offer',idea:'Offer a seasonal service package — pre-winter geyser check, summer electrical inspection, pre-rain roof assessment. Tie your service to a specific, timely need. Seasonal offers convert because they feel relevant.',starter:'With [season] coming, now is the right time to check your [X]. Here\'s our offer:',rec:'wa',tags:['#seasonal','#offer','#southafrica','#trades','#homeowner']},
+        {title:'Package pricing announcement',idea:'Announce a service package with a fixed, transparent price. "Full bathroom replumb: R[X] including labour and materials." Fixed pricing reduces anxiety and speeds up the decision to book.',starter:'We know homeowners hate getting a vague quote. So here\'s our fixed-price package:',rec:'fb',tags:['#fixedprice','#transparent','#southafrica','#trades','#nosuprises']},
+        {title:'Referral discount',idea:'Offer an existing client a discount on their next job for every referral that converts. Word of mouth is your best marketing channel. Make it easy and rewarding.',starter:'You\'ve trusted us with your home. Now we\'d like to reward you for sharing that trust:',rec:'wa',tags:['#referral','#trades','#southafrica','#discount','#wordofmouth']},
+        {title:'Free quote promotion',idea:'Promote a free, no-obligation quote — in writing, with full itemisation. Remove the barrier to getting a quote. Many homeowners don\'t call because they expect a painful quoting process.',starter:'Getting a quote from us is fast, free, and comes in writing. Here\'s how:',rec:'fb',tags:['#freequote','#noobligation','#southafrica','#trades','#transparent']},
+      ],
+      proof: [
+        {title:'Before and after job photo',idea:'Share a compelling before/after of a completed job. The more dramatic the transformation, the better. Add a brief description of the problem and how you solved it. This is your most powerful content format.',starter:'Same space. Different story. Here\'s what we fixed this week:',rec:'ig',tags:['#beforeandafter','#transformation','#trades','#southafrica','#skilled']},
+        {title:'Client review spotlight',idea:'Share a Google or Hello Peter review with context about the job. What was the problem? How long did it take? What was the outcome? Turn a rating into a story.',starter:'This review came in after last week\'s job. We\'re sharing it with the team\'s permission:',rec:'fb',tags:['#review','#trades','#southafrica','#5stars','#qualified']},
+        {title:'Jobs completed milestone',idea:'Share a milestone — 500 jobs completed, 5 years in business, 100 five-star reviews. Keep it humble and grateful. Thank your clients. Milestones build credibility for new potential clients.',starter:'We just passed a number that means a lot to our team:',rec:'all',tags:['#milestone','#grateful','#southafrica','#trades','#smallbusiness']},
+        {title:'Emergency repair save',idea:'Share a story (with photos if possible) of an emergency repair that saved a client from a bigger disaster. These stories demonstrate competence under pressure and the value of fast response.',starter:'Got the call at [time]. Here\'s what we found — and what we did about it:',rec:'fb',tags:['#emergency','#trades','#southafrica','#homeowner','#rapidresponse']},
+      ],
+      engage: [
+        {title:'"Tag someone who needs this"',idea:'Post a before photo of a problem (a leaking tap, worn wiring, cracked tiles) and ask followers to tag someone who has this issue. This extends your reach into your followers\' networks organically.',starter:'We see this every week. If you know someone dealing with this, tag them:',rec:'fb',tags:['#tagafriend','#homeowner','#southafrica','#trades','#help']},
+        {title:'Home maintenance nightmare poll',idea:'Ask followers about their worst home maintenance experience. People love sharing these stories. Engage with every reply. End with "if yours is still unresolved, we can help."',starter:'What\'s the worst home maintenance problem you\'ve ever had? We\'ll go first:',rec:'fb',tags:['#homeowner','#maintenance','#southafrica','#poll','#homelife']},
+        {title:'"DIY or call us?" quiz',idea:'Post a specific home problem and ask followers: "Would you attempt this yourself or call a professional?" Then give your expert answer. This educates while generating engagement.',starter:'Real question. And the answer might surprise you:',rec:'fb',tags:['#diy','#homeowner','#southafrica','#trades','#quiz']},
+        {title:'Which is worse?',idea:'Show two common trade problems and ask which one followers think is worse. This generates opinions, demonstrates your expertise, and is genuinely interesting to homeowners who deal with these issues.',starter:'Two problems. Which one do you think is actually worse?',rec:'fb',tags:['#homeowner','#southafrica','#trades','#poll','#opinion']},
+        {title:'Ask us anything',idea:'Open the floor for homeowner questions about your trade. Answer every question thoroughly in the comments. This type of post drives high comment volume and positions you as the accessible expert.',starter:'Open Q&A this week. Ask us anything about [your trade] — we\'ll answer every question:',rec:'fb',tags:['#askusanything','#homeowner','#southafrica','#trades','#expertise']},
+      ],
+      local: [
+        {title:'Area service announcement',idea:'Announce which areas you\'re servicing this week or this month. Specific areas get attention from people in those areas. This is particularly effective on Facebook and community WhatsApp groups.',starter:'We\'re in [area] this week. Here\'s what we\'re working on and what slots are available:',rec:'fb',tags:['#johannesburg','#southafrica','#trades','#localcontractor','#homeowner']},
+        {title:'Load shedding impact on your trade',idea:'Share how load shedding affects your trade (electrical demand, geyser failures, power surge damage) and what homeowners should do. This is highly SA-specific and generates strong engagement.',starter:'Every time load shedding spikes, we get flooded with calls about the same issue:',rec:'fb',tags:['#loadshedding','#southafrica','#homeowner','#electrical','#trades']},
+        {title:'Support a local supplier',idea:'Feature a local supplier or materials stockist you use. Tag them. These cross-promotions expand your reach and position you as part of a trusted local network.',starter:'Our work depends on good materials. Here\'s the supplier we trust:',rec:'ig',tags:['#localSupplier','#southafrica','#trades','#supportlocal','#quality']},
+        {title:'Community project involvement',idea:'If you\'ve done any community work — a church repair, a school project, a charity renovation — share it. Community involvement content resonates strongly with SA audiences and builds trust.',starter:'This job we did for free. Here\'s why we think it was worth it:',rec:'fb',tags:['#givingback','#community','#southafrica','#trades','#proudlysouthafrican']},
+      ],
+      spot: [
+        {title:'Service explainer',idea:'Explain one of your services in full — what it involves, how long it takes, what it costs, and what the outcome looks like. The more detail, the more trust. Many clients don\'t call because they don\'t know what to expect.',starter:'Most clients don\'t know what a [service name] actually involves. Let us walk you through it:',rec:'fb',tags:['#trades','#southafrica','#homeowner','#service','#howwework']},
+        {title:'Your certificate of competence',idea:'Show your trade certificate, registration, or industry body membership. In the trades, qualifications are a massive trust signal. Many SA homeowners have been burned by unqualified tradespeople.',starter:'You should always ask for this before hiring any tradesperson:',rec:'fb',tags:['#certified','#qualified','#southafrica','#trades','#trustworthy']},
+        {title:'Material comparison',idea:'Compare two materials or approaches used in your trade — their costs, lifespans, and appropriate use cases. This educates the homeowner and positions you as an honest advisor, not just a seller.',starter:'This is a decision most homeowners have to make. Here\'s how to think about it:',rec:'fb',tags:['#materials','#trades','#southafrica','#homeowner','#advice']},
+        {title:'The most common job you do',idea:'Describe your most common job type — what causes it, what the repair involves, how long it takes, and the typical cost. This creates content for people searching for exactly that service.',starter:'This is the job we do more than any other. Here\'s everything about it:',rec:'fb',tags:['#trades','#southafrica','#homeowner','#repair','#service']},
+      ],
+    },
+    professional: {
+      edu: [
+        {title:'Tax tip of the month',idea:'Share one practical tax tip relevant to SA small business owners. Keep it specific — not "keep records" but "here\'s how to treat home office costs if you work from home." Practical beats generic.',starter:'One tax tip SA business owners often miss — and it\'s costing them money:',rec:'li',tags:['#tax','#sars','#southafricabusiness','#taxadvice','#saentrepreneur']},
+        {title:'SARS deadline reminder',idea:'Remind your audience of an upcoming SARS or compliance deadline with context. What needs to be done? What happens if you miss it? This positions you as the proactive professional.',starter:'There\'s a SARS deadline coming up that many business owners forget about:',rec:'li',tags:['#sars','#tax','#compliance','#southafricabusiness','#reminder']},
+        {title:'Labour law change alert',idea:'Share a recent or upcoming change to SA labour law, the NMW, or CCMA processes. Compliance content performs extremely well for professional services because it\'s immediately actionable.',starter:'Something changed in SA labour law that affects every employer. Here\'s what you need to know:',rec:'li',tags:['#labourlaw','#southafrica','#hr','#compliance','#employer']},
+        {title:'Financial literacy post',idea:'Explain a financial concept that confuses your clients — GP vs net profit, cash flow vs profit, debtors vs creditors. Use plain language and a real example. Demystifying finance builds trust.',starter:'This is one of the most misunderstood numbers in business. Let me explain it simply:',rec:'li',tags:['#financialliteracy','#businessfinance','#southafricabusiness','#accounting','#education']},
+        {title:'Annual compliance checklist',idea:'Share an annual or quarterly compliance checklist for SA businesses. What to file, when, and with whom. Useful content that\'s naturally shared gets you in front of new potential clients.',starter:'Here\'s what every SA business should have sorted before [quarter/year end]:',rec:'li',tags:['#compliance','#southafricabusiness','#checklist','#sars','#businessowner']},
+      ],
+      bts: [
+        {title:'Client meeting prep',idea:'Show how you prepare for a client meeting or consultation — the research, the documents, the questions you prepare. Demonstrating thoroughness builds confidence in potential clients.',starter:'Before we meet with any client, here\'s what happens behind the scenes:',rec:'li',tags:['#professionalservices','#southafricabusiness','#clientmeeting','#preparation']},
+        {title:'Your workspace',idea:'Share your office or working space. Clean, organised, professional. If you work from home, show that it\'s a proper work environment. People want to know who they\'re hiring before they pick up the phone.',starter:'This is where the work gets done:',rec:'li',tags:['#workspace','#professionalservices','#southafrica','#officespace']},
+        {title:'Software and tools',idea:'Share the tools and software you use to deliver your service. For SA professional services, naming trusted tools (Sage, Xero, SimplePay) signals technical competence to potential clients.',starter:'A question we get often: what tools do we use? Here\'s our honest answer:',rec:'li',tags:['#tools','#software','#professionalservices','#southafrica','#tech']},
+        {title:'Team study or CPD',idea:'Share your team attending a training, studying for a qualification, or completing CPD hours. Learning content positions you as a professional who invests in staying current.',starter:'We closed the office early this week. Here\'s why:',rec:'li',tags:['#continuouslearning','#professionalservices','#southafrica','#upskilling','#cpd']},
+      ],
+      promo: [
+        {title:'Fixed-fee service package',idea:'Promote a specific service package at a transparent price. Professional services often lose clients who fear unpredictable fees. Fixed pricing removes that barrier. Include exactly what\'s in the package.',starter:'We know the number one reason people don\'t call an accountant. So we\'ve fixed it:',rec:'li',tags:['#fixedfee','#professionalservices','#southafricabusiness','#transparent','#accounting']},
+        {title:'Free consultation offer',idea:'Offer a free, time-limited consultation for new clients. Set clear parameters: 30 minutes, no obligation, covers X topics. Make the offer feel generous and structured, not desperate.',starter:'If you\'ve been sitting on a question, this is your chance to get it answered for free:',rec:'li',tags:['#freeconsultation','#professionalservices','#southafrica','#noobligation','#businessadvice']},
+        {title:'Retainer package announcement',idea:'Promote a monthly retainer package for ongoing services. Retainers give clients predictable costs and you predictable income. Explain the value of having consistent professional support.',starter:'For businesses that want ongoing support without the surprise invoices:',rec:'li',tags:['#retainer','#professionalservices','#southafricabusiness','#monthlyFee','#consistency']},
+        {title:'Year-end special',idea:'Offer a year-end or financial year-end special — tax season, end of February, end of June depending on your discipline. Seasonal services tied to compliance deadlines create natural urgency.',starter:'The financial year end is coming. Here\'s how we can help you close it properly:',rec:'li',tags:['#yearend','#taxseason','#southafricabusiness','#sars','#compliance']},
+      ],
+      proof: [
+        {title:'Client outcome case study',idea:'Share a client case study with specifics — what problem they had, what you did, what the measurable outcome was. Numbers make proof credible: "saved R48,000 in penalties" vs "helped them with tax."',starter:'A client came to us with a problem that was costing them money every month. Here\'s what happened:',rec:'li',tags:['#casestudy','#results','#professionalservices','#southafricabusiness','#proof']},
+        {title:'Years in practice milestone',idea:'Celebrate your firm\'s anniversary or your personal years of practice. What\'s changed? What hasn\'t? What do you know now that you didn\'t then? This type of reflective content performs well on LinkedIn.',starter:'We\'ve been doing this for [X] years. Here\'s what [X] years teaches you:',rec:'li',tags:['#anniversary','#professionalservices','#southafrica','#experience','#milestone']},
+        {title:'Professional registration proof',idea:'Post your professional body registration, SAIPA membership, HPCSA registration, or other qualification. Many clients don\'t know how to verify professional credentials — show yours proactively.',starter:'You should always verify who you\'re hiring. Here\'s ours:',rec:'li',tags:['#certified','#professionalservices','#southafrica','#qualified','#registered']},
+        {title:'Client complexity handled',idea:'Share a complex or unusual situation you navigated successfully (with details anonymised). Complexity handled well demonstrates depth of expertise that simple cases don\'t.',starter:'This was one of the more complex situations we\'ve dealt with. Here\'s how we approached it:',rec:'li',tags:['#expertise','#professionalservices','#southafricabusiness','#complexity','#experience']},
+      ],
+      engage: [
+        {title:'Compliance question of the week',idea:'Post a genuine compliance or business question that your audience might not know the answer to. Give them time to respond, then post the answer in the comments. Educational engagement.',starter:'Question for SA business owners. Do you know the answer to this?',rec:'li',tags:['#compliance','#southafricabusiness','#quiz','#businessowner','#sars']},
+        {title:'"What\'s your biggest challenge?" poll',idea:'Ask your professional audience what their biggest business or compliance challenge is right now. The answers give you content ideas for months and show you understand their reality.',starter:'If you\'re running a business in SA right now, we want to know: what\'s keeping you up at night?',rec:'li',tags:['#businesschallenges','#southafricabusiness','#poll','#saentrepreneur']},
+        {title:'Myth or fact quiz',idea:'Post a common business, tax or compliance belief and ask followers if it\'s a myth or a fact. Reveal the answer in the comments. High engagement, genuinely educational.',starter:'Myth or fact? Tell us in the comments, then we\'ll reveal the answer:',rec:'li',tags:['#mythorfact','#compliance','#southafricabusiness','#tax','#quiz']},
+        {title:'What would you do?',idea:'Post a realistic business scenario (anonymised from real client experience) and ask followers what they would do in that situation. Then share what actually happened and what the right answer was.',starter:'Real situation. Anonymised. What would you do?',rec:'li',tags:['#scenario','#businessadvice','#southafricabusiness','#professionalservices']},
+        {title:'Open Q&A Friday',idea:'Announce a monthly or bi-weekly open Q&A session in the comments. Post a simple question prompt and answer every reply. This drives comment volume, LinkedIn reach, and converts followers to enquiries.',starter:'It\'s Q&A Friday. Ask us anything about [your specialty] — we\'ll answer every one:',rec:'li',tags:['#qa','#businessadvice','#southafricabusiness','#compliance','#professional']},
+      ],
+      local: [
+        {title:'SA regulatory update reaction',idea:'Comment on a recent SA regulatory, tax, or legislative change. Share your take clearly. Thought leadership on current regulatory matters builds expert positioning better than any promotion.',starter:'Something changed in SA regulations this week that affects business owners. Here\'s what it means:',rec:'li',tags:['#saregulations','#southafricabusiness','#compliance','#policy','#update']},
+        {title:'SA business conditions commentary',idea:'Share your honest observation about the current business climate in SA — what you\'re seeing with clients, what concerns you, what encourages you. Real views from the front line resonate with business owners.',starter:'Here\'s what we\'re actually seeing with our clients right now in SA:',rec:'li',tags:['#saeconomy','#southafricabusiness','#businessclimate','#saentrepreneur']},
+        {title:'Shout out a SA business organisation',idea:'Reference SARS, the CCMA, CIPC, or another SA regulatory body with useful information for business owners. Tag or reference the organisation. These posts get shared by business owners.',starter:'Something from [organisation] this week that every SA business owner should know:',rec:'li',tags:['#sars','#cipc','#southafrica','#businessowners','#compliance']},
+        {title:'National day business angle',idea:'Tie a SA national day or observance to a relevant business or professional angle. Youth Day → skills development. Women\'s Day → women-led businesses. Human Rights Day → employment equity.',starter:'Today is [national day]. Here\'s how it connects to your business responsibilities:',rec:'li',tags:['#southafrica','#nationalday','#businessowners','#professionalservices']},
+      ],
+      spot: [
+        {title:'Core service explainer',idea:'Explain your core service in full — who needs it, what it involves, how long it takes, what it costs, and what they get at the end. Many potential clients don\'t call because they don\'t understand what they\'re buying.',starter:'Our most popular service, explained fully. No jargon:',rec:'li',tags:['#professionalservices','#southafricabusiness','#service','#transparent','#howwework']},
+        {title:'FAQ post',idea:'Answer the single most common question you get from prospective clients. "People ask us this before every engagement" framing makes it feel useful, not promotional.',starter:'The most common question we get before a client starts with us:',rec:'li',tags:['#faq','#professionalservices','#southafricabusiness','#questions','#answers']},
+        {title:'What makes us different',idea:'Explain honestly what differentiates your firm or practice from others. Not vague claims — specific differences in approach, methodology, communication, or pricing. Specific differentiators convert.',starter:'There\'s a reason people who\'ve worked with other firms come to us. Here\'s what we do differently:',rec:'li',tags:['#differentiation','#professionalservices','#southafricabusiness','#whyus']},
+        {title:'Process walk-through',idea:'Walk new clients through exactly what happens when they engage you — from first contact to final deliverable. Removing uncertainty about the process reduces resistance to making the first call.',starter:'People often ask what working with us actually looks like. Here\'s the full process:',rec:'li',tags:['#process','#professionalservices','#southafricabusiness','#howwework','#transparent']},
+      ],
+    },
+    beauty: {
+      edu: [
+        {title:'Hair type guide',idea:'Create a practical guide to identifying hair type — 1A to 4C system explained simply, or the difference between fine, medium and coarse. Help clients understand their own hair before they book.',starter:'Not sure what your hair type actually is? Here\'s how to tell:',rec:'ig',tags:['#hairtype','#naturalHair','#southafricanhair','#haircare','#beautysa']},
+        {title:'Ingredient to avoid',idea:'Share one ingredient found in popular products that damages hair or skin — and explain why. Specific ingredients (sulfates, parabens, alcohol) resonate with beauty-conscious clients.',starter:'Check your products for this ingredient. Here\'s why we recommend avoiding it:',rec:'ig',tags:['#haircare','#skincare','#beautyIngredients','#naturalbeauty','#southafrica']},
+        {title:'Seasonal hair or skin care tip',idea:'Share a tip specific to the current SA season. Winter dry scalp, summer sun protection, humidity and frizz. Seasonal content feels relevant and timely.',starter:'With [season] here, your hair/skin needs different attention. Here\'s what we recommend:',rec:'ig',tags:['#haircare','#seasonal','#southafrica','#beautysa','#tips']},
+        {title:'Product layering guide',idea:'Teach clients how to layer hair or skin products in the correct order. Many clients are using good products in the wrong sequence and not getting the results they should. Practical, shareable content.',starter:'You might be using great products in the wrong order. Here\'s the correct sequence:',rec:'ig',tags:['#haircare','#skincare','#beauty','#southafrica','#productguide']},
+        {title:'Between-appointment care',idea:'Share tips for maintaining a treatment or style between salon visits. Clients who get better results between appointments are more loyal and more likely to rebook.',starter:'Your treatment works harder when you do this between appointments:',rec:'ig',tags:['#haircare','#saloncare','#southafrica','#maintainance','#beautysa']},
+      ],
+      bts: [
+        {title:'Behind the chair',idea:'Show what your setup looks like before a client arrives — tools sterilised, products arranged, towels ready. Cleanliness and preparation are the biggest anxieties new clients have. Show them visually.',starter:'Before our first client arrives, here\'s what we set up:',rec:'ig',tags:['#behindthechair','#salon','#southafrica','#beautySA','#salonlife']},
+        {title:'Product preparation',idea:'Show you mixing, preparing or measuring a treatment — colour mixing, toner preparation, skin treatment blend. Demonstrates craft and professionalism.',starter:'This is what goes into [treatment name] before it ever touches your hair/skin:',rec:'ig',tags:['#colourist','#salon','#southafrica','#beautycraft','#behindthescenes']},
+        {title:'Training or upskilling day',idea:'Share your team attending a training day, course, or industry event. Learning commitment signals to clients that you stay current with techniques and products.',starter:'We closed the salon for the morning. Here\'s what we were doing instead:',rec:'ig',tags:['#training','#salon','#southafrica','#beautyeducation','#salonlife']},
+        {title:'Meet the stylist / therapist',idea:'Introduce a team member — their specialisation, their favourite treatment to perform, and one thing clients don\'t know about them. People book stylists, not just salons.',starter:'You book with us, but you should know who you\'re sitting with:',rec:'ig',tags:['#meetthestylist','#salon','#southafrica','#beautySA','#team']},
+      ],
+      promo: [
+        {title:'Seasonal treatment offer',idea:'Promote a treatment specific to the season — deep conditioning for winter, scalp detox for summer, tan prep for spring. Seasonal treatments feel timely and relevant.',starter:'This time of year, your [hair/skin] needs this more than usual. And right now we\'re offering:',rec:'wa',tags:['#salonoffer','#seasonal','#southafrica','#beautysa','#hairtreatment']},
+        {title:'Booking availability post',idea:'Share your availability for the coming week or month. "We have 3 slots left this week" creates genuine urgency and makes booking feel accessible, not transactional.',starter:'Our diary for [time period] looks like this — here\'s what\'s still available:',rec:'wa',tags:['#bookings','#salon','#southafrica','#beautysa','#available']},
+        {title:'Package deal announcement',idea:'Offer a package combining two or three services at a saving — cut, colour and treatment for R[X] instead of R[Y]. Packages increase average spend and improve client retention.',starter:'Three services that work better together — and one price that makes sense:',rec:'ig',tags:['#salonpackage','#deal','#southafrica','#beautysa','#salon']},
+        {title:'First-time client offer',idea:'Create a clear, time-limited offer for first-time clients. Remove the barrier to trying you. Specify exactly what\'s included and the price. New clients acquired at a discount often become loyal at full price.',starter:'First time with us? Here\'s our welcome offer — and what you can expect:',rec:'ig',tags:['#newclient','#salon','#southafrica','#beautysa','#firsttime']},
+      ],
+      proof: [
+        {title:'Client transformation',idea:'Share a before/after transformation with the client\'s permission. Include the technique, products used, and time taken. Transformation content is your most powerful format in beauty.',starter:'With the client\'s permission, here\'s what we did in [X] hours:',rec:'ig',tags:['#transformation','#beforeandafter','#salon','#southafrica','#beautysa']},
+        {title:'Repeat client milestone',idea:'Celebrate a client who has been coming back consistently. "Sarah has been in every 6 weeks for 3 years." These stories communicate reliability, consistency and relationship.',starter:'Some clients become part of the salon family. [Name] is one of ours:',rec:'ig',tags:['#loyalty','#salon','#southafrica','#beautysa','#regularclient']},
+        {title:'Review or referral thank-you',idea:'Share a review or referral with genuine thanks. Tag the client if they\'re comfortable. Reviews in beauty are heavily relied upon — share yours with pride.',starter:'This review came in this week and it made the whole team smile:',rec:'ig',tags:['#review','#salon','#southafrica','#beautysa','#5stars']},
+        {title:'Volume milestone',idea:'Celebrate a milestone — number of clients this year, number of colour services performed, years in business. Keep it warm and grateful, not boastful.',starter:'We just passed a number that means a lot to us:',rec:'ig',tags:['#milestone','#salon','#southafrica','#grateful','#beautysa']},
+      ],
+      engage: [
+        {title:'"Which look would you choose?"',idea:'Post two different hair or makeup looks and ask followers to choose. This is among the highest-engagement formats in beauty. Simple, visual, opinionated.',starter:'You can only pick one. Which look are you going for?',rec:'ig',tags:['#poll','#salon','#southafrica','#hairinspiration','#beauty']},
+        {title:'Hair struggle question',idea:'Ask your followers what their biggest hair or skin struggle is. Replies give you content ideas for weeks. Engage with every response — often these replies convert directly to bookings.',starter:'Be honest with us. What\'s your biggest [hair/skin] struggle right now?',rec:'ig',tags:['#hairproblems','#skinproblems','#southafrica','#beautysa','#help']},
+        {title:'"What\'s in your shower?" challenge',idea:'Ask followers what products they\'re currently using on their hair or skin. Create a conversation in the comments. You may spot gaps or common mistakes you can educate around.',starter:'Genuine question for us: what\'s currently in your shower/bathroom routine?',rec:'ig',tags:['#beauty','#haircare','#skincare','#southafrica','#whatdoyouuse']},
+        {title:'Rate the look',idea:'Share a finished look (hair, makeup or nails) and ask followers to rate it out of 10. Simple, drives comments, works as social proof simultaneously.',starter:'Rate this look out of 10 in the comments. Honest opinions welcome:',rec:'ig',tags:['#rate','#salon','#southafrica','#beautysa','#hair']},
+        {title:'What\'s your next booking?',idea:'Ask followers what treatment they\'re planning for their next salon visit. This surfaces demand, creates conversation, and subtly prompts people who haven\'t booked to think about doing so.',starter:'If you could book one treatment right now, what would it be?',rec:'ig',tags:['#booking','#salon','#southafrica','#beautysa','#treatments']},
+      ],
+      local: [
+        {title:'SA beauty trends post',idea:'Comment on a beauty trend popular in SA right now. Braids, protective styles, local fashion week looks. Local trend commentary shows you\'re current and connected to the SA beauty community.',starter:'Here\'s what\'s trending in SA beauty right now — and our take on it:',rec:'ig',tags:['#sabeauty','#southafrica','#trending','#hairtrends','#beautysa']},
+        {title:'Support a local beauty brand',idea:'Feature a SA-made hair or beauty product you use or love. Tag the brand. These cross-promotions expand your reach and support the local beauty industry.',starter:'Our shelves include local SA products for a reason. Here\'s one we love:',rec:'ig',tags:['#localbrand','#southafrica','#beautysa','#madeinsa','#supportlocal']},
+        {title:'Women\'s Day / Heritage celebration',idea:'Create a beauty-focused post celebrating a SA national day. Heritage Day and Women\'s Day are particularly strong for the beauty industry. Celebrate natural hair, traditional looks, diverse beauty.',starter:'Today we\'re celebrating [SA day] in the most beautiful way we know:',rec:'ig',tags:['#womensday','#southafrica','#heritageday','#beautysa','#naturalbeauty']},
+        {title:'Local community love',idea:'Feature something happening in your local community — a school event, a charity initiative, or a neighbourhood happening. Community content builds local loyalty and often generates referrals.',starter:'Something beautiful happening in our community this week:',rec:'fb',tags:['#community','#southafrica','#local','#beautysa','#supportlocal']},
+      ],
+      spot: [
+        {title:'Signature treatment deep-dive',idea:'Feature your most popular treatment with full detail — what it is, how it\'s done, how long it takes, the result, and the price. Detailed service posts consistently convert browsers to bookers.',starter:'Our most-requested treatment, explained fully. Here\'s everything you need to know:',rec:'ig',tags:['#treatment','#salon','#southafrica','#beautysa','#salonservices']},
+        {title:'Product range spotlight',idea:'Feature a product line you carry or recommend with before/after results. Show real results, not just packaging. If you sell products, this drives retail alongside service bookings.',starter:'This product range has changed what our clients are able to do at home:',rec:'ig',tags:['#products','#haircare','#salon','#southafrica','#beauty']},
+        {title:'New service announcement',idea:'Launch a new service formally — what it is, why you added it, what problem it solves, and how to book. Make it feel like an event, not just an update.',starter:'We\'ve been training for months to offer you this. It\'s finally ready:',rec:'ig',tags:['#newservice','#salon','#southafrica','#beautysa','#launch']},
+        {title:'Compare treatments',idea:'Compare two similar treatments — keratin vs Brazilian blowout, gel vs acrylic nails, toner vs colour. Help clients understand which is right for them. This positions you as an advisor.',starter:'People ask us this every week: what\'s the difference between X and Y? Here\'s the truth:',rec:'ig',tags:['#comparison','#salon','#southafrica','#beautysa','#hairadvice']},
+      ],
+    },
+    property: {
+      edu: [
+        {title:'First-time buyer guide',idea:'Create a step-by-step guide for first-time buyers in SA — from pre-approval to bond registration. Break it into a numbered list. First-time buyer content gets shared widely within peer groups.',starter:'Buying your first home in SA? Here\'s the process, from start to finish:',rec:'fb',tags:['#firsttimebuyer','#southafricaproperty','#realestate','#bondapplication','#homebuyer']},
+        {title:'Bond vs cash buyer pros and cons',idea:'Explain the genuine pros and cons of buying with a bond vs cash. Balanced, honest advice builds trust. Many buyers don\'t understand when cash is actually worse than bond.',starter:'Everyone assumes cash is king when buying property. Here\'s when that\'s not true:',rec:'li',tags:['#property','#southafricarealestate','#bond','#homebuying','#realestate']},
+        {title:'What transfer duty actually costs',idea:'Break down transfer duty costs on SA properties at different price points. This is one of the most common blindspots for buyers — the hidden costs beyond the purchase price.',starter:'When you buy property in SA, the price on the listing isn\'t the full cost. Here\'s the breakdown:',rec:'fb',tags:['#transferduty','#southafricaproperty','#realestate','#propertycosts','#buying']},
+        {title:'Rental rights explained',idea:'Explain one key aspect of SA tenant or landlord rights under the Rental Housing Act. Clarity on rights reduces disputes and positions you as the trusted local property expert.',starter:'Most SA tenants don\'t know this. Most landlords don\'t either:',rec:'fb',tags:['#rentalrights','#southafricaproperty','#tenant','#landlord','#propertylaw']},
+        {title:'Property market update',idea:'Share an observation about the current SA property market — bond rates, buyer activity, supply, or price trends in your area. Local market commentary is what buyers and sellers can\'t get from generic portals.',starter:'Here\'s what\'s actually happening in the [area] property market right now:',rec:'li',tags:['#propertymarket','#southafricarealestate','#marketupdate','#realestate','#property']},
+      ],
+      bts: [
+        {title:'Property inspection walkthrough',idea:'Show your process of inspecting a property — what you look for, what you photograph, what you flag. This demonstrates thoroughness and professionalism to both buyers and sellers.',starter:'Before we ever list or recommend a property, here\'s what we check:',rec:'ig',tags:['#propertyinspection','#realestate','#southafricaproperty','#behindthescenes','#agent']},
+        {title:'Staging a home',idea:'Show the process of staging or dressing a property before photography. The before and after of a staged home is compelling content that shows sellers the value of proper presentation.',starter:'This is what we do before a single photo is taken. The difference is real:',rec:'ig',tags:['#homestaging','#southafricaproperty','#realestate','#listing','#property']},
+        {title:'Open house day',idea:'Show your preparation for an open house — the setup, the collateral, the time put into making it welcoming. This communicates professionalism and effort to sellers who want an agent who works.',starter:'Here\'s what goes into a good open house. Spoiler: it\'s more than just showing up:',rec:'fb',tags:['#openhouse','#realestate','#southafricaproperty','#agent','#property']},
+        {title:'Signing day',idea:'Share the moment a deal is signed — keys handed over, documents signed (no private information visible). With permission. These are the moments that remind people why property is worth getting right.',starter:'Today was a good day. Keys changed hands. Here\'s what that meant for everyone involved:',rec:'ig',tags:['#sold','#realestate','#southafricaproperty','#keysday','#property']},
+      ],
+      promo: [
+        {title:'New listing announcement',idea:'Formally announce a new listing with key details: price, size, location, number of bedrooms and bathrooms, standout features, and how to view. Include quality photos. Make it feel like a launch.',starter:'New listing just added to our portfolio. Here\'s everything about it:',rec:'all',tags:['#newlisting','#property','#southafricarealestate','#forsale','#realestate']},
+        {title:'Open day invitation',idea:'Invite followers to an open day with date, time, address and what to expect. Open day posts do well on Facebook where event sharing is native. Include transport directions or landmark references.',starter:'We\'re opening the doors at [address] this [day]. Here\'s what you\'ll find:',rec:'fb',tags:['#openday','#property','#southafricarealestate','#openhouse','#forsale']},
+        {title:'Price reduction alert',idea:'Announce a price reduction on a listed property. Frame it as an opportunity, not a sign of desperation. "Seller is motivated" is a legitimate and powerful reason to act now.',starter:'The seller has reduced the price. Here\'s why this is now the best value in the area:',rec:'all',tags:['#pricereduced','#property','#southafricarealestate','#opportunity','#forsale']},
+        {title:'Rental opportunity',idea:'Feature a rental property — monthly rate, size, features, availability. Many buyers and sellers forget that agents also place tenants. This targets a different but significant market segment.',starter:'Looking for a rental in [area]? This one just became available:',rec:'fb',tags:['#rental','#tolet','#southafricaproperty','#realestate','#rentalsa']},
+      ],
+      proof: [
+        {title:'Sold in X days',idea:'Share a sold listing with context — listed at price, sold at price, days on market. Speed of sale and price achievement are the metrics sellers care about most.',starter:'Another one sold. Here\'s the full story:',rec:'fb',tags:['#sold','#southafricaproperty','#realestate','#results','#speedofsale']},
+        {title:'Client testimonial',idea:'Share a written testimonial from a recent buyer or seller. Include the property type and area (no personal details). Testimonials from real clients are your strongest marketing.',starter:'This client let us share their experience. Here\'s what they said:',rec:'fb',tags:['#testimonial','#realestate','#southafricaproperty','#review','#agent']},
+        {title:'Portfolio milestone',idea:'Celebrate a milestone — sales volume, years in the industry, number of properties sold, number of families helped. Keep it humble and focused on the impact, not just the number.',starter:'We just passed a milestone worth pausing on:',rec:'li',tags:['#milestone','#realestate','#southafricaproperty','#property','#results']},
+        {title:'First home achievement',idea:'Share a story (with permission) of a first-time buyer who achieved homeownership. These emotional stories connect strongly with aspirational buyers. Keep the focus on the buyer\'s achievement.',starter:'First-time homeowner. Here\'s how [name] made it happen:',rec:'fb',tags:['#firsttimehomeowner','#southafricaproperty','#homeownership','#achievement','#realestate']},
+      ],
+      engage: [
+        {title:'"What feature do you most want?"',idea:'Ask followers what feature they most want in their dream home — north-facing garden, open-plan kitchen, home office, double garage. Genuine market research that\'s also high-engagement.',starter:'If you could only have one of these in your next home, which would you choose?',rec:'fb',tags:['#dreamhome','#southafricaproperty','#poll','#property','#homebuyer']},
+        {title:'Rent vs buy poll',idea:'Ask followers whether they prefer renting or buying in the current SA environment. The rent vs buy debate is perennial. Engage with each side and share your professional perspective in the comments.',starter:'Honest poll for the SA property market right now: rent or buy?',rec:'fb',tags:['#rentorbuy','#southafricaproperty','#poll','#realestate','#propertyadvice']},
+        {title:'Area knowledge question',idea:'Ask followers what they think the average property price is in a specific suburb. Most people underestimate or overestimate. The reveal is always interesting. Educational and engaging simultaneously.',starter:'What do you think the average property price in [suburb] is right now?',rec:'fb',tags:['#propertyprices','#southafricaproperty','#marketknowledge','#realestate']},
+        {title:'Home tour wish',idea:'Ask followers: "If you could walk through any home in [city] this weekend, which area or style would you choose?" Generates aspirational conversation and tells you what buyers are dreaming of.',starter:'Imagine you could see any home in [city] this weekend. Where would you start?',rec:'ig',tags:['#dreamhome','#southafricaproperty','#realestate','#hometour','#property']},
+        {title:'Property mistake to avoid',idea:'Ask followers what property mistakes they\'ve made or witnessed. The comments section becomes a community experience. Follow up with your professional advice on each mistake mentioned.',starter:'What\'s the biggest property mistake you\'ve seen or made? We\'ll share ours first:',rec:'fb',tags:['#propertymistakes','#southafricaproperty','#advice','#realestate','#learning']},
+      ],
+      local: [
+        {title:'Area infrastructure update',idea:'Comment on local infrastructure news relevant to property — a new road, a school, a mall, load shedding impact. Local market knowledge is your competitive advantage over national portals.',starter:'Something happening in [area] that most buyers don\'t know about yet:',rec:'fb',tags:['#areaupdate','#southafricaproperty','#localknowledge','#realestate','#property']},
+        {title:'Suburb profile post',idea:'Create a profile of an area you work in — schools, transport, average prices, lifestyle. This content attracts buyers researching the area and positions you as the local expert.',starter:'Everything you should know about [suburb] before you buy here:',rec:'fb',tags:['#suburbprofile','#southafricaproperty','#realestate','#areaknowledge','#homebuying']},
+        {title:'Load shedding impact on property',idea:'Discuss how load shedding affects property values, desirability, and buying decisions in SA right now. Solar installations, generators, and estate infrastructure are all relevant.',starter:'Load shedding is changing what buyers prioritise. Here\'s what we\'re seeing:',rec:'fb',tags:['#loadshedding','#southafricaproperty','#realestate','#solar','#property']},
+        {title:'New development alert',idea:'Announce or comment on a new development in your area. Buyers tracking developments want to know early. Be the first to share information that\'s publicly available but not widely circulated.',starter:'A new development just announced in [area]. Here\'s what we know:',rec:'fb',tags:['#newdevelopment','#southafricaproperty','#realestate','#property','#development']},
+      ],
+      spot: [
+        {title:'Feature listing showcase',idea:'Give your top listing a full feature post — multiple photos or a video walkthrough, detailed description, key specs, pricing, and a direct CTA to book a viewing. Make it feel like a mini brochure.',starter:'This property deserves more than a standard listing. Here\'s the full story:',rec:'ig',tags:['#featurelisting','#southafricaproperty','#realestate','#forsale','#property']},
+        {title:'Area price comparison',idea:'Show what different budgets get you in the same area or in different areas. "R2M in Sandton vs R2M in [alternative suburb]" — this content consistently goes viral in property communities.',starter:'What does R[budget] actually get you in [area] right now? The answer might surprise you:',rec:'fb',tags:['#propertyprices','#southafricarealestate','#comparison','#property','#realestate']},
+        {title:'Investment property spotlight',idea:'Feature a property with investment potential — rental yield calculation, bond repayment vs rental income, capital growth history of the area. Investors are an underserved segment for most residential agents.',starter:'This one works as an investment. Here\'s the numbers:',rec:'li',tags:['#investmentproperty','#southafricarealestate','#buytolet','#property','#returns']},
+        {title:'Why I love this listing',idea:'Share a personal endorsement of a property you\'re currently marketing — what specifically excites you about it as an agent. Authentic agent enthusiasm is more convincing than polished listing copy.',starter:'In my professional opinion, this is the best value in [area] right now. Here\'s why:',rec:'ig',tags:['#agentspick','#southafricaproperty','#realestate','#forsale','#opinion']},
+      ],
+    },
+    education: {
+      edu: [
+        {title:'Learning tip of the week',idea:'Share one evidence-backed learning or study tip. Keep it specific and actionable — "review material within 24 hours of learning it to retain 80% more" not "study regularly."',starter:'One study/learning technique that actually works — and why:',rec:'li',tags:['#learningtips','#education','#southafrica','#studytips','#growth']},
+        {title:'Industry trend your students need to know',idea:'Share a trend in your industry or field that has direct implications for your students or clients. Relevance to the real world is the biggest motivator for adult learners.',starter:'This is changing [your field] right now — and you need to know about it:',rec:'li',tags:['#industrytrend','#southafrica','#education','#upskilling','#career']},
+        {title:'Common skill gap',idea:'Identify a skill gap you see repeatedly in your students or clients. Name it, explain why it matters, and hint that you address it in your offering. This content attracts people who recognise themselves in the description.',starter:'Here\'s a skill gap we see constantly — in almost every person who comes to us:',rec:'li',tags:['#skillsgap','#southafrica','#education','#upskilling','#careeradvice']},
+        {title:'SA employment or skills landscape',idea:'Share data or observations about the current SA employment landscape, in-demand skills, or graduate employment rates. This justifies the value of training and education in the SA context.',starter:'Here\'s what the SA job market actually looks like right now for [your field]:',rec:'li',tags:['#southafrica','#employment','#skills','#education','#careeradvice']},
+        {title:'Certification vs experience debate',idea:'Address the SA-specific debate: does certification matter more than experience? Share your informed view. This topic is highly debated and drives strong engagement in the SA professional community.',starter:'The question I get asked constantly: do you need a qualification or just experience?',rec:'li',tags:['#certification','#southafrica','#career','#education','#upskilling']},
+      ],
+      bts: [
+        {title:'Course preparation',idea:'Show what goes into preparing a course or coaching session — the research, the materials, the tools. Behind-the-scenes preparation content builds confidence in potential students.',starter:'Before any session starts, here\'s the work you don\'t see:',rec:'li',tags:['#coursecreation','#education','#southafrica','#teaching','#onlinelearning']},
+        {title:'Classroom or studio setup',idea:'Show your teaching environment — physical classroom, online setup, recording space. The environment communicates professionalism and makes new students feel more comfortable.',starter:'This is where the learning happens. Here\'s how we set it up:',rec:'ig',tags:['#classroom','#southafrica','#education','#teacherlife','#onlinelearning']},
+        {title:'Student studying',idea:'Share a photo or video of students engaged in your course or programme (with permission). Active learning environments signal that your courses are substantive, not passive.',starter:'This is what a session with us actually looks like:',rec:'ig',tags:['#students','#education','#southafrica','#learning','#course']},
+        {title:'Curriculum development',idea:'Share a snippet of developing or updating course content. "We\'re updating the curriculum for 2026 based on student feedback" shows responsiveness and care for quality.',starter:'We\'re rebuilding [part of the curriculum] this month. Here\'s why:',rec:'li',tags:['#curriculum','#education','#southafrica','#quality','#teaching']},
+      ],
+      promo: [
+        {title:'Course enrolment opening',idea:'Announce that enrolment is open for a course or programme. Include start date, duration, price, format, and capacity if limited. Limited spots create genuine urgency.',starter:'Enrolment for [course name] is now open. Here\'s everything you need to know:',rec:'all',tags:['#enrolment','#course','#southafrica','#education','#upskilling']},
+        {title:'Early bird offer',idea:'Promote an early-bird rate with a clear deadline. The discount must be meaningful and the deadline must be real. Early registration also helps you plan class sizes.',starter:'Register before [date] and lock in the early bird rate. Here\'s what you get:',rec:'li',tags:['#earlybird','#southafrica','#education','#course','#offer']},
+        {title:'Free webinar or workshop',idea:'Promote a free introductory webinar or workshop. Free events fill your pipeline with warm leads. Make the value of the free session clear — what will attendees leave knowing or being able to do?',starter:'We\'re hosting a free session on [topic]. Here\'s what you\'ll leave knowing:',rec:'li',tags:['#freewebinar','#southafrica','#education','#freeworkshop','#learning']},
+        {title:'Corporate training offer',idea:'Promote your corporate or team training offering. Many individual-focused educators miss the corporate market. Team training has higher deal values and corporate clients refer widely.',starter:'If your team needs [skill], we can bring the training to you. Here\'s how:',rec:'li',tags:['#corporatetraining','#southafrica','#teamtraining','#business','#upskilling']},
+      ],
+      proof: [
+        {title:'Student result or achievement',idea:'Share a student outcome with their permission — a job they got, a promotion they earned, a project they completed. Outcomes are the only proof that education has real value.',starter:'We teach the skills. Our students do the work. Here\'s what that looks like:',rec:'li',tags:['#studentresults','#southafrica','#education','#success','#upskilling']},
+        {title:'Testimonial post',idea:'Share a written testimonial from a recent graduate or coaching client. Include the course they completed and the outcome they described. Video testimonials work even better if available.',starter:'We let our students describe their experience. Here\'s one that means a lot to us:',rec:'li',tags:['#testimonial','#southafrica','#education','#review','#studentvoice']},
+        {title:'Graduation or completion milestone',idea:'Celebrate the completion of a cohort or programme. Group photos, names listed (with permission), the number who completed. Completion rates matter — show yours with pride.',starter:'[Number] students just completed [course name]. Here\'s what they achieved:',rec:'li',tags:['#graduation','#southafrica','#education','#coursecomplete','#achievement']},
+        {title:'Student employment announcement',idea:'Share the news when a graduate lands a job in their field (with permission). Employment outcomes are the ultimate proof point for vocational or professional education.',starter:'[First name] graduated from our programme in [month]. By [date], they had a job. Here\'s the story:',rec:'li',tags:['#employed','#southafrica','#education','#graduatejobs','#results']},
+      ],
+      engage: [
+        {title:'What skill do you want to develop?',idea:'Ask followers what skill they most want to develop this year. Responses give you audience insight and content ideas. Respond with relevant resources or a hint about your upcoming programme.',starter:'One question for the professionals in my network: what do you most want to learn this year?',rec:'li',tags:['#learning','#southafrica','#upskilling','#career','#poll']},
+        {title:'Pop quiz',idea:'Post a quick quiz question relevant to your field. Keep it fun, not intimidating. The answer goes in the comments. High engagement, demonstrates your expertise, and tests audience knowledge gaps.',starter:'Quick quiz — no googling. What\'s the correct answer here?',rec:'li',tags:['#quiz','#southafrica','#education','#test','#learning']},
+        {title:'Learning resource recommendation',idea:'Ask followers what book, podcast, or resource they\'d recommend for someone new to your field. The comments become a community resource list. Add your own recommendations after 24 hours.',starter:'If you could recommend ONE resource to someone just starting in [field], what would it be?',rec:'li',tags:['#books','#southafrica','#education','#resources','#learning']},
+        {title:'"What do you wish you\'d learned sooner?"',idea:'Ask professionals in your network what skill or knowledge they wish they\'d acquired earlier in their career. Highly relatable question that drives strong personal shares.',starter:'Career question: what do you wish you\'d been taught earlier? We\'ll share ours first:',rec:'li',tags:['#careeradvice','#southafrica','#education','#learning','#reflection']},
+        {title:'Course decision poll',idea:'If you\'re deciding between two courses to develop, ask your audience to vote on which they\'d attend. Real audience input on content decisions makes people feel invested in what you create.',starter:'We\'re planning our next programme and we want your input. Which would you attend?',rec:'li',tags:['#poll','#southafrica','#education','#upskilling','#course']},
+      ],
+      local: [
+        {title:'SA skills shortage post',idea:'Comment on the skills shortage in a specific SA industry — construction, tech, healthcare, accounting. Connect it to what you offer. News-relevant content that positions your courses as solutions.',starter:'SA has a serious shortage of [skill]. Here\'s what that means — and what we\'re doing about it:',rec:'li',tags:['#skillsshortage','#southafrica','#education','#upskilling','#seta']},
+        {title:'SETA or QCTO awareness',idea:'Educate followers on how SA SETA funding, learnerships or QCTO qualifications work. Many SA professionals and employers don\'t know they have access to funded training. High-value content.',starter:'Most South African employers don\'t know this about SETA funding:',rec:'li',tags:['#seta','#southafrica','#education','#learnership','#skills']},
+        {title:'Local industry opportunity post',idea:'Share a growing opportunity in your local or national industry and connect it to your training offering. Opportunity-focused content attracts motivated learners.',starter:'This is where the jobs in SA will be in the next 5 years. Are you ready?',rec:'li',tags:['#careeroppurtunity','#southafrica','#education','#growthindustry','#upskilling']},
+        {title:'National Youth Day or education moment',idea:'Tie your content to a SA national education or youth moment — Youth Day, education access, bursaries. Genuine engagement with SA\'s education challenges builds community credibility.',starter:'Today we\'re thinking about what education access actually means in SA:',rec:'li',tags:['#youthday','#southafrica','#education','#access','#skills']},
+      ],
+      spot: [
+        {title:'Course deep-dive',idea:'Give your flagship course a full feature — what it covers, who it\'s for, what students leave knowing, format, duration, price, and how to enrol. The more detail, the more confident potential students feel.',starter:'Everything you need to know about [course name], before you decide:',rec:'li',tags:['#course','#southafrica','#education','#upskilling','#learning']},
+        {title:'Coaching vs course comparison',idea:'Explain the difference between your coaching offering and your course — who each is suited for, the cost difference, and the outcome difference. Helps potential clients self-select appropriately.',starter:'People often ask: should I do the course or the coaching? Here\'s how to decide:',rec:'li',tags:['#coaching','#course','#southafrica','#education','#decision']},
+        {title:'Curriculum outline post',idea:'Share the full outline of a course or programme. Transparency about content builds confidence. Many people don\'t enrol because they\'re not sure the curriculum matches what they need.',starter:'Here\'s exactly what\'s covered in [course name] — module by module:',rec:'li',tags:['#curriculum','#southafrica','#education','#course','#transparency']},
+        {title:'Meet the instructor',idea:'Feature yourself or a co-facilitator — qualifications, years of experience, what drives them, and what they most enjoy teaching. People invest in educators they trust, not just in curricula.',starter:'You\'re investing time and money in our programme. You should know exactly who\'s teaching you:',rec:'li',tags:['#instructor','#southafrica','#education','#coach','#trainer']},
+      ],
+    },
+  };
+
+  // 30-day pillar sequence
+  const SEQUENCE = [
+    'edu','bts','promo','proof','engage',
+    'local','spot','edu','bts','promo',
+    'proof','engage','local','spot','edu',
+    'bts','promo','proof','engage','local',
+    'spot','edu','bts','promo','proof',
+    'engage','local','spot','edu','engage'
+  ];
+
+  const PILLAR_META = {
+    edu:    {label:'Educational',     icon:'💡', cls:'edu'},
+    bts:    {label:'Behind the Scenes',icon:'📷',cls:'bts'},
+    promo:  {label:'Promotional',      icon:'🏷️',cls:'promo'},
+    proof:  {label:'Social Proof',     icon:'⭐',cls:'proof'},
+    engage: {label:'Engagement',       icon:'❓',cls:'engage'},
+    local:  {label:'Community',        icon:'🌍',cls:'local'},
+    spot:   {label:'Spotlight',        icon:'✨',cls:'spot'},
+  };
+
+  const PLATFORM_REC = {
+    ig:'Instagram', li:'LinkedIn', fb:'Facebook', wa:'WhatsApp', all:'All platforms'
+  };
+
+  const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+  let generatedPosts = [];
+  let selectedDay   = null;
+  let currentYear, currentMonth;
+
+  // Populate month selector
+  const now = new Date();
+  for(let i=0; i<6; i++){
+    let m = (now.getMonth() + i) % 12;
+    let y = now.getFullYear() + Math.floor((now.getMonth() + i) / 12);
+    const opt = document.createElement('option');
+    opt.value = `${y}-${m}`;
+    opt.textContent = `${MONTHS[m]} ${y}`;
+    if(i===0) opt.selected = true;
+    $('monthSelect').appendChild(opt);
+  }
+
+  function generatePosts(industry){
+    const bank = B[industry] || B.general;
+    const counters = {edu:0,bts:0,promo:0,proof:0,engage:0,local:0,spot:0};
+    return SEQUENCE.map((pillar, idx) => {
+      const ideas = bank[pillar];
+      const idea  = ideas[counters[pillar] % ideas.length];
+      counters[pillar]++;
+      return {day: idx+1, pillar, ...idea};
+    });
+  }
+
+  // Build calendar
+  function buildCalendar(posts, year, month){
+    const grid      = $('calGrid');
+    const listView  = $('listView');
+    grid.innerHTML  = '';
+    listView.innerHTML = '';
+
+    const firstDay  = new Date(year, month, 1).getDay();
+    // SA week starts Monday: 0=Mon, 6=Sun
+    const startOffset = (firstDay === 0) ? 6 : firstDay - 1;
+    const daysInMonth = new Date(year, month+1, 0).getDate();
+    const totalCells  = startOffset + daysInMonth;
+    const rows        = Math.ceil(totalCells / 7);
+
+    // Calendar grid
+    for(let i=0; i < rows*7; i++){
+      const dayNum = i - startOffset + 1;
+      const cell   = document.createElement('div');
+      const isWeekend = (i % 7 === 5) || (i % 7 === 6);
+
+      if(dayNum < 1 || dayNum > daysInMonth){
+        cell.className = 'cal-cell empty';
+      } else if(dayNum > 30){
+        // Extra days - mark as rest
+        cell.className = `cal-cell has-post ${isWeekend ? 'weekend-cell' : ''}`;
+        cell.innerHTML = `<div class="cell-day">${dayNum}</div><div style="font-size:11px;color:var(--muted2);font-style:italic;">Optional rest day</div>`;
+      } else {
+        const post = posts[dayNum-1];
+        const pm   = PILLAR_META[post.pillar];
+        cell.className = `cal-cell has-post ${isWeekend ? 'weekend-cell' : ''}`;
+        cell.dataset.day = dayNum;
+        const platformRec = post.rec === 'all' ? '📱' : post.rec === 'ig' ? '📸' : post.rec === 'li' ? '💼' : post.rec === 'fb' ? '👥' : '💬';
+        cell.innerHTML = `
+          <div class="cell-day">${dayNum}${isWeekend ? ' <span style="font-size:9px;opacity:.6">WKD</span>' : ''}</div>
+          <span class="cell-pillar ${pm.cls}">${pm.icon} ${pm.label}</span>
+          <div class="cell-title">${post.title}</div>
+          <div class="cell-platform">${platformRec}</div>`;
+        cell.addEventListener('click',()=>openDetail(dayNum, post, posts));
+      }
+      grid.appendChild(cell);
+    }
+
+    // List view
+    posts.forEach((post, idx) => {
+      const dayNum = idx + 1;
+      const pm     = PILLAR_META[post.pillar];
+      const item   = document.createElement('div');
+      item.className = 'list-item';
+      item.dataset.day = dayNum;
+      item.innerHTML = `
+        <div class="list-num">D${dayNum}</div>
+        <div class="list-pillar"><span class="cell-pillar ${pm.cls}">${pm.icon}</span></div>
+        <div class="list-body"><div class="list-title">${post.title}</div><div class="list-preview">${post.idea.substring(0,80)}…</div></div>`;
+      item.addEventListener('click',()=>openDetail(dayNum, post, posts));
+      listView.appendChild(item);
+    });
+  }
+
+  function openDetail(dayNum, post, posts){
+    selectedDay = dayNum;
+
+    // Highlight selected
+    document.querySelectorAll('.cal-cell, .list-item').forEach(el=>{
+      el.classList.toggle('selected', el.dataset.day == dayNum);
+    });
+
+    const pm = PILLAR_META[post.pillar];
+    $('detailDay').textContent = `Day ${dayNum}`;
+    $('detailPillarBadge').className = `cell-pillar ${pm.cls}`;
+    $('detailPillarBadge').textContent = `${pm.icon} ${pm.label}`;
+    $('detailTitle').textContent  = post.title;
+    $('detailIdea').textContent   = post.idea;
+    $('detailStarter').textContent = post.starter;
+    $('detailPlatformNote').textContent = `📱 Recommended platform: ${PLATFORM_REC[post.rec] || 'All platforms'}`;
+
+    const tags = $('detailTags');
+    tags.innerHTML = '';
+    (post.tags || []).forEach(t=>{
+      const span = document.createElement('span');
+      span.className = 'detail-tag';
+      span.textContent = t;
+      tags.appendChild(span);
+    });
+
+    const panel = $('detailPanel');
+    panel.classList.add('show');
+    setTimeout(()=>panel.scrollIntoView({behavior:'smooth',block:'nearest'}),100);
+
+    // Copy buttons
+    $('copyFullIdea').onclick = async () => {
+      const text = `Day ${dayNum} — ${pm.label}\n${post.title}\n\n${post.idea}\n\nCaption opener: ${post.starter}\n\nHashtags: ${(post.tags||[]).join(' ')}`;
+      await copyText(text, $('copyFullIdea'));
+    };
+    $('copyTagsOnly').onclick = async () => {
+      await copyText((post.tags||[]).join(' '), $('copyTagsOnly'));
+    };
+  }
+
+  async function copyText(text, btn){
+    try { await navigator.clipboard.writeText(text); }
+    catch { const ta=document.createElement('textarea'); ta.value=text; document.body.appendChild(ta); ta.select(); try{document.execCommand('copy');}catch(_){} document.body.removeChild(ta); }
+    const orig = btn.innerHTML;
+    btn.classList.add('copied');
+    btn.textContent = '✓ Copied!';
+    setTimeout(()=>{ btn.classList.remove('copied'); btn.innerHTML=orig; }, 1800);
+  }
+
+  // GENERATE
+  $('genBtn').addEventListener('click', ()=>{
+    const industry = $('industrySelect').value;
+    const [y, m]   = $('monthSelect').value.split('-').map(Number);
+    currentYear    = y;
+    currentMonth   = m;
+
+    generatedPosts = generatePosts(industry);
+    buildCalendar(generatedPosts, y, m);
+
+    const industryLabel = $('industrySelect').options[$('industrySelect').selectedIndex].text;
+    $('calTitle').textContent    = `${MONTHS[m]} ${y}`;
+    $('calSubtitle').textContent = `30 post ideas for ${industryLabel}`;
+
+    $('calCard').style.display = '';
+    $('viewToggle').style.display = '';
+    $('detailPanel').classList.remove('show');
+    selectedDay = null;
+
+    setTimeout(()=>$('calCard').scrollIntoView({behavior:'smooth',block:'start'}),100);
+  });
+
+  // VIEW TOGGLE
+  $('calViewBtn').addEventListener('click', ()=>{
+    $('calViewBtn').classList.add('active');
+    $('listViewBtn').classList.remove('active');
+    $('calView').classList.remove('hide');
+    $('listView').classList.remove('show');
+  });
+  $('listViewBtn').addEventListener('click', ()=>{
+    $('listViewBtn').classList.add('active');
+    $('calViewBtn').classList.remove('active');
+    $('calView').classList.add('hide');
+    $('listView').classList.add('show');
+  });
+
+  // CLOSE DETAIL
+  $('detailClose').addEventListener('click', ()=>{
+    $('detailPanel').classList.remove('show');
+    document.querySelectorAll('.cal-cell, .list-item').forEach(el=>el.classList.remove('selected'));
+    selectedDay = null;
+  });
+
+  // COPY ALL
+  $('copyAllBtn').addEventListener('click', async ()=>{
+    if(!generatedPosts.length) return;
+    const industryLabel = $('industrySelect').options[$('industrySelect').selectedIndex].text;
+    let text = `30-DAY SOCIAL MEDIA CONTENT CALENDAR\n${MONTHS[currentMonth]} ${currentYear} · ${industryLabel}\nGenerated by AutoComply · autocomply.co.za\n\n`;
+    generatedPosts.forEach((p,i)=>{
+      const pm = PILLAR_META[p.pillar];
+      text += `--- DAY ${i+1}: ${pm.label.toUpperCase()} ---\n`;
+      text += `Title: ${p.title}\n`;
+      text += `Idea: ${p.idea}\n`;
+      text += `Caption opener: ${p.starter}\n`;
+      text += `Platform: ${PLATFORM_REC[p.rec]||'All'}\n`;
+      text += `Hashtags: ${(p.tags||[]).join(' ')}\n\n`;
+    });
+    await copyText(text, $('copyAllBtn'));
+  });
+
+  // PRINT
+  $('printBtn').addEventListener('click', ()=>window.print());
+})();
+</script>
+</body>
+</html>

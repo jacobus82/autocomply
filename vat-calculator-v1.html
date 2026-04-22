@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>VAT Calculator — AutoComply</title>
+<meta name="description" content="Free South African VAT calculator. Add or remove VAT instantly at 15%, zero-rated or a custom rate. Bidirectional inputs with live breakdown.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;700;800&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+
+:root{
+  --navy:#0B1628;
+  --navy-soft:#1A2842;
+  --blue:#1A56DB;
+  --blue-soft:#EEF3FF;
+  --blue-line:rgba(26,86,219,.15);
+  --green:#059669;
+  --green-soft:#ECFDF5;
+  --amber:#D97706;
+  --amber-soft:#FEF3C7;
+  --red:#DC2626;
+  --red-soft:#FEE2E2;
+  --muted:#5A6A82;
+  --muted2:#8A96A8;
+  --border:#DDE5F0;
+  --border-strong:#C5D1E4;
+  --bg:#F8FAFF;
+  --bg2:#EEF3FF;
+  --white:#fff;
+  --sh:0 1px 4px rgba(11,22,40,.07);
+  --sh-strong:0 4px 20px rgba(11,22,40,.10);
+}
+
+html,body{background:var(--bg);color:var(--navy);font-family:'Outfit',sans-serif;-webkit-font-smoothing:antialiased;min-height:100vh;font-size:15px;line-height:1.5;}
+
+/* ─────────── TOPBAR ─────────── */
+.topbar{background:var(--navy);padding:14px 20px;border-bottom:1px solid rgba(255,255,255,.05);}
+.topbar-inner{max-width:1040px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;}
+.brand{font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;color:#fff;letter-spacing:-.3px;text-decoration:none;}
+.brand span{color:#60AEFF;}
+.back{font-size:12.5px;color:rgba(255,255,255,.55);text-decoration:none;display:inline-flex;align-items:center;gap:6px;transition:color .15s;}
+.back:hover{color:#fff;}
+
+/* ─────────── HERO ─────────── */
+.hero{background:var(--navy);padding:34px 20px 60px;position:relative;overflow:hidden;}
+.hero::before{content:"";position:absolute;top:-100px;right:-100px;width:400px;height:400px;background:radial-gradient(circle,rgba(26,86,219,.15),transparent 70%);pointer-events:none;}
+.hero-inner{max-width:1040px;margin:0 auto;position:relative;z-index:1;}
+.hero-tag{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:14px;}
+.hero-h{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(26px,5vw,38px);font-weight:800;color:#fff;letter-spacing:-.6px;line-height:1.15;margin-bottom:12px;max-width:680px;}
+.hero-sub{font-size:clamp(14px,2.2vw,16px);color:rgba(255,255,255,.65);max-width:620px;line-height:1.55;}
+
+/* ─────────── LAYOUT ─────────── */
+.wrap{max-width:1040px;margin:0 auto;padding:0 20px;}
+.main{margin-top:-38px;margin-bottom:32px;position:relative;z-index:2;}
+
+.card{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:28px;box-shadow:var(--sh);margin-bottom:20px;}
+.card-h{font-family:'Bricolage Grotesque',sans-serif;font-size:17px;font-weight:700;color:var(--navy);margin-bottom:4px;letter-spacing:-.2px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.card-sub{font-size:13px;color:var(--muted);margin-bottom:22px;line-height:1.55;}
+
+/* ─────────── RATE SELECTOR ─────────── */
+.rate-section{margin-bottom:24px;}
+.rate-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;}
+.rate-chips{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+.chip{font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;color:var(--navy);background:var(--bg);border:1px solid var(--border);border-radius:9px;padding:9px 18px;cursor:pointer;transition:all .15s;min-width:66px;}
+.chip:hover{background:var(--bg2);border-color:var(--border-strong);}
+.chip.active{background:var(--navy);color:#fff;border-color:var(--navy);}
+.chip.active:hover{background:var(--navy-soft);}
+.chip-custom{display:flex;align-items:center;gap:7px;padding:6px 10px 6px 14px;}
+.chip-custom.active{background:var(--navy);color:#fff;border-color:var(--navy);}
+.chip-custom input{width:52px;padding:5px 6px;font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;text-align:center;border:1px solid var(--border);border-radius:6px;background:var(--white);color:var(--navy);-moz-appearance:textfield;}
+.chip-custom input::-webkit-outer-spin-button,.chip-custom input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
+.chip-custom input:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 2px rgba(26,86,219,.12);}
+.chip-custom-suffix{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;color:var(--muted);}
+.chip-custom.active .chip-custom-suffix{color:rgba(255,255,255,.7);}
+
+/* ─────────── CALCULATOR ─────────── */
+.calc-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+@media (max-width:680px){.calc-grid{grid-template-columns:1fr;gap:14px;}}
+
+.calc-field{background:var(--bg);border:2px solid var(--border);border-radius:12px;padding:18px 20px;transition:all .15s;position:relative;}
+.calc-field.focused{border-color:var(--blue);background:var(--white);box-shadow:0 0 0 3px rgba(26,86,219,.08);}
+.calc-field-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;}
+.calc-field-amount-wrap{display:flex;align-items:baseline;gap:6px;}
+.calc-field-prefix{font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;color:var(--muted);line-height:1;}
+.calc-field-input{flex:1;min-width:0;font-family:'Bricolage Grotesque',sans-serif;font-size:28px;font-weight:700;color:var(--navy);background:transparent;border:none;outline:none;padding:0;letter-spacing:-.5px;-moz-appearance:textfield;width:100%;}
+.calc-field-input::-webkit-outer-spin-button,.calc-field-input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
+.calc-field-input::placeholder{color:var(--muted2);font-weight:600;}
+.calc-field-hint{font-size:11.5px;color:var(--muted2);margin-top:6px;}
+
+/* swap arrow (desktop only) */
+.calc-swap{display:flex;align-items:center;justify-content:center;padding:0 4px;}
+@media (max-width:680px){.calc-swap{display:none;}}
+.calc-swap-ico{width:34px;height:34px;border-radius:50%;background:var(--bg2);color:var(--blue);display:flex;align-items:center;justify-content:center;font-size:15px;border:1px solid var(--blue-line);}
+
+/* ─────────── VAT DISPLAY ─────────── */
+.vat-display{margin-top:20px;background:linear-gradient(135deg,var(--navy) 0%,var(--navy-soft) 100%);border-radius:12px;padding:22px 24px;position:relative;overflow:hidden;}
+.vat-display::before{content:"";position:absolute;top:-60px;right:-60px;width:180px;height:180px;background:radial-gradient(circle,rgba(96,174,255,.15),transparent 70%);pointer-events:none;}
+.vat-display-top{display:flex;align-items:center;justify-content:space-between;gap:12px;position:relative;z-index:1;flex-wrap:wrap;}
+.vat-display-left{min-width:0;flex:1;}
+.vat-display-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:6px;}
+.vat-display-value{font-family:'Bricolage Grotesque',sans-serif;font-size:34px;font-weight:800;color:#fff;letter-spacing:-.8px;line-height:1;}
+.vat-display-sub{font-size:12.5px;color:rgba(255,255,255,.55);margin-top:6px;font-family:'JetBrains Mono',monospace;}
+.copy-btn{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);color:#fff;font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;padding:8px 14px;border-radius:8px;cursor:pointer;transition:all .15s;display:inline-flex;align-items:center;gap:6px;}
+.copy-btn:hover{background:rgba(255,255,255,.18);}
+.copy-btn.copied{background:#10B981;border-color:#10B981;}
+
+/* ─────────── BREAKDOWN BAR ─────────── */
+.breakdown{margin-top:22px;}
+.breakdown-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;}
+.breakdown-bar{display:flex;height:40px;border-radius:9px;overflow:hidden;background:var(--bg);border:1px solid var(--border);}
+.breakdown-seg{display:flex;align-items:center;justify-content:center;color:#fff;font-family:'JetBrains Mono',monospace;font-size:11.5px;font-weight:600;letter-spacing:.5px;transition:flex .3s ease;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0 8px;}
+.breakdown-seg.ex{background:var(--blue);}
+.breakdown-seg.vat{background:var(--green);}
+.breakdown-legend{display:flex;justify-content:space-between;margin-top:10px;gap:12px;flex-wrap:wrap;font-size:12px;color:var(--muted);}
+.breakdown-legend-item{display:flex;align-items:center;gap:6px;}
+.breakdown-legend-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;}
+.breakdown-legend-dot.ex{background:var(--blue);}
+.breakdown-legend-dot.vat{background:var(--green);}
+
+/* actions */
+.actions{display:flex;justify-content:flex-end;gap:8px;margin-top:18px;flex-wrap:wrap;}
+.action-btn{font-family:'Outfit',sans-serif;font-size:12.5px;font-weight:600;padding:9px 15px;border-radius:8px;cursor:pointer;border:1px solid var(--border);background:var(--white);color:var(--muted);transition:all .15s;display:inline-flex;align-items:center;gap:6px;}
+.action-btn:hover{border-color:var(--border-strong);background:var(--bg);color:var(--navy);}
+
+/* ─────────── REFERENCE ─────────── */
+.ref-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+@media (max-width:700px){.ref-grid{grid-template-columns:1fr;}}
+
+.ref-block{}
+.ref-block-h{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--blue);margin-bottom:10px;}
+.ref-row{display:flex;justify-content:space-between;align-items:flex-start;padding:11px 0;border-bottom:1px solid var(--border);gap:10px;}
+.ref-row:last-child{border-bottom:none;}
+.ref-row-name{font-size:13px;color:var(--navy);font-weight:500;}
+.ref-row-val{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:var(--navy);white-space:nowrap;}
+.ref-row-sub{font-size:11.5px;color:var(--muted2);margin-top:2px;}
+
+.zero-rated-list{display:flex;flex-wrap:wrap;gap:6px;}
+.zr-tag{font-size:11.5px;color:var(--navy);background:var(--green-soft);border:1px solid rgba(5,150,105,.18);padding:4px 9px;border-radius:6px;font-weight:500;}
+.zr-note{font-size:12px;color:var(--muted);line-height:1.55;margin-top:12px;padding-top:12px;border-top:1px dashed var(--border);}
+.zr-note strong{color:var(--navy);font-weight:600;}
+
+/* ─────────── EXPLAINER ─────────── */
+.explain-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px;}
+.explain-item-h{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--blue);margin-bottom:7px;}
+.explain-item-body{font-size:13.5px;color:var(--navy);line-height:1.6;}
+.explain-item-body strong{font-weight:700;}
+
+/* ─────────── CTA ─────────── */
+.cta-inner{background:var(--navy);border-radius:16px;padding:28px 26px;text-align:center;position:relative;overflow:hidden;}
+.cta-inner::before{content:"";position:absolute;top:-80px;left:-80px;width:240px;height:240px;background:radial-gradient(circle,rgba(26,86,219,.28),transparent 70%);pointer-events:none;}
+.cta-inner::after{content:"";position:absolute;bottom:-80px;right:-80px;width:240px;height:240px;background:radial-gradient(circle,rgba(96,174,255,.18),transparent 70%);pointer-events:none;}
+.cta-h{font-family:'Bricolage Grotesque',sans-serif;font-size:21px;font-weight:700;color:#fff;margin-bottom:8px;letter-spacing:-.3px;position:relative;z-index:1;}
+.cta-sub{font-size:14px;color:rgba(255,255,255,.65);margin-bottom:18px;max-width:500px;margin-left:auto;margin-right:auto;position:relative;z-index:1;line-height:1.55;}
+.cta-btn{display:inline-flex;align-items:center;gap:8px;background:#25D366;color:#fff;font-family:'Outfit',sans-serif;font-size:14px;font-weight:600;padding:12px 22px;border-radius:9px;text-decoration:none;position:relative;z-index:1;transition:transform .15s;}
+.cta-btn:hover{transform:translateY(-1px);}
+
+/* ─────────── FOOTER ─────────── */
+.foot{max-width:1040px;margin:20px auto 0;padding:26px 20px;text-align:center;font-size:12px;color:var(--muted2);border-top:1px solid var(--border);}
+.foot a{color:var(--muted);text-decoration:none;font-weight:600;}
+.foot .fine{font-size:11px;color:var(--muted2);margin-top:8px;max-width:640px;margin-left:auto;margin-right:auto;line-height:1.55;}
+
+/* ─────────── RESPONSIVE ─────────── */
+@media (max-width:620px){
+  .card{padding:22px 18px;}
+  .hero{padding:28px 20px 54px;}
+  .main{margin-top:-36px;}
+  .cta-inner{padding:26px 20px;}
+  .vat-display{padding:20px 18px;}
+  .vat-display-value{font-size:30px;}
+}
+</style>
+</head>
+<body>
+
+<!-- ─── TOPBAR ─── -->
+<div class="topbar">
+  <div class="topbar-inner">
+    <a href="https://autocomply.co.za" class="brand">Auto<span>Comply</span></a>
+    <a href="https://autocomply.co.za/#tools" class="back">← All tools</a>
+  </div>
+</div>
+
+<!-- ─── HERO ─── -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-tag">Free Tool · VAT Calculator</div>
+    <h1 class="hero-h">Add or remove VAT instantly.</h1>
+    <p class="hero-sub">Type any amount in either field. Works at the standard 15% South African rate, zero-rated, or any custom rate you set. Updates live as you type.</p>
+  </div>
+</section>
+
+<!-- ─── MAIN ─── -->
+<main class="main wrap">
+
+  <!-- CALCULATOR -->
+  <div class="card">
+
+    <!-- Rate selector -->
+    <div class="rate-section">
+      <div class="rate-label">VAT rate</div>
+      <div class="rate-chips">
+        <button class="chip" data-rate="0" type="button">0%</button>
+        <button class="chip active" data-rate="15" type="button">15%</button>
+        <div class="chip chip-custom" id="customChip">
+          <input id="customRate" type="number" inputmode="decimal" min="0" max="100" step="0.1" placeholder="—">
+          <span class="chip-custom-suffix">%</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Calculator fields -->
+    <div class="calc-grid">
+      <div class="calc-field" id="exField">
+        <div class="calc-field-label">Excluding VAT</div>
+        <div class="calc-field-amount-wrap">
+          <span class="calc-field-prefix">R</span>
+          <input id="exInput" class="calc-field-input" type="number" inputmode="decimal" placeholder="0.00" min="0" step="0.01">
+        </div>
+        <div class="calc-field-hint">The amount before VAT is added</div>
+      </div>
+
+      <div class="calc-swap">
+        <div class="calc-swap-ico">↔</div>
+      </div>
+
+      <div class="calc-field" id="incField">
+        <div class="calc-field-label">Including VAT</div>
+        <div class="calc-field-amount-wrap">
+          <span class="calc-field-prefix">R</span>
+          <input id="incInput" class="calc-field-input" type="number" inputmode="decimal" placeholder="0.00" min="0" step="0.01">
+        </div>
+        <div class="calc-field-hint">The total amount with VAT included</div>
+      </div>
+    </div>
+
+    <!-- VAT amount -->
+    <div class="vat-display">
+      <div class="vat-display-top">
+        <div class="vat-display-left">
+          <div class="vat-display-label">VAT amount <span id="rateTag" style="color:rgba(255,255,255,.4);">at 15%</span></div>
+          <div class="vat-display-value" id="vatAmount">R 0.00</div>
+          <div class="vat-display-sub" id="vatSub">Enter an amount above to calculate</div>
+        </div>
+        <button class="copy-btn" id="copyBtn" type="button" title="Copy VAT amount">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          <span id="copyLabel">Copy</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Breakdown bar -->
+    <div class="breakdown" id="breakdown" style="display:none;">
+      <div class="breakdown-label">How the inclusive total breaks down</div>
+      <div class="breakdown-bar">
+        <div class="breakdown-seg ex" id="segEx"></div>
+        <div class="breakdown-seg vat" id="segVat"></div>
+      </div>
+      <div class="breakdown-legend">
+        <div class="breakdown-legend-item">
+          <span class="breakdown-legend-dot ex"></span>
+          <span id="legendEx">Ex-VAT R 0 (0%)</span>
+        </div>
+        <div class="breakdown-legend-item">
+          <span class="breakdown-legend-dot vat"></span>
+          <span id="legendVat">VAT R 0 (0%)</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="action-btn" id="clearBtn" type="button">✕ Clear</button>
+    </div>
+  </div>
+
+  <!-- REFERENCE -->
+  <div class="card">
+    <div class="card-h">SA VAT at a glance</div>
+    <div class="card-sub">Current rates, registration thresholds and common zero-rated items.</div>
+
+    <div class="ref-grid">
+      <div class="ref-block">
+        <div class="ref-block-h">Registration thresholds</div>
+        <div class="ref-row">
+          <div>
+            <div class="ref-row-name">Compulsory registration</div>
+            <div class="ref-row-sub">Annual taxable turnover</div>
+          </div>
+          <div class="ref-row-val">R 2.3m</div>
+        </div>
+        <div class="ref-row">
+          <div>
+            <div class="ref-row-name">Voluntary registration</div>
+            <div class="ref-row-sub">Annual taxable turnover</div>
+          </div>
+          <div class="ref-row-val">R 120 000</div>
+        </div>
+        <div class="ref-row">
+          <div>
+            <div class="ref-row-name">Standard VAT rate</div>
+            <div class="ref-row-sub">Applied to most goods and services</div>
+          </div>
+          <div class="ref-row-val">15%</div>
+        </div>
+        <div class="zr-note">
+          Thresholds were raised from R 1m compulsory and R 50 000 voluntary effective <strong>1 April 2026</strong>, giving small SA businesses more runway before VAT registration becomes mandatory.
+        </div>
+      </div>
+
+      <div class="ref-block">
+        <div class="ref-block-h">Common zero-rated items (0% VAT)</div>
+        <div class="zero-rated-list">
+          <span class="zr-tag">Brown bread</span>
+          <span class="zr-tag">Maize meal</span>
+          <span class="zr-tag">Samp</span>
+          <span class="zr-tag">Rice</span>
+          <span class="zr-tag">Dried beans</span>
+          <span class="zr-tag">Fresh fruit</span>
+          <span class="zr-tag">Fresh vegetables</span>
+          <span class="zr-tag">Canned vegetables</span>
+          <span class="zr-tag">Vegetable oil</span>
+          <span class="zr-tag">Milk &amp; cultured milk</span>
+          <span class="zr-tag">Dairy liquid blends</span>
+          <span class="zr-tag">Eggs</span>
+          <span class="zr-tag">Edible offal</span>
+          <span class="zr-tag">Pilchards in tins</span>
+          <span class="zr-tag">Paraffin</span>
+          <span class="zr-tag">Exports</span>
+        </div>
+        <div class="zr-note">
+          <strong>Zero-rated ≠ exempt.</strong> On zero-rated supplies you charge 0% VAT but can still claim input VAT back. On exempt supplies (financial services, residential rent, public transport) you charge no VAT and can't claim input VAT.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXPLAINER -->
+  <div class="card">
+    <div class="card-h">How to use this calculator</div>
+    <div class="card-sub">Three everyday scenarios — the tool handles all of them the same way.</div>
+
+    <div class="explain-grid">
+      <div>
+        <div class="explain-item-h">Adding VAT to a quote</div>
+        <div class="explain-item-body">You quoted a client <strong>R 10 000 ex-VAT</strong>. Type 10 000 into the <em>Excluding</em> field. You'll see the VAT amount (R 1 500) and the total invoice value (R 11 500) immediately.</div>
+      </div>
+      <div>
+        <div class="explain-item-h">Extracting VAT from a total</div>
+        <div class="explain-item-body">A customer paid <strong>R 1 150 inclusive</strong>. Type 1 150 into the <em>Including</em> field. You'll see the ex-VAT portion (R 1 000) and the VAT you must declare (R 150).</div>
+      </div>
+      <div>
+        <div class="explain-item-h">Working with zero-rated items</div>
+        <div class="explain-item-body">If you supply <strong>zero-rated goods</strong> — bread, maize meal, fresh produce, exports — click the <em>0%</em> chip. VAT amount drops to R 0 while the ex-VAT and inclusive values remain the same.</div>
+      </div>
+      <div>
+        <div class="explain-item-h">Historical or custom rates</div>
+        <div class="explain-item-body">For historical calculations (14% pre-April 2018) or hypothetical scenarios, type any value into the <em>Custom</em> chip. The calculation updates instantly at your chosen rate.</div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- ─── CTA ─── -->
+<div class="wrap" style="margin-bottom:30px;">
+  <div class="cta-inner">
+    <div class="cta-h">Approaching the R 2.3m threshold?</div>
+    <p class="cta-sub">Once your turnover crosses R 2.3 million in a 12-month period, VAT registration becomes compulsory. We can guide you through SARS registration, eFiling setup, and the admin that follows.</p>
+    <a href="https://wa.me/27670113108?text=Hi%20AutoComply%2C%20I%20used%20the%20VAT%20Calculator%20and%20want%20help%20with%20VAT%20registration%20or%20compliance." class="cta-btn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Chat on WhatsApp
+    </a>
+  </div>
+</div>
+
+<!-- ─── FOOTER ─── -->
+<div class="foot">
+  AutoComply · Practical tools for South African business owners · <a href="https://autocomply.co.za">autocomply.co.za</a>
+  <div class="fine">Reflects the current SA VAT rate of 15% and the registration thresholds effective 1 April 2026. This calculator is for general guidance — for advice on specific transactions or disputes, speak to a registered tax practitioner or SARS directly.</div>
+</div>
+
+<script>
+(function(){
+  // ─────────── STATE ───────────
+  const state = {
+    rate: 15,
+    lastEdited: 'ex' // 'ex' or 'inc'
+  };
+
+  // ─────────── ELEMENTS ───────────
+  const $ = id => document.getElementById(id);
+  const exInput = $('exInput'), incInput = $('incInput');
+  const exField = $('exField'), incField = $('incField');
+  const customRate = $('customRate');
+  const customChip = $('customChip');
+  const chips = document.querySelectorAll('.chip[data-rate]');
+
+  // ─────────── UTILITIES ───────────
+  const fmtR = n => 'R ' + n.toLocaleString('en-ZA', {minimumFractionDigits:2, maximumFractionDigits:2});
+  const fmtPct = n => n.toLocaleString('en-ZA', {minimumFractionDigits:1, maximumFractionDigits:1}) + '%';
+  const fmtRate = r => {
+    if(Number.isInteger(r)) return r + '%';
+    return r.toLocaleString('en-ZA', {minimumFractionDigits:1, maximumFractionDigits:2}) + '%';
+  };
+
+  // ─────────── CORE CALC ───────────
+  function recalcFromEx(){
+    const ex = parseFloat(exInput.value);
+    if(isNaN(ex) || ex < 0){
+      incInput.value = '';
+      render(null, null);
+      return;
+    }
+    const factor = 1 + state.rate / 100;
+    const inc = ex * factor;
+    incInput.value = inc.toFixed(2);
+    const vat = ex * (state.rate / 100);
+    render(ex, vat);
+  }
+
+  function recalcFromInc(){
+    const inc = parseFloat(incInput.value);
+    if(isNaN(inc) || inc < 0){
+      exInput.value = '';
+      render(null, null);
+      return;
+    }
+    const factor = 1 + state.rate / 100;
+    const ex = inc / factor;
+    exInput.value = ex.toFixed(2);
+    const vat = inc - ex;
+    render(ex, vat);
+  }
+
+  function recalc(){
+    if(state.lastEdited === 'ex') recalcFromEx();
+    else recalcFromInc();
+  }
+
+  // ─────────── RENDER ───────────
+  function render(ex, vat){
+    const vatAmountEl = $('vatAmount');
+    const vatSubEl    = $('vatSub');
+    const rateTagEl   = $('rateTag');
+    const breakdown   = $('breakdown');
+    const segEx       = $('segEx');
+    const segVat      = $('segVat');
+    const legendEx    = $('legendEx');
+    const legendVat   = $('legendVat');
+
+    rateTagEl.textContent = 'at ' + fmtRate(state.rate);
+
+    if(ex === null || vat === null){
+      vatAmountEl.textContent = 'R 0.00';
+      vatSubEl.textContent = 'Enter an amount above to calculate';
+      breakdown.style.display = 'none';
+      return;
+    }
+
+    const inc = ex + vat;
+    vatAmountEl.textContent = fmtR(vat);
+
+    if(state.rate === 0){
+      vatSubEl.textContent = 'Zero-rated — ex-VAT and inclusive amounts are equal';
+    } else {
+      vatSubEl.textContent = fmtR(ex) + ' ex-VAT  +  ' + fmtR(vat) + ' VAT  =  ' + fmtR(inc) + ' inclusive';
+    }
+
+    // Breakdown bar
+    if(inc > 0){
+      breakdown.style.display = 'block';
+      const exPct  = (ex / inc) * 100;
+      const vatPct = 100 - exPct;
+      segEx.style.flex  = exPct;
+      segVat.style.flex = vatPct;
+      segEx.textContent  = exPct >= 18 ? fmtR(ex) : (exPct >= 8 ? '•' : '');
+      segVat.textContent = vatPct >= 18 ? fmtR(vat) : (vatPct >= 8 ? '•' : '');
+      legendEx.textContent  = 'Ex-VAT ' + fmtR(ex) + ' (' + fmtPct(exPct) + ')';
+      legendVat.textContent = 'VAT ' + fmtR(vat) + ' (' + fmtPct(vatPct) + ')';
+      // Handle zero-rated: only show ex segment
+      if(state.rate === 0){
+        segVat.style.flex = 0;
+        segEx.style.flex = 1;
+      }
+    } else {
+      breakdown.style.display = 'none';
+    }
+  }
+
+  // ─────────── RATE HANDLERS ───────────
+  function setRate(newRate, updateCustomField){
+    state.rate = newRate;
+    // Update active chip styling
+    chips.forEach(c => c.classList.toggle('active', parseFloat(c.dataset.rate) === newRate));
+    const isCustom = (newRate !== 0 && newRate !== 15);
+    customChip.classList.toggle('active', isCustom);
+    if(updateCustomField && !isCustom){
+      customRate.value = '';
+    }
+    recalc();
+  }
+
+  chips.forEach(c => {
+    c.addEventListener('click', () => {
+      const r = parseFloat(c.dataset.rate);
+      setRate(r, true);
+    });
+  });
+
+  customRate.addEventListener('focus', () => {
+    customChip.classList.add('active');
+    chips.forEach(c => c.classList.remove('active'));
+  });
+
+  customRate.addEventListener('input', () => {
+    let v = parseFloat(customRate.value);
+    if(isNaN(v) || v < 0) v = 0;
+    if(v > 100) v = 100;
+    state.rate = v;
+    chips.forEach(c => c.classList.remove('active'));
+    customChip.classList.add('active');
+    recalc();
+  });
+
+  // ─────────── INPUT HANDLERS ───────────
+  exInput.addEventListener('input', () => {
+    state.lastEdited = 'ex';
+    recalcFromEx();
+  });
+  exInput.addEventListener('focus', () => {
+    exField.classList.add('focused');
+    incField.classList.remove('focused');
+  });
+  exInput.addEventListener('blur', () => exField.classList.remove('focused'));
+
+  incInput.addEventListener('input', () => {
+    state.lastEdited = 'inc';
+    recalcFromInc();
+  });
+  incInput.addEventListener('focus', () => {
+    incField.classList.add('focused');
+    exField.classList.remove('focused');
+  });
+  incInput.addEventListener('blur', () => incField.classList.remove('focused'));
+
+  // ─────────── COPY BUTTON ───────────
+  $('copyBtn').addEventListener('click', async () => {
+    const text = $('vatAmount').textContent;
+    try {
+      await navigator.clipboard.writeText(text);
+      const btn = $('copyBtn');
+      const lbl = $('copyLabel');
+      btn.classList.add('copied');
+      lbl.textContent = 'Copied';
+      setTimeout(() => {
+        btn.classList.remove('copied');
+        lbl.textContent = 'Copy';
+      }, 1600);
+    } catch (e) {
+      // fallback for older browsers
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand('copy'); } catch(_){}
+      document.body.removeChild(ta);
+      $('copyLabel').textContent = 'Copied';
+      setTimeout(() => { $('copyLabel').textContent = 'Copy'; }, 1600);
+    }
+  });
+
+  // ─────────── CLEAR ───────────
+  $('clearBtn').addEventListener('click', () => {
+    exInput.value = '';
+    incInput.value = '';
+    render(null, null);
+    exInput.focus();
+  });
+
+  // Initial render
+  render(null, null);
+})();
+</script>
+
+</body>
+</html>

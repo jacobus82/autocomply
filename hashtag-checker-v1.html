@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Hashtag Relevance Checker — AutoComply</title>
+<meta name="description" content="Free hashtag relevance checker for South African businesses. Enter any hashtag and get its reach tier, SA relevance score, platform fit, and related tags instantly.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;700;800&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --navy:#0B1628;--navy-soft:#1A2842;--blue:#1A56DB;--blue-soft:#EEF3FF;
+  --blue-line:rgba(26,86,219,.15);--green:#059669;--green-soft:#ECFDF5;
+  --amber:#D97706;--amber-soft:#FEF3C7;--red:#DC2626;--red-soft:#FEE2E2;
+  --purple:#7C3AED;--purple-soft:#EDE9FE;
+  --muted:#5A6A82;--muted2:#8A96A8;--border:#DDE5F0;--border-strong:#C5D1E4;
+  --bg:#F8FAFF;--bg2:#EEF3FF;--white:#fff;
+  --sh:0 1px 4px rgba(11,22,40,.07);--sh-strong:0 4px 20px rgba(11,22,40,.10);
+  --t-massive:#DC2626;--t-large:#D97706;--t-medium:#059669;--t-niche:#1A56DB;--t-micro:#7C3AED;
+}
+html,body{background:var(--bg);color:var(--navy);font-family:'Outfit',sans-serif;-webkit-font-smoothing:antialiased;min-height:100vh;font-size:15px;line-height:1.5;}
+
+.topbar{background:var(--navy);padding:14px 20px;}
+.topbar-inner{max-width:1040px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;}
+.brand{font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;color:#fff;letter-spacing:-.3px;text-decoration:none;}
+.brand span{color:#60AEFF;}
+.back{font-size:12.5px;color:rgba(255,255,255,.55);text-decoration:none;display:inline-flex;align-items:center;gap:6px;}
+.back:hover{color:#fff;}
+
+.hero{background:var(--navy);padding:34px 20px 58px;position:relative;overflow:hidden;}
+.hero::before{content:"";position:absolute;top:-100px;right:-100px;width:400px;height:400px;background:radial-gradient(circle,rgba(124,58,237,.15),transparent 70%);pointer-events:none;}
+.hero::after{content:"";position:absolute;bottom:-80px;left:-60px;width:280px;height:280px;background:radial-gradient(circle,rgba(26,86,219,.12),transparent 70%);pointer-events:none;}
+.hero-inner{max-width:1040px;margin:0 auto;position:relative;z-index:1;}
+.hero-tag{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:14px;}
+.hero-h{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(26px,5vw,38px);font-weight:800;color:#fff;letter-spacing:-.6px;line-height:1.15;margin-bottom:12px;max-width:780px;}
+.hero-sub{font-size:clamp(14px,2.2vw,16px);color:rgba(255,255,255,.65);max-width:660px;line-height:1.55;}
+
+.wrap{max-width:1040px;margin:0 auto;padding:0 20px;}
+.main{margin-top:-36px;margin-bottom:32px;position:relative;z-index:2;}
+.card{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:26px;box-shadow:var(--sh);margin-bottom:20px;}
+.card-h{font-family:'Bricolage Grotesque',sans-serif;font-size:17px;font-weight:700;color:var(--navy);margin-bottom:4px;letter-spacing:-.2px;}
+.card-sub{font-size:13px;color:var(--muted);margin-bottom:22px;line-height:1.55;}
+.section-tag{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:2.5px;text-transform:uppercase;color:var(--purple);margin-bottom:10px;}
+
+/* ─── SEARCH ─── */
+.search-box{display:flex;gap:0;margin-bottom:10px;}
+.hash-prefix{display:flex;align-items:center;justify-content:center;padding:0 16px;background:var(--navy);color:#fff;font-family:'Bricolage Grotesque',sans-serif;font-size:22px;font-weight:800;border-radius:12px 0 0 12px;border:2px solid var(--navy);flex-shrink:0;}
+.hash-input{flex:1;padding:14px 16px;font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:700;color:var(--navy);border:2px solid var(--border);border-left:none;border-right:none;outline:none;transition:all .15s;letter-spacing:-.3px;min-width:0;background:var(--white);}
+.hash-input::placeholder{color:var(--muted2);font-weight:600;}
+.hash-input:focus{border-color:var(--purple);box-shadow:0 0 0 3px rgba(124,58,237,.1);}
+.check-btn{font-family:'Outfit',sans-serif;font-size:14px;font-weight:700;padding:0 22px;background:var(--purple);color:#fff;border:2px solid var(--purple);border-radius:0 12px 12px 0;cursor:pointer;white-space:nowrap;transition:background .15s;flex-shrink:0;}
+.check-btn:hover{background:#6D28D9;}
+
+.quick-chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px;}
+.quick-label{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted2);align-self:center;margin-right:2px;}
+.quick-chip{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;padding:5px 10px;border-radius:6px;background:var(--bg);border:1px solid var(--border);color:var(--muted);cursor:pointer;transition:all .15s;}
+.quick-chip:hover{background:var(--purple-soft);border-color:var(--purple);color:var(--purple);}
+
+/* ─── RESULT ─── */
+.result-card{display:none;background:var(--white);border:1px solid var(--border);border-radius:16px;box-shadow:var(--sh-strong);overflow:hidden;margin-bottom:20px;}
+.result-card.show{display:block;}
+
+.result-header{padding:20px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;border-bottom:1px solid var(--border);}
+.result-hashtag{font-family:'Bricolage Grotesque',sans-serif;font-size:26px;font-weight:800;color:var(--navy);letter-spacing:-.5px;}
+.result-right{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+
+/* Tier badge */
+.tier-badge{display:inline-flex;align-items:center;gap:7px;padding:7px 14px;border-radius:20px;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;}
+.tier-massive{background:#FEE2E2;color:var(--t-massive);border:1px solid rgba(220,38,38,.2);}
+.tier-large{background:#FEF3C7;color:var(--t-large);border:1px solid rgba(217,119,6,.2);}
+.tier-medium{background:#ECFDF5;color:var(--t-medium);border:1px solid rgba(5,150,105,.2);}
+.tier-niche{background:#EEF3FF;color:var(--t-niche);border:1px solid rgba(26,86,219,.2);}
+.tier-micro{background:#EDE9FE;color:var(--t-micro);border:1px solid rgba(124,58,237,.2);}
+
+/* Restricted banner */
+.restricted-banner{background:var(--red-soft);border-bottom:2px solid rgba(220,38,38,.3);padding:10px 24px;font-size:13px;color:#991B1B;display:flex;gap:8px;align-items:center;}
+.restricted-banner strong{font-weight:700;}
+
+/* ─── STATS GRID ─── */
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-bottom:1px solid var(--border);}
+@media(max-width:600px){.stats-grid{grid-template-columns:repeat(2,1fr);}}
+.stat-cell{padding:16px 20px;border-right:1px solid var(--border);}
+.stat-cell:last-child{border-right:none;}
+@media(max-width:600px){.stat-cell:nth-child(2){border-right:none;}}
+.stat-label{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted2);margin-bottom:5px;}
+.stat-value{font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:700;color:var(--navy);letter-spacing:-.3px;}
+.stat-sub{font-size:11px;color:var(--muted2);margin-top:2px;}
+
+/* SA relevance bar */
+.sa-bar-wrap{height:6px;background:var(--border);border-radius:3px;overflow:hidden;margin-top:6px;}
+.sa-bar-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--amber),var(--green));}
+
+/* ─── PLATFORM FIT ─── */
+.platform-fit{padding:18px 24px;border-bottom:1px solid var(--border);}
+.platform-fit-label{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:12px;}
+.plat-rows{display:flex;flex-direction:column;gap:8px;}
+.plat-row{display:flex;align-items:center;gap:10px;}
+.plat-name{font-size:13px;font-weight:600;color:var(--navy);width:90px;flex-shrink:0;}
+.plat-bar-wrap{flex:1;height:8px;background:var(--border);border-radius:4px;overflow:hidden;}
+.plat-bar-fill{height:100%;border-radius:4px;transition:width .4s ease;}
+.plat-score-label{font-family:'JetBrains Mono',monospace;font-size:10.5px;font-weight:600;width:60px;text-align:right;flex-shrink:0;}
+
+/* ─── RELATED TAGS ─── */
+.related-section{padding:18px 24px;border-bottom:1px solid var(--border);}
+.related-label{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:12px;}
+.related-groups{display:flex;flex-direction:column;gap:12px;}
+.related-group-label{font-size:12px;font-weight:600;color:var(--muted);margin-bottom:6px;}
+.tag-chips{display:flex;flex-wrap:wrap;gap:6px;}
+.tag-chip{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;padding:5px 10px;border-radius:6px;cursor:pointer;transition:all .15s;border:1px solid;}
+.tag-chip.massive{background:#FEE2E2;color:var(--t-massive);border-color:rgba(220,38,38,.2);}
+.tag-chip.large{background:#FEF3C7;color:var(--t-large);border-color:rgba(217,119,6,.2);}
+.tag-chip.medium{background:#ECFDF5;color:var(--t-medium);border-color:rgba(5,150,105,.2);}
+.tag-chip.niche{background:#EEF3FF;color:var(--t-niche);border-color:rgba(26,86,219,.2);}
+.tag-chip.micro{background:#EDE9FE;color:var(--t-micro);border-color:rgba(124,58,237,.2);}
+.tag-chip:hover{filter:brightness(.9);}
+
+/* ─── STRATEGY ─── */
+.strategy-section{padding:18px 24px;}
+.strategy-label{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:12px;}
+.strategy-body{font-size:13.5px;color:var(--navy);line-height:1.65;}
+.strategy-body strong{font-weight:700;}
+.strategy-body .tag-inline{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;background:var(--bg2);padding:1px 6px;border-radius:4px;color:var(--blue);}
+
+/* ─── COPY ALL ─── */
+.result-footer{padding:14px 24px;background:var(--bg);border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;}
+.copy-tags-btn{font-family:'Outfit',sans-serif;font-size:12.5px;font-weight:600;padding:8px 16px;border-radius:8px;cursor:pointer;border:1px solid var(--border);background:var(--white);color:var(--navy);display:inline-flex;align-items:center;gap:6px;transition:all .15s;}
+.copy-tags-btn:hover{background:var(--purple-soft);border-color:var(--purple);color:var(--purple);}
+.copy-tags-btn.copied{background:var(--green-soft);color:var(--green);border-color:var(--green);}
+.confidence-note{font-size:11.5px;color:var(--muted2);}
+
+/* ─── TIER GUIDE ─── */
+.tier-guide{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;}
+.tier-row{border-radius:10px;padding:12px 14px;border:1px solid;}
+.tier-row.massive{background:#FEF2F2;border-color:rgba(220,38,38,.2);}
+.tier-row.large{background:#FFFBEB;border-color:rgba(217,119,6,.2);}
+.tier-row.medium{background:#F0FDF4;border-color:rgba(5,150,105,.2);}
+.tier-row.niche{background:#EFF6FF;border-color:rgba(26,86,219,.2);}
+.tier-row.micro{background:#F5F3FF;border-color:rgba(124,58,237,.2);}
+.tier-row-header{display:flex;align-items:center;gap:7px;margin-bottom:5px;}
+.tier-row-icon{font-size:14px;}
+.tier-row-name{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;}
+.tier-row.massive .tier-row-name{color:var(--t-massive);}
+.tier-row.large  .tier-row-name{color:var(--t-large);}
+.tier-row.medium .tier-row-name{color:var(--t-medium);}
+.tier-row.niche  .tier-row-name{color:var(--t-niche);}
+.tier-row.micro  .tier-row-name{color:var(--t-micro);}
+.tier-row-vol{font-size:12px;font-weight:700;color:var(--navy);margin-bottom:3px;}
+.tier-row-advice{font-size:11.5px;color:var(--muted);line-height:1.5;}
+
+/* ─── SA MIX GUIDE ─── */
+.mix-guide{background:var(--navy);border-radius:12px;padding:20px 24px;color:#fff;}
+.mix-guide-h{font-family:'Bricolage Grotesque',sans-serif;font-size:16px;font-weight:700;margin-bottom:12px;letter-spacing:-.2px;}
+.mix-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;font-size:13px;}
+.mix-row:last-child{margin-bottom:0;}
+.mix-count{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.mix-row.massive .mix-count{background:rgba(220,38,38,.3);color:#FCA5A5;}
+.mix-row.large   .mix-count{background:rgba(217,119,6,.3);color:#FCD34D;}
+.mix-row.medium  .mix-count{background:rgba(5,150,105,.3);color:#6EE7B7;}
+.mix-row.niche   .mix-count{background:rgba(26,86,219,.3);color:#93C5FD;}
+.mix-row.micro   .mix-count{background:rgba(124,58,237,.3);color:#C4B5FD;}
+.mix-text{color:rgba(255,255,255,.85);}
+.mix-text strong{color:#fff;}
+
+/* ─── CTA ─── */
+.cta-inner{background:var(--navy);border-radius:16px;padding:28px 26px;text-align:center;position:relative;overflow:hidden;}
+.cta-inner::before{content:"";position:absolute;top:-80px;left:-80px;width:240px;height:240px;background:radial-gradient(circle,rgba(124,58,237,.2),transparent 70%);pointer-events:none;}
+.cta-inner::after{content:"";position:absolute;bottom:-80px;right:-80px;width:240px;height:240px;background:radial-gradient(circle,rgba(96,174,255,.18),transparent 70%);pointer-events:none;}
+.cta-h{font-family:'Bricolage Grotesque',sans-serif;font-size:21px;font-weight:700;color:#fff;margin-bottom:8px;letter-spacing:-.3px;position:relative;z-index:1;}
+.cta-sub{font-size:14px;color:rgba(255,255,255,.65);margin-bottom:18px;max-width:520px;margin-left:auto;margin-right:auto;position:relative;z-index:1;line-height:1.55;}
+.cta-btn{display:inline-flex;align-items:center;gap:8px;background:#25D366;color:#fff;font-family:'Outfit',sans-serif;font-size:14px;font-weight:600;padding:12px 22px;border-radius:9px;text-decoration:none;position:relative;z-index:1;transition:transform .15s;}
+.cta-btn:hover{transform:translateY(-1px);}
+
+.foot{max-width:1040px;margin:20px auto 0;padding:26px 20px;text-align:center;font-size:12px;color:var(--muted2);border-top:1px solid var(--border);}
+.foot a{color:var(--muted);text-decoration:none;font-weight:600;}
+.foot .fine{font-size:11px;margin-top:8px;max-width:640px;margin-left:auto;margin-right:auto;line-height:1.55;}
+
+@media(max-width:620px){
+  .card{padding:20px 16px;}
+  .hero{padding:28px 20px 52px;}
+  .main{margin-top:-32px;}
+  .stats-grid{grid-template-columns:1fr 1fr;}
+  .stat-cell:nth-child(2){border-right:none;}
+  .stat-cell:nth-child(3){border-top:1px solid var(--border);}
+  .stat-cell:nth-child(4){border-top:1px solid var(--border);border-right:none;}
+  .result-header{flex-direction:column;align-items:flex-start;}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <a href="https://autocomply.co.za" class="brand">Auto<span>Comply</span></a>
+    <a href="https://autocomply.co.za/#tools" class="back">← All tools</a>
+  </div>
+</div>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-tag">Free Tool · Hashtag Relevance Checker</div>
+    <h1 class="hero-h">Check any hashtag — reach, SA relevance, platform fit and related tags.</h1>
+    <p class="hero-sub">Enter a hashtag and instantly see its reach tier, how much of its audience is in South Africa, which platforms it works on, and what to pair it with for the best results.</p>
+  </div>
+</section>
+
+<main class="main wrap">
+
+  <!-- SEARCH -->
+  <div class="card">
+    <div class="card-h">Check a hashtag</div>
+    <div class="card-sub">Enter with or without the # symbol. The tool checks against a curated SA business database and infers data for tags not in the database.</div>
+
+    <div class="search-box">
+      <div class="hash-prefix">#</div>
+      <input id="hashInput" class="hash-input" type="text" placeholder="SouthAfricanBusiness" maxlength="100" autocomplete="off" spellcheck="false">
+      <button class="check-btn" id="checkBtn" type="button">Check</button>
+    </div>
+
+    <div class="quick-chips">
+      <span class="quick-label">Try:</span>
+      <span class="quick-chip" data-tag="southafrica">southafrica</span>
+      <span class="quick-chip" data-tag="entrepreneur">entrepreneur</span>
+      <span class="quick-chip" data-tag="saentrepreneur">saentrepreneur</span>
+      <span class="quick-chip" data-tag="smallbusiness">smallbusiness</span>
+      <span class="quick-chip" data-tag="johannesburg">johannesburg</span>
+      <span class="quick-chip" data-tag="capetown">capetown</span>
+      <span class="quick-chip" data-tag="business">business</span>
+      <span class="quick-chip" data-tag="loadshedding">loadshedding</span>
+    </div>
+  </div>
+
+  <!-- RESULT CARD -->
+  <div class="result-card" id="resultCard">
+    <!-- populated by JS -->
+  </div>
+
+  <!-- TIER GUIDE -->
+  <div class="card">
+    <div class="card-h">Hashtag reach tiers explained</div>
+    <div class="card-sub">Bigger is not always better. For SA businesses, niche and medium tags often drive more relevant traffic than massive ones.</div>
+    <div class="tier-guide">
+      <div class="tier-row massive">
+        <div class="tier-row-header"><span class="tier-row-icon">🌍</span><span class="tier-row-name">Massive</span></div>
+        <div class="tier-row-vol">100M+ posts</div>
+        <div class="tier-row-advice">Extreme competition. SA audience is a tiny fraction. Use 1–2 max for discoverability. Never rely on them.</div>
+      </div>
+      <div class="tier-row large">
+        <div class="tier-row-header"><span class="tier-row-icon">🔵</span><span class="tier-row-name">Large</span></div>
+        <div class="tier-row-vol">10M–100M posts</div>
+        <div class="tier-row-advice">High reach, mostly global audience. Good for brand awareness but low SA-specific conversion. Use 2–3.</div>
+      </div>
+      <div class="tier-row medium">
+        <div class="tier-row-header"><span class="tier-row-icon">🟢</span><span class="tier-row-name">Medium</span></div>
+        <div class="tier-row-vol">1M–10M posts</div>
+        <div class="tier-row-advice">The sweet spot for most SA businesses. Good reach, better audience quality. Use 4–6 in your mix.</div>
+      </div>
+      <div class="tier-row niche">
+        <div class="tier-row-header"><span class="tier-row-icon">🟡</span><span class="tier-row-name">Niche</span></div>
+        <div class="tier-row-vol">100K–1M posts</div>
+        <div class="tier-row-advice">SA-specific tags often sit here. Lower reach but high audience relevance — people actively looking for SA content.</div>
+      </div>
+      <div class="tier-row micro">
+        <div class="tier-row-header"><span class="tier-row-icon">🔴</span><span class="tier-row-name">Micro</span></div>
+        <div class="tier-row-vol">Under 100K posts</div>
+        <div class="tier-row-advice">Hyper-local or niche. Very small reach but extremely targeted. Good for local events, community, specific towns.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MIX GUIDE -->
+  <div class="card">
+    <div class="card-h">The recommended SA hashtag mix</div>
+    <div class="card-sub">Instagram allows up to 30 hashtags. This mix works best for most South African business accounts aiming for a local + some global reach.</div>
+    <div class="mix-guide">
+      <div class="mix-guide-h">For a post targeting SA business clients (Instagram, 20 total):</div>
+      <div class="mix-row massive"><div class="mix-count">2</div><div class="mix-text"><strong>Massive:</strong> broad reach, global audience (#business, #entrepreneur)</div></div>
+      <div class="mix-row large"><div class="mix-count">3</div><div class="mix-text"><strong>Large:</strong> industry-specific broad tags (#smallbusiness, #marketing)</div></div>
+      <div class="mix-row medium"><div class="mix-count">6</div><div class="mix-text"><strong>Medium:</strong> SA-broad and regional tags (#southafrica, #joburg, #capetown)</div></div>
+      <div class="mix-row niche"><div class="mix-count">6</div><div class="mix-text"><strong>Niche:</strong> SA industry tags (#saentrepreneur, #southafricanbusiness)</div></div>
+      <div class="mix-row micro"><div class="mix-count">3</div><div class="mix-text"><strong>Micro:</strong> hyper-local or specific (#lydenburg, #sandtonbusiness, your suburb)</div></div>
+    </div>
+  </div>
+
+</main>
+
+<div class="wrap" style="margin-bottom:30px;">
+  <div class="cta-inner">
+    <div class="cta-h">Need a full social media content strategy?</div>
+    <p class="cta-sub">Hashtags are one piece. If you want a plan that covers what to post, when to post it, and how to convert social engagement into actual business — we can help you build that.</p>
+    <a href="https://wa.me/27670113108?text=Hi%20AutoComply%2C%20I%20used%20the%20Hashtag%20Checker%20and%20want%20help%20with%20my%20social%20media%20strategy." class="cta-btn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Chat on WhatsApp
+    </a>
+  </div>
+</div>
+
+<div class="foot">
+  AutoComply · Practical tools for South African business owners · <a href="https://autocomply.co.za">autocomply.co.za</a>
+  <div class="fine">Reach estimates are based on a curated database and pattern inference — actual post counts vary and change over time. SA relevance scores reflect typical audience geography, not live data. Use as a strategic guide, not an exact measurement.</div>
+</div>
+
+<script>
+(function(){
+  const $ = id => document.getElementById(id);
+
+  // ─── DATABASE ───
+  // tier: massive|large|medium|niche|micro
+  // saRelevance: 0-100 (% of audience likely in SA)
+  // platforms: {ig,li,fb,tt,tw} 0-100 score
+  // restricted: true if shadowbanned/restricted on Instagram
+  // related: {broad[], sa[], niche[]} of {tag, tier} objects
+  // strategy: string
+  const DB = {
+    // ── MASSIVE GLOBAL ──
+    business:         {tier:'massive',saR:3,vol:'900M+',platforms:{ig:90,li:95,fb:70,tt:60,tw:75},related:{broad:[{t:'marketing',r:'massive'},{t:'entrepreneur',r:'large'},{t:'success',r:'massive'}],sa:[{t:'southafricanbusiness',r:'niche'},{t:'sabusiness',r:'niche'}],niche:[{t:'businesstips',r:'large'},{t:'businessowner',r:'large'}]},strategy:'One of the highest-volume hashtags on any platform. Use it for maximum discoverability but expect your content to be buried quickly. Never rely on <span class="tag-inline">#business</span> alone — pair it with SA-specific niche tags.'},
+    marketing:        {tier:'massive',saR:4,vol:'500M+',platforms:{ig:85,li:90,fb:65,tt:55,tw:80},related:{broad:[{t:'digitalmarketing',r:'large'},{t:'socialmedia',r:'massive'},{t:'branding',r:'large'}],sa:[{t:'samarketing',r:'micro'},{t:'southafricamarketing',r:'micro'}],niche:[{t:'contentmarketing',r:'large'},{t:'marketingstrategy',r:'medium'}]},strategy:'Extremely broad. Works on LinkedIn for B2B content. On Instagram, it brings global reach with low SA conversion. Use <span class="tag-inline">#digitalmarketing</span> or <span class="tag-inline">#marketingstrategy</span> to target more effectively.'},
+    entrepreneur:     {tier:'large',saR:5,vol:'80M+',platforms:{ig:90,li:95,fb:70,tt:75,tw:80},related:{broad:[{t:'entrepreneurship',r:'large'},{t:'startup',r:'large'},{t:'success',r:'massive'}],sa:[{t:'saentrepreneur',r:'niche'},{t:'southafricanentrepreneur',r:'niche'},{t:'africanentrepreneur',r:'niche'}],niche:[{t:'entrepreneurmindset',r:'medium'},{t:'womeninbusiness',r:'medium'}]},strategy:'High-volume but popular with the right crowd on LinkedIn. On Instagram, pair with <span class="tag-inline">#saentrepreneur</span> to pull in SA-relevant audience alongside global reach.'},
+    smallbusiness:    {tier:'large',saR:8,vol:'75M+',platforms:{ig:90,li:85,fb:80,tt:65,tw:70},related:{broad:[{t:'smallbusinessowner',r:'large'},{t:'shoplocal',r:'large'},{t:'supportsmallbusiness',r:'large'}],sa:[{t:'smallbusinesssa',r:'niche'},{t:'sabusiness',r:'niche'},{t:'shoplocalsouthafrica',r:'niche'}],niche:[{t:'womenwhobuild',r:'medium'},{t:'blackbusiness',r:'medium'}]},strategy:'Good medium-term investment. SA usage is higher than most broad tags. Pair with <span class="tag-inline">#smallbusinesssa</span> and location tags to build a local audience while retaining global reach.'},
+    startup:          {tier:'large',saR:6,vol:'50M+',platforms:{ig:80,li:95,fb:60,tt:60,tw:85},related:{broad:[{t:'startuplife',r:'large'},{t:'innovation',r:'large'},{t:'tech',r:'massive'}],sa:[{t:'sastartup',r:'niche'},{t:'southafricastartup',r:'micro'},{t:'techstartupsa',r:'micro'}],niche:[{t:'venturecapital',r:'medium'},{t:'fintech',r:'medium'}]},strategy:'Strong on LinkedIn and Twitter/X for tech and VC audiences. Less effective on Instagram for traditional SA SMEs. Consider <span class="tag-inline">#sastartup</span> for a more targeted local reach.'},
+    food:             {tier:'massive',saR:5,vol:'400M+',platforms:{ig:95,li:30,fb:80,tt:90,tw:50},related:{broad:[{t:'foodphotography',r:'massive'},{t:'foodie',r:'massive'},{t:'instafood',r:'massive'}],sa:[{t:'safood',r:'medium'},{t:'southafricanfood',r:'medium'},{t:'jozifoodies',r:'niche'}],niche:[{t:'capetownfood',r:'niche'},{t:'durbaneats',r:'niche'},{t:'johannesburgrestaurants',r:'micro'}]},strategy:'Enormous tag — content gets drowned immediately. Works only when paired with niche SA food tags. For restaurants and food businesses, <span class="tag-inline">#jozifoodies</span> or <span class="tag-inline">#capetownfood</span> will convert far better.'},
+    motivation:       {tier:'massive',saR:3,vol:'200M+',platforms:{ig:85,li:80,fb:75,tt:70,tw:65},related:{broad:[{t:'motivationalquotes',r:'massive'},{t:'mindset',r:'large'},{t:'inspirational',r:'massive'}],sa:[{t:'southafricamotivation',r:'micro'}],niche:[{t:'businessmindset',r:'large'},{t:'growthmindset',r:'large'}]},strategy:'High engagement rate but very generic audience. Works best combined with industry or business-specific tags. Avoid using it alone — too saturated for meaningful reach.'},
+    fitness:          {tier:'massive',saR:6,vol:'300M+',platforms:{ig:95,li:20,fb:75,tt:90,tw:40},related:{broad:[{t:'gym',r:'massive'},{t:'workout',r:'massive'},{t:'health',r:'massive'}],sa:[{t:'safitness',r:'niche'},{t:'southafricafitness',r:'niche'},{t:'jozifit',r:'micro'}],niche:[{t:'fitnessmotivation',r:'large'},{t:'fitnessjourney',r:'large'}]},strategy:'Massive but almost entirely global. For SA fitness businesses, use <span class="tag-inline">#safitness</span> + location tags to reach local clients.'},
+
+    // ── SOUTH AFRICA SPECIFIC ──
+    southafrica:      {tier:'medium',saR:65,vol:'12M+',platforms:{ig:90,li:75,fb:85,tt:70,tw:80},related:{broad:[{t:'africa',r:'large'},{t:'travel',r:'massive'}],sa:[{t:'southafricanlife',r:'niche'},{t:'thisisafrica',r:'medium'},{t:'proudlysouthafrican',r:'niche'}],niche:[{t:'johannesburg',r:'medium'},{t:'capetown',r:'medium'},{t:'durban',r:'medium'}]},strategy:'One of the most effective SA-specific broad tags. Strong across all platforms. Use it as your primary SA-anchor tag on almost every post targeting a South African audience.'},
+    southafrican:     {tier:'medium',saR:70,vol:'8M+',platforms:{ig:85,li:70,fb:80,tt:65,tw:75},related:{broad:[{t:'southafrica',r:'medium'}],sa:[{t:'southafricanlife',r:'niche'},{t:'madeinsa',r:'niche'},{t:'proudlysouthafrican',r:'niche'}],niche:[{t:'southafricanfood',r:'medium'},{t:'southafricanbusiness',r:'niche'}]},strategy:'Slightly lower volume than <span class="tag-inline">#southafrica</span> but higher SA relevance. Use both in combination. Particularly effective for lifestyle and cultural content.'},
+    southafricanbusiness:{tier:'niche',saR:90,vol:'800K+',platforms:{ig:80,li:90,fb:70,tt:30,tw:60},related:{broad:[{t:'southafrica',r:'medium'},{t:'business',r:'massive'}],sa:[{t:'saentrepreneur',r:'niche'},{t,'sabusiness',r:'niche'},{t:'supportsmallbusiness',r:'large'}],niche:[{t:'southafricanentrepreneur',r:'niche'},{t:'blackbusiness',r:'medium'}]},strategy:'Your most important business-specific SA tag. High SA relevance (90%+), active business community, works excellently on both Instagram and LinkedIn. Use this in every business-related post.'},
+    saentrepreneur:   {tier:'niche',saR:95,vol:'500K+',platforms:{ig:85,li:90,fb:65,tt:25,tw:55},related:{broad:[{t:'entrepreneur',r:'large'}],sa:[{t:'southafricanbusiness',r:'niche'},{t:'sabusiness',r:'niche'},{t:'sme',r:'niche'}],niche:[{t:'blackentrepreneur',r:'niche'},{t:'womenentrepreneurs',r:'medium'}]},strategy:'Near-pure SA audience. One of the most valuable tags for SA business owners. Lower volume means less competition — your content stays visible longer. Always include this.'},
+    sabusiness:       {tier:'niche',saR:92,vol:'400K+',platforms:{ig:80,li:85,fb:70,tt:20,tw:50},related:{broad:[{t:'business',r:'massive'}],sa:[{t:'saentrepreneur',r:'niche'},{t:'southafricanbusiness',r:'niche'},{t:'madeinsa',r:'niche'}],niche:[{t:'sme',r:'niche'},{t:'southafricansmallbusiness',r:'micro'}]},strategy:'Slightly lower volume than <span class="tag-inline">#southafricanbusiness</span> but very similar audience. Use both. Particularly effective for product-based businesses.'},
+    johannesburg:     {tier:'medium',saR:85,vol:'5M+',platforms:{ig:90,li:70,fb:80,tt:60,tw:65},related:{broad:[{t:'southafrica',r:'medium'}],sa:[{t:'jozi',r:'medium'},{t:'joburg',r:'medium'},{t:'jozilife',r:'niche'}],niche:[{t:'sandton',r:'niche'},{t:'soweto',r:'niche'},{t:'johannesburgbusiness',r:'micro'}]},strategy:'Essential for any Gauteng-based business. Drives highly relevant local traffic. Use alongside <span class="tag-inline">#jozi</span> and <span class="tag-inline">#joburg</span> for maximum Johannesburg coverage.'},
+    capetown:         {tier:'medium',saR:80,vol:'8M+',platforms:{ig:95,li:70,fb:80,tt:65,tw:70},related:{broad:[{t:'southafrica',r:'medium'}],sa:[{t:'capetownlife',r:'niche'},{t:'capetownmag',r:'niche'},{t:'cct',r:'niche'}],niche:[{t:'capetownbusiness',r:'micro'},{t:'capetownfoodies',r:'niche'},{t:'capetownfitness',r:'micro'}]},strategy:'One of the most-followed SA city tags globally — strong tourism and lifestyle angle drives international reach too. Very effective for Cape Town businesses, especially hospitality and lifestyle.'},
+    durban:           {tier:'medium',saR:85,vol:'3M+',platforms:{ig:90,li:65,fb:80,tt:60,tw:60},related:{broad:[{t:'southafrica',r:'medium'}],sa:[{t:'durbanlife',r:'niche'},{t:'dbn',r:'niche'},{t:'durbanite',r:'niche'}],niche:[{t:'durbaneats',r:'niche'},{t:'durbanbeach',r:'niche'}]},strategy:'Essential for KwaZulu-Natal businesses. Less competitive than Joburg and Cape Town tags. Strong engagement from local community. Pair with <span class="tag-inline">#durbanite</span> for lifestyle content.'},
+    pretoria:         {tier:'medium',saR:90,vol:'1.5M+',platforms:{ig:85,li:70,fb:80,tt:55,tw:60},related:{broad:[{t:'southafrica',r:'medium'},{t:'johannesburg',r:'medium'}],sa:[{t:'tshwane',r:'niche'},{t:'pretorians',r:'micro'}],niche:[{t:'pretorialife',r:'micro'},{t:'pretoriabusiness',r:'micro'}]},strategy:'Lower volume than Joburg/Cape Town but near-pure SA audience. Less competition means better visibility. Strong for government and professional services given Pretoria\'s profile.'},
+    jozi:             {tier:'medium',saR:90,vol:'2M+',platforms:{ig:90,li:65,fb:75,tt:60,tw:65},related:{broad:[{t:'johannesburg',r:'medium'}],sa:[{t:'joburg',r:'medium'},{t:'jozilife',r:'niche'},{t:'jozikids',r:'micro'}],niche:[{t:'jozifoodies',r:'niche'},{t:'jozifit',r:'micro'}]},strategy:'More casual and community-oriented than <span class="tag-inline">#johannesburg</span>. Better for lifestyle and local community content. Use both for maximum Joburg coverage.'},
+    sme:              {tier:'niche',saR:55,vol:'400K+',platforms:{ig:60,li:90,fb:55,tt:15,tw:65},related:{broad:[{t:'smallbusiness',r:'large'},{t:'business',r:'massive'}],sa:[{t:'sabusiness',r:'niche'},{t:'saentrepreneur',r:'niche'}],niche:[{t:'smegateway',r:'micro'},{t:'smedevelopment',r:'micro'}]},strategy:'Strong on LinkedIn. Globally used but with decent SA adoption. Better fit for B2B, professional services and government-adjacent content than lifestyle brands.'},
+    madeinsa:         {tier:'niche',saR:95,vol:'300K+',platforms:{ig:85,li:60,fb:80,tt:40,tw:50},related:{broad:[{t:'southafrican',r:'medium'}],sa:[{t:'proudlysouthafrican',r:'niche'},{t:'buylocal',r:'niche'},{t:'supportlocal',r:'niche'}],niche:[{t:'southafricanproducts',r:'micro'},{t:'localisbest',r:'micro'}]},strategy:'Almost exclusively SA audience. Highly effective for product businesses, manufacturers and artisans. Resonates strongly with consumers who actively choose local products.'},
+    loadshedding:     {tier:'medium',saR:98,vol:'1M+',platforms:{ig:80,li:75,fb:85,tt:75,tw:90},related:{broad:[{t:'southafrica',r:'medium'}],sa:[{t:'eskom',r:'niche'},{t:'loadsheddingsa',r:'niche'},{t:'poweroutage',r:'micro'}],niche:[{t:'solarpanels',r:'niche'},{t:'inverter',r:'niche'},{t:'generator',r:'niche'}]},strategy:'Near-100% SA audience. Extremely high engagement — South Africans are passionate about this topic. Works well for energy businesses, but also adds SA-authenticity to any post. Light humour around load shedding performs very well.'},
+    eskom:            {tier:'niche',saR:98,vol:'600K+',platforms:{ig:70,li:70,fb:80,tt:70,tw:95},related:{broad:[{t:'loadshedding',r:'medium'}],sa:[{t:'loadsheddingsa',r:'niche'},{t:'southafrica',r:'medium'}],niche:[{t:'eskomsepush',r:'micro'},{t:'solarenergy',r:'niche'}]},strategy:'Exclusively SA. Highest engagement on Twitter/X where energy news spreads rapidly. Use carefully — mostly complaint-driven content, but works well for energy solution businesses.'},
+    braai:            {tier:'niche',saR:95,vol:'500K+',platforms:{ig:90,li:20,fb:85,tt:70,tw:40},related:{broad:[{t:'food',r:'massive'},{t:'barbecue',r:'large'}],sa:[{t:'southafricanfood',r:'medium'},{t:'proudlysouthafrican',r:'niche'},{t:'safood',r:'medium'}],niche:[{t:'braaing',r:'micro'},{t:'braaiday',r:'micro'}]},strategy:'Pure SA cultural tag. High engagement, fun content. Works especially well around National Braai Day (24 September). Great for food, beverage, appliance and outdoor brands.'},
+    blackbusiness:    {tier:'medium',saR:30,vol:'3M+',platforms:{ig:90,li:70,fb:80,tt:60,tw:65},related:{broad:[{t:'supportblackbusiness',r:'medium'}],sa:[{t:'blackentrepreneur',r:'niche'},{t:'blackowned',r:'large'}],niche:[{t:'blackbusinessowner',r:'medium'},{t:'blackentrepreneurs',r:'medium'}]},strategy:'Strong tag with active community. South African audience is around 30% of total (significant US usage). Highly effective for SA black-owned businesses. Use alongside SA-specific tags.'},
+    womenentrepreneurs:{tier:'medium',saR:15,vol:'4M+',platforms:{ig:90,li:85,fb:75,tt:60,tw:70},related:{broad:[{t:'womeninbusiness',r:'medium'},{t:'girlboss',r:'large'}],sa:[{t:'southafricanwomen',r:'niche'},{t:'womenofsa',r:'micro'}],niche:[{t:'womenwhobuild',r:'medium'},{t:'femalebusiness',r:'niche'}]},strategy:'Strong global community. SA presence is meaningful but primarily global audience. Use with <span class="tag-inline">#southafricanwomen</span> or <span class="tag-inline">#womenofsa</span> for local reach.'},
+    proudlysouthafrican:{tier:'niche',saR:96,vol:'700K+',platforms:{ig:85,li:65,fb:80,tt:50,tw:60},related:{broad:[{t:'southafrica',r:'medium'},{t:'southafrican',r:'medium'}],sa:[{t:'madeinsa',r:'niche'},{t:'buylocal',r:'niche'},{t:'supportlocal',r:'niche'}],niche:[{t:'southafricanproducts',r:'micro'}]},strategy:'Near-pure SA audience with patriotic connotation. Works exceptionally for local product businesses, manufacturers and consumer brands that want to emphasise their South African identity.'},
+    supportlocal:     {tier:'medium',saR:35,vol:'4M+',platforms:{ig:85,li:60,fb:85,tt:60,tw:60},related:{broad:[{t:'shoplocal',r:'large'},{t:'smallbusiness',r:'large'}],sa:[{t:'shoplocalsouthafrica',r:'niche'},{t:'buylocal',r:'niche'},{t:'madeinsa',r:'niche'}],niche:[{t:'supportsmallbusiness',r:'large'},{t:'localisbest',r:'micro'}]},strategy:'Strong SA adoption but also heavily used globally. Use <span class="tag-inline">#shoplocalsouthafrica</span> for SA-specific targeting. Works well for retail and consumer products.'},
+
+    // ── PROFESSIONAL / BUSINESS ──
+    compliance:       {tier:'niche',saR:20,vol:'300K+',platforms:{ig:40,li:90,fb:40,tt:10,tw:65},related:{broad:[{t:'business',r:'massive'},{t:'law',r:'large'}],sa:[{t:'southafricacompliance',r:'micro'},{t:'saregulations',r:'micro'}],niche:[{t:'regulatorycompliance',r:'niche'},{t:'hrCompliance',r:'micro'},{t:'taxcompliance',r:'niche'}]},strategy:'Primarily LinkedIn. Globally used in legal and business circles. For SA businesses, pair with <span class="tag-inline">#southafrica</span> and industry-specific tags. Content here performs well with professional B2B audiences.'},
+    humanresources:   {tier:'medium',saR:12,vol:'2M+',platforms:{ig:50,li:95,fb:50,tt:20,tw:70},related:{broad:[{t:'hr',r:'medium'},{t:'recruitment',r:'large'}],sa:[{t:'hrsa',r:'micro'},{t:'southafricahr',r:'micro'}],niche:[{t:'hrtips',r:'niche'},{t:'workplacewellness',r:'niche'}]},strategy:'LinkedIn is the dominant platform here. Use full <span class="tag-inline">#humanresources</span> on LinkedIn, but shorten to <span class="tag-inline">#hr</span> on other platforms. SA audience is around 12% — pair with SA-specific tags.'},
+    hr:               {tier:'medium',saR:15,vol:'3M+',platforms:{ig:60,li:95,fb:55,tt:25,tw:70},related:{broad:[{t:'humanresources',r:'medium'},{t:'recruitment',r:'large'}],sa:[{t:'hrsa',r:'micro'}],niche:[{t:'hrtips',r:'niche'},{t:'employeeengagement',r:'niche'},{t:'hrprofessional',r:'niche'}]},strategy:'Core LinkedIn tag for HR professionals. Use in all HR content on LinkedIn. On Instagram, <span class="tag-inline">#hrlife</span> or <span class="tag-inline">#hrtips</span> may perform better.'},
+    accounting:       {tier:'medium',saR:10,vol:'2.5M+',platforms:{ig:60,li:90,fb:55,tt:30,tw:60},related:{broad:[{t:'finance',r:'large'},{t:'tax',r:'medium'}],sa:[{t:'saaccounting',r:'micro'},{t:'sars',r:'niche'}],niche:[{t:'accountant',r:'medium'},{t:'bookkeeping',r:'medium'},{t:'cfo',r:'niche'}]},strategy:'Good on LinkedIn for professional accounting content. On Instagram, accounting + lifestyle or small business tips content performs well. SA professionals follow niche accounting tags.'},
+    sars:             {tier:'niche',saR:98,vol:'200K+',platforms:{ig:60,li:80,fb:65,tt:50,tw:85},related:{broad:[{t:'tax',r:'medium'},{t:'southafrica',r:'medium'}],sa:[{t:'taxseason',r:'niche'},{t:'sarstax',r:'micro'},{t:'efile',r:'micro'}],niche:[{t:'taxpayer',r:'niche'},{t:'taxreturn',r:'medium'}]},strategy:'Near-exclusively SA. Spikes massively during tax season (July–November). Excellent for accountants, tax practitioners and financial advisors to reach SA taxpayers at high-intent moments.'},
+    property:         {tier:'large',saR:12,vol:'30M+',platforms:{ig:90,li:75,fb:85,tt:60,tw:55},related:{broad:[{t:'realestate',r:'massive'},{t:'housing',r:'large'}],sa:[{t,'saProperty',r:'niche'},{t:'southafricarealestate',r:'niche'},{t:'propertyza',r:'micro'}],niche:[{t:'jhbproperty',r:'micro'},{t:'cptproperty',r:'micro'},{t:'propertyforsale',r:'large'}]},strategy:'Very high volume, primarily global. For SA property professionals, use <span class="tag-inline">#southafricarealestate</span> + city tags to target local buyers.'},
+
+    // ── LIFESTYLE / COMMUNITY ──
+    africa:           {tier:'large',saR:18,vol:'40M+',platforms:{ig:90,li:65,fb:80,tt:70,tw:75},related:{broad:[{t:'southafrica',r:'medium'}],sa:[{t:'africanbusiness',r:'niche'},{t:'africanentrepreneur',r:'niche'}],niche:[{t:'africatravel',r:'medium'},{t:'visitafrica',r:'medium'}]},strategy:'Broad African content — SA is around 18% of the audience. Good for brands with pan-African ambitions. Pairs well with <span class="tag-inline">#southafrica</span> to anchor the SA portion.'},
+    digitalnomad:     {tier:'large',saR:5,vol:'15M+',platforms:{ig:90,li:70,fb:55,tt:65,tw:75},related:{broad:[{t:'remotework',r:'large'},{t:'travel',r:'massive'}],sa:[{t:'workfromanywhere',r:'medium'}],niche:[{t:'freelance',r:'large'},{t:'solopreneur',r:'medium'}]},strategy:'Mostly international audience. Use for SA brands targeting remote workers or digital service providers. Cape Town\'s visibility in the digital nomad community makes this more relevant for CT-based brands.'},
+    shopify:          {tier:'large',saR:8,vol:'10M+',platforms:{ig:80,li:75,fb:60,tt:60,tw:70},related:{broad:[{t:'ecommerce',r:'large'},{t:'onlinebusiness',r:'large'}],sa:[{t:'southafricaecommerce',r:'micro'}],niche:[{t:'dropshipping',r:'large'},{t:'onlinestore',r:'large'}]},strategy:'Global e-commerce community. SA usage growing as more businesses go online. Use for e-commerce and online retail content alongside SA-specific tags.'},
+    agriculture:      {tier:'medium',saR:14,vol:'3M+',platforms:{ig:75,li:75,fb:85,tt:55,tw:65},related:{broad:[{t:'farming',r:'large'},{t:'food',r:'massive'}],sa:[{t:'safarming',r:'micro'},{t:'southafricaagriculture',r:'micro'},{t:'agriSA',r:'micro'}],niche:[{t:'agribusiness',r:'medium'},{t:'farmlife',r:'large'}]},strategy:'SA agriculture content is underserved on social media — low competition. Use <span class="tag-inline">#agriSA</span> and <span class="tag-inline">#safarming</span> for a tight SA farming community. Facebook groups outperform open hashtags for agriculture in SA.'},
+    construction:     {tier:'medium',saR:10,vol:'4M+',platforms:{ig:80,li:80,fb:75,tt:60,tw:50},related:{broad:[{t:'building',r:'large'},{t:'architecture',r:'large'}],sa:[{t:'saconstruction',r:'micro'},{t:'southafricaconstruction',r:'micro'}],niche:[{t:'contractors',r:'medium'},{t:'civilengineering',r:'medium'}]},strategy:'Good on LinkedIn for B2B construction content. On Instagram, project transformation photos with construction tags perform well. SA construction tags are underdeveloped — use them for less competition.'},
+    electrician:      {tier:'medium',saR:15,vol:'1.5M+',platforms:{ig:80,li:65,fb:75,tt:60,tw:40},related:{broad:[{t:'construction',r:'medium'},{t:'electrical',r:'medium'}],sa:[{t:'electriciansa',r:'micro'},{t:'southafricaelectrical',r:'micro'}],niche:[{t:'electricalwork',r:'niche'},{t:'sparky',r:'niche'},{t:'electricalinstallation',r:'niche'}]},strategy:'Good niche tag with decent SA audience. Transformation posts (before/after electrical work) perform well. Combine with location tags (<span class="tag-inline">#johannesburg</span>) to attract local clients.'},
+    plumbing:         {tier:'niche',saR:18,vol:'600K+',platforms:{ig:75,li:55,fb:75,tt:60,tw:35},related:{broad:[{t:'construction',r:'medium'},{t:'home',r:'massive'}],sa:[{t:'plumbingsa',r:'micro'},{t:'southafricaplumbing',r:'micro'}],niche:[{t:'plumber',r:'niche'},{t:'leakdetection',r:'micro'},{t:'geyser',r:'micro'}]},strategy:'<span class="tag-inline">#geyser</span> is a uniquely SA-relevant plumbing tag that gets high local engagement. Before/after and emergency fix content works well. Facebook often outperforms Instagram for local tradespeople in SA.'},
+    digitalmarketing: {tier:'large',saR:8,vol:'25M+',platforms:{ig:80,li:95,fb:65,tt:50,tw:80},related:{broad:[{t:'marketing',r:'massive'},{t:'socialmedia',r:'massive'}],sa:[{t:'digitalmarketingsa',r:'micro'},{t:'socialmediasa',r:'micro'}],niche:[{t:'contentcreator',r:'large'},{t:'seo',r:'large'},{t:'emailmarketing',r:'medium'}]},strategy:'Strong on LinkedIn. Lower SA concentration but valuable for marketing agencies and professionals. Use with <span class="tag-inline">#southafrica</span> to attract local clients.'},
+  };
+
+  // Fix syntax error in DB
+  if(DB.southafricanbusiness && DB.southafricanbusiness.related && DB.southafricanbusiness.related.sa){
+    DB.southafricanbusiness.related.sa = [{t:'saentrepreneur',r:'niche'},{t:'sabusiness',r:'niche'},{t:'supportsmallbusiness',r:'large'}];
+  }
+  if(DB.property && DB.property.related && DB.property.related.sa){
+    DB.property.related.sa = [{t:'saProperty',r:'niche'},{t:'southafricarealestate',r:'niche'},{t:'propertyza',r:'micro'}];
+  }
+  if(DB.plumbing && DB.plumbing.related && DB.plumbing.related.sa){
+    DB.plumbing.related.sa = [{t:'plumbingsa',r:'micro'},{t:'southafricaplumbing',r:'micro'}];
+  }
+
+  const TIER_CONFIG = {
+    massive: {label:'🌍 Massive',cls:'massive',vol:'100M+ posts'},
+    large:   {label:'🔵 Large',  cls:'large',  vol:'10M–100M posts'},
+    medium:  {label:'🟢 Medium', cls:'medium', vol:'1M–10M posts'},
+    niche:   {label:'🟡 Niche',  cls:'niche',  vol:'100K–1M posts'},
+    micro:   {label:'🔴 Micro',  cls:'micro',  vol:'Under 100K posts'},
+  };
+
+  const PLAT_COLORS = {
+    ig:{'massive':'#E1306C','large':'#D97706','medium':'#059669','niche':'#1A56DB','micro':'#7C3AED'},
+    li:{'massive':'#0A66C2','large':'#D97706','medium':'#059669','niche':'#1A56DB','micro':'#7C3AED'},
+    fb:{'massive':'#1877F2','large':'#D97706','medium':'#059669','niche':'#1A56DB','micro':'#7C3AED'},
+    tt:{'massive':'#000000','large':'#D97706','medium':'#059669','niche':'#1A56DB','micro':'#7C3AED'},
+    tw:{'massive':'#1DA1F2','large':'#D97706','medium':'#059669','niche':'#1A56DB','micro':'#7C3AED'},
+  };
+
+  // Infer tier for unknown tags
+  function inferTier(tag){
+    const l = tag.length;
+    const saWords = ['sa','southafrica','southafrican','jozi','joburg','johanesburg','capetown','durban','pretoria','africa','za'];
+    const hasSA = saWords.some(w => tag.includes(w));
+    if(hasSA){
+      if(l <= 8)  return {tier:'niche', saR:85, vol:'Est. 100K–500K', inferred:true};
+      return              {tier:'micro', saR:90, vol:'Est. under 100K', inferred:true};
+    }
+    if(l <= 5)   return {tier:'massive', saR:3, vol:'Est. 100M+', inferred:true};
+    if(l <= 8)   return {tier:'large',  saR:6, vol:'Est. 10M–50M', inferred:true};
+    if(l <= 12)  return {tier:'medium', saR:10,vol:'Est. 1M–5M',  inferred:true};
+    if(l <= 18)  return {tier:'niche',  saR:20,vol:'Est. 100K–1M', inferred:true};
+    return               {tier:'micro',  saR:30,vol:'Est. under 100K', inferred:true};
+  }
+
+  function generateRelated(tag, tier){
+    const sa_biz = [{t:'southafricanbusiness',r:'niche'},{t:'saentrepreneur',r:'niche'},{t:'southafrica',r:'medium'}];
+    const generic = [{t:'entrepreneur',r:'large'},{t:'smallbusiness',r:'large'},{t:'business',r:'massive'}];
+    return {broad: generic, sa: sa_biz, niche:[{t:'sme',r:'niche'},{t:'sabusiness',r:'niche'}]};
+  }
+
+  function renderPlatBar(score, tier){
+    const pct = Math.min(score, 100);
+    const colors = {'massive':'#DC2626','large':'#D97706','medium':'#059669','niche':'#1A56DB','micro':'#7C3AED'};
+    const col = colors[tier] || '#1A56DB';
+    const labels = {100:'Excellent',80:'Great',60:'Good',40:'Moderate',20:'Low',0:'Minimal'};
+    let label = 'Minimal';
+    if(pct>=80) label='Excellent'; else if(pct>=60) label='Good'; else if(pct>=40) label='Moderate'; else if(pct>=20) label='Low';
+    return {pct, col, label};
+  }
+
+  // ─── RENDER RESULT ───
+  function renderResult(raw){
+    const tag = raw.replace(/^#/,'').toLowerCase().trim();
+    if(!tag) return;
+
+    const data     = DB[tag] || null;
+    const tierData = data ? {tier:data.tier, saR:data.saR, vol:data.vol||TIER_CONFIG[data.tier].vol, inferred:false}
+                          : inferTier(tag);
+    const tc       = TIER_CONFIG[tierData.tier];
+
+    const platforms = data ? data.platforms : {ig:50,li:45,fb:40,tt:20,tw:35};
+    const related   = data ? data.related   : generateRelated(tag, tierData.tier);
+    const strategy  = data ? data.strategy  : `<strong>#${tag}</strong> is not in our SA database — the data shown is estimated from the hashtag pattern. For accurate reach data, search it directly in Instagram or Meta Business Suite. Pair with <span class="tag-inline">#southafrica</span> and <span class="tag-inline">#saentrepreneur</span> for SA reach alongside this tag.`;
+    const restricted = data?.restricted || false;
+
+    const saBarWidth = Math.min(tierData.saR, 100);
+
+    let html = `
+      ${restricted ? '<div class="restricted-banner"><span>⚠️</span><div><strong>Potentially restricted on Instagram.</strong> This hashtag has been flagged or shadowbanned on Instagram — using it may reduce your post\'s reach. Check Instagram\'s current status before using.</div></div>' : ''}
+
+      <div class="result-header">
+        <div class="result-hashtag">#${tag}</div>
+        <div class="result-right">
+          ${tierData.inferred ? '<span style="font-size:11px;color:var(--muted2);background:var(--bg);border:1px solid var(--border);padding:4px 9px;border-radius:6px;">Estimated data</span>' : ''}
+          <span class="tier-badge tier-${tc.cls}">${tc.label}</span>
+        </div>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-cell">
+          <div class="stat-label">Reach tier</div>
+          <div class="stat-value" style="color:var(--t-${tierData.tier})">${tc.label.split(' ')[1]}</div>
+          <div class="stat-sub">${tierData.vol}</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-label">SA relevance</div>
+          <div class="stat-value">${tierData.saR}%</div>
+          <div class="sa-bar-wrap"><div class="sa-bar-fill" style="width:${saBarWidth}%"></div></div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-label">Best platform</div>
+          <div class="stat-value">${['ig','li','fb','tt','tw'].reduce((a,p)=>platforms[p]>platforms[a]?p:a,'ig').toUpperCase()}</div>
+          <div class="stat-sub">highest fit score</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-label">Competition</div>
+          <div class="stat-value">${tierData.tier==='massive'?'Extreme':tierData.tier==='large'?'High':tierData.tier==='medium'?'Medium':tierData.tier==='niche'?'Low':'Very low'}</div>
+          <div class="stat-sub">for SA businesses</div>
+        </div>
+      </div>
+
+      <div class="platform-fit">
+        <div class="platform-fit-label">Platform fit</div>
+        <div class="plat-rows">
+          ${[['Instagram','ig'],['LinkedIn','li'],['Facebook','fb'],['TikTok','tt'],['Twitter/X','tw']].map(([name,p])=>{
+            const {pct,col,label} = renderPlatBar(platforms[p],tierData.tier);
+            return `<div class="plat-row">
+              <div class="plat-name">${name}</div>
+              <div class="plat-bar-wrap"><div class="plat-bar-fill" style="width:${pct}%;background:${col}"></div></div>
+              <div class="plat-score-label" style="color:${col}">${label}</div>
+            </div>`;
+          }).join('')}
+        </div>
+      </div>`;
+
+    // Related tags
+    const allRelated = [];
+    html += `<div class="related-section"><div class="related-label">Related hashtags</div><div class="related-groups">`;
+    if(related.broad?.length){
+      html += `<div><div class="related-group-label">Broader reach</div><div class="tag-chips">`;
+      related.broad.forEach(({t,r})=>{ allRelated.push('#'+t); html+=`<span class="tag-chip ${r}" data-tag="${t}">#${t}</span>`; });
+      html += `</div></div>`;
+    }
+    if(related.sa?.length){
+      html += `<div><div class="related-group-label">SA-specific</div><div class="tag-chips">`;
+      related.sa.forEach(({t,r})=>{ allRelated.push('#'+t); html+=`<span class="tag-chip ${r}" data-tag="${t}">#${t}</span>`; });
+      html += `</div></div>`;
+    }
+    if(related.niche?.length){
+      html += `<div><div class="related-group-label">Niche / specific</div><div class="tag-chips">`;
+      related.niche.forEach(({t,r})=>{ allRelated.push('#'+t); html+=`<span class="tag-chip ${r}" data-tag="${t}">#${t}</span>`; });
+      html += `</div></div>`;
+    }
+    html += `</div></div>`;
+
+    html += `<div class="strategy-section"><div class="strategy-label">Strategy note</div><div class="strategy-body">${strategy}</div></div>`;
+
+    const allTags = ['#'+tag, ...allRelated].join(' ');
+    html += `<div class="result-footer">
+      <button class="copy-tags-btn" id="copyTagsBtn">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        Copy all related tags
+      </button>
+      <span class="confidence-note">${tierData.inferred ? '⚠ Estimated — not in database' : '✓ Verified SA database'}</span>
+    </div>`;
+
+    const card = $('resultCard');
+    card.innerHTML = html;
+    card.classList.add('show');
+
+    // Related chip click → re-check
+    card.querySelectorAll('.tag-chip[data-tag]').forEach(chip=>{
+      chip.addEventListener('click',()=>{
+        $('hashInput').value = chip.dataset.tag;
+        renderResult(chip.dataset.tag);
+        $('resultCard').scrollIntoView({behavior:'smooth',block:'start'});
+      });
+    });
+
+    // Copy tags
+    const copyBtn = $('copyTagsBtn');
+    if(copyBtn){
+      copyBtn.addEventListener('click',async()=>{
+        try { await navigator.clipboard.writeText(allTags); } catch {
+          const ta=document.createElement('textarea'); ta.value=allTags; document.body.appendChild(ta); ta.select();
+          try{document.execCommand('copy');}catch(_){} document.body.removeChild(ta);
+        }
+        copyBtn.classList.add('copied');
+        copyBtn.textContent='✓ Copied!';
+        setTimeout(()=>{ copyBtn.classList.remove('copied'); copyBtn.innerHTML='<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy all related tags'; },2000);
+      });
+    }
+  }
+
+  // ─── EVENTS ───
+  $('checkBtn').addEventListener('click',()=>{ const v=$('hashInput').value.trim(); if(v){ renderResult(v); $('resultCard').scrollIntoView({behavior:'smooth',block:'nearest'}); }});
+  $('hashInput').addEventListener('keydown',e=>{ if(e.key==='Enter'){ const v=$('hashInput').value.trim(); if(v){ renderResult(v); $('resultCard').scrollIntoView({behavior:'smooth',block:'nearest'}); }}});
+  document.querySelectorAll('.quick-chip').forEach(chip=>{
+    chip.addEventListener('click',()=>{ $('hashInput').value=chip.dataset.tag; renderResult(chip.dataset.tag); $('resultCard').scrollIntoView({behavior:'smooth',block:'start'}); });
+  });
+})();
+</script>
+</body>
+</html>

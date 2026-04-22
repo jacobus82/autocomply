@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Business Name Availability Checker — AutoComply</title>
+<meta name="description" content="Check whether your preferred company name is likely to be approved by CIPC before paying R175 for registration. Explains name reservation rules and common rejection reasons.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;700;800&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --navy:#0B1628;--navy-soft:#1A2842;--blue:#1A56DB;--blue-soft:#EEF3FF;
+  --blue-line:rgba(26,86,219,.15);--green:#059669;--green-soft:#ECFDF5;
+  --green-mid:#10B981;--amber:#D97706;--amber-soft:#FEF3C7;
+  --red:#DC2626;--red-soft:#FEE2E2;
+  --muted:#5A6A82;--muted2:#8A96A8;--border:#DDE5F0;--border-strong:#C5D1E4;
+  --bg:#F8FAFF;--bg2:#EEF3FF;--white:#fff;
+  --sh:0 1px 4px rgba(11,22,40,.07);--sh-strong:0 4px 20px rgba(11,22,40,.10);
+}
+html,body{background:var(--bg);color:var(--navy);font-family:'Outfit',sans-serif;-webkit-font-smoothing:antialiased;min-height:100vh;font-size:15px;line-height:1.5;}
+
+/* ─── TOPBAR ─── */
+.topbar{background:var(--navy);padding:14px 20px;}
+.topbar-inner{max-width:1040px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;}
+.brand{font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;color:#fff;letter-spacing:-.3px;text-decoration:none;}
+.brand span{color:#60AEFF;}
+.back{font-size:12.5px;color:rgba(255,255,255,.55);text-decoration:none;display:inline-flex;align-items:center;gap:6px;transition:color .15s;}
+.back:hover{color:#fff;}
+
+/* ─── HERO ─── */
+.hero{background:var(--navy);padding:34px 20px 58px;position:relative;overflow:hidden;}
+.hero::before{content:"";position:absolute;top:-100px;right:-100px;width:400px;height:400px;background:radial-gradient(circle,rgba(26,86,219,.15),transparent 70%);pointer-events:none;}
+.hero-inner{max-width:1040px;margin:0 auto;position:relative;z-index:1;}
+.hero-tag{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:14px;}
+.hero-h{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(26px,5vw,38px);font-weight:800;color:#fff;letter-spacing:-.6px;line-height:1.15;margin-bottom:12px;max-width:760px;}
+.hero-sub{font-size:clamp(14px,2.2vw,16px);color:rgba(255,255,255,.65);max-width:660px;line-height:1.55;}
+
+/* ─── LAYOUT ─── */
+.wrap{max-width:1040px;margin:0 auto;padding:0 20px;}
+.main{margin-top:-36px;margin-bottom:32px;position:relative;z-index:2;}
+.card{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:26px;box-shadow:var(--sh);margin-bottom:20px;}
+.card-h{font-family:'Bricolage Grotesque',sans-serif;font-size:17px;font-weight:700;color:var(--navy);margin-bottom:4px;letter-spacing:-.2px;}
+.card-sub{font-size:13px;color:var(--muted);margin-bottom:22px;line-height:1.55;}
+.section-tag{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:2.5px;text-transform:uppercase;color:var(--blue);margin-bottom:6px;}
+
+/* ─── SEARCH BOX ─── */
+.search-area{margin-bottom:20px;}
+.search-label{font-size:12.5px;font-weight:600;color:var(--navy);margin-bottom:8px;display:block;}
+.search-box{position:relative;display:flex;gap:0;}
+.search-icon{position:absolute;left:18px;top:50%;transform:translateY(-50%);font-size:20px;pointer-events:none;z-index:1;}
+.name-input{flex:1;padding:16px 18px 16px 52px;font-family:'Bricolage Grotesque',sans-serif;font-size:22px;font-weight:700;color:var(--navy);background:var(--white);border:2px solid var(--border);border-right:none;border-radius:12px 0 0 12px;outline:none;transition:all .15s;letter-spacing:-.3px;}
+.name-input::placeholder{color:var(--muted2);font-weight:600;}
+.name-input:focus{border-color:var(--blue);background:var(--white);box-shadow:0 0 0 3px rgba(26,86,219,.1);}
+.check-btn{font-family:'Outfit',sans-serif;font-size:14px;font-weight:700;padding:0 24px;background:var(--blue);color:#fff;border:2px solid var(--blue);border-radius:0 12px 12px 0;cursor:pointer;white-space:nowrap;transition:background .15s;}
+.check-btn:hover{background:#1449B0;}
+.name-suffix{font-size:12.5px;color:var(--muted2);margin-top:7px;display:block;}
+
+/* ─── VERDICT ─── */
+.verdict{border-radius:14px;padding:22px 24px;margin-bottom:20px;display:grid;grid-template-columns:auto 1fr;gap:20px;align-items:center;}
+.verdict.empty{background:var(--bg);border:1px dashed var(--border);}
+.verdict.good{background:var(--green-soft);border:1px solid rgba(5,150,105,.2);}
+.verdict.warn{background:var(--amber-soft);border:1px solid rgba(217,119,6,.25);}
+.verdict.bad{background:var(--red-soft);border:1px solid rgba(220,38,38,.2);}
+.verdict.fatal{background:#FFF1F2;border:1px solid rgba(220,38,38,.3);}
+
+@media(max-width:540px){.verdict{grid-template-columns:1fr;gap:14px;}}
+
+.verdict-score{text-align:center;}
+.verdict-ring{width:72px;height:72px;position:relative;}
+.verdict-ring svg{width:100%;height:100%;transform:rotate(-90deg);}
+.vr-bg{fill:none;stroke:rgba(0,0,0,.08);stroke-width:7;}
+.vr-fg{fill:none;stroke-width:7;stroke-linecap:round;transition:stroke-dashoffset .5s ease,stroke .3s;}
+.vr-fg.green{stroke:var(--green-mid);}
+.vr-fg.amber{stroke:var(--amber);}
+.vr-fg.red{stroke:var(--red);}
+.vr-fg.grey{stroke:var(--muted2);}
+.verdict-ring-num{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;letter-spacing:-.5px;}
+
+.verdict-content{}
+.verdict-label{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:2px;text-transform:uppercase;margin-bottom:5px;color:var(--muted);}
+.verdict-h{font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:700;color:var(--navy);letter-spacing:-.3px;margin-bottom:5px;}
+.verdict-body{font-size:13.5px;color:var(--muted);line-height:1.55;}
+.verdict.empty .verdict-h{color:var(--muted);}
+
+/* ─── ISSUES ─── */
+.issues{display:flex;flex-direction:column;gap:10px;margin-bottom:0;}
+.issue{border-radius:10px;padding:14px 16px;display:flex;gap:12px;align-items:flex-start;border:1px solid;}
+.issue-ico{font-size:16px;line-height:1;flex-shrink:0;margin-top:1px;}
+.issue-body{min-width:0;}
+.issue-title{font-size:14px;font-weight:700;color:var(--navy);margin-bottom:3px;}
+.issue-desc{font-size:13px;line-height:1.55;}
+.issue-fix{font-size:12.5px;font-weight:600;margin-top:5px;padding:6px 10px;border-radius:6px;display:inline-block;}
+
+.issue.fatal{background:#FFF1F2;border-color:rgba(220,38,38,.25);}.issue.fatal .issue-desc{color:#991B1B;}.issue.fatal .issue-fix{background:var(--red-soft);color:var(--red);}
+.issue.high{background:var(--red-soft);border-color:rgba(220,38,38,.15);}.issue.high .issue-desc{color:#7F1D1D;}.issue.high .issue-fix{background:rgba(220,38,38,.1);color:var(--red);}
+.issue.warn{background:var(--amber-soft);border-color:rgba(217,119,6,.2);}.issue.warn .issue-desc{color:#78350F;}.issue.warn .issue-fix{background:rgba(217,119,6,.12);color:var(--amber);}
+.issue.info{background:var(--blue-soft);border-color:var(--blue-line);}.issue.info .issue-desc{color:#1E3A8A;}.issue.info .issue-fix{background:rgba(26,86,219,.1);color:var(--blue);}
+.issue.ok{background:var(--green-soft);border-color:rgba(5,150,105,.2);}.issue.ok .issue-desc{color:#065F46;}.issue.ok .issue-fix{background:rgba(5,150,105,.12);color:var(--green);}
+
+.issues-empty{text-align:center;padding:22px;color:var(--muted);font-size:13px;font-style:italic;background:var(--bg);border:1px dashed var(--border);border-radius:10px;}
+
+/* ─── LIMITATION NOTICE ─── */
+.limit-notice{background:var(--blue-soft);border:1px solid var(--blue-line);border-radius:10px;padding:14px 16px;display:flex;gap:10px;align-items:flex-start;font-size:13px;color:#1E3A8A;line-height:1.55;margin-bottom:20px;}
+.limit-notice strong{font-weight:700;}
+.limit-notice a{color:var(--blue);font-weight:600;}
+
+/* ─── PROCESS STEPS ─── */
+.steps{display:flex;flex-direction:column;gap:0;}
+.step{display:flex;gap:16px;padding:14px 0;border-bottom:1px solid var(--border);}
+.step:last-child{border-bottom:none;padding-bottom:0;}
+.step-num{width:32px;height:32px;border-radius:50%;background:var(--navy);color:#fff;font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.step-body{}
+.step-title{font-size:14px;font-weight:700;color:var(--navy);margin-bottom:3px;}
+.step-desc{font-size:13px;color:var(--muted);line-height:1.55;}
+.step-meta{font-family:'JetBrains Mono',monospace;font-size:10.5px;font-weight:600;color:var(--blue);margin-top:4px;}
+
+/* ─── TIPS GRID ─── */
+.tips-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;}
+.tip{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:14px 16px;}
+.tip-h{font-size:13.5px;font-weight:700;color:var(--navy);margin-bottom:5px;display:flex;align-items:center;gap:7px;}
+.tip-ico{font-size:16px;}
+.tip-body{font-size:12.5px;color:var(--muted);line-height:1.6;}
+.tip.good{border-color:rgba(5,150,105,.25);background:var(--green-soft);}
+.tip.good .tip-h{color:var(--green);}
+.tip.bad{border-color:rgba(220,38,38,.2);background:var(--red-soft);}
+.tip.bad .tip-h{color:var(--red);}
+
+/* example names */
+.examples{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;}
+.example-tag{font-family:'JetBrains Mono',monospace;font-size:11.5px;font-weight:600;padding:5px 10px;border-radius:6px;border:1px solid;}
+.example-tag.ok{background:var(--green-soft);border-color:rgba(5,150,105,.2);color:var(--green);}
+.example-tag.no{background:var(--red-soft);border-color:rgba(220,38,38,.2);color:var(--red);text-decoration:line-through;}
+
+/* ─── CTA ─── */
+.cta-inner{background:var(--navy);border-radius:16px;padding:28px 26px;text-align:center;position:relative;overflow:hidden;}
+.cta-inner::before{content:"";position:absolute;top:-80px;left:-80px;width:240px;height:240px;background:radial-gradient(circle,rgba(26,86,219,.28),transparent 70%);pointer-events:none;}
+.cta-inner::after{content:"";position:absolute;bottom:-80px;right:-80px;width:240px;height:240px;background:radial-gradient(circle,rgba(96,174,255,.18),transparent 70%);pointer-events:none;}
+.cta-h{font-family:'Bricolage Grotesque',sans-serif;font-size:21px;font-weight:700;color:#fff;margin-bottom:8px;letter-spacing:-.3px;position:relative;z-index:1;}
+.cta-sub{font-size:14px;color:rgba(255,255,255,.65);margin-bottom:18px;max-width:520px;margin-left:auto;margin-right:auto;position:relative;z-index:1;line-height:1.55;}
+.cta-btn{display:inline-flex;align-items:center;gap:8px;background:#25D366;color:#fff;font-family:'Outfit',sans-serif;font-size:14px;font-weight:600;padding:12px 22px;border-radius:9px;text-decoration:none;position:relative;z-index:1;transition:transform .15s;}
+.cta-btn:hover{transform:translateY(-1px);}
+
+/* ─── FOOTER ─── */
+.foot{max-width:1040px;margin:20px auto 0;padding:26px 20px;text-align:center;font-size:12px;color:var(--muted2);border-top:1px solid var(--border);}
+.foot a{color:var(--muted);text-decoration:none;font-weight:600;}
+.foot .fine{font-size:11px;margin-top:8px;max-width:640px;margin-left:auto;margin-right:auto;line-height:1.55;}
+
+@media(max-width:620px){
+  .card{padding:20px 16px;}
+  .hero{padding:28px 20px 52px;}
+  .main{margin-top:-32px;}
+  .name-input{font-size:17px;padding:14px 14px 14px 46px;}
+  .search-icon{font-size:16px;left:14px;}
+}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="topbar-inner">
+    <a href="https://autocomply.co.za" class="brand">Auto<span>Comply</span></a>
+    <a href="https://autocomply.co.za/#tools" class="back">← All tools</a>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-tag">Free Tool · Business Name Availability</div>
+    <h1 class="hero-h">Check your company name before paying CIPC R175 to find out it's rejected.</h1>
+    <p class="hero-sub">This tool checks your preferred name against CIPC's approval rules — restricted words, naming conventions, and common rejection patterns — before you submit. Save time, save the fee, get it right first time.</p>
+  </div>
+</section>
+
+<!-- MAIN -->
+<main class="main wrap">
+
+  <!-- CHECKER CARD -->
+  <div class="card">
+    <div class="card-h">Check a company name</div>
+    <div class="card-sub">Type your preferred name below — without "(Pty) Ltd". We'll check it against CIPC's rules and flag any issues.</div>
+
+    <div class="search-area">
+      <label class="search-label" for="nameInput">Your preferred company name</label>
+      <div class="search-box">
+        <span class="search-icon">🔍</span>
+        <input id="nameInput" class="name-input" type="text" placeholder="e.g. Bayview Digital" maxlength="100" autocomplete="off" spellcheck="false">
+        <button class="check-btn" id="checkBtn" type="button">Check name</button>
+      </div>
+      <span class="name-suffix">Do not include "(Pty) Ltd" — CIPC adds this automatically. Just enter the trading name.</span>
+    </div>
+
+    <!-- Limitation notice -->
+    <div class="limit-notice">
+      <div style="font-size:18px;flex-shrink:0;">ℹ️</div>
+      <div><strong>What this tool checks:</strong> CIPC's published naming rules — restricted words, regulated industries, descriptiveness and naming conventions. <strong>What it cannot check:</strong> whether an identical or similar name already exists in CIPC's register. After running this check, confirm availability at <a href="https://eservices.cipc.co.za" target="_blank">eservices.cipc.co.za</a> (free) before paying.</div>
+    </div>
+
+    <!-- Verdict -->
+    <div class="verdict empty" id="verdict">
+      <div class="verdict-score">
+        <div class="verdict-ring">
+          <svg viewBox="0 0 80 80">
+            <circle class="vr-bg" cx="40" cy="40" r="33"/>
+            <circle class="vr-fg grey" id="vrRing" cx="40" cy="40" r="33" stroke-dasharray="207.3" stroke-dashoffset="207.3"/>
+          </svg>
+          <div class="verdict-ring-num" id="vrNum">—</div>
+        </div>
+      </div>
+      <div class="verdict-content">
+        <div class="verdict-label">Approval likelihood</div>
+        <div class="verdict-h" id="verdictH">Enter a name above to check</div>
+        <p class="verdict-body" id="verdictBody">This tool checks against CIPC's naming rules. Type your preferred name and click "Check name" — or just start typing.</p>
+      </div>
+    </div>
+
+    <!-- Issues list -->
+    <div id="issuesList" style="margin-top:16px;"></div>
+  </div>
+
+  <!-- REGISTRATION PROCESS -->
+  <div class="card">
+    <div class="card-h">How CIPC name reservation works</div>
+    <div class="card-sub">What happens after you've found a name that passes the rules check.</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <div class="step-title">Prepare 4 name alternatives</div>
+          <div class="step-desc">CIPC checks all 4 names simultaneously and assigns your highest-ranked available option. If all 4 are rejected or taken, you pay again. Always submit 4 thoughtful alternatives in order of preference — not just variations of the same name.</div>
+          <div class="step-meta">💡 Pro tip: put your favourite as choice 1, but make all 4 genuinely distinct.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <div class="step-title">Search CIPC's register first</div>
+          <div class="step-desc">Before paying, run each of your 4 names through the free CIPC name search at eservices.cipc.co.za. Check for exact matches and similar-sounding names — CIPC may reject your name if it sounds like or resembles an existing registered company.</div>
+          <div class="step-meta">🔗 <a href="https://eservices.cipc.co.za" target="_blank" style="color:var(--blue);font-weight:600;">eservices.cipc.co.za → Name Search</a></div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <div class="step-title">Submit via CIPC eServices</div>
+          <div class="step-desc">Log in or register at eservices.cipc.co.za and submit your name reservation application with all 4 alternatives ranked in order. Pay the reservation fee online.</div>
+          <div class="step-meta">💰 Current fee: R175 per application (covers all 4 name choices)</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <div class="step-title">Wait for CIPC to process</div>
+          <div class="step-desc">CIPC will process your application and issue your name reservation certificate for the approved name. You then proceed to incorporate the company using the reserved name.</div>
+          <div class="step-meta">⏱ Processing: typically 5–10 business days. Reserved name is valid for 6 months.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NAMING TIPS -->
+  <div class="card">
+    <div class="card-h">What makes a name approvable — and what gets it rejected</div>
+    <div class="card-sub">Understanding these principles will save you multiple application attempts.</div>
+
+    <div class="tips-grid">
+      <div class="tip good">
+        <div class="tip-h"><span class="tip-ico">✓</span>Invented or coined words</div>
+        <div class="tip-body">Made-up words are highly distinctive and almost never conflict with existing names. Think Kodak, Xerox, Google. Combine syllables from your name or industry.</div>
+      </div>
+      <div class="tip good">
+        <div class="tip-h"><span class="tip-ico">✓</span>Surname + distinctive word</div>
+        <div class="tip-body">Your surname combined with a meaningful or distinctive word works well. "Nkosi Digital", "Van der Berg Logistics" — distinctive, personal, usually available.</div>
+      </div>
+      <div class="tip good">
+        <div class="tip-h"><span class="tip-ico">✓</span>Meaningful word combinations</div>
+        <div class="tip-body">Combining two common words in a unique way creates distinctiveness. "BluePeak", "IronBridge", "ClearPath" — not purely descriptive, not restricted.</div>
+      </div>
+      <div class="tip good">
+        <div class="tip-h"><span class="tip-ico">✓</span>Geographic + distinctive element</div>
+        <div class="tip-body">A geographic word plus a non-generic element is usually fine. "Sandton Spark", "Bayview Edge" — but avoid generic endings like "Sandton Plumbing Services".</div>
+      </div>
+      <div class="tip bad">
+        <div class="tip-h"><span class="tip-ico">✕</span>Only generic words</div>
+        <div class="tip-body">"General Trading Solutions" or "Business Management Services" — purely descriptive, no distinctive element. CIPC will reject these as lacking uniqueness.</div>
+      </div>
+      <div class="tip bad">
+        <div class="tip-h"><span class="tip-ico">✕</span>Names similar to existing ones</div>
+        <div class="tip-body">Even if not identical, names that sound like or closely resemble registered companies will be rejected. "Gogle", "Amazin", "McDonalds SA" — confusingly similar.</div>
+      </div>
+      <div class="tip bad">
+        <div class="tip-h"><span class="tip-ico">✕</span>Restricted industry words</div>
+        <div class="tip-body">"SA Bank", "National Insurance", "City Trust Financial" — these contain words reserved for regulated industries and will be automatically rejected without proper authorization.</div>
+      </div>
+      <div class="tip bad">
+        <div class="tip-h"><span class="tip-ico">✕</span>4 near-identical alternatives</div>
+        <div class="tip-body">Submitting "Apex Solutions", "Apex Solution", "Apex SA Solutions", "Apex SA" as your 4 choices is a wasted application. Make each genuinely distinct.</div>
+      </div>
+    </div>
+
+    <div style="margin-top:20px;">
+      <div class="section-tag" style="margin-bottom:10px;">Examples of likely approved names</div>
+      <div class="examples">
+        <span class="example-tag ok">Bayview Digital</span>
+        <span class="example-tag ok">Zenova Trading</span>
+        <span class="example-tag ok">Thabo Nkosi Consulting</span>
+        <span class="example-tag ok">ClearPath Logistics</span>
+        <span class="example-tag ok">BluePeak Electrical</span>
+        <span class="example-tag ok">Lumara Creative</span>
+      </div>
+      <div class="section-tag" style="margin-top:16px;margin-bottom:10px;">Examples of likely rejected names</div>
+      <div class="examples">
+        <span class="example-tag no">SA Bank Services</span>
+        <span class="example-tag no">National Insurance Group</span>
+        <span class="example-tag no">General Business Solutions</span>
+        <span class="example-tag no">South African Trading Co</span>
+        <span class="example-tag no">Municipal Consulting</span>
+        <span class="example-tag no">Trading Services</span>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<!-- CTA -->
+<div class="wrap" style="margin-bottom:30px;">
+  <div class="cta-inner">
+    <div class="cta-h">Ready to register your company?</div>
+    <p class="cta-sub">Once your name passes the rules check and you've confirmed availability on CIPC's register, we can handle the full company registration — including CIPC filing, SARS eFiling setup, and your compliance calendar so you start right.</p>
+    <a href="https://wa.me/27670113108?text=Hi%20AutoComply%2C%20I%20used%20the%20Business%20Name%20Checker%20and%20want%20help%20registering%20my%20company." class="cta-btn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Chat on WhatsApp
+    </a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="foot">
+  AutoComply · Practical tools for South African business owners · <a href="https://autocomply.co.za">autocomply.co.za</a>
+  <div class="fine">This tool checks against CIPC's published naming rules and common rejection patterns. It cannot search the CIPC register for existing names — always verify at eservices.cipc.co.za before submitting. This is a guidance tool, not a legal opinion. AutoComply is not a law firm.</div>
+</div>
+
+<script>
+(function(){
+  const $ = id => document.getElementById(id);
+
+  // ─── RULES DATABASE ───
+  const RESTRICTED = [
+    { pattern:/\bbank\b/i, sev:'fatal', title:'"Bank" — restricted word', desc:'Only institutions licensed by the South African Reserve Bank (SARB) under the Banks Act may use "Bank" in their name.', fix:'Remove "Bank" — use a distinctive word instead (e.g. "Capital", "Finance", "Funding").' },
+    { pattern:/\bbanking\b/i, sev:'fatal', title:'"Banking" — restricted word', desc:'Restricted to SARB-licensed banking institutions.', fix:'Remove "Banking" from the name.' },
+    { pattern:/\binsurance\b/i, sev:'fatal', title:'"Insurance" — restricted word', desc:'Restricted to insurers licensed by the FSCA (Financial Sector Conduct Authority) under the Insurance Act.', fix:'Remove "Insurance" — use "Risk Solutions", "Cover", or a coined word instead.' },
+    { pattern:/\bassurance\b/i, sev:'fatal', title:'"Assurance" — restricted word', desc:'Restricted to FSCA-licensed insurers under the Insurance Act.', fix:'Remove "Assurance" from the name.' },
+    { pattern:/\bbuilding society\b/i, sev:'fatal', title:'"Building Society" — restricted', desc:'Regulated under the Banks Act. Not permitted for standard companies.', fix:'Remove "Building Society".' },
+    { pattern:/\bco[- ]?operative\b/i, sev:'fatal', title:'"Co-operative" — requires special registration', desc:'Must be registered as a co-operative under the Co-operatives Act, not as a standard (Pty) Ltd.', fix:'Register as a co-operative, or remove "Co-operative" and register as a standard company.' },
+    { pattern:/\bco[- ]?op\b/i, sev:'fatal', title:'"Co-op" — requires co-operative registration', desc:'Implies a co-operative structure — requires registration under the Co-operatives Act.', fix:'Remove "Co-op" for a standard company registration.' },
+    { pattern:/\bgovernment\b/i, sev:'fatal', title:'"Government" — not permitted for private companies', desc:'Implies a state entity. CIPC will reject this for private company registrations.', fix:'Remove "Government" from the name.' },
+    { pattern:/\buniversity\b/i, sev:'fatal', title:'"University" — protected term', desc:'Restricted to registered higher education institutions under the Higher Education Act.', fix:'Remove "University" — use "Academy", "Institute", or "School" (with care) instead.' },
+    { pattern:/\bombudsman\b/i, sev:'fatal', title:'"Ombudsman" — restricted term', desc:'Reserved for officially designated ombudsman offices. Not permitted for private companies.', fix:'Remove "Ombudsman" from the name.' },
+    { pattern:/\bfinancial services\b/i, sev:'high', title:'"Financial Services" — regulated term', desc:'Regulated by the FSCA. Using this without FSP registration can cause rejection or regulatory issues.', fix:'Consider "Financial Solutions", "Advisory", or a distinctive coined word.' },
+    { pattern:/\bnational\b/i, sev:'high', title:'"National" — frequently rejected', desc:'CIPC scrutinises "National" as it may imply government or country-wide official status. Often rejected unless specifically motivated.', fix:'Replace "National" with a distinctive word, or be prepared to motivate why it is appropriate.' },
+    { pattern:/\bmunicipal(ity)?\b/i, sev:'high', title:'"Municipal/Municipality" — implies government body', desc:'Implies a local government entity. Very likely to be rejected for private companies.', fix:'Remove "Municipal" or "Municipality" from the name.' },
+    { pattern:/\bprovincial\b/i, sev:'high', title:'"Provincial" — implies government body', desc:'Implies a provincial government structure. High risk of rejection.', fix:'Replace "Provincial" with a distinctive geographic or descriptive word.' },
+    { pattern:/\broyal\b/i, sev:'high', title:'"Royal" — implies royal patronage', desc:'CIPC may reject "Royal" as it implies a connection to royalty or government endorsement.', fix:'Use a distinctive alternative — "Premier", "Elite", "Crown" also carries some risk.' },
+    { pattern:/\battorne(?:y|ys)\b/i, sev:'high', title:'"Attorney/Attorneys" — protected professional title', desc:'Only law firms regulated by the Legal Practice Council (LPC) may use "Attorney" or "Attorneys" in their name.', fix:'If you are a registered attorney, proceed with LPC compliance. Otherwise, remove "Attorney/Attorneys".' },
+    { pattern:/\badvocate\b/i, sev:'high', title:'"Advocate" — protected professional title', desc:'Reserved for admitted advocates regulated by the LPC.', fix:'Remove "Advocate" unless you are a registered advocate.' },
+    { pattern:/\bchartered\b/i, sev:'high', title:'"Chartered" — implies professional body membership', desc:'"Chartered" implies membership of a professional body (e.g. SAICA for Chartered Accountants). May cause rejection without the relevant professional registration.', fix:'Remove "Chartered" unless you hold the relevant professional designation.' },
+    { pattern:/\bauditor\b/i, sev:'high', title:'"Auditor" — implies IRBA registration', desc:'Auditors must be registered with the IRBA (Independent Regulatory Board for Auditors). Using "Auditor" without registration risks rejection.', fix:'Replace "Auditor" with "Accounting", "Assurance Services", or another descriptor.' },
+    { pattern:/\bsouth african\b/i, sev:'high', title:'"South African" — closely scrutinised', desc:'CIPC often rejects names containing "South African" as implying official national status. Requires motivation to approve.', fix:'Replace "South African" with a geographic name, your area, or a distinctive word.' },
+    { pattern:/\btrust\b/i, sev:'warn', title:'"Trust" — may imply financial trust business', desc:'"Trust" can imply a financial trust business, which requires specific authorisation. Context matters — "Building Trust" as a phrase is different from "XYZ Trust".', fix:'If not a financial trust business, consider rewording to avoid the word "Trust" in isolation.' },
+    { pattern:/\bstate\b/i, sev:'warn', title:'"State" — may imply government connection', desc:'"State" can imply a government body. CIPC may query or reject depending on context.', fix:'Consider replacing "State" with a distinctive alternative.' },
+    { pattern:/\bhospital\b/i, sev:'warn', title:'"Hospital" — regulated term', desc:'May require Department of Health authorisation for healthcare facilities.', fix:'If not a registered healthcare facility, consider "Health Centre", "Clinic" (with care), or a distinctive coined name.' },
+    { pattern:/\bcollege\b/i, sev:'warn', title:'"College" — may require DHET authorisation', desc:'Educational institution names may be scrutinised by CIPC. "College" is less restricted than "University" but may still draw scrutiny.', fix:'Proceed with care. Consider "Academy", "Institute", or a coined educational name.' },
+    { pattern:/\breserve\b/i, sev:'warn', title:'"Reserve" — context-sensitive', desc:'"Reserve" in a financial context (e.g. "Reserve Capital") may imply a banking institution. In other contexts (e.g. "Nature Reserve Lodge") it is usually fine.', fix:'Review context carefully. If financial in nature, replace with a distinctive alternative.' },
+  ];
+
+  const GENERIC_WORDS = ['trading','services','solutions','enterprises','business','management','consulting','consultants','investments','properties','projects','group','holdings','company','operations','systems','technologies','technology','resources','products','logistics','supply','distribution','construction','development','marketing','communications','media'];
+
+  // ─── ANALYSIS ENGINE ───
+  function analyseName(raw){
+    const name = raw.trim();
+    if(!name) return null;
+
+    const issues = [];
+    const lower = name.toLowerCase();
+
+    // 1. Contains "(pty) ltd"
+    if(/\(pty\)\s*ltd/i.test(name) || /pty\s*ltd/i.test(name)){
+      issues.push({ sev:'info', ico:'ℹ️', title:'Remove "(Pty) Ltd" from your entry', desc:'CIPC automatically appends "(Pty) Ltd" to private company names. You only need to reserve the trading name — without the suffix.', fix:'Re-enter as just the name, e.g. "Bayview Digital" not "Bayview Digital (Pty) Ltd".' });
+    }
+
+    // 2. Restricted / regulated words
+    RESTRICTED.forEach(rule => {
+      if(rule.pattern.test(name)){
+        issues.push({ sev:rule.sev, ico: rule.sev==='fatal'?'⛔':rule.sev==='high'?'⚠️':'⚡', title:rule.title, desc:rule.desc, fix:rule.fix });
+      }
+    });
+
+    // 3. Too short
+    const cleanName = name.replace(/[^a-z0-9 ]/gi,'').trim();
+    if(cleanName.length < 3){
+      issues.push({ sev:'fatal', ico:'⛔', title:'Name is too short', desc:'A company name must have a minimum of 3 characters to be considered distinctive.', fix:'Add more words or characters to create a meaningful name.' });
+    }
+
+    // 4. Purely numeric
+    if(/^\d[\d\s]*$/.test(cleanName)){
+      issues.push({ sev:'fatal', ico:'⛔', title:'Name consists only of numbers', desc:'A purely numeric name is not considered distinctive and will be rejected by CIPC.', fix:'Include at least one word or coined term in the name.' });
+    }
+
+    // 5. Too descriptive — check if the name is ONLY generic words
+    const words = cleanName.toLowerCase().split(/\s+/).filter(w=>w.length>0);
+    const meaningfulWords = words.filter(w => !GENERIC_WORDS.includes(w) && w.length > 1);
+    if(words.length >= 1 && meaningfulWords.length === 0){
+      issues.push({ sev:'high', ico:'⚠️', title:'Name is purely descriptive — no distinctive element', desc:'A name made only of generic business words ("Trading", "Solutions", "Services", "Enterprises", etc.) is considered non-distinctive and will likely be rejected.', fix:'Add a distinctive word — your surname, a coined term, a meaningful word, or a geographic name that makes it unique.' });
+    } else if(words.length >= 2 && meaningfulWords.length === 1 && words.length > 2){
+      issues.push({ sev:'warn', ico:'⚡', title:'Weak distinctive element', desc:'The name has only one distinctive word alongside generic terms. CIPC may consider this insufficiently unique, especially if the distinctive word is common.', fix:'Consider strengthening the distinctive element with a more unusual or coined word.' });
+    }
+
+    // 6. Looks like a person's full name (FirstName LastName pattern)
+    const namePattern = /^[A-Z][a-z]+\s+[A-Z][a-z]+$/.test(name.replace(/[^a-zA-Z\s]/g,'').trim());
+    if(namePattern && words.length === 2 && meaningfulWords.length >= 1){
+      issues.push({ sev:'info', ico:'ℹ️', title:'Looks like a person\'s full name', desc:'If this name belongs to a living person other than the applicant, CIPC requires written consent from that person before approving the name.', fix:'If it\'s your own name, no consent needed. If it\'s someone else\'s name, obtain written consent before submitting.' });
+    }
+
+    // 7. Starts with "SA" or "S.A."
+    if(/^s\.?a\.?\s+/i.test(name)){
+      issues.push({ sev:'warn', ico:'⚡', title:'"SA" at the start — may imply national status', desc:'Beginning a name with "SA" can imply South African government or national status. CIPC may query or reject this.', fix:'Move "SA" to a later position or replace with a geographic or distinctive word.' });
+    }
+
+    // 8. Very long name
+    if(name.length > 70){
+      issues.push({ sev:'info', ico:'ℹ️', title:'Name is quite long', desc:'Very long company names can cause practical issues with documents, signage, and banking. CIPC will process them, but consider a shorter version.', fix:'Consider shortening to under 50 characters for practical usability.' });
+    }
+
+    // 9. Special characters
+    if(/[#@$%&*+]/i.test(name)){
+      issues.push({ sev:'warn', ico:'⚡', title:'Special characters detected', desc:'Characters like #, @, $, %, & may cause issues in CIPC\'s system or be rejected. Only standard letters, numbers, spaces and basic punctuation are reliably accepted.', fix:'Remove special characters. Use "&" sparingly and as a natural connector only.' });
+    }
+
+    // 10. Common/potentially taken patterns
+    const commonPatterns = [
+      { test:/\bapex\b.*\b(solution|service|consult|group|trading)\b/i, msg:'Very common name pattern' },
+      { test:/\bprime\b.*\b(solution|service|consult|group|trading)\b/i, msg:'Very common name pattern' },
+      { test:/\bpremier\b.*\b(solution|service|consult|group|trading)\b/i, msg:'Very common name pattern' },
+      { test:/\bglobal\b.*\b(solution|service|consult|group|trading)\b/i, msg:'Very common name pattern' },
+    ];
+    commonPatterns.forEach(({test, msg}) => {
+      if(test.test(name)){
+        issues.push({ sev:'warn', ico:'⚡', title:`${msg} — likely conflicts exist`, desc:'This word combination is extremely common in company names. Even if approved, hundreds of similar names exist and CIPC may reject it as insufficiently distinctive.', fix:'Make the name more unique — use a coined word, your name, or a more specific descriptor.' });
+      }
+    });
+
+    // ─── SCORE ───
+    let score = 100;
+    issues.forEach(i => {
+      if(i.sev==='fatal') score -= 40;
+      else if(i.sev==='high') score -= 20;
+      else if(i.sev==='warn') score -= 10;
+      else if(i.sev==='info') score -= 2;
+    });
+    score = Math.max(0, Math.min(100, score));
+
+    // Add positive findings
+    if(issues.length === 0 && name.length >= 3){
+      issues.push({ sev:'ok', ico:'✅', title:'No rule violations detected', desc:'This name doesn\'t contain any known restricted words or obvious rejection patterns. The next step is to confirm it\'s not already taken in the CIPC register.', fix:'✓ Check at eservices.cipc.co.za to confirm no identical or similar name is registered.' });
+    }
+    if(meaningfulWords.length >= 1 && score >= 70 && !/\(pty\)\s*ltd/i.test(name)){
+      const invented = words.some(w => w.length > 4 && !GENERIC_WORDS.includes(w) && !/ing$|tion$|ment$/.test(w));
+      if(invented){
+        issues.push({ sev:'ok', ico:'✅', title:'Good distinctive element', desc:'The name includes a non-generic word that gives it distinctiveness — a positive sign for CIPC approval.', fix:'' });
+      }
+    }
+
+    return { score, issues };
+  }
+
+  // ─── RENDER ───
+  function render(name){
+    const result = analyseName(name);
+
+    if(!result || !name.trim()){
+      // Empty state
+      const vEl = $('verdict');
+      vEl.className = 'verdict empty';
+      $('vrNum').textContent = '—';
+      $('vrRing').setAttribute('stroke-dashoffset', 207.3);
+      $('vrRing').className.baseVal = 'vr-fg grey';
+      $('verdictH').textContent = 'Enter a name above to check';
+      $('verdictBody').textContent = 'This tool checks against CIPC\'s naming rules. Type your preferred name and click "Check name" — or just start typing.';
+      $('issuesList').innerHTML = '';
+      return;
+    }
+
+    const { score, issues } = result;
+
+    // Verdict
+    const circumference = 2 * Math.PI * 33;
+    const offset = circumference * (1 - score/100);
+    const ring = $('vrRing');
+    ring.setAttribute('stroke-dasharray', circumference.toFixed(1));
+    ring.setAttribute('stroke-dashoffset', offset.toFixed(1));
+
+    let vClass, ringColor, headline, body;
+    if(score >= 80){
+      vClass='good'; ringColor='green';
+      headline = 'Looks good — proceed to CIPC search';
+      body = 'No major rule violations detected. The next step is to confirm no identical or similar name exists in the CIPC register before paying the R175 reservation fee.';
+    } else if(score >= 55){
+      vClass='warn'; ringColor='amber';
+      headline = 'Some issues to resolve before submitting';
+      body = 'This name has one or more issues that could cause rejection or delay. Review the flags below and adjust before paying for a reservation.';
+    } else if(score >= 20){
+      vClass='bad'; ringColor='red';
+      headline = 'Likely to be rejected — revise the name';
+      body = 'Multiple rejection risks detected. Submitting this name as-is would likely result in rejection, a lost fee, and a delay. Fix the issues below first.';
+    } else {
+      vClass='fatal'; ringColor='red';
+      headline = 'Will be rejected — name contains prohibited elements';
+      body = 'This name contains words or elements that CIPC will not approve for a standard private company. Do not submit without removing these issues first.';
+    }
+
+    ring.className.baseVal = `vr-fg ${ringColor}`;
+    $('vrNum').textContent = score;
+    const vEl = $('verdict');
+    vEl.className = `verdict ${vClass}`;
+    $('verdictH').textContent = headline;
+    $('verdictBody').textContent = body;
+
+    // Issues list
+    const sevOrder = {fatal:0, high:1, warn:2, info:3, ok:4};
+    const sorted = [...issues].sort((a,b) => sevOrder[a.sev] - sevOrder[b.sev]);
+
+    $('issuesList').innerHTML = sorted.length === 0
+      ? '<div class="issues-empty">No issues detected.</div>'
+      : `<div class="issues">${sorted.map(i => `
+          <div class="issue ${i.sev}">
+            <div class="issue-ico">${i.ico}</div>
+            <div class="issue-body">
+              <div class="issue-title">${i.title}</div>
+              <div class="issue-desc">${i.desc}</div>
+              ${i.fix ? `<div class="issue-fix">${i.fix}</div>` : ''}
+            </div>
+          </div>`).join('')}
+        </div>`;
+  }
+
+  // ─── EVENTS ───
+  let debounce;
+  $('nameInput').addEventListener('input', () => {
+    clearTimeout(debounce);
+    debounce = setTimeout(() => render($('nameInput').value), 220);
+  });
+  $('checkBtn').addEventListener('click', () => render($('nameInput').value));
+  $('nameInput').addEventListener('keydown', e => { if(e.key==='Enter') render($('nameInput').value); });
+
+  // Initial
+  render('');
+})();
+</script>
+</body>
+</html>

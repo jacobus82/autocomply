@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>GP &amp; Markup Calculator — AutoComply</title>
+<meta name="description" content="Free GP and markup calculator for South African businesses. Work out your gross profit margin and markup percentage — or set the selling price you need to hit a target margin.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;700;800&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+
+:root{
+  --navy:#0B1628;
+  --navy-soft:#1A2842;
+  --blue:#1A56DB;
+  --blue-soft:#EEF3FF;
+  --blue-line:rgba(26,86,219,.15);
+  --green:#059669;
+  --green-soft:#ECFDF5;
+  --green-mid:#10B981;
+  --amber:#D97706;
+  --amber-soft:#FEF3C7;
+  --red:#DC2626;
+  --red-soft:#FEE2E2;
+  --muted:#5A6A82;
+  --muted2:#8A96A8;
+  --border:#DDE5F0;
+  --border-strong:#C5D1E4;
+  --bg:#F8FAFF;
+  --bg2:#EEF3FF;
+  --white:#fff;
+  --sh:0 1px 4px rgba(11,22,40,.07);
+  --sh-strong:0 4px 20px rgba(11,22,40,.10);
+}
+
+html,body{background:var(--bg);color:var(--navy);font-family:'Outfit',sans-serif;-webkit-font-smoothing:antialiased;min-height:100vh;font-size:15px;line-height:1.5;}
+
+/* ─────────── TOPBAR ─────────── */
+.topbar{background:var(--navy);padding:14px 20px;border-bottom:1px solid rgba(255,255,255,.05);}
+.topbar-inner{max-width:1040px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;}
+.brand{font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;color:#fff;letter-spacing:-.3px;text-decoration:none;}
+.brand span{color:#60AEFF;}
+.back{font-size:12.5px;color:rgba(255,255,255,.55);text-decoration:none;display:inline-flex;align-items:center;gap:6px;transition:color .15s;}
+.back:hover{color:#fff;}
+
+/* ─────────── HERO ─────────── */
+.hero{background:var(--navy);padding:34px 20px 60px;position:relative;overflow:hidden;}
+.hero::before{content:"";position:absolute;top:-100px;right:-100px;width:400px;height:400px;background:radial-gradient(circle,rgba(26,86,219,.15),transparent 70%);pointer-events:none;}
+.hero-inner{max-width:1040px;margin:0 auto;position:relative;z-index:1;}
+.hero-tag{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:14px;}
+.hero-h{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(26px,5vw,38px);font-weight:800;color:#fff;letter-spacing:-.6px;line-height:1.15;margin-bottom:12px;max-width:720px;}
+.hero-sub{font-size:clamp(14px,2.2vw,16px);color:rgba(255,255,255,.65);max-width:640px;line-height:1.55;}
+
+/* ─────────── LAYOUT ─────────── */
+.wrap{max-width:1040px;margin:0 auto;padding:0 20px;}
+.main{margin-top:-38px;margin-bottom:32px;position:relative;z-index:2;}
+
+.card{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:28px;box-shadow:var(--sh);margin-bottom:20px;}
+.card.edu{background:linear-gradient(135deg,var(--bg2) 0%,#F5F8FF 100%);border-color:var(--blue-line);}
+.card-h{font-family:'Bricolage Grotesque',sans-serif;font-size:17px;font-weight:700;color:var(--navy);margin-bottom:4px;letter-spacing:-.2px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.card-sub{font-size:13px;color:var(--muted);margin-bottom:22px;line-height:1.55;}
+
+/* ─────────── TABS ─────────── */
+.tabs{display:grid;grid-template-columns:1fr 1fr;background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:4px;margin-bottom:24px;}
+.tab-btn{font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;color:var(--muted);background:transparent;border:none;padding:10px 12px;border-radius:7px;cursor:pointer;transition:all .18s;}
+.tab-btn.active{background:var(--white);color:var(--navy);box-shadow:0 1px 3px rgba(11,22,40,.08);}
+
+.tab-panel{display:none;}
+.tab-panel.active{display:block;}
+
+/* sub-toggle for target type */
+.sub-toggle{display:inline-flex;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:3px;margin-bottom:18px;}
+.sub-toggle-btn{font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;color:var(--muted);background:transparent;border:none;padding:7px 14px;border-radius:6px;cursor:pointer;transition:all .18s;}
+.sub-toggle-btn.active{background:var(--navy);color:#fff;}
+
+/* ─────────── INPUTS ─────────── */
+.inputs-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:22px;}
+@media (max-width:560px){.inputs-row{grid-template-columns:1fr;}}
+
+.field{}
+.field-label{display:flex;align-items:center;justify-content:space-between;font-size:12px;font-weight:600;color:var(--navy);margin-bottom:6px;}
+.field-hint{font-size:11px;color:var(--muted2);font-weight:500;}
+.input-wrap{position:relative;}
+.input-prefix,.input-suffix{position:absolute;top:50%;transform:translateY(-50%);font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;color:var(--muted);pointer-events:none;}
+.input-prefix{left:13px;}
+.input-suffix{right:13px;}
+.input{width:100%;padding:11px 13px 11px 30px;font-family:'Outfit',sans-serif;font-size:14.5px;font-weight:500;color:var(--navy);background:var(--bg);border:1px solid var(--border);border-radius:9px;transition:all .15s;-moz-appearance:textfield;}
+.input.suffix-pad{padding:11px 34px 11px 13px;}
+.input::-webkit-outer-spin-button,.input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
+.input:focus{outline:none;border-color:var(--blue);background:var(--white);box-shadow:0 0 0 3px rgba(26,86,219,.12);}
+.input::placeholder{color:var(--muted2);font-weight:400;}
+
+/* ─────────── RESULTS ─────────── */
+.results{margin-bottom:22px;background:linear-gradient(135deg,var(--navy) 0%,var(--navy-soft) 100%);border-radius:13px;padding:22px 24px;position:relative;overflow:hidden;}
+.results::before{content:"";position:absolute;top:-60px;right:-60px;width:200px;height:200px;background:radial-gradient(circle,rgba(96,174,255,.12),transparent 70%);pointer-events:none;}
+.results-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;position:relative;z-index:1;}
+@media (max-width:540px){.results-grid{grid-template-columns:1fr;gap:14px;}}
+
+.result-cell{min-width:0;}
+.result-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:6px;}
+.result-value{font-family:'Bricolage Grotesque',sans-serif;font-size:28px;font-weight:800;color:#fff;letter-spacing:-.7px;line-height:1;}
+.result-value.big{font-size:34px;}
+.result-value.dim{color:rgba(255,255,255,.3);}
+.result-sub{font-size:11.5px;color:rgba(255,255,255,.55);margin-top:4px;font-family:'JetBrains Mono',monospace;}
+
+@media (max-width:540px){
+  .result-cell{padding-bottom:14px;border-bottom:1px solid rgba(255,255,255,.08);}
+  .result-cell:last-child{border-bottom:none;padding-bottom:0;}
+}
+
+/* ─────────── BREAKDOWN BAR ─────────── */
+.breakdown{margin-bottom:18px;}
+.breakdown-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;}
+.breakdown-bar{display:flex;height:40px;border-radius:9px;overflow:hidden;background:var(--bg);border:1px solid var(--border);}
+.breakdown-seg{display:flex;align-items:center;justify-content:center;color:#fff;font-family:'JetBrains Mono',monospace;font-size:11.5px;font-weight:600;letter-spacing:.5px;transition:flex .3s ease;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0 8px;}
+.breakdown-seg.cost{background:var(--blue);}
+.breakdown-seg.profit{background:var(--green);}
+.breakdown-seg.loss{background:var(--red);}
+.breakdown-legend{display:flex;justify-content:space-between;margin-top:10px;gap:12px;flex-wrap:wrap;font-size:12px;color:var(--muted);}
+.breakdown-legend-item{display:flex;align-items:center;gap:6px;}
+.breakdown-legend-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;}
+.breakdown-legend-dot.cost{background:var(--blue);}
+.breakdown-legend-dot.profit{background:var(--green);}
+.breakdown-legend-dot.loss{background:var(--red);}
+
+/* ─────────── PILL + ALERTS ─────────── */
+.pill-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px;}
+.pill{display:inline-flex;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;padding:5px 10px;border-radius:20px;}
+.pill::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor;}
+.pill.ok{background:var(--green-soft);color:var(--green);}
+.pill.warn{background:var(--amber-soft);color:var(--amber);}
+.pill.fail{background:var(--red-soft);color:var(--red);}
+.pill.info{background:var(--blue-soft);color:var(--blue);}
+.pill::before{background:currentColor;}
+
+.alert{padding:12px 14px;border-radius:10px;font-size:13px;line-height:1.55;display:flex;gap:10px;align-items:flex-start;border:1px solid;margin-bottom:10px;}
+.alert:last-child{margin-bottom:0;}
+.alert-ico{font-size:14px;line-height:1;flex-shrink:0;margin-top:1px;}
+.alert.red{background:var(--red-soft);color:#991B1B;border-color:rgba(220,38,38,.2);}
+.alert.amber{background:var(--amber-soft);color:#92400E;border-color:rgba(217,119,6,.2);}
+.alert.blue{background:var(--blue-soft);color:#1E3A8A;border-color:var(--blue-line);}
+.alert strong{font-weight:700;}
+
+/* actions */
+.actions{display:flex;justify-content:flex-end;gap:8px;margin-top:14px;flex-wrap:wrap;}
+.action-btn{font-family:'Outfit',sans-serif;font-size:12.5px;font-weight:600;padding:9px 15px;border-radius:8px;cursor:pointer;border:1px solid var(--border);background:var(--white);color:var(--muted);transition:all .15s;display:inline-flex;align-items:center;gap:6px;}
+.action-btn:hover{border-color:var(--border-strong);background:var(--bg);color:var(--navy);}
+
+/* ─────────── EDUCATION CARD ─────────── */
+.edu-head{display:flex;align-items:flex-start;gap:14px;margin-bottom:16px;}
+.edu-ico{width:38px;height:38px;border-radius:10px;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.edu-title{font-family:'Bricolage Grotesque',sans-serif;font-size:19px;font-weight:700;color:var(--navy);letter-spacing:-.3px;line-height:1.25;}
+.edu-body{font-size:14px;color:var(--navy);line-height:1.65;}
+.edu-body p{margin-bottom:12px;}
+.edu-body p:last-child{margin-bottom:0;}
+.edu-body strong{font-weight:700;}
+.edu-example{background:var(--white);border:1px solid var(--blue-line);border-radius:10px;padding:16px 18px;margin:14px 0;}
+.edu-example-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--blue);margin-bottom:8px;}
+.edu-example-text{font-size:13.5px;color:var(--navy);line-height:1.65;}
+.edu-example-text .mono{font-family:'JetBrains Mono',monospace;background:var(--blue-soft);padding:1px 6px;border-radius:4px;font-size:12.5px;font-weight:600;}
+
+/* ─────────── CONVERSION TABLE ─────────── */
+.conv-table{width:100%;border-collapse:collapse;}
+.conv-table th,.conv-table td{padding:11px 14px;text-align:left;border-bottom:1px solid var(--border);}
+.conv-table th{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--blue);font-weight:600;}
+.conv-table td{font-family:'JetBrains Mono',monospace;font-size:13.5px;font-weight:600;color:var(--navy);}
+.conv-table tr:last-child td{border-bottom:none;}
+.conv-table tr:hover td{background:var(--bg);}
+.conv-arrow{color:var(--muted2);font-weight:400;padding:0 6px;}
+
+/* ─────────── CTA ─────────── */
+.cta-inner{background:var(--navy);border-radius:16px;padding:28px 26px;text-align:center;position:relative;overflow:hidden;}
+.cta-inner::before{content:"";position:absolute;top:-80px;left:-80px;width:240px;height:240px;background:radial-gradient(circle,rgba(26,86,219,.28),transparent 70%);pointer-events:none;}
+.cta-inner::after{content:"";position:absolute;bottom:-80px;right:-80px;width:240px;height:240px;background:radial-gradient(circle,rgba(96,174,255,.18),transparent 70%);pointer-events:none;}
+.cta-h{font-family:'Bricolage Grotesque',sans-serif;font-size:21px;font-weight:700;color:#fff;margin-bottom:8px;letter-spacing:-.3px;position:relative;z-index:1;}
+.cta-sub{font-size:14px;color:rgba(255,255,255,.65);margin-bottom:18px;max-width:500px;margin-left:auto;margin-right:auto;position:relative;z-index:1;line-height:1.55;}
+.cta-btn{display:inline-flex;align-items:center;gap:8px;background:#25D366;color:#fff;font-family:'Outfit',sans-serif;font-size:14px;font-weight:600;padding:12px 22px;border-radius:9px;text-decoration:none;position:relative;z-index:1;transition:transform .15s;}
+.cta-btn:hover{transform:translateY(-1px);}
+
+/* ─────────── FOOTER ─────────── */
+.foot{max-width:1040px;margin:20px auto 0;padding:26px 20px;text-align:center;font-size:12px;color:var(--muted2);border-top:1px solid var(--border);}
+.foot a{color:var(--muted);text-decoration:none;font-weight:600;}
+
+/* ─────────── RESPONSIVE ─────────── */
+@media (max-width:620px){
+  .card{padding:22px 18px;}
+  .hero{padding:28px 20px 54px;}
+  .main{margin-top:-36px;}
+  .cta-inner{padding:26px 20px;}
+  .results{padding:20px 18px;}
+}
+</style>
+</head>
+<body>
+
+<!-- ─── TOPBAR ─── -->
+<div class="topbar">
+  <div class="topbar-inner">
+    <a href="https://autocomply.co.za" class="brand">Auto<span>Comply</span></a>
+    <a href="https://autocomply.co.za/#tools" class="back">← All tools</a>
+  </div>
+</div>
+
+<!-- ─── HERO ─── -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-tag">Free Tool · GP &amp; Markup Calculator</div>
+    <h1 class="hero-h">Work out your margin — or set the price you need to hit it.</h1>
+    <p class="hero-sub">Two calculations in one: check your GP and markup on any product, or work out the selling price needed to hit a target margin. Built for retailers and service businesses that price their own work.</p>
+  </div>
+</section>
+
+<!-- ─── MAIN ─── -->
+<main class="main wrap">
+
+  <!-- CALCULATOR -->
+  <div class="card">
+
+    <!-- Tabs -->
+    <div class="tabs" role="tablist">
+      <button class="tab-btn active" id="tabCheck" type="button">Check my margin</button>
+      <button class="tab-btn" id="tabSet" type="button">Set my selling price</button>
+    </div>
+
+    <!-- PANEL 1: CHECK MY MARGIN -->
+    <div class="tab-panel active" id="panelCheck">
+      <div class="card-sub">Enter what the item cost you and what you sell it for. We'll work out your profit, GP% and markup%.</div>
+
+      <div class="inputs-row">
+        <div class="field">
+          <label class="field-label" for="costA">
+            <span>Cost price</span>
+            <span class="field-hint">what you pay for it</span>
+          </label>
+          <div class="input-wrap">
+            <span class="input-prefix">R</span>
+            <input id="costA" class="input" type="number" inputmode="decimal" placeholder="100.00" min="0" step="0.01">
+          </div>
+        </div>
+        <div class="field">
+          <label class="field-label" for="sellA">
+            <span>Selling price</span>
+            <span class="field-hint">what the customer pays</span>
+          </label>
+          <div class="input-wrap">
+            <span class="input-prefix">R</span>
+            <input id="sellA" class="input" type="number" inputmode="decimal" placeholder="150.00" min="0" step="0.01">
+          </div>
+        </div>
+      </div>
+
+      <div class="results">
+        <div class="results-grid">
+          <div class="result-cell">
+            <div class="result-label">Profit per unit</div>
+            <div class="result-value big" id="profitA">—</div>
+            <div class="result-sub" id="profitSubA">Enter cost and selling price</div>
+          </div>
+          <div class="result-cell">
+            <div class="result-label">GP %</div>
+            <div class="result-value" id="gpA">—</div>
+            <div class="result-sub">profit ÷ selling price</div>
+          </div>
+          <div class="result-cell">
+            <div class="result-label">Markup %</div>
+            <div class="result-value" id="mkA">—</div>
+            <div class="result-sub">profit ÷ cost</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pill-row" id="pillRowA"></div>
+
+      <div class="breakdown" id="breakdownA" style="display:none;">
+        <div class="breakdown-label">How the selling price splits</div>
+        <div class="breakdown-bar">
+          <div class="breakdown-seg cost" id="segCostA"></div>
+          <div class="breakdown-seg profit" id="segProfitA"></div>
+        </div>
+        <div class="breakdown-legend">
+          <div class="breakdown-legend-item">
+            <span class="breakdown-legend-dot cost"></span>
+            <span id="legendCostA">Cost</span>
+          </div>
+          <div class="breakdown-legend-item">
+            <span class="breakdown-legend-dot profit"></span>
+            <span id="legendProfitA">Profit</span>
+          </div>
+        </div>
+      </div>
+
+      <div id="alertsA"></div>
+
+      <div class="actions">
+        <button class="action-btn" id="clearA" type="button">✕ Clear</button>
+      </div>
+    </div>
+
+    <!-- PANEL 2: SET MY PRICE -->
+    <div class="tab-panel" id="panelSet">
+      <div class="card-sub">Enter your cost and the margin you want to hit. We'll tell you what to charge.</div>
+
+      <div class="sub-toggle">
+        <button class="sub-toggle-btn active" id="targetGp" type="button">Target GP %</button>
+        <button class="sub-toggle-btn" id="targetMk" type="button">Target Markup %</button>
+      </div>
+
+      <div class="inputs-row">
+        <div class="field">
+          <label class="field-label" for="costB">
+            <span>Cost price</span>
+            <span class="field-hint">what you pay for it</span>
+          </label>
+          <div class="input-wrap">
+            <span class="input-prefix">R</span>
+            <input id="costB" class="input" type="number" inputmode="decimal" placeholder="100.00" min="0" step="0.01">
+          </div>
+        </div>
+        <div class="field">
+          <label class="field-label" for="targetB">
+            <span id="targetLabel">Target GP %</span>
+            <span class="field-hint" id="targetHint">the margin you want</span>
+          </label>
+          <div class="input-wrap">
+            <input id="targetB" class="input suffix-pad" type="number" inputmode="decimal" placeholder="33" min="0" max="99.9" step="0.1">
+            <span class="input-suffix">%</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="results">
+        <div class="results-grid">
+          <div class="result-cell">
+            <div class="result-label">Selling price</div>
+            <div class="result-value big" id="sellB">—</div>
+            <div class="result-sub" id="sellSubB">Enter cost and target margin</div>
+          </div>
+          <div class="result-cell">
+            <div class="result-label">Profit per unit</div>
+            <div class="result-value" id="profitB">—</div>
+            <div class="result-sub">selling price − cost</div>
+          </div>
+          <div class="result-cell">
+            <div class="result-label" id="otherLabelB">Markup %</div>
+            <div class="result-value" id="otherB">—</div>
+            <div class="result-sub" id="otherSubB">equivalent markup</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pill-row" id="pillRowB"></div>
+
+      <div class="breakdown" id="breakdownB" style="display:none;">
+        <div class="breakdown-label">How the selling price splits</div>
+        <div class="breakdown-bar">
+          <div class="breakdown-seg cost" id="segCostB"></div>
+          <div class="breakdown-seg profit" id="segProfitB"></div>
+        </div>
+        <div class="breakdown-legend">
+          <div class="breakdown-legend-item">
+            <span class="breakdown-legend-dot cost"></span>
+            <span id="legendCostB">Cost</span>
+          </div>
+          <div class="breakdown-legend-item">
+            <span class="breakdown-legend-dot profit"></span>
+            <span id="legendProfitB">Profit</span>
+          </div>
+        </div>
+      </div>
+
+      <div id="alertsB"></div>
+
+      <div class="actions">
+        <button class="action-btn" id="clearB" type="button">✕ Clear</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- EDUCATION -->
+  <div class="card edu">
+    <div class="edu-head">
+      <div class="edu-ico">!</div>
+      <div>
+        <div class="edu-title">GP vs Markup — the confusion that kills SA retail margins</div>
+      </div>
+    </div>
+    <div class="edu-body">
+      <p>Two phrases, same rand value, two very different percentages. This one confusion quietly damages more SME margins than almost anything else.</p>
+
+      <p><strong>GP%</strong> is profit as a share of the <em>selling price</em>. <strong>Markup%</strong> is profit as a share of the <em>cost</em>. The rand profit is identical — but the percentage you call it depends on what you divide by.</p>
+
+      <div class="edu-example">
+        <div class="edu-example-label">The R 50 000 mistake</div>
+        <div class="edu-example-text">
+          You buy stock at <span class="mono">R 100</span> and sell at <span class="mono">R 150</span>. Same transaction — two readings:<br>
+          <br>
+          • <strong>GP% = 33%</strong> &nbsp;(R 50 ÷ R 150)<br>
+          • <strong>Markup% = 50%</strong> &nbsp;(R 50 ÷ R 100)<br>
+          <br>
+          A supplier says "you'll make 50% on this." You think 50% GP. You offer a 30% discount to clear stock, assuming you'll still walk away with 20%. Your actual GP after discount? Around <strong>5%</strong>. On high-volume lines that rounding error compounds into tens of thousands lost per year.
+        </div>
+      </div>
+
+      <p><strong>Rule of thumb:</strong> if someone quotes you a margin without specifying whether it's GP or markup, assume they mean markup — the real GP is always lower than it sounds. Always convert before making pricing decisions.</p>
+    </div>
+  </div>
+
+  <!-- CONVERSION TABLE -->
+  <div class="card">
+    <div class="card-h">Quick conversion table</div>
+    <div class="card-sub">The most common markup percentages and their true GP equivalents.</div>
+    <div style="overflow-x:auto;">
+      <table class="conv-table">
+        <thead>
+          <tr>
+            <th>Markup %</th>
+            <th></th>
+            <th>GP %</th>
+            <th>Example on R 100 cost</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>25%</td><td class="conv-arrow">→</td><td>20.0%</td><td>Sell at R 125 · profit R 25</td></tr>
+          <tr><td>33.3%</td><td class="conv-arrow">→</td><td>25.0%</td><td>Sell at R 133 · profit R 33</td></tr>
+          <tr><td>50%</td><td class="conv-arrow">→</td><td>33.3%</td><td>Sell at R 150 · profit R 50</td></tr>
+          <tr><td>66.7%</td><td class="conv-arrow">→</td><td>40.0%</td><td>Sell at R 167 · profit R 67</td></tr>
+          <tr><td>100%</td><td class="conv-arrow">→</td><td>50.0%</td><td>Sell at R 200 · profit R 100</td></tr>
+          <tr><td>150%</td><td class="conv-arrow">→</td><td>60.0%</td><td>Sell at R 250 · profit R 150</td></tr>
+          <tr><td>200%</td><td class="conv-arrow">→</td><td>66.7%</td><td>Sell at R 300 · profit R 200</td></tr>
+          <tr><td>300%</td><td class="conv-arrow">→</td><td>75.0%</td><td>Sell at R 400 · profit R 300</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</main>
+
+<!-- ─── CTA ─── -->
+<div class="wrap" style="margin-bottom:30px;">
+  <div class="cta-inner">
+    <div class="cta-h">Need to reprice a whole range?</div>
+    <p class="cta-sub">If you're carrying dozens or hundreds of SKUs and the margins don't add up, the problem is usually pricing structure — not any single product. We can help you rebuild the pricing model.</p>
+    <a href="https://wa.me/27670113108?text=Hi%20AutoComply%2C%20I%20used%20the%20GP%20%26%20Markup%20Calculator%20and%20want%20help%20with%20my%20product%20pricing." class="cta-btn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Chat on WhatsApp
+    </a>
+  </div>
+</div>
+
+<!-- ─── FOOTER ─── -->
+<div class="foot">
+  AutoComply · Practical tools for South African business owners · <a href="https://autocomply.co.za">autocomply.co.za</a>
+</div>
+
+<script>
+(function(){
+  // ─────────── UTILITIES ───────────
+  const $ = id => document.getElementById(id);
+  const fmtR = n => 'R ' + n.toLocaleString('en-ZA', {minimumFractionDigits:2, maximumFractionDigits:2});
+  const fmtPct = n => n.toLocaleString('en-ZA', {minimumFractionDigits:1, maximumFractionDigits:1}) + '%';
+  const num = el => {
+    const v = parseFloat(el.value);
+    return (isNaN(v) || v < 0) ? null : v;
+  };
+
+  // ─────────── MARGIN STATUS ───────────
+  function marginStatus(gp){
+    if(gp < 0)   return {cls:'fail', label:'Selling at a loss'};
+    if(gp < 10)  return {cls:'fail', label:'Unprofitable margin'};
+    if(gp < 20)  return {cls:'warn', label:'Thin margin'};
+    if(gp < 30)  return {cls:'warn', label:'Workable'};
+    if(gp < 50)  return {cls:'ok',   label:'Healthy margin'};
+    return              {cls:'ok',   label:'Strong margin'};
+  }
+
+  function renderBreakdown(cost, sell, segCost, segProfit, legendCost, legendProfit, wrapper){
+    if(sell <= 0 || cost < 0 || cost === null || sell === null){
+      wrapper.style.display = 'none';
+      return;
+    }
+    wrapper.style.display = 'block';
+    const profit = sell - cost;
+
+    if(profit >= 0){
+      const costPct   = (cost / sell) * 100;
+      const profitPct = 100 - costPct;
+      segCost.className = 'breakdown-seg cost';
+      segProfit.className = 'breakdown-seg profit';
+      segCost.style.flex = costPct;
+      segProfit.style.flex = profitPct;
+      segCost.textContent   = costPct >= 18 ? fmtR(cost)   : (costPct >= 8 ? '•' : '');
+      segProfit.textContent = profitPct >= 18 ? fmtR(profit) : (profitPct >= 8 ? '•' : '');
+      legendCost.textContent   = 'Cost ' + fmtR(cost) + ' (' + fmtPct(costPct) + ')';
+      legendProfit.textContent = 'Profit ' + fmtR(profit) + ' (' + fmtPct(profitPct) + ')';
+    } else {
+      // negative profit — show cost (blue) at 100%, separate loss indicator
+      segCost.className = 'breakdown-seg cost';
+      segProfit.className = 'breakdown-seg loss';
+      // cost exceeds sell — show sell as 100% and loss separately? Better: show sell portion as the recovered-cost portion, plus "loss" extending beyond
+      // Simplest representation: show cost at 100% blue, and the "shortfall" styling doesn't work well in a flex bar
+      // Alternative: show cost 100% and label the loss in the legend only
+      segCost.style.flex = 1;
+      segProfit.style.flex = 0;
+      segCost.textContent = fmtR(sell) + ' recovered';
+      segProfit.textContent = '';
+      legendCost.textContent   = 'Selling price ' + fmtR(sell);
+      legendProfit.textContent = 'Loss of ' + fmtR(Math.abs(profit));
+    }
+  }
+
+  // ─────────── PANEL A: CHECK MARGIN ───────────
+  function calcA(){
+    const cost = num($('costA'));
+    const sell = num($('sellA'));
+    const pillRow = $('pillRowA');
+    const alerts  = $('alertsA');
+
+    pillRow.innerHTML = '';
+    alerts.innerHTML = '';
+
+    if(cost === null && sell === null){
+      $('profitA').textContent = '—';
+      $('profitSubA').textContent = 'Enter cost and selling price';
+      $('gpA').textContent = '—';
+      $('gpA').classList.add('dim');
+      $('mkA').textContent = '—';
+      $('mkA').classList.add('dim');
+      $('breakdownA').style.display = 'none';
+      return;
+    }
+    if(cost === null || sell === null){
+      $('profitA').textContent = '—';
+      $('profitSubA').textContent = 'Fill both fields to see your margin';
+      $('gpA').textContent = '—';
+      $('gpA').classList.add('dim');
+      $('mkA').textContent = '—';
+      $('mkA').classList.add('dim');
+      $('breakdownA').style.display = 'none';
+      return;
+    }
+
+    const profit = sell - cost;
+    const gp = sell > 0 ? (profit / sell) * 100 : 0;
+    const mk = cost > 0 ? (profit / cost) * 100 : null;
+
+    $('profitA').textContent = fmtR(profit);
+    $('profitA').classList.remove('dim');
+    $('profitSubA').textContent = 'on every ' + fmtR(sell).replace('R ','R') + ' sold';
+    $('gpA').textContent = fmtPct(gp);
+    $('gpA').classList.remove('dim');
+    if(mk !== null){
+      $('mkA').textContent = fmtPct(mk);
+      $('mkA').classList.remove('dim');
+    } else {
+      $('mkA').textContent = 'N/A';
+      $('mkA').classList.add('dim');
+    }
+
+    // Status pill
+    const st = marginStatus(gp);
+    pillRow.innerHTML = `<span class="pill ${st.cls}">${st.label}</span>`;
+
+    // Breakdown bar
+    renderBreakdown(cost, sell, $('segCostA'), $('segProfitA'), $('legendCostA'), $('legendProfitA'), $('breakdownA'));
+
+    // Alerts
+    if(profit < 0){
+      alerts.innerHTML = `<div class="alert red"><div class="alert-ico">⚠️</div><div><strong>You\u2019re selling at a loss.</strong> Your selling price is below your cost by ${fmtR(Math.abs(profit))}. Every unit sold at this price deepens the loss — review pricing or stop selling this item.</div></div>`;
+    } else if(profit === 0){
+      alerts.innerHTML = `<div class="alert amber"><div class="alert-ico">⚡</div><div><strong>Break-even only.</strong> You make no profit on this item. Any discount, fee or wastage turns this into a loss.</div></div>`;
+    } else if(gp < 15){
+      alerts.innerHTML = `<div class="alert amber"><div class="alert-ico">⚡</div><div><strong>Thin margin at ${fmtPct(gp)} GP.</strong> A 10% discount here would wipe out most of your profit. Consider whether this price point is sustainable after payment fees, shrinkage or returns.</div></div>`;
+    } else if(gp >= 60){
+      alerts.innerHTML = `<div class="alert blue"><div class="alert-ico">💡</div><div><strong>Strong margin at ${fmtPct(gp)} GP.</strong> This gives you room to absorb discounts, bundle deals or competitive price moves without losing profitability.</div></div>`;
+    }
+  }
+
+  // ─────────── PANEL B: SET PRICE ───────────
+  let targetMode = 'gp'; // 'gp' or 'mk'
+
+  function calcB(){
+    const cost = num($('costB'));
+    const tgt  = num($('targetB'));
+    const pillRow = $('pillRowB');
+    const alerts  = $('alertsB');
+
+    pillRow.innerHTML = '';
+    alerts.innerHTML = '';
+
+    if(cost === null && tgt === null){
+      $('sellB').textContent = '—';
+      $('sellSubB').textContent = 'Enter cost and target margin';
+      $('profitB').textContent = '—';
+      $('profitB').classList.add('dim');
+      $('otherB').textContent = '—';
+      $('otherB').classList.add('dim');
+      $('breakdownB').style.display = 'none';
+      return;
+    }
+    if(cost === null || tgt === null){
+      $('sellB').textContent = '—';
+      $('sellSubB').textContent = 'Fill both fields to see your selling price';
+      $('profitB').textContent = '—';
+      $('profitB').classList.add('dim');
+      $('otherB').textContent = '—';
+      $('otherB').classList.add('dim');
+      $('breakdownB').style.display = 'none';
+      return;
+    }
+
+    let sell, profit, gp, mk;
+    if(targetMode === 'gp'){
+      if(tgt >= 100){
+        alerts.innerHTML = `<div class="alert red"><div class="alert-ico">⚠️</div><div><strong>GP % cannot be 100% or higher.</strong> That would require an infinite selling price (or a cost of zero). The maximum practical GP is just below 100%.</div></div>`;
+        $('sellB').textContent = '—';
+        $('sellSubB').textContent = 'Target too high — reduce below 100%';
+        $('profitB').textContent = '—';
+        $('otherB').textContent = '—';
+        $('breakdownB').style.display = 'none';
+        return;
+      }
+      sell = cost / (1 - tgt / 100);
+      profit = sell - cost;
+      gp = tgt;
+      mk = cost > 0 ? (profit / cost) * 100 : null;
+      $('otherLabelB').textContent = 'Markup %';
+      $('otherSubB').textContent = 'equivalent markup';
+      $('otherB').textContent = mk !== null ? fmtPct(mk) : 'N/A';
+    } else {
+      sell = cost * (1 + tgt / 100);
+      profit = sell - cost;
+      mk = tgt;
+      gp = sell > 0 ? (profit / sell) * 100 : 0;
+      $('otherLabelB').textContent = 'GP %';
+      $('otherSubB').textContent = 'equivalent GP (true margin)';
+      $('otherB').textContent = fmtPct(gp);
+    }
+
+    $('sellB').textContent = fmtR(sell);
+    $('sellB').classList.remove('dim');
+    $('sellSubB').textContent = 'to hit ' + fmtPct(tgt) + ' ' + (targetMode === 'gp' ? 'GP' : 'markup');
+    $('profitB').textContent = fmtR(profit);
+    $('profitB').classList.remove('dim');
+    $('otherB').classList.remove('dim');
+
+    // Status pill
+    const st = marginStatus(gp);
+    pillRow.innerHTML = `<span class="pill ${st.cls}">${st.label}</span>`;
+    // Also show the conversion as an info pill
+    if(targetMode === 'gp' && mk !== null){
+      pillRow.innerHTML += ` <span class="pill info">= ${fmtPct(mk)} markup</span>`;
+    } else if(targetMode === 'mk'){
+      pillRow.innerHTML += ` <span class="pill info">= ${fmtPct(gp)} GP</span>`;
+    }
+
+    // Breakdown bar
+    renderBreakdown(cost, sell, $('segCostB'), $('segProfitB'), $('legendCostB'), $('legendProfitB'), $('breakdownB'));
+
+    // Warnings for common confusion
+    if(targetMode === 'mk' && tgt >= 50 && gp < tgt){
+      alerts.innerHTML = `<div class="alert blue"><div class="alert-ico">💡</div><div><strong>Watch the conversion:</strong> ${fmtPct(tgt)} markup feels like a big margin, but it\u2019s actually <strong>${fmtPct(gp)} GP</strong>. If you later apply a discount, calculate it off the true GP — not the markup.</div></div>`;
+    }
+    if(targetMode === 'gp' && tgt >= 70 && mk !== null){
+      alerts.innerHTML = `<div class="alert amber"><div class="alert-ico">⚡</div><div><strong>Very high GP target.</strong> ${fmtPct(tgt)} GP requires a markup of ${fmtPct(mk)} — double-check this is realistic for your market before setting this as the price.</div></div>`;
+    }
+  }
+
+  // ─────────── TABS ───────────
+  $('tabCheck').addEventListener('click', () => {
+    $('tabCheck').classList.add('active');
+    $('tabSet').classList.remove('active');
+    $('panelCheck').classList.add('active');
+    $('panelSet').classList.remove('active');
+  });
+  $('tabSet').addEventListener('click', () => {
+    $('tabSet').classList.add('active');
+    $('tabCheck').classList.remove('active');
+    $('panelSet').classList.add('active');
+    $('panelCheck').classList.remove('active');
+  });
+
+  // ─────────── SUB-TOGGLE ───────────
+  $('targetGp').addEventListener('click', () => {
+    targetMode = 'gp';
+    $('targetGp').classList.add('active');
+    $('targetMk').classList.remove('active');
+    $('targetLabel').textContent = 'Target GP %';
+    $('targetHint').textContent = 'the margin you want';
+    $('targetB').placeholder = '33';
+    calcB();
+  });
+  $('targetMk').addEventListener('click', () => {
+    targetMode = 'mk';
+    $('targetMk').classList.add('active');
+    $('targetGp').classList.remove('active');
+    $('targetLabel').textContent = 'Target Markup %';
+    $('targetHint').textContent = 'over cost';
+    $('targetB').placeholder = '50';
+    calcB();
+  });
+
+  // ─────────── EVENTS ───────────
+  ['costA','sellA'].forEach(id => $(id).addEventListener('input', calcA));
+  ['costB','targetB'].forEach(id => $(id).addEventListener('input', calcB));
+
+  $('clearA').addEventListener('click', () => {
+    $('costA').value = '';
+    $('sellA').value = '';
+    calcA();
+    $('costA').focus();
+  });
+  $('clearB').addEventListener('click', () => {
+    $('costB').value = '';
+    $('targetB').value = '';
+    calcB();
+    $('costB').focus();
+  });
+
+  // Initial
+  calcA();
+  calcB();
+})();
+</script>
+
+</body>
+</html>

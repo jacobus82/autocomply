@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Follow-Up Message Generator — AutoComply</title>
+<meta name="description" content="Never lose a deal because you didn't follow up. Choose your scenario and get a professional ready-to-send follow-up for WhatsApp and email. Powered by AI.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;700;800&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --navy:#0B1628;--navy-soft:#1A2842;--blue:#1A56DB;--blue-soft:#EEF3FF;
+  --blue-line:rgba(26,86,219,.15);--green:#059669;--green-soft:#ECFDF5;
+  --amber:#D97706;--amber-soft:#FEF3C7;--red:#DC2626;--red-soft:#FEE2E2;
+  --muted:#5A6A82;--muted2:#8A96A8;--border:#DDE5F0;--border-strong:#C5D1E4;
+  --bg:#F8FAFF;--bg2:#EEF3FF;--white:#fff;
+  --sh:0 1px 4px rgba(11,22,40,.07);--sh-strong:0 4px 20px rgba(11,22,40,.10);
+}
+html,body{background:var(--bg);color:var(--navy);font-family:'Outfit',sans-serif;-webkit-font-smoothing:antialiased;min-height:100vh;font-size:15px;line-height:1.5;}
+
+/* ─── TOPBAR ─── */
+.topbar{background:var(--navy);padding:14px 20px;}
+.topbar-inner{max-width:1040px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;}
+.brand{font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;color:#fff;letter-spacing:-.3px;text-decoration:none;}
+.brand span{color:#60AEFF;}
+.back{font-size:12.5px;color:rgba(255,255,255,.55);text-decoration:none;display:inline-flex;align-items:center;gap:6px;}
+.back:hover{color:#fff;}
+
+/* ─── HERO ─── */
+.hero{background:var(--navy);padding:34px 20px 58px;position:relative;overflow:hidden;}
+.hero::before{content:"";position:absolute;top:-100px;right:-100px;width:400px;height:400px;background:radial-gradient(circle,rgba(26,86,219,.15),transparent 70%);pointer-events:none;}
+.hero-inner{max-width:1040px;margin:0 auto;position:relative;z-index:1;}
+.ai-badge{display:inline-flex;align-items:center;gap:7px;background:linear-gradient(135deg,rgba(26,86,219,.3),rgba(96,174,255,.2));border:1px solid rgba(96,174,255,.3);border-radius:20px;padding:5px 12px;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.8);margin-bottom:16px;}
+.ai-badge::before{content:"";width:6px;height:6px;border-radius:50%;background:#60AEFF;animation:pulse 2s ease-in-out infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.4;}}
+.hero-tag{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:14px;}
+.hero-h{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(26px,5vw,38px);font-weight:800;color:#fff;letter-spacing:-.6px;line-height:1.15;margin-bottom:12px;max-width:760px;}
+.hero-sub{font-size:clamp(14px,2.2vw,16px);color:rgba(255,255,255,.65);max-width:660px;line-height:1.55;}
+
+/* ─── LAYOUT ─── */
+.wrap{max-width:1040px;margin:0 auto;padding:0 20px;}
+.main{margin-top:-36px;margin-bottom:32px;position:relative;z-index:2;}
+.card{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:26px;box-shadow:var(--sh);margin-bottom:20px;}
+.card-h{font-family:'Bricolage Grotesque',sans-serif;font-size:17px;font-weight:700;color:var(--navy);margin-bottom:4px;letter-spacing:-.2px;}
+.card-sub{font-size:13px;color:var(--muted);margin-bottom:22px;line-height:1.55;}
+.section-tag{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:2.5px;text-transform:uppercase;color:var(--blue);margin-bottom:10px;}
+
+/* ─── SCENARIO GRID ─── */
+.scenario-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;margin-bottom:24px;}
+.scenario-card{border:1.5px solid var(--border);border-radius:11px;padding:14px 16px;cursor:pointer;transition:all .15s;background:var(--white);text-align:left;}
+.scenario-card:hover{border-color:var(--border-strong);background:var(--bg);}
+.scenario-card.active{border-color:var(--blue);background:var(--blue-soft);}
+.scenario-ico{font-size:22px;margin-bottom:6px;line-height:1;}
+.scenario-name{font-size:13.5px;font-weight:700;color:var(--navy);margin-bottom:2px;}
+.scenario-card.active .scenario-name{color:var(--blue);}
+.scenario-desc{font-size:11.5px;color:var(--muted);line-height:1.45;}
+
+/* ─── INPUTS ─── */
+.field{margin-bottom:16px;}
+.field:last-child{margin-bottom:0;}
+.field-label{display:flex;align-items:center;justify-content:space-between;font-size:12.5px;font-weight:600;color:var(--navy);margin-bottom:6px;}
+.field-hint{font-size:11px;color:var(--muted2);font-weight:500;}
+
+.textarea{width:100%;padding:13px 15px;font-family:'Outfit',sans-serif;font-size:14px;color:var(--navy);background:var(--bg);border:1px solid var(--border);border-radius:10px;resize:vertical;min-height:100px;outline:none;transition:all .15s;line-height:1.6;}
+.textarea:focus{border-color:var(--blue);background:var(--white);box-shadow:0 0 0 3px rgba(26,86,219,.12);}
+.textarea::placeholder{color:var(--muted2);}
+.char-count{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--muted2);text-align:right;margin-top:4px;}
+.char-count.warn{color:var(--amber);}
+
+.input-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+@media(max-width:580px){.input-row{grid-template-columns:1fr;}}
+
+.input{width:100%;padding:10px 12px;font-family:'Outfit',sans-serif;font-size:14px;color:var(--navy);background:var(--bg);border:1px solid var(--border);border-radius:8px;outline:none;transition:all .15s;}
+.input:focus{border-color:var(--blue);background:var(--white);box-shadow:0 0 0 3px rgba(26,86,219,.12);}
+.input::placeholder{color:var(--muted2);}
+
+.select{width:100%;padding:10px 32px 10px 12px;font-family:'Outfit',sans-serif;font-size:14px;color:var(--navy);background:var(--bg) url("data:image/svg+xml;charset=US-ASCII,%3Csvg width='12' height='8' viewBox='0 0 12 8' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%235A6A82' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat right 12px center;border:1px solid var(--border);border-radius:8px;appearance:none;cursor:pointer;outline:none;transition:all .15s;}
+.select:focus{border-color:var(--blue);background-color:var(--white);box-shadow:0 0 0 3px rgba(26,86,219,.12);}
+
+.input-prefix-wrap{position:relative;}
+.input-prefix{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-family:'JetBrains Mono',monospace;font-size:12.5px;font-weight:600;color:var(--muted);pointer-events:none;}
+.input.has-prefix{padding-left:28px;}
+
+/* ─── DIVIDER ─── */
+.divider{height:1px;background:var(--border);margin:20px 0;}
+
+/* ─── GENERATE ─── */
+.generate-row{display:flex;justify-content:center;margin-top:22px;}
+.generate-btn{font-family:'Bricolage Grotesque',sans-serif;font-size:15px;font-weight:700;padding:14px 36px;border-radius:10px;cursor:pointer;border:none;background:linear-gradient(135deg,var(--blue),#1449B0);color:#fff;display:inline-flex;align-items:center;gap:9px;transition:all .15s;letter-spacing:-.1px;}
+.generate-btn:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 4px 16px rgba(26,86,219,.3);}
+.generate-btn:disabled{opacity:.6;cursor:not-allowed;transform:none;}
+.generate-btn .btn-ico{font-size:18px;}
+
+/* ─── LOADING ─── */
+.loading{display:none;flex-direction:column;align-items:center;gap:16px;padding:40px 20px;text-align:center;}
+.loading.show{display:flex;}
+.loading-dots{display:flex;gap:6px;}
+.loading-dot{width:8px;height:8px;border-radius:50%;background:var(--blue);animation:bounce 1.4s ease-in-out infinite;}
+.loading-dot:nth-child(2){animation-delay:.2s;}
+.loading-dot:nth-child(3){animation-delay:.4s;}
+@keyframes bounce{0%,80%,100%{transform:scale(.8);opacity:.5;}40%{transform:scale(1.2);opacity:1;}}
+.loading-text{font-size:14px;color:var(--muted);}
+
+/* ─── OUTPUT ─── */
+.output-area{display:none;}
+.output-area.show{display:block;}
+.output-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+@media(max-width:680px){.output-grid{grid-template-columns:1fr;}}
+
+.out-card{border:1.5px solid var(--border);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;}
+.out-card.wa{border-color:rgba(37,211,102,.4);}
+.out-card.email{border-color:var(--blue-line);}
+
+.out-header{padding:12px 16px;display:flex;align-items:center;justify-content:space-between;gap:8px;}
+.out-card.wa .out-header{background:#DCFCE7;border-bottom:1px solid rgba(37,211,102,.2);}
+.out-card.email .out-header{background:var(--blue-soft);border-bottom:1px solid var(--blue-line);}
+.out-type{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;font-weight:700;display:flex;align-items:center;gap:6px;}
+.out-card.wa .out-type{color:#16A34A;}
+.out-card.email .out-type{color:var(--blue);}
+
+.copy-btn{font-family:'Outfit',sans-serif;font-size:11.5px;font-weight:600;padding:6px 12px;border-radius:7px;cursor:pointer;border:none;display:inline-flex;align-items:center;gap:5px;transition:all .15s;}
+.out-card.wa .copy-btn{background:rgba(37,211,102,.15);color:#16A34A;}
+.out-card.wa .copy-btn:hover{background:rgba(37,211,102,.25);}
+.out-card.email .copy-btn{background:var(--blue-line);color:var(--blue);}
+.out-card.email .copy-btn:hover{background:rgba(26,86,219,.18);}
+.copy-btn.copied{background:var(--green-soft)!important;color:var(--green)!important;}
+
+.out-subject{padding:10px 16px;background:var(--bg);border-bottom:1px solid var(--border);}
+.out-subject-label{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:2px;}
+.out-subject-text{font-size:13.5px;font-weight:600;color:var(--navy);}
+.out-body{padding:16px;flex:1;font-size:13.5px;line-height:1.75;color:var(--navy);white-space:pre-wrap;word-break:break-word;}
+
+.regen-row{display:flex;justify-content:center;gap:10px;margin-top:18px;flex-wrap:wrap;}
+.regen-btn{font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;padding:9px 18px;border-radius:8px;cursor:pointer;border:1px solid var(--border);background:var(--white);color:var(--navy);display:inline-flex;align-items:center;gap:6px;transition:all .15s;}
+.regen-btn:hover{background:var(--bg2);border-color:var(--border-strong);}
+
+/* ─── ERROR ─── */
+.error-box{background:var(--red-soft);border:1px solid rgba(220,38,38,.2);border-radius:10px;padding:14px 16px;font-size:13.5px;color:#991B1B;display:none;align-items:flex-start;gap:10px;line-height:1.55;margin-top:14px;}
+.error-box.show{display:flex;}
+.error-box strong{font-weight:700;}
+
+/* ─── TIPS ─── */
+.tips-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;}
+.tip{display:flex;gap:10px;}
+.tip-ico{font-size:20px;flex-shrink:0;line-height:1;margin-top:2px;}
+.tip-title{font-size:13.5px;font-weight:700;color:var(--navy);margin-bottom:3px;}
+.tip-body{font-size:13px;color:var(--muted);line-height:1.55;}
+
+/* ─── CTA ─── */
+.cta-inner{background:var(--navy);border-radius:16px;padding:28px 26px;text-align:center;position:relative;overflow:hidden;}
+.cta-inner::before{content:"";position:absolute;top:-80px;left:-80px;width:240px;height:240px;background:radial-gradient(circle,rgba(26,86,219,.28),transparent 70%);pointer-events:none;}
+.cta-inner::after{content:"";position:absolute;bottom:-80px;right:-80px;width:240px;height:240px;background:radial-gradient(circle,rgba(96,174,255,.18),transparent 70%);pointer-events:none;}
+.cta-h{font-family:'Bricolage Grotesque',sans-serif;font-size:21px;font-weight:700;color:#fff;margin-bottom:8px;letter-spacing:-.3px;position:relative;z-index:1;}
+.cta-sub{font-size:14px;color:rgba(255,255,255,.65);margin-bottom:18px;max-width:520px;margin-left:auto;margin-right:auto;position:relative;z-index:1;line-height:1.55;}
+.cta-btn{display:inline-flex;align-items:center;gap:8px;background:#25D366;color:#fff;font-family:'Outfit',sans-serif;font-size:14px;font-weight:600;padding:12px 22px;border-radius:9px;text-decoration:none;position:relative;z-index:1;transition:transform .15s;}
+.cta-btn:hover{transform:translateY(-1px);}
+
+/* ─── FOOTER ─── */
+.foot{max-width:1040px;margin:20px auto 0;padding:26px 20px;text-align:center;font-size:12px;color:var(--muted2);border-top:1px solid var(--border);}
+.foot a{color:var(--muted);text-decoration:none;font-weight:600;}
+.foot .fine{font-size:11px;margin-top:8px;max-width:620px;margin-left:auto;margin-right:auto;line-height:1.55;}
+
+@media(max-width:620px){
+  .card{padding:20px 16px;}
+  .hero{padding:28px 20px 52px;}
+  .main{margin-top:-32px;}
+}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="topbar-inner">
+    <a href="https://autocomply.co.za" class="brand">Auto<span>Comply</span></a>
+    <a href="https://autocomply.co.za/#tools" class="back">← All tools</a>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="ai-badge">✦ AI-Powered</div>
+    <div class="hero-tag">Free Tool · Follow-Up Message Generator</div>
+    <h1 class="hero-h">Never lose a deal because you didn't follow up.</h1>
+    <p class="hero-sub">Pick your scenario, add a few details, and get a professional ready-to-send follow-up for WhatsApp and email — one that actually gets replies.</p>
+  </div>
+</section>
+
+<!-- MAIN -->
+<main class="main wrap">
+
+  <!-- INPUT CARD -->
+  <div class="card">
+    <div class="card-h">What are you following up on?</div>
+    <div class="card-sub">Select the scenario, add the context, and the AI does the rest.</div>
+
+    <!-- Scenario grid -->
+    <div class="section-tag">Choose your scenario</div>
+    <div class="scenario-grid" id="scenarioGrid">
+      <button class="scenario-card active" data-scenario="after-quote">
+        <div class="scenario-ico">💼</div>
+        <div class="scenario-name">After a quote</div>
+        <div class="scenario-desc">You sent a quote and haven't heard back</div>
+      </button>
+      <button class="scenario-card" data-scenario="after-meeting">
+        <div class="scenario-ico">🤝</div>
+        <div class="scenario-name">After a meeting</div>
+        <div class="scenario-desc">You had a meeting or site visit</div>
+      </button>
+      <button class="scenario-card" data-scenario="after-proposal">
+        <div class="scenario-ico">📄</div>
+        <div class="scenario-name">After a proposal</div>
+        <div class="scenario-desc">You sent a full proposal or pitch deck</div>
+      </button>
+      <button class="scenario-card" data-scenario="no-response">
+        <div class="scenario-ico">🔇</div>
+        <div class="scenario-name">No response at all</div>
+        <div class="scenario-desc">You reached out first and heard nothing</div>
+      </button>
+      <button class="scenario-card" data-scenario="after-job">
+        <div class="scenario-ico">✅</div>
+        <div class="scenario-name">After completing a job</div>
+        <div class="scenario-desc">Job is done — check in, ask for review or referral</div>
+      </button>
+      <button class="scenario-card" data-scenario="check-in">
+        <div class="scenario-ico">📞</div>
+        <div class="scenario-name">Routine check-in</div>
+        <div class="scenario-desc">Existing client — staying top of mind</div>
+      </button>
+      <button class="scenario-card" data-scenario="reconnect">
+        <div class="scenario-ico">🔄</div>
+        <div class="scenario-name">Reconnecting</div>
+        <div class="scenario-desc">Haven't spoken in a while — reaching back out</div>
+      </button>
+      <button class="scenario-card" data-scenario="after-referral">
+        <div class="scenario-ico">👥</div>
+        <div class="scenario-name">After a referral</div>
+        <div class="scenario-desc">Someone referred this contact to you</div>
+      </button>
+    </div>
+
+    <!-- Context inputs -->
+    <div class="section-tag">Tell the AI what happened</div>
+
+    <div class="field">
+      <div class="field-label">
+        <span id="contextLabel">What the quote covers and any relevant details</span>
+        <span class="field-hint">The more specific, the better the message</span>
+      </div>
+      <textarea id="contextInput" class="textarea" maxlength="500"
+        placeholder="e.g. I quoted them R45,000 for a complete electrical fit-out of their new office. They seemed keen on the call but mentioned they were getting other quotes. Sent the quote 10 days ago."></textarea>
+      <div class="char-count" id="charCount">0 / 500</div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Common fields -->
+    <div class="section-tag">A few more details</div>
+
+    <div class="input-row" style="margin-bottom:14px;">
+      <div>
+        <div class="field-label"><span>Time since last contact</span></div>
+        <select id="timing" class="select">
+          <option value="same-day">Today / same day</option>
+          <option value="1-2-days">1–2 days ago</option>
+          <option value="3-5-days" selected>3–5 days ago</option>
+          <option value="1-week">About a week ago</option>
+          <option value="2-weeks">Around 2 weeks ago</option>
+          <option value="1-month">About a month ago</option>
+          <option value="long">More than a month ago</option>
+        </select>
+      </div>
+      <div>
+        <div class="field-label">
+          <span>Value / deal size</span>
+          <span class="field-hint">optional</span>
+        </div>
+        <div class="input-prefix-wrap">
+          <span class="input-prefix">R</span>
+          <input id="dealValue" class="input has-prefix" type="text" placeholder="e.g. 45 000">
+        </div>
+      </div>
+    </div>
+
+    <div class="input-row">
+      <div>
+        <div class="field-label"><span>Client name</span><span class="field-hint">optional</span></div>
+        <input id="clientName" class="input" type="text" placeholder="e.g. Sipho / ABC Retailers">
+      </div>
+      <div>
+        <div class="field-label"><span>Your name</span><span class="field-hint">for sign-off</span></div>
+        <input id="senderName" class="input" type="text" placeholder="e.g. Thabo Nkosi">
+      </div>
+    </div>
+
+    <!-- Error -->
+    <div class="error-box" id="errorBox">
+      <div style="font-size:16px;flex-shrink:0;">⚠️</div>
+      <div id="errorText"><strong>Something went wrong.</strong> Please try again in a moment.</div>
+    </div>
+
+    <div class="generate-row">
+      <button class="generate-btn" id="generateBtn" type="button">
+        <span class="btn-ico">✦</span>
+        Generate follow-up
+      </button>
+    </div>
+  </div>
+
+  <!-- OUTPUT CARD -->
+  <div class="card" id="outputCard" style="display:none;">
+    <div class="card-h">Your follow-up messages</div>
+    <div class="card-sub">WhatsApp for speed. Email for a paper trail. Both ready to send.</div>
+
+    <div class="loading" id="loading">
+      <div class="loading-dots">
+        <div class="loading-dot"></div>
+        <div class="loading-dot"></div>
+        <div class="loading-dot"></div>
+      </div>
+      <div class="loading-text">Writing your follow-up…</div>
+    </div>
+
+    <div class="output-area" id="outputArea">
+      <div class="output-grid">
+        <div class="out-card wa">
+          <div class="out-header">
+            <div class="out-type">💬 WhatsApp</div>
+            <button class="copy-btn" id="copyWa" type="button">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              Copy
+            </button>
+          </div>
+          <div class="out-body" id="waOutput"></div>
+        </div>
+        <div class="out-card email">
+          <div class="out-header">
+            <div class="out-type">✉️ Email</div>
+            <button class="copy-btn" id="copyEmail" type="button">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              Copy
+            </button>
+          </div>
+          <div class="out-subject" id="emailSubjectWrap">
+            <div class="out-subject-label">Subject line</div>
+            <div class="out-subject-text" id="emailSubject"></div>
+          </div>
+          <div class="out-body" id="emailOutput"></div>
+        </div>
+      </div>
+
+      <div class="regen-row">
+        <button class="regen-btn" id="regenBtn" type="button">↺ Generate another version</button>
+        <button class="regen-btn" id="editBtn" type="button">← Edit details</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TIPS -->
+  <div class="card">
+    <div class="card-h">What makes a follow-up actually work</div>
+    <div class="card-sub">Most follow-ups fail because of one of these four things.</div>
+    <div class="tips-grid">
+      <div class="tip">
+        <div class="tip-ico">🎯</div>
+        <div>
+          <div class="tip-title">One clear CTA only</div>
+          <div class="tip-body">Every follow-up should ask for exactly one thing. "Are you ready to proceed?" or "Can we chat for 10 minutes?" — not both. Multiple asks create decision paralysis.</div>
+        </div>
+      </div>
+      <div class="tip">
+        <div class="tip-ico">📌</div>
+        <div>
+          <div class="tip-title">Reference something specific</div>
+          <div class="tip-body">"Following up" is the weakest opener in business. Reference what was discussed, what you sent, or something relevant to their situation. Specific beats generic every time.</div>
+        </div>
+      </div>
+      <div class="tip">
+        <div class="tip-ico">⏱</div>
+        <div>
+          <div class="tip-title">Send at the right time</div>
+          <div class="tip-body">Tuesday to Thursday, 8am–10am or 1pm–3pm performs best. Avoid Mondays (too busy) and Fridays (already checking out). WhatsApp is read faster than email in SA.</div>
+        </div>
+      </div>
+      <div class="tip">
+        <div class="tip-ico">💡</div>
+        <div>
+          <div class="tip-title">Add a reason to respond</div>
+          <div class="tip-body">The best follow-ups give the client a new piece of value — a relevant insight, an update, a deadline. "We have one installation slot left in May" is a reason. "Just checking in" is not.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<!-- CTA -->
+<div class="wrap" style="margin-bottom:30px;">
+  <div class="cta-inner">
+    <div class="cta-h">Quotes going cold too often?</div>
+    <p class="cta-sub">If you're sending quotes and not closing them, it's usually a follow-up process problem — not a pricing problem. We can help you build a systematic follow-up process that converts more of the quotes you're already sending.</p>
+    <a href="https://wa.me/27670113108?text=Hi%20AutoComply%2C%20I%20used%20the%20Follow-Up%20Generator%20and%20want%20help%20improving%20my%20sales%20follow-up%20process." class="cta-btn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Chat on WhatsApp
+    </a>
+  </div>
+</div>
+
+<div class="foot">
+  AutoComply · Practical tools for South African business owners · <a href="https://autocomply.co.za">autocomply.co.za</a>
+  <div class="fine">Messages are generated by AI and should be reviewed before sending. Nothing is stored — no content is saved after your session ends.</div>
+</div>
+
+<script>
+(function(){
+  const $ = id => document.getElementById(id);
+
+  let activeScenario = 'after-quote';
+  let lastResult = null;
+
+  const SCENARIO_CONTEXT = {
+    'after-quote':    { label:'What the quote was for and what happened in the conversation', placeholder:'e.g. Quoted R45,000 for electrical fit-out of their new office. They seemed keen but said they were getting other quotes. Haven\'t heard back in 10 days.' },
+    'after-meeting':  { label:'What was discussed and any commitments made', placeholder:'e.g. Met at their offices last week. Discussed their logistics bottleneck. I said I\'d send a proposal. They seemed interested but cautious about budget.' },
+    'after-proposal': { label:'What the proposal covers and how the conversation went', placeholder:'e.g. Sent a 12-page proposal for a 6-month consulting engagement. They asked a few clarifying questions and seemed positive. That was 2 weeks ago.' },
+    'no-response':    { label:'What you initially reached out about and what you sent', placeholder:'e.g. Sent a cold introduction via WhatsApp about our cleaning services. No response. They were referred by a mutual contact.' },
+    'after-job':      { label:'What the job was and how it went', placeholder:'e.g. Completed a full plumbing installation last week. Client seemed happy. Want to check in, ask for a Google review, and let them know about our maintenance packages.' },
+    'check-in':       { label:'The nature of the relationship and what to reference', placeholder:'e.g. Regular client who uses us quarterly. Haven\'t spoken in 6 weeks. Just want to stay top of mind and see if they need anything.' },
+    'reconnect':      { label:'How you know them and why you\'re reaching out now', placeholder:'e.g. Did a website project for them 18 months ago. Lost touch. Now offering a new SEO package that would suit their business well.' },
+    'after-referral': { label:'Who referred them and what they might need', placeholder:'e.g. Referred by Thandi Dube. I\'m told they need bookkeeping help for their growing retail business. Haven\'t spoken yet — this is the first contact.' },
+  };
+
+  const TIMING_LABEL = {
+    'same-day':  'sent today / same day',
+    '1-2-days':  'sent 1–2 days ago',
+    '3-5-days':  'sent 3–5 days ago',
+    '1-week':    'sent about a week ago',
+    '2-weeks':   'sent around 2 weeks ago',
+    '1-month':   'sent about a month ago',
+    'long':      'sent more than a month ago',
+  };
+
+  const SCENARIO_NAME = {
+    'after-quote':    'Following up after sending a quote',
+    'after-meeting':  'Following up after a meeting or site visit',
+    'after-proposal': 'Following up after sending a proposal',
+    'no-response':    'Following up after receiving no response to initial contact',
+    'after-job':      'Following up after completing a job — check-in and review request',
+    'check-in':       'Routine check-in with an existing client',
+    'reconnect':      'Reconnecting with a contact after a long gap',
+    'after-referral': 'Following up after receiving a referral introduction',
+  };
+
+  // ─── SCENARIO SELECTION ───
+  document.querySelectorAll('.scenario-card').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.scenario-card').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      activeScenario = btn.dataset.scenario;
+      const cfg = SCENARIO_CONTEXT[activeScenario];
+      $('contextLabel').textContent    = cfg.label;
+      $('contextInput').placeholder    = cfg.placeholder;
+      $('contextInput').value          = '';
+      $('charCount').textContent       = '0 / 500';
+    });
+  });
+
+  // ─── CHAR COUNT ───
+  $('contextInput').addEventListener('input', () => {
+    const len = $('contextInput').value.length;
+    const el = $('charCount');
+    el.textContent = `${len} / 500`;
+    el.className = 'char-count' + (len > 420 ? ' warn' : '');
+  });
+
+  // ─── COPY ───
+  async function copyText(text, btnId){
+    try { await navigator.clipboard.writeText(text); }
+    catch {
+      const ta = document.createElement('textarea');
+      ta.value = text; document.body.appendChild(ta); ta.select();
+      try { document.execCommand('copy'); } catch(_){} document.body.removeChild(ta);
+    }
+    const btn = $(btnId), orig = btn.innerHTML;
+    btn.classList.add('copied');
+    btn.innerHTML = btn.innerHTML.replace('Copy','Copied ✓');
+    setTimeout(() => { btn.classList.remove('copied'); btn.innerHTML = orig; }, 1800);
+  }
+
+  // ─── SHOW RESULT ───
+  function showResult(result){
+    lastResult = result;
+    $('waOutput').textContent        = result.whatsapp || '';
+    $('emailSubject').textContent    = result.email_subject || '';
+    $('emailOutput').textContent     = result.email_body || '';
+    $('loading').classList.remove('show');
+    $('outputArea').classList.add('show');
+  }
+
+  // ─── API CALL ───
+  async function generate(){
+    const context = $('contextInput').value.trim();
+    if(!context){
+      $('contextInput').focus();
+      $('contextInput').style.borderColor = 'var(--red)';
+      setTimeout(() => $('contextInput').style.borderColor = '', 1500);
+      return;
+    }
+
+    const timing   = $('timing').value;
+    const deal     = $('dealValue').value.trim();
+    const client   = $('clientName').value.trim();
+    const sender   = $('senderName').value.trim();
+
+    const userPrompt = `Scenario: ${SCENARIO_NAME[activeScenario]}
+Timing: ${TIMING_LABEL[timing]}
+${deal   ? `Deal / quote value: R ${deal}` : ''}
+${client ? `Client name: ${client}` : ''}
+${sender ? `Sender name: ${sender}` : ''}
+
+Context:
+${context}
+
+Write a professional follow-up for both WhatsApp and email. Return ONLY valid JSON.`;
+
+    $('outputCard').style.display = '';
+    $('loading').classList.add('show');
+    $('outputArea').classList.remove('show');
+    $('errorBox').classList.remove('show');
+    $('generateBtn').disabled = true;
+
+    setTimeout(() => $('outputCard').scrollIntoView({behavior:'smooth', block:'start'}), 100);
+
+    try {
+      const response = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-20250514',
+          max_tokens: 1000,
+          system: `You are an expert sales follow-up communication specialist for South African SMEs. Write follow-up messages that are professional, confident, and get replies.
+
+CRITICAL: Return ONLY a valid JSON object. No markdown. No explanation. No preamble. Just raw JSON.
+{"whatsapp":"the WhatsApp message","email_subject":"subject line","email_body":"full email body"}
+
+FOLLOW-UP WRITING RULES:
+- NEVER sound desperate, needy or apologetic for following up — it's a normal professional act
+- NEVER say "just checking in" — always give a reason to engage
+- Reference something specific from the context (what was discussed, sent, or done)
+- Single clear call-to-action — one ask only, not multiple
+- WhatsApp: 4–7 sentences, conversational, confident, natural SA business tone
+- Email: proper structure — greeting, specific context reference, one clear CTA, professional close
+- Add light value where natural (a relevant detail, a benefit reminder, a gentle urgency if appropriate)
+- Calibrate urgency to timing: same-day = light; 1–2 weeks = more direct; month+ = re-engagement energy
+- If client name given, address them personally
+- If sender name given, sign off with it
+- South African business English — professional but not stiff
+- NO "I hope this email finds you well" openers
+- For deals/quotes: mention the value or scope if provided — specificity builds confidence
+- For post-job: reference the specific work done, ask for one action (review or referral)
+- For reconnecting: acknowledge the gap naturally, don't over-explain it`,
+          messages: [{ role:'user', content: userPrompt }]
+        })
+      });
+
+      if(!response.ok){
+        const err = await response.json().catch(() => ({}));
+        throw new Error(err.error?.message || `API error ${response.status}`);
+      }
+
+      const data     = await response.json();
+      const rawText  = data.content.filter(i => i.type==='text').map(i => i.text).join('');
+      const cleaned  = rawText.replace(/```json\n?/g,'').replace(/```\n?/g,'').trim();
+      const result   = JSON.parse(cleaned);
+
+      showResult(result);
+
+    } catch(err){
+      console.error(err);
+      $('loading').classList.remove('show');
+      $('outputArea').classList.remove('show');
+      $('errorBox').classList.add('show');
+      $('errorText').innerHTML = `<strong>Couldn't generate the message.</strong> ${err.message || 'Please try again.'}`;
+    } finally {
+      $('generateBtn').disabled = false;
+    }
+  }
+
+  // ─── EVENTS ───
+  $('generateBtn').addEventListener('click', generate);
+  $('regenBtn').addEventListener('click',    generate);
+  $('editBtn').addEventListener('click', () => {
+    $('contextInput').focus();
+    $('contextInput').scrollIntoView({behavior:'smooth', block:'center'});
+  });
+  $('copyWa').addEventListener('click',    () => lastResult && copyText(lastResult.whatsapp, 'copyWa'));
+  $('copyEmail').addEventListener('click', () => lastResult && copyText(`Subject: ${lastResult.email_subject}\n\n${lastResult.email_body}`, 'copyEmail'));
+  $('contextInput').addEventListener('keydown', e => { if(e.key==='Enter' && (e.ctrlKey||e.metaKey)) generate(); });
+})();
+</script>
+</body>
+</html>

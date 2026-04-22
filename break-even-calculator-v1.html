@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Break-Even Calculator — AutoComply</title>
+<meta name="description" content="Free break-even calculator for South African businesses. Enter fixed costs, variable costs and selling price to find out exactly how many units or clients you need to break even.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;700;800&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+
+:root{
+  --navy:#0B1628;
+  --navy-soft:#1A2842;
+  --blue:#1A56DB;
+  --blue-soft:#EEF3FF;
+  --blue-line:rgba(26,86,219,.15);
+  --green:#059669;
+  --green-soft:#ECFDF5;
+  --amber:#D97706;
+  --amber-soft:#FEF3C7;
+  --red:#DC2626;
+  --red-soft:#FEE2E2;
+  --muted:#5A6A82;
+  --muted2:#8A96A8;
+  --border:#DDE5F0;
+  --border-strong:#C5D1E4;
+  --bg:#F8FAFF;
+  --bg2:#EEF3FF;
+  --white:#fff;
+  --sh:0 1px 4px rgba(11,22,40,.07);
+  --sh-strong:0 4px 20px rgba(11,22,40,.10);
+}
+
+html,body{background:var(--bg);color:var(--navy);font-family:'Outfit',sans-serif;-webkit-font-smoothing:antialiased;min-height:100vh;font-size:15px;line-height:1.5;}
+
+/* ─────────── HEADER ─────────── */
+.topbar{background:var(--navy);padding:14px 20px;border-bottom:1px solid rgba(255,255,255,.05);}
+.topbar-inner{max-width:1040px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;}
+.brand{font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;color:#fff;letter-spacing:-.3px;text-decoration:none;}
+.brand span{color:#60AEFF;}
+.back{font-size:12.5px;color:rgba(255,255,255,.55);text-decoration:none;display:inline-flex;align-items:center;gap:6px;transition:color .15s;}
+.back:hover{color:#fff;}
+
+/* ─────────── HERO ─────────── */
+.hero{background:var(--navy);padding:34px 20px 54px;position:relative;overflow:hidden;}
+.hero::before{content:"";position:absolute;top:-100px;right:-100px;width:400px;height:400px;background:radial-gradient(circle,rgba(26,86,219,.15),transparent 70%);pointer-events:none;}
+.hero-inner{max-width:1040px;margin:0 auto;position:relative;z-index:1;}
+.hero-tag{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:14px;}
+.hero-h{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(26px,5vw,38px);font-weight:800;color:#fff;letter-spacing:-.6px;line-height:1.15;margin-bottom:12px;max-width:680px;}
+.hero-sub{font-size:clamp(14px,2.2vw,16px);color:rgba(255,255,255,.65);max-width:620px;line-height:1.55;}
+
+/* ─────────── MAIN GRID ─────────── */
+.main{max-width:1040px;margin:-32px auto 40px;padding:0 20px;position:relative;z-index:2;}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+@media (max-width:760px){.grid{grid-template-columns:1fr;gap:16px;}}
+
+/* ─────────── CARDS ─────────── */
+.card{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:26px;box-shadow:var(--sh);}
+.card-h{font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:700;color:var(--navy);margin-bottom:4px;letter-spacing:-.2px;}
+.card-sub{font-size:13px;color:var(--muted);margin-bottom:22px;line-height:1.55;}
+
+/* ─────────── TOGGLE ─────────── */
+.toggle{display:grid;grid-template-columns:1fr 1fr;background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:4px;margin-bottom:22px;}
+.toggle-btn{font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;color:var(--muted);background:transparent;border:none;padding:9px 12px;border-radius:7px;cursor:pointer;transition:all .18s;}
+.toggle-btn.active{background:var(--white);color:var(--navy);box-shadow:0 1px 3px rgba(11,22,40,.08);}
+
+/* ─────────── INPUTS ─────────── */
+.field{margin-bottom:16px;}
+.field:last-child{margin-bottom:0;}
+.field-label{display:flex;align-items:center;justify-content:space-between;font-size:12.5px;font-weight:600;color:var(--navy);margin-bottom:7px;}
+.field-hint{font-size:11px;color:var(--muted2);font-weight:500;}
+.input-wrap{position:relative;}
+.input-prefix{position:absolute;left:14px;top:50%;transform:translateY(-50%);font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;color:var(--muted);pointer-events:none;}
+.input{width:100%;padding:12px 14px 12px 34px;font-family:'Outfit',sans-serif;font-size:15px;font-weight:500;color:var(--navy);background:var(--bg);border:1px solid var(--border);border-radius:9px;transition:all .15s;-moz-appearance:textfield;}
+.input::-webkit-outer-spin-button,.input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
+.input:focus{outline:none;border-color:var(--blue);background:var(--white);box-shadow:0 0 0 3px rgba(26,86,219,.12);}
+.input::placeholder{color:var(--muted2);font-weight:400;}
+.input.no-prefix{padding-left:14px;}
+.advanced-toggle{font-family:'Outfit',sans-serif;font-size:12.5px;font-weight:600;color:var(--blue);background:transparent;border:none;padding:8px 0 0;cursor:pointer;display:inline-flex;align-items:center;gap:5px;transition:opacity .15s;}
+.advanced-toggle:hover{opacity:.75;}
+.advanced-panel{margin-top:14px;padding-top:16px;border-top:1px dashed var(--border);display:none;}
+.advanced-panel.open{display:block;}
+
+/* ─────────── RESULTS ─────────── */
+.result-hero{padding:24px 22px;border-radius:13px;background:linear-gradient(135deg,#EEF3FF 0%,#F5F8FF 100%);border:1px solid var(--blue-line);margin-bottom:16px;position:relative;overflow:hidden;}
+.result-hero.viable{background:linear-gradient(135deg,#ECFDF5 0%,#F0FDF9 100%);border-color:rgba(5,150,105,.2);}
+.result-hero.warn{background:linear-gradient(135deg,#FEF3C7 0%,#FEF9E7 100%);border-color:rgba(217,119,6,.25);}
+.result-hero.fail{background:linear-gradient(135deg,#FEE2E2 0%,#FEF2F2 100%);border-color:rgba(220,38,38,.25);}
+.result-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;}
+.result-big{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(34px,6vw,44px);font-weight:800;color:var(--navy);line-height:1;letter-spacing:-1px;}
+.result-unit{font-family:'Outfit',sans-serif;font-size:15px;font-weight:500;color:var(--muted);margin-top:6px;}
+.result-empty{font-size:14px;color:var(--muted);font-style:italic;}
+
+/* metric rows */
+.metric-row{display:flex;align-items:center;justify-content:space-between;padding:13px 0;border-bottom:1px solid var(--border);}
+.metric-row:last-child{border-bottom:none;}
+.metric-label{font-size:13px;color:var(--muted);font-weight:500;}
+.metric-value{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;color:var(--navy);}
+
+/* viability pill */
+.pill{display:inline-flex;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;padding:5px 10px;border-radius:20px;margin-top:12px;}
+.pill.ok{background:var(--green-soft);color:var(--green);}
+.pill.warn{background:var(--amber-soft);color:var(--amber);}
+.pill.fail{background:var(--red-soft);color:var(--red);}
+.pill::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor;}
+
+/* target profit panel */
+.target-panel{margin-top:18px;padding:16px;background:var(--bg);border:1px dashed var(--border-strong);border-radius:10px;}
+.target-panel-h{font-size:12px;font-weight:600;color:var(--navy);margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+.target-panel-h::before{content:"🎯";font-size:14px;}
+.target-result{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;color:var(--blue);}
+.target-result-sub{font-size:12px;color:var(--muted);margin-top:3px;}
+
+/* alert banner */
+.alert{padding:14px 16px;border-radius:10px;font-size:13px;line-height:1.55;margin-bottom:16px;display:flex;gap:10px;align-items:flex-start;}
+.alert-ico{font-size:15px;line-height:1;flex-shrink:0;margin-top:1px;}
+.alert.red{background:var(--red-soft);color:#991B1B;border:1px solid rgba(220,38,38,.2);}
+.alert.amber{background:var(--amber-soft);color:#92400E;border:1px solid rgba(217,119,6,.2);}
+
+/* ─────────── EXPLAINER ─────────── */
+.explainer{max-width:1040px;margin:0 auto 40px;padding:0 20px;}
+.explainer-inner{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:28px;box-shadow:var(--sh);}
+.explainer-h{font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:700;color:var(--navy);margin-bottom:20px;letter-spacing:-.2px;}
+.explainer-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;}
+.explainer-item{}
+.explainer-item-h{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--blue);margin-bottom:8px;}
+.explainer-item-body{font-size:13.5px;color:var(--navy);line-height:1.6;}
+.explainer-item-body strong{font-weight:700;}
+.explainer-item-body .mono{font-family:'JetBrains Mono',monospace;font-size:12.5px;background:var(--bg2);padding:1px 6px;border-radius:4px;}
+
+/* ─────────── CTA ─────────── */
+.cta{max-width:1040px;margin:0 auto 40px;padding:0 20px;}
+.cta-inner{background:var(--navy);border-radius:16px;padding:30px 28px;text-align:center;position:relative;overflow:hidden;}
+.cta-inner::before{content:"";position:absolute;top:-80px;left:-80px;width:240px;height:240px;background:radial-gradient(circle,rgba(26,86,219,.28),transparent 70%);pointer-events:none;}
+.cta-inner::after{content:"";position:absolute;bottom:-80px;right:-80px;width:240px;height:240px;background:radial-gradient(circle,rgba(96,174,255,.18),transparent 70%);pointer-events:none;}
+.cta-h{font-family:'Bricolage Grotesque',sans-serif;font-size:22px;font-weight:700;color:#fff;margin-bottom:8px;letter-spacing:-.3px;position:relative;z-index:1;}
+.cta-sub{font-size:14px;color:rgba(255,255,255,.65);margin-bottom:20px;max-width:480px;margin-left:auto;margin-right:auto;position:relative;z-index:1;}
+.cta-btn{display:inline-flex;align-items:center;gap:8px;background:#25D366;color:#fff;font-family:'Outfit',sans-serif;font-size:14px;font-weight:600;padding:12px 22px;border-radius:9px;text-decoration:none;position:relative;z-index:1;transition:transform .15s;}
+.cta-btn:hover{transform:translateY(-1px);}
+
+/* ─────────── FOOTER ─────────── */
+.foot{max-width:1040px;margin:0 auto;padding:30px 20px;text-align:center;font-size:12px;color:var(--muted2);border-top:1px solid var(--border);}
+.foot a{color:var(--muted);text-decoration:none;font-weight:600;}
+
+/* ─────────── MOBILE TWEAKS ─────────── */
+@media (max-width:620px){
+  .card{padding:22px 18px;}
+  .hero{padding:28px 20px 48px;}
+  .main{margin-top:-28px;}
+  .explainer-inner{padding:22px 18px;}
+  .cta-inner{padding:26px 22px;}
+}
+</style>
+</head>
+<body>
+
+<!-- ─── TOPBAR ─── -->
+<div class="topbar">
+  <div class="topbar-inner">
+    <a href="https://autocomply.co.za" class="brand">Auto<span>Comply</span></a>
+    <a href="https://autocomply.co.za/#tools" class="back">← All tools</a>
+  </div>
+</div>
+
+<!-- ─── HERO ─── -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-tag">Free Tool · Break-Even Calculator</div>
+    <h1 class="hero-h">Find out how many units you need<br>to break even — and start profiting.</h1>
+    <p class="hero-sub">Enter your fixed costs, variable costs and selling price. Get your break-even point, contribution margin and profit targets instantly. No account required.</p>
+  </div>
+</section>
+
+<!-- ─── MAIN TOOL ─── -->
+<div class="main">
+  <div class="grid">
+
+    <!-- INPUTS -->
+    <div class="card">
+      <div class="card-h">Your numbers</div>
+      <div class="card-sub">Enter the monthly figures for your business. Use ex-VAT amounts for cleanest results.</div>
+
+      <!-- Business type toggle -->
+      <div class="toggle" role="tablist">
+        <button class="toggle-btn active" id="tabProducts" type="button">I sell products</button>
+        <button class="toggle-btn" id="tabServices" type="button">I sell services</button>
+      </div>
+
+      <!-- Fixed costs -->
+      <div class="field">
+        <div class="field-label">
+          <span>Fixed costs per month</span>
+          <span class="field-hint">rent, salaries, insurance</span>
+        </div>
+        <div class="input-wrap">
+          <span class="input-prefix">R</span>
+          <input id="fixedCosts" class="input" type="number" inputmode="decimal" placeholder="e.g. 45 000" min="0" step="100">
+        </div>
+      </div>
+
+      <!-- Variable cost -->
+      <div class="field">
+        <div class="field-label">
+          <span id="varLabel">Variable cost per unit</span>
+          <span class="field-hint" id="varHint">cost of goods, packaging</span>
+        </div>
+        <div class="input-wrap">
+          <span class="input-prefix">R</span>
+          <input id="varCost" class="input" type="number" inputmode="decimal" placeholder="e.g. 60" min="0" step="0.50">
+        </div>
+      </div>
+
+      <!-- Selling price -->
+      <div class="field">
+        <div class="field-label">
+          <span id="priceLabel">Selling price per unit</span>
+          <span class="field-hint">what the customer pays</span>
+        </div>
+        <div class="input-wrap">
+          <span class="input-prefix">R</span>
+          <input id="sellPrice" class="input" type="number" inputmode="decimal" placeholder="e.g. 150" min="0" step="0.50">
+        </div>
+      </div>
+
+      <button class="advanced-toggle" id="advBtn" type="button">+ Advanced options</button>
+      <div class="advanced-panel" id="advPanel">
+        <div class="field">
+          <div class="field-label">
+            <span>Target monthly profit (optional)</span>
+            <span class="field-hint">how much you want to make</span>
+          </div>
+          <div class="input-wrap">
+            <span class="input-prefix">R</span>
+            <input id="targetProfit" class="input" type="number" inputmode="decimal" placeholder="e.g. 25 000" min="0" step="500">
+          </div>
+        </div>
+        <div class="field">
+          <div class="field-label">
+            <span id="daysLabel">Trading days per month</span>
+            <span class="field-hint">for daily target</span>
+          </div>
+          <div class="input-wrap">
+            <input id="tradingDays" class="input no-prefix" type="number" inputmode="numeric" value="26" min="1" max="31" step="1">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RESULTS -->
+    <div class="card">
+      <div class="card-h">Your break-even point</div>
+      <div class="card-sub" id="resultIntro">Fill in your numbers to see results update live.</div>
+
+      <div id="alertBox"></div>
+
+      <div class="result-hero" id="resultHero">
+        <div class="result-label" id="resultHeroLabel">Break-even volume</div>
+        <div class="result-big" id="resultBig">—</div>
+        <div class="result-unit" id="resultUnit">Enter your numbers above</div>
+        <div id="viabilityPill"></div>
+      </div>
+
+      <div id="metrics">
+        <div class="metric-row">
+          <span class="metric-label">Break-even revenue</span>
+          <span class="metric-value" id="mBreakRev">—</span>
+        </div>
+        <div class="metric-row">
+          <span class="metric-label" id="mDailyLabel">Daily target</span>
+          <span class="metric-value" id="mDaily">—</span>
+        </div>
+        <div class="metric-row">
+          <span class="metric-label">Contribution margin per unit</span>
+          <span class="metric-value" id="mCM">—</span>
+        </div>
+        <div class="metric-row">
+          <span class="metric-label">Contribution margin %</span>
+          <span class="metric-value" id="mCMpct">—</span>
+        </div>
+      </div>
+
+      <div class="target-panel" id="targetPanel" style="display:none;">
+        <div class="target-panel-h">To hit your target profit</div>
+        <div class="target-result" id="targetResult">—</div>
+        <div class="target-result-sub" id="targetResultSub"></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ─── EXPLAINER ─── -->
+<div class="explainer">
+  <div class="explainer-inner">
+    <h2 class="explainer-h">How this works</h2>
+    <div class="explainer-grid">
+      <div class="explainer-item">
+        <div class="explainer-item-h">Contribution margin</div>
+        <div class="explainer-item-body"><span class="mono">Selling price − Variable cost</span>. What each sale contributes toward covering your fixed costs. If this is below zero, you lose money on every sale.</div>
+      </div>
+      <div class="explainer-item">
+        <div class="explainer-item-h">Break-even units</div>
+        <div class="explainer-item-body"><span class="mono">Fixed costs ÷ Contribution margin</span>. The exact number of units or clients per month needed to cover all costs. Every unit sold beyond this is profit.</div>
+      </div>
+      <div class="explainer-item">
+        <div class="explainer-item-h">Viability check</div>
+        <div class="explainer-item-body">Contribution margin <strong>above 40%</strong> is healthy. Between <strong>20–40%</strong> is workable. <strong>Below 20%</strong> means small cost shifts can wipe out profit — review pricing.</div>
+      </div>
+      <div class="explainer-item">
+        <div class="explainer-item-h">Target profit</div>
+        <div class="explainer-item-body"><span class="mono">(Fixed costs + Target profit) ÷ Contribution margin</span>. How many units you must sell to not only break even but actually take home what you want.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── CTA ─── -->
+<div class="cta">
+  <div class="cta-inner">
+    <div class="cta-h">Numbers not adding up?</div>
+    <p class="cta-sub">If your break-even volume looks impossible at current pricing, it usually means prices are too low or variable costs need renegotiating. We can help you model the fix.</p>
+    <a href="https://wa.me/27670113108?text=Hi%20AutoComply%2C%20I%20used%20the%20Break-Even%20Calculator%20and%20want%20help%20with%20my%20pricing." class="cta-btn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Chat on WhatsApp
+    </a>
+  </div>
+</div>
+
+<!-- ─── FOOTER ─── -->
+<div class="foot">
+  AutoComply · Practical tools for South African business owners · <a href="https://autocomply.co.za">autocomply.co.za</a>
+</div>
+
+<script>
+(function(){
+  // ─── STATE ───
+  const state = {
+    mode: 'products', // 'products' | 'services'
+  };
+
+  // ─── ELEMENTS ───
+  const $ = id => document.getElementById(id);
+  const tabP = $('tabProducts'), tabS = $('tabServices');
+  const fixedI = $('fixedCosts'), varI = $('varCost'), priceI = $('sellPrice');
+  const targetI = $('targetProfit'), daysI = $('tradingDays');
+  const advBtn = $('advBtn'), advPanel = $('advPanel');
+
+  // ─── TABS ───
+  function setMode(m){
+    state.mode = m;
+    tabP.classList.toggle('active', m==='products');
+    tabS.classList.toggle('active', m==='services');
+    if(m==='products'){
+      $('varLabel').textContent = 'Variable cost per unit';
+      $('varHint').textContent = 'cost of goods, packaging';
+      $('priceLabel').textContent = 'Selling price per unit';
+      $('resultHeroLabel').textContent = 'Break-even volume';
+      $('mDailyLabel').textContent = 'Daily target';
+      $('daysLabel').textContent = 'Trading days per month';
+      daysI.value = 26;
+    } else {
+      $('varLabel').textContent = 'Variable cost per client';
+      $('varHint').textContent = 'delivery cost, materials';
+      $('priceLabel').textContent = 'Fee charged per client';
+      $('resultHeroLabel').textContent = 'Break-even clients';
+      $('mDailyLabel').textContent = 'Clients per working day';
+      $('daysLabel').textContent = 'Working days per month';
+      daysI.value = 22;
+    }
+    calc();
+  }
+  tabP.addEventListener('click', ()=>setMode('products'));
+  tabS.addEventListener('click', ()=>setMode('services'));
+
+  // ─── ADVANCED TOGGLE ───
+  advBtn.addEventListener('click', ()=>{
+    const open = advPanel.classList.toggle('open');
+    advBtn.textContent = open ? '− Hide advanced options' : '+ Advanced options';
+  });
+
+  // ─── HELPERS ───
+  const fmtR = n => 'R ' + Math.round(n).toLocaleString('en-ZA');
+  const fmtR2 = n => 'R ' + n.toLocaleString('en-ZA', {minimumFractionDigits:2, maximumFractionDigits:2});
+  const fmtN = n => Math.ceil(n).toLocaleString('en-ZA');
+  const fmtPct = n => n.toLocaleString('en-ZA', {minimumFractionDigits:1, maximumFractionDigits:1}) + '%';
+  const num = el => {
+    const v = parseFloat(el.value);
+    return (isNaN(v) || v < 0) ? null : v;
+  };
+
+  // ─── CORE CALC ───
+  function calc(){
+    const FC    = num(fixedI);
+    const VC    = num(varI);
+    const SP    = num(priceI);
+    const TGT   = num(targetI);
+    const DAYS  = parseInt(daysI.value) || 26;
+
+    const resultBig    = $('resultBig');
+    const resultUnit   = $('resultUnit');
+    const resultHero   = $('resultHero');
+    const alertBox     = $('alertBox');
+    const pillEl       = $('viabilityPill');
+    const targetPanel  = $('targetPanel');
+
+    // Reset classes
+    resultHero.className = 'result-hero';
+    alertBox.innerHTML = '';
+    pillEl.innerHTML = '';
+
+    const unitName   = state.mode==='products' ? 'units' : 'clients';
+    const unitNameS  = state.mode==='products' ? 'unit'  : 'client';
+
+    // Empty state
+    if(FC===null && VC===null && SP===null){
+      resultBig.textContent = '—';
+      resultUnit.textContent = 'Enter your numbers above';
+      $('mBreakRev').textContent = '—';
+      $('mDaily').textContent = '—';
+      $('mCM').textContent = '—';
+      $('mCMpct').textContent = '—';
+      targetPanel.style.display = 'none';
+      return;
+    }
+
+    // Incomplete
+    if(FC===null || VC===null || SP===null){
+      resultBig.textContent = '—';
+      resultUnit.textContent = 'Complete all three fields to see results';
+      $('mBreakRev').textContent = '—';
+      $('mDaily').textContent = '—';
+      $('mCM').textContent = '—';
+      $('mCMpct').textContent = '—';
+      targetPanel.style.display = 'none';
+      return;
+    }
+
+    const CM    = SP - VC;
+    const CMpct = SP > 0 ? (CM / SP) * 100 : 0;
+
+    // Not viable
+    if(CM <= 0){
+      resultHero.className = 'result-hero fail';
+      resultBig.textContent = 'Not viable';
+      resultUnit.textContent = 'You lose money on every sale at this price';
+      alertBox.innerHTML = `<div class="alert red"><div class="alert-ico">⚠️</div><div>Your variable cost (${fmtR2(VC)}) is higher than or equal to your selling price (${fmtR2(SP)}). Each ${unitNameS} loses you money before fixed costs are even considered. <strong>Raise your price or reduce variable costs</strong> to make the business viable.</div></div>`;
+      $('mBreakRev').textContent = '—';
+      $('mDaily').textContent = '—';
+      $('mCM').textContent  = fmtR2(CM);
+      $('mCMpct').textContent = fmtPct(CMpct);
+      pillEl.innerHTML = '<span class="pill fail">Not viable</span>';
+      targetPanel.style.display = 'none';
+      return;
+    }
+
+    // Zero fixed costs
+    if(FC === 0){
+      resultHero.className = 'result-hero viable';
+      resultBig.textContent = '0';
+      resultUnit.textContent = `No fixed costs — every ${unitNameS} is pure contribution`;
+      $('mBreakRev').textContent = fmtR(0);
+      $('mDaily').textContent    = '0';
+      $('mCM').textContent       = fmtR2(CM);
+      $('mCMpct').textContent    = fmtPct(CMpct);
+      pillEl.innerHTML = '<span class="pill ok">Pure profit mode</span>';
+    } else {
+      // Standard case
+      const BEunits = FC / CM;
+      const BErev   = BEunits * SP;
+      const daily   = BEunits / DAYS;
+
+      resultBig.textContent   = fmtN(BEunits);
+      resultUnit.textContent  = `${unitName} per month · to cover all costs`;
+      $('mBreakRev').textContent = fmtR(BErev);
+      $('mDaily').textContent    = fmtN(daily) + ' ' + unitName;
+      $('mCM').textContent       = fmtR2(CM);
+      $('mCMpct').textContent    = fmtPct(CMpct);
+
+      // Viability pill
+      if(CMpct >= 40){
+        resultHero.className = 'result-hero viable';
+        pillEl.innerHTML = '<span class="pill ok">Healthy margin</span>';
+      } else if(CMpct >= 20){
+        resultHero.className = 'result-hero';
+        pillEl.innerHTML = '<span class="pill ok">Workable margin</span>';
+      } else if(CMpct >= 10){
+        resultHero.className = 'result-hero warn';
+        pillEl.innerHTML = '<span class="pill warn">Tight margin</span>';
+        alertBox.innerHTML = `<div class="alert amber"><div class="alert-ico">⚡</div><div>Your contribution margin is <strong>${fmtPct(CMpct)}</strong>. Small increases in variable cost or small discounts can significantly raise your break-even point. Price increases of 5–10% have outsized impact at this margin.</div></div>`;
+      } else {
+        resultHero.className = 'result-hero warn';
+        pillEl.innerHTML = '<span class="pill warn">High risk</span>';
+        alertBox.innerHTML = `<div class="alert amber"><div class="alert-ico">⚡</div><div>Contribution margin of <strong>${fmtPct(CMpct)}</strong> is very tight. You need high volume to absorb fixed costs, and any variable cost increase hits profits hard. <strong>Review pricing and cost structure.</strong></div></div>`;
+      }
+
+      // Extreme volume warning
+      if(BEunits > 10000){
+        alertBox.innerHTML += `<div class="alert amber" style="margin-top:10px;"><div class="alert-ico">📊</div><div>Break-even volume is extremely high (${fmtN(BEunits)} ${unitName}/month). This usually means pricing is too low or fixed costs too high for the business model. Worth a second look.</div></div>`;
+      }
+    }
+
+    // Target profit calc
+    if(TGT !== null && TGT > 0 && CM > 0){
+      const tgtUnits = (FC + TGT) / CM;
+      const tgtRev   = tgtUnits * SP;
+      targetPanel.style.display = 'block';
+      $('targetResult').textContent = `${fmtN(tgtUnits)} ${unitName} per month`;
+      $('targetResultSub').textContent = `= ${fmtR(tgtRev)} in revenue · to take home ${fmtR(TGT)} profit`;
+    } else {
+      targetPanel.style.display = 'none';
+    }
+  }
+
+  // ─── EVENTS ───
+  [fixedI, varI, priceI, targetI, daysI].forEach(el => {
+    el.addEventListener('input', calc);
+  });
+
+  // Initial
+  calc();
+})();
+</script>
+
+</body>
+</html>

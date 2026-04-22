@@ -1,0 +1,1143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>AutoComply — Company Registration, Compliance &amp; Business Tools for South African SMEs</title>
+<meta name="description" content="Company registration, compliance documentation, HR templates, and 25 free business tools for South African SMEs. No sign-up required.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;700;800&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ═══ RESET ═══ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;overflow-x:hidden;}
+body{background:#F8FAFF;color:#0B1628;font-family:'Outfit',sans-serif;-webkit-font-smoothing:antialiased;font-size:15px;line-height:1.55;overflow-x:hidden;}
+a{text-decoration:none;color:inherit;}
+img{display:block;max-width:100%;height:auto;}
+
+/* ═══ TOKENS ═══ */
+:root{
+  --navy:#0B1628;--navy2:#162035;
+  --blue:#1A56DB;--blue2:#1449B0;--blue-soft:#EEF3FF;--blue-line:rgba(26,86,219,.15);
+  --green:#059669;--green-soft:#ECFDF5;
+  --amber:#D97706;--amber-soft:#FEF3C7;
+  --red:#DC2626;--red-soft:#FEE2E2;
+  --teal:#0891B2;--teal-soft:#ECFEFF;
+  --purple:#7C3AED;
+  --muted:#5A6A82;--muted2:#8A96A8;
+  --border:#DDE5F0;--bg:#F8FAFF;--bg2:#EEF3FF;--surface:#fff;
+  --sh:0 1px 4px rgba(11,22,40,.07);--sh-md:0 4px 16px rgba(11,22,40,.1);--sh-lg:0 8px 32px rgba(11,22,40,.14);
+  --r-sm:8px;--r-md:12px;--r-lg:16px;
+  --sp-4:4px;--sp-8:8px;--sp-12:12px;--sp-16:16px;--sp-20:20px;--sp-24:24px;--sp-32:32px;--sp-48:48px;
+  --shadow-sm:0 1px 3px rgba(11,22,40,.06),0 2px 8px rgba(11,22,40,.06);
+  --shadow-md:0 2px 8px rgba(11,22,40,.08),0 8px 24px rgba(11,22,40,.08);
+  --shadow-lg:0 4px 16px rgba(11,22,40,.12),0 16px 48px rgba(11,22,40,.14);
+}
+
+/* ═══ LAYOUT ═══ */
+.section-inner{max-width:1200px;margin:0 auto;padding:0 24px;width:100%;}
+.section{padding:72px 0;}
+.section.alt{background:var(--surface);}
+.section.navy-sec{background:var(--navy);}
+.section-tag{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--blue);margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.section-tag::before{content:'';width:16px;height:2px;background:var(--blue);border-radius:1px;flex-shrink:0;}
+.section-h{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(24px,4vw,38px);font-weight:800;color:var(--navy);letter-spacing:-.6px;line-height:1.15;margin-bottom:12px;}
+.section-sub{font-size:15.5px;color:var(--muted);line-height:1.65;max-width:560px;margin-bottom:36px;}
+
+/* ═══ NAV ═══ */
+nav{background:var(--navy);padding:0;position:sticky;top:0;z-index:200;border-bottom:1px solid rgba(255,255,255,.06);}
+.nav-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:60px;}
+.brand{font-family:'Bricolage Grotesque',sans-serif;font-size:22px;font-weight:800;color:#fff;letter-spacing:-.4px;}
+.brand span{color:#60AEFF;}
+.nav-links{display:flex;align-items:center;gap:4px;}
+.nav-links a{font-size:13.5px;font-weight:500;color:rgba(255,255,255,.65);padding:6px 12px;border-radius:7px;transition:all .15s;}
+.nav-links a:hover{color:#fff;background:rgba(255,255,255,.08);}
+.nav-cta{background:var(--green)!important;color:#fff!important;font-weight:600!important;padding:8px 16px!important;border-radius:8px;margin-left:8px;display:inline-flex;align-items:center;gap:6px;}
+.nav-cta:hover{background:#047857!important;}
+.mob-menu-btn{display:none;background:none;border:none;cursor:pointer;color:rgba(255,255,255,.8);font-size:20px;padding:6px;}
+@media(max-width:680px){.nav-links{display:none;}.mob-menu-btn{display:block;}}
+
+/* ═══ HERO ═══ */
+.hero{background:var(--navy);padding:80px 24px 96px;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;top:-120px;right:-120px;width:600px;height:600px;background:radial-gradient(circle,rgba(26,86,219,.16),transparent 65%);pointer-events:none;}
+.hero::after{content:'';position:absolute;bottom:-80px;left:-60px;width:400px;height:400px;background:radial-gradient(circle,rgba(5,150,105,.1),transparent 65%);pointer-events:none;}
+.hero-inner{max-width:1200px;margin:0 auto;position:relative;z-index:1;display:grid;grid-template-columns:1fr auto;gap:60px;align-items:center;}
+.hero-tag{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:18px;display:flex;align-items:center;gap:8px;}
+.hero-tag::before{content:'';width:20px;height:1px;background:rgba(255,255,255,.3);}
+.hero-h{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(30px,5vw,52px);font-weight:800;color:#fff;letter-spacing:-.8px;line-height:1.1;margin-bottom:20px;}
+.hero-h em{color:#60AEFF;font-style:normal;}
+.hero-sub{font-size:17px;color:rgba(255,255,255,.6);line-height:1.65;margin-bottom:32px;max-width:520px;}
+.hero-btns{display:flex;gap:12px;flex-wrap:wrap;}
+.btn-primary{font-size:15px;font-weight:700;padding:14px 28px;border-radius:10px;background:var(--blue);color:#fff;border:none;cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:all .15s;letter-spacing:-.1px;}
+.btn-primary:hover{background:var(--blue2);transform:translateY(-1px);box-shadow:0 4px 20px rgba(26,86,219,.35);}
+.btn-wa{font-size:15px;font-weight:600;padding:14px 24px;border-radius:10px;background:#25D366;color:#fff;border:none;cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:all .15s;}
+.btn-wa:hover{background:#22c55e;transform:translateY(-1px);}
+.hero-stats{display:flex;flex-direction:column;gap:12px;flex-shrink:0;}
+.stat-box{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:18px 24px;min-width:140px;}
+.stat-num{font-family:'Bricolage Grotesque',sans-serif;font-size:30px;font-weight:800;color:#fff;letter-spacing:-.5px;line-height:1;}
+.stat-label{font-size:12px;color:rgba(255,255,255,.45);margin-top:4px;}
+@media(max-width:860px){.hero-inner{grid-template-columns:1fr;gap:32px;}.hero-stats{flex-direction:row;flex-wrap:wrap;}.stat-box{flex:1;min-width:120px;}}
+
+/* ═══ TRUST STRIP ═══ */
+.trust-strip{background:var(--navy2);padding:20px 24px;border-top:1px solid rgba(255,255,255,.06);}
+.trust-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:center;gap:36px;flex-wrap:wrap;}
+.trust-item{display:flex;align-items:center;gap:9px;color:rgba(255,255,255,.65);font-size:13.5px;}
+.trust-ico{font-size:18px;}
+@media(max-width:640px){.trust-inner{gap:18px;}.trust-item{font-size:12.5px;}}
+
+/* ═══ CATEGORY FILTER ═══ */
+.cat-nav{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:28px;}
+.cat-btn{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:1.5px;text-transform:uppercase;padding:7px 14px;border-radius:20px;cursor:pointer;border:1.5px solid var(--border);background:var(--surface);color:var(--muted);transition:all .15s;font-weight:600;}
+.cat-btn:hover{border-color:#C5D1E4;color:var(--navy);}
+.cat-btn.active{background:var(--navy);color:#fff;border-color:var(--navy);}
+
+/* ═══ TOOL GRID ═══ */
+.tools-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:14px;align-items:stretch;}
+.tool-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:20px;box-shadow:var(--sh);transition:all .18s;position:relative;overflow:hidden;text-decoration:none;display:flex;flex-direction:column;color:inherit;height:100%;}
+.tool-card:hover{border-color:rgba(26,86,219,.3);box-shadow:0 4px 24px rgba(11,22,40,.1);transform:translateY(-2px);}
+.tool-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:14px 14px 0 0;}
+.tool-card.cat-finance::before{background:linear-gradient(90deg,#1A56DB,#60AEFF);}
+.tool-card.cat-compliance::before{background:linear-gradient(90deg,#059669,#34D399);}
+.tool-card.cat-hr::before{background:linear-gradient(90deg,#DC2626,#F87171);}
+.tool-card.cat-marketing::before{background:linear-gradient(90deg,#7C3AED,#A78BFA);}
+.tool-card.cat-ai::before{background:linear-gradient(90deg,#0891B2,#22D3EE);}
+.tool-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px;}
+.tool-ico{font-size:24px;line-height:1;}
+.tool-badges{display:flex;gap:5px;flex-wrap:wrap;}
+.badge{font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:1.5px;text-transform:uppercase;padding:3px 8px;border-radius:10px;font-weight:700;}
+.badge-free{background:var(--green-soft);color:var(--green);border:1px solid rgba(5,150,105,.2);}
+.badge-ai{background:#ECFEFF;color:var(--teal);border:1px solid rgba(8,145,178,.2);}
+.badge-new{background:#FDF2F8;color:#DB2777;border:1px solid rgba(219,39,119,.2);}
+.badge-doc{background:var(--amber-soft);color:var(--amber);border:1px solid rgba(217,119,6,.2);}
+.tool-name{font-family:'Bricolage Grotesque',sans-serif;font-size:15.5px;font-weight:700;color:var(--navy);margin-bottom:5px;letter-spacing:-.2px;line-height:1.25;}
+.tool-desc{font-size:12.5px;color:var(--muted);line-height:1.55;margin-bottom:12px;flex:1;}
+.tool-link{font-size:12px;font-weight:700;color:var(--blue);display:inline-flex;align-items:center;gap:4px;transition:gap .15s;margin-top:auto;}
+.tool-card:hover .tool-link{gap:8px;}
+.tool-link::after{content:'→';}
+
+/* ═══ FEATURE STRIP ═══ */
+.feature-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1px solid var(--border);margin-top:48px;}
+.feature-item{padding:24px;border-right:1px solid var(--border);text-align:center;}
+.feature-item:last-child{border-right:none;}
+.feature-ico{font-size:24px;margin-bottom:8px;display:block;}
+.feature-title{font-size:13.5px;font-weight:700;color:var(--navy);margin-bottom:4px;}
+.feature-desc{font-size:12px;color:var(--muted);line-height:1.5;}
+@media(max-width:640px){.feature-strip{grid-template-columns:1fr 1fr;}.feature-item:nth-child(2){border-right:none;}.feature-item:nth-child(3),.feature-item:nth-child(4){border-top:1px solid var(--border);}.feature-item:nth-child(4){border-right:none;}}
+
+/* ═══ SERVICES ═══ */
+.services-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:18px;align-items:stretch;}
+.service-card{background:var(--navy2);border-radius:16px;padding:28px;position:relative;overflow:hidden;border:1px solid rgba(255,255,255,.07);display:flex;flex-direction:column;height:100%;}
+.service-card::before{content:'';position:absolute;top:-60px;right:-60px;width:200px;height:200px;background:radial-gradient(circle,rgba(255,255,255,.05),transparent 70%);pointer-events:none;}
+.service-ico{font-size:28px;margin-bottom:14px;display:block;}
+.service-cat{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:6px;}
+.service-name{font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:700;color:#fff;margin-bottom:8px;letter-spacing:-.2px;}
+.service-desc{font-size:13px;color:rgba(255,255,255,.6);line-height:1.6;margin-bottom:18px;}
+.service-items{list-style:none;margin-bottom:20px;flex:1;}
+.service-items li{font-size:12.5px;color:rgba(255,255,255,.7);padding:5px 0;border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:center;gap:8px;}
+.service-items li::before{content:'✓';color:#34D399;font-weight:700;font-size:11px;flex-shrink:0;}
+.service-price{font-family:'Bricolage Grotesque',sans-serif;font-size:22px;font-weight:800;color:#fff;margin-bottom:4px;}
+.service-price-note{font-size:11.5px;color:rgba(255,255,255,.4);margin-bottom:18px;}
+.service-btn{font-size:13px;font-weight:600;padding:11px 18px;border-radius:8px;cursor:pointer;border:none;background:#25D366;color:#fff;width:100%;text-align:center;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:7px;transition:all .15s;margin-top:auto;}
+.service-btn:hover{background:#22c55e;transform:translateY(-1px);}
+
+/* ═══ PRODUCTS / TEMPLATES ═══ */
+.rg3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--sp-16);}
+.rg2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--sp-20);}
+.rg-auto-ti{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;}
+
+/* Row label */
+.row-label{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+.row-label::before{content:'';height:2px;width:18px;background:var(--amber);border-radius:1px;flex-shrink:0;}
+.row-label span{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--amber);}
+
+.sp-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-md);
+         overflow:hidden;box-shadow:var(--shadow-sm);
+         display:flex;flex-direction:column;height:100%;
+         transition:border-color .2s,box-shadow .2s,transform .2s;}
+.sp-card:hover{border-color:rgba(26,86,219,.3);box-shadow:var(--shadow-md);transform:translateY(-2px);}
+.sp-card-header{padding:var(--sp-16) var(--sp-20);
+                background:linear-gradient(135deg,var(--bg) 0%,var(--blue-light) 100%);
+                border-bottom:1px solid var(--border);}
+.sp-card-header .sp-ico{font-size:22px;margin-bottom:var(--sp-8);}
+.sp-card-header .sp-name{font-family:'Bricolage Grotesque',sans-serif;font-size:14.5px;
+                          font-weight:700;color:var(--navy);margin-bottom:4px;}
+.sp-card-header .sp-tagline{font-size:11.5px;color:var(--muted);line-height:1.5;}
+.sp-card-body{padding:var(--sp-16) var(--sp-20);flex:1;display:flex;flex-direction:column;}
+.sp-card-list{list-style:none;flex:1;margin-bottom:0;}
+.sp-card-list li{font-size:12.5px;color:var(--muted);display:flex;
+                 align-items:flex-start;gap:7px;line-height:1.5;padding:3px 0;}
+.sp-card-list li::before{content:'✓';color:var(--green);font-weight:700;flex-shrink:0;margin-top:1px;}
+.sp-card-foot{display:flex;align-items:center;justify-content:space-between;
+              flex-wrap:wrap;gap:var(--sp-8);margin-top:var(--sp-16);
+              padding-top:var(--sp-12);border-top:1.5px solid var(--border);}
+.sp-price{font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:800;
+          color:var(--navy);white-space:nowrap;}
+.sp-btn{font-size:12px;font-weight:600;color:var(--blue);
+        padding:7px 14px;border:1.5px solid rgba(26,86,219,.3);border-radius:var(--r-sm);
+        background:var(--blue-light);transition:all .15s;white-space:nowrap;}
+.sp-btn:hover{background:rgba(26,86,219,.12);border-color:var(--blue);}
+
+/* ═══════════════════════════════════════════════════════
+   BUNDLE CARDS  (HR packs + Complete Systems)
+   — clean two-zone design: header + body
+   — body has flex:1, items grow, price+CTA at bottom
+═══════════════════════════════════════════════════════ */
+.bun-card{border-radius:var(--r-lg);overflow:hidden;
+          display:flex;flex-direction:column;height:100%;
+          box-shadow:var(--shadow-sm);}
+.bun-card-light{background:var(--surface);border:1px solid var(--border);}
+.bun-card-dark{background:var(--navy);border:1px solid rgba(255,255,255,.08);
+               box-shadow:var(--shadow-lg);}
+.bun-card-gradient{background:linear-gradient(160deg,#0B1628 0%,#0F2A45 100%);
+                   border:1px solid rgba(255,255,255,.1);box-shadow:var(--shadow-lg);}
+.bun-head{padding:var(--sp-20) var(--sp-24);border-bottom:1px solid;}
+.bun-card-light .bun-head{border-color:var(--border);background:var(--bg);}
+.bun-card-dark .bun-head,.bun-card-gradient .bun-head{border-color:rgba(255,255,255,.1);}
+.bun-body{padding:var(--sp-20) var(--sp-24);flex:1;display:flex;flex-direction:column;}
+/* badge */
+.bun-badge{font-family:'JetBrains Mono',monospace;font-size:8.5px;text-transform:uppercase;
+           letter-spacing:1px;padding:3px 10px;border-radius:4px;font-weight:700;
+           display:inline-block;margin-bottom:var(--sp-12);}
+.bun-badge-blue{background:var(--blue);color:#fff;}
+.bun-badge-amber{background:linear-gradient(135deg,#D97706,#F59E0B);color:#fff;}
+.bun-badge-green{background:linear-gradient(135deg,#1A56DB,#0D9488);color:#fff;}
+/* title + desc */
+.bun-title{font-family:'Bricolage Grotesque',sans-serif;font-size:16px;font-weight:700;
+           line-height:1.25;margin-bottom:6px;}
+.bun-card-light .bun-title{color:var(--navy);}
+.bun-card-dark .bun-title,.bun-card-gradient .bun-title{color:#fff;}
+.bun-desc{font-size:12.5px;line-height:1.6;}
+.bun-card-light .bun-desc{color:var(--muted);}
+.bun-card-dark .bun-desc,.bun-card-gradient .bun-desc{color:rgba(255,255,255,.45);}
+/* items */
+.bun-items{list-style:none;display:flex;flex-direction:column;gap:7px;
+           margin-bottom:var(--sp-20);flex:1;}
+.bun-items li{font-size:12.5px;display:flex;align-items:flex-start;gap:7px;line-height:1.4;}
+.bun-card-light .bun-items li{color:var(--muted);}
+.bun-card-light .bun-items li::before{content:'✓';color:var(--green);font-weight:700;flex-shrink:0;margin-top:1px;}
+.bun-card-dark .bun-items li,.bun-card-gradient .bun-items li{color:rgba(255,255,255,.65);}
+.bun-card-dark .bun-items li::before,.bun-card-gradient .bun-items li::before{content:'✓';color:#60AEFF;font-weight:700;flex-shrink:0;margin-top:1px;}
+/* price */
+.bun-price-row{display:flex;align-items:baseline;gap:var(--sp-8);margin-bottom:var(--sp-12);}
+.bun-price{font-family:'Bricolage Grotesque',sans-serif;font-size:28px;font-weight:800;line-height:1;}
+.bun-card-light .bun-price{color:var(--navy);}
+.bun-card-dark .bun-price,.bun-card-gradient .bun-price{color:#fff;}
+.bun-old-price{font-size:12px;text-decoration:line-through;}
+.bun-card-light .bun-old-price{color:var(--muted2);}
+.bun-card-dark .bun-old-price,.bun-card-gradient .bun-old-price{color:rgba(255,255,255,.3);}
+/* cta */
+.bun-cta{display:flex;align-items:center;justify-content:center;
+         padding:11px 0;border-radius:var(--r-sm);font-size:13px;font-weight:600;
+         text-decoration:none;transition:background .15s;margin-top:auto;}
+.bun-card-light .bun-cta{background:var(--blue-light);color:var(--blue);
+                          border:1.5px solid rgba(26,86,219,.25);}
+.bun-card-light .bun-cta:hover{background:rgba(26,86,219,.12);}
+.bun-card-dark .bun-cta,.bun-card-gradient .bun-cta{background:var(--blue);color:#fff;
+                          box-shadow:0 2px 8px rgba(26,86,219,.3);}
+.bun-card-dark .bun-cta:hover,.bun-card-gradient .bun-cta:hover{background:#1447C0;}
+
+/* ═══════════════════════════════════════════════════════
+   INDIVIDUAL TEMPLATE CARDS  (41 items)
+   — compact, uniform height, price+btn always at bottom
+═══════════════════════════════════════════════════════ */
+.ti-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-sm);
+         padding:14px 15px;display:flex;flex-direction:column;height:100%;
+         transition:border-color .15s,box-shadow .15s;}
+.ti-card:hover{border-color:rgba(26,86,219,.3);box-shadow:var(--shadow-sm);}
+.ti-ico{font-size:16px;margin-bottom:6px;line-height:1;}
+.ti-name{font-size:12.5px;font-weight:600;color:var(--navy);margin-bottom:4px;line-height:1.4;}
+.ti-desc{font-size:11px;color:var(--muted);line-height:1.55;flex:1;margin-bottom:var(--sp-12);}
+.ti-foot{display:flex;align-items:center;justify-content:space-between;
+         gap:6px;padding-top:var(--sp-8);border-top:1px solid var(--border);margin-top:auto;}
+.ti-price{font-family:'JetBrains Mono',monospace;font-size:12.5px;font-weight:700;
+          color:var(--blue);white-space:nowrap;}
+.ti-btn{font-size:11px;font-weight:600;color:var(--blue);padding:4px 10px;
+        border:1.5px solid rgba(26,86,219,.25);border-radius:6px;
+        background:var(--blue-light);transition:all .15s;white-space:nowrap;}
+.ti-btn:hover{background:rgba(26,86,219,.12);}
+.ti-sublabel{grid-column:1/-1;display:flex;align-items:center;gap:var(--sp-12);
+             padding:var(--sp-12) 0 var(--sp-8);}
+.ti-sublabel::before,.ti-sublabel::after{content:'';flex:1;height:1px;background:var(--border);}
+.ti-sublabel span{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:2px;
+                  text-transform:uppercase;color:var(--muted2);white-space:nowrap;}
+
+/* ═══════════════════════════════════════════════════════
+   TOOL CARDS
+═══════════════════════════════════════════════════════ */
+
+.cat-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 24px 0 10px;
+}
+.cat-label::before,
+.cat-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+.cat-label span {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted2);
+  white-space: nowrap;
+}
+
+.ti-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.tk-grid-4 {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  align-items: stretch;
+}
+
+/* ti-grid overrides */
+.ti-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(195px,1fr));gap:10px;}
+.cat-label{display:flex;align-items:center;gap:10px;margin:20px 0 10px;}
+.cat-label::before,.cat-label::after{content:'';flex:1;height:1px;background:var(--border);}
+.cat-label span{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted2);white-space:nowrap;}
+
+/* tk-grid-4 */
+.tk-grid-4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--sp-16);align-items:stretch;}
+
+/* WHY section tiles */
+.why-tile{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:24px;}
+.why-tile-ico{font-size:24px;margin-bottom:10px;}
+.why-tile-name{font-size:14px;font-weight:700;color:#fff;margin-bottom:6px;}
+.why-tile-desc{font-size:12.5px;color:rgba(255,255,255,.45);line-height:1.65;}
+
+/* Launch Ready */
+.lr-right{display:flex;flex-direction:column;justify-content:center;gap:20px;}
+
+/* ═══ BIG CTA ═══ */
+.big-cta{background:linear-gradient(135deg,#0D2257,var(--navy) 40%,#1A0B3D);padding:80px 24px;text-align:center;position:relative;overflow:hidden;}
+.big-cta::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 40%,rgba(26,86,219,.2),transparent 60%);pointer-events:none;}
+.big-cta-inner{max-width:680px;margin:0 auto;position:relative;z-index:1;}
+.big-cta-tag{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:16px;}
+.big-cta-h{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(26px,4.5vw,42px);font-weight:800;color:#fff;letter-spacing:-.7px;line-height:1.15;margin-bottom:16px;}
+.big-cta-sub{font-size:16px;color:rgba(255,255,255,.6);line-height:1.65;margin-bottom:36px;}
+.big-cta-btn{display:inline-flex;align-items:center;gap:10px;background:#25D366;color:#fff;font-size:16px;font-weight:700;padding:16px 32px;border-radius:12px;text-decoration:none;transition:all .15s;}
+.big-cta-btn:hover{background:#22c55e;transform:translateY(-2px);box-shadow:0 8px 28px rgba(37,211,102,.3);}
+
+/* ═══ FOOTER ═══ */
+footer{background:#060E1C;padding:52px 24px 32px;}
+.footer-inner{max-width:1200px;margin:0 auto;}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:44px;margin-bottom:44px;}
+.footer-brand{font-family:'Bricolage Grotesque',sans-serif;font-size:22px;font-weight:800;color:#fff;letter-spacing:-.4px;margin-bottom:10px;}
+.footer-brand span{color:#60AEFF;}
+.footer-tagline{font-size:13.5px;color:rgba(255,255,255,.4);line-height:1.65;max-width:260px;margin-bottom:20px;}
+.footer-contact{font-size:12.5px;color:rgba(255,255,255,.5);line-height:2.1;}
+.footer-contact a{color:rgba(255,255,255,.65);text-decoration:none;}
+.footer-contact a:hover{color:#fff;}
+.footer-h{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:14px;}
+.footer-links{list-style:none;display:flex;flex-direction:column;gap:9px;}
+.footer-links a{font-size:13px;color:rgba(255,255,255,.5);text-decoration:none;transition:color .12s;}
+.footer-links a:hover{color:#fff;}
+.footer-bottom{border-top:1px solid rgba(255,255,255,.07);padding-top:24px;display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px;}
+.footer-copy{font-size:12px;color:rgba(255,255,255,.3);}
+.footer-legal{font-size:11.5px;color:rgba(255,255,255,.22);line-height:1.7;max-width:620px;}
+
+/* ═══ DIVIDER ═══ */
+.sdiv{max-width:1200px;margin:0 auto;padding:0 24px;}
+.sdiv hr{border:none;border-top:1px solid var(--border);}
+
+/* ═══ RESPONSIVE ═══ */
+@media(max-width:1024px){
+  .tk-grid-4{grid-template-columns:repeat(2,minmax(0,1fr));}
+  .rg3{grid-template-columns:repeat(2,minmax(0,1fr));}
+  .rg2{grid-template-columns:1fr;}
+  .footer-grid{grid-template-columns:1fr 1fr;gap:32px;}
+}
+@media(max-width:860px){
+  .section{padding:52px 0;}
+  .hero{padding:60px 24px 76px;}
+  .services-grid{grid-template-columns:1fr 1fr;}
+}
+@media(max-width:640px){
+  .section{padding:40px 0;}
+  .section-inner{padding:0 20px;}
+  .nav-inner{padding:0 20px;}
+  .hero{padding:44px 20px 60px;}
+  .sdiv{padding:0 20px;}
+  .rg3{grid-template-columns:1fr;}
+  .rg2{grid-template-columns:1fr;}
+  .tk-grid-4{grid-template-columns:1fr;}
+  .services-grid{grid-template-columns:1fr;}
+  .tools-grid{grid-template-columns:1fr;}
+  .feature-strip{grid-template-columns:1fr 1fr;}
+  .footer-grid{grid-template-columns:1fr;}
+  .ti-grid{grid-template-columns:repeat(auto-fill,minmax(155px,1fr));}
+  .big-cta{padding:52px 20px;}
+}
+
+/* Template tiles */
+.badge-tmpl{background:var(--blue-soft);color:var(--blue);border:1px solid rgba(26,86,219,.2);}
+</style>
+</head>
+<body>
+
+<!-- ═══ NAV ═══ -->
+<nav>
+  <div class="nav-inner">
+    <a href="/" class="brand">Auto<span>Comply</span></a>
+    <div class="nav-links">
+      <a href="#tools">Free Tools</a>
+      <a href="#templates">Templates</a>
+      <a href="#services">Services</a>
+      <a href="https://wa.me/27670113108" class="nav-cta"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg> WhatsApp us</a>
+    </div>
+    <button class="mob-menu-btn" aria-label="Menu">☰</button>
+  </div>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="hero-tag">For South African Business Owners</div>
+      <h1 class="hero-h">Your business, registered,<br><em>documented,</em> and ready to trade.</h1>
+      <p class="hero-sub">Company registration, compliance documentation, and HR foundations for South African SMEs — done for you, or do it yourself with our professional templates and 25 free tools.</p>
+      <div class="hero-btns">
+        <a href="#tools" class="btn-primary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8m-4-4v4"/></svg>
+          Browse free tools
+        </a>
+        <a href="https://wa.me/27670113108?text=Hi%20AutoComply%2C%20I%20need%20help%20with%20my%20business." class="btn-wa"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg> Get expert help</a>
+      </div>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-box"><div class="stat-num">26</div><div class="stat-label">Free tools</div></div>
+      <div class="stat-box"><div class="stat-num">0</div><div class="stat-label">Sign-ups required</div></div>
+      <div class="stat-box"><div class="stat-num">SA</div><div class="stat-label">Built for SA law</div></div>
+      <div class="stat-box"><div class="stat-num">2026</div><div class="stat-label">Rates up to date</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ TRUST STRIP ═══ -->
+<div class="trust-strip">
+  <div class="trust-inner">
+    <div class="trust-item"><span class="trust-ico">⚖️</span> BCEA &amp; LRA compliant calculations</div>
+    <div class="trust-item"><span class="trust-ico">📅</span> Updated March 2026 NMW rates</div>
+    <div class="trust-item"><span class="trust-ico">🔒</span> No data stored — runs in your browser</div>
+    <div class="trust-item"><span class="trust-ico">📱</span> Works on mobile</div>
+  </div>
+</div>
+
+<!-- ═══ SERVICES ═══ -->
+<section class="section alt" id="services">
+  <div class="section-inner">
+    <div class="section-tag">Professional services</div>
+    <h2 class="section-h">When a tool isn't enough —<br>we do it for you.</h2>
+    <p class="section-sub">Our free tools are a starting point. When you need a job done correctly and documented, our team handles it.</p>
+    <div class="services-grid">
+<div class="service-card">
+        <span class="service-ico">🏢</span>
+        <div class="service-cat">CIPC · Registration</div>
+        <div class="service-name">Company Registration</div>
+        <div class="service-desc">We handle the full CIPC registration process — name reservation, CoR14.1, document upload, and certificate delivery.</div>
+        <ul class="service-items"><li>CIPC name reservation (R50 CIPC fee)</li><li>Company incorporation (R125 CIPC fee)</li><li>Document preparation and submission</li><li>Status monitoring and certificate delivery</li><li>Completion within 5–10 business days</li></ul>
+        <div class="service-price">R950</div>
+        <div class="service-price-note">+ R175 CIPC fees = R1,125 all-in · 1–2 directors</div>
+        <a href="https://wa.me/27670113108?text=Hi%20AutoComply%2C%20I%20want%20to%20register%20a%20company.%20Please%20send%20me%20details." class="service-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0;"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg> Get started →</a>
+      </div>
+
+<div class="service-card">
+        <span class="service-ico">📜</span>
+        <div class="service-cat">B-BBEE · Compliance</div>
+        <div class="service-name">B-BBEE Affidavit Preparation</div>
+        <div class="service-desc">We prepare your POPIA-compliant B-BBEE affidavit with the correct level determination, and guide you through the Commissioner signing process.</div>
+        <ul class="service-items"><li>Turnover bracket and B-BBEE level determination</li><li>Affidavit document preparation</li><li>Signing instructions and Commissioner guidance</li><li>12-month expiry tracking and renewal reminder</li><li>Valid for EMEs — under R10M annual turnover</li></ul>
+        <div class="service-price">R450</div>
+        <div class="service-price-note">Same-day available · Renewal service available separately</div>
+        <a href="https://wa.me/27670113108?text=Hi%20AutoComply%2C%20I%20need%20a%20B-BBEE%20affidavit.%20My%20turnover%20is%20under%20R10M." class="service-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0;"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg> Get started →</a>
+      </div>
+
+<div class="service-card">
+        <span class="service-ico">👁️</span>
+        <div class="service-cat">CIPC · Compliance</div>
+        <div class="service-name">Beneficial Ownership Filing</div>
+        <div class="service-desc">All registered companies must file a Beneficial Ownership register with CIPC. We handle the submission accurately — avoiding the penalties for non-compliance.</div>
+        <ul class="service-items"><li>Beneficial owner identification and verification</li><li>CIPC portal submission for all owners (5%+)</li><li>Supporting document collection and upload</li><li>Submission confirmation and record keeping</li><li>10-day change notification reminders</li></ul>
+        <div class="service-price">R650 · R950 · R1,200</div>
+        <div class="service-price-note">1–2 owners · 3–5 owners · 6+ owners</div>
+        <a href="https://wa.me/27670113108?text=Hi%20AutoComply%2C%20I%20need%20to%20file%20Beneficial%20Ownership%20for%20my%20company." class="service-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0;"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg> Get started →</a>
+      </div>
+
+<div class="service-card">
+        <span class="service-ico">📅</span>
+        <div class="service-cat">CIPC · Annual Compliance</div>
+        <div class="service-name">Annual Returns Filing</div>
+        <div class="service-desc">Miss your CIPC Annual Return and your company gets deregistered. We file on time, every time — and remind you 60 days in advance.</div>
+        <ul class="service-items"><li>Company status verification before filing</li><li>Correct turnover bracket and fee calculation</li><li>CIPC portal submission and receipt delivery</li><li>60-day advance reminder for next year</li><li>Outstanding years filed (oldest first)</li></ul>
+        <div class="service-price">R450</div>
+        <div class="service-price-note">Per year + CIPC filing fee (R100–R8,000 by turnover)</div>
+        <a href="https://wa.me/27670113108?text=Hi%20AutoComply%2C%20I%20need%20to%20file%20my%20CIPC%20Annual%20Return." class="service-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0;"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg> Get started →</a>
+      </div>
+
+<div class="service-card" style="background:linear-gradient(145deg,#0F1E3A,#162035);border:1px solid rgba(96,174,255,.18);">
+        <span class="service-ico">📋</span>
+        <div class="service-cat" style="color:rgba(96,174,255,.6);">HR · Templates &amp; Documents</div>
+        <div class="service-name">HR Documents &amp; Policy Library</div>
+        <div class="service-desc">Every employment document a South African employer needs — professionally drafted for current BCEA and LRA requirements. Buy individual documents, or get a complete pack at a fraction of consultant rates.</div>
+        <ul class="service-items">
+          <li>Employment contracts for permanent, fixed-term, and part-time staff</li>
+          <li>Disciplinary code, hearing notices, and outcome letters</li>
+          <li>22 workplace policies — leave, social media, health &amp; safety, and more</li>
+          <li>HR Starter Pack R299 · HR Complete Pack R599</li>
+          <li>Complete Policy Library — all 22 policies for R799</li>
+        </ul>
+        <div class="service-price">From R199</div>
+        <div class="service-price-note">Per document · Packs from R299 · Full library R799</div>
+        <a href="#templates" class="service-btn" style="background:var(--blue);">📋 Browse HR Templates →</a>
+      </div>
+
+      
+
+
+      <div class="service-card">
+        <span class="service-ico">📝</span>
+        <div class="service-cat">Government · Registration</div>
+        <div class="service-name">CSD &amp; Tender Registration</div>
+        <div class="service-desc">Any business supplying to government must be registered on the Central Supplier Database. Without it you cannot submit a tender — regardless of your qualifications. We handle the full CSD application on your behalf.</div>
+        <ul class="service-items"><li>CSD profile creation and submission</li><li>SARS tax compliance status verification</li><li>B-BBEE affidavit attachment (existing affidavit required)</li><li>Banking details and contact information setup</li><li>Registration confirmation and profile access</li></ul>
+        <div class="service-price">R950</div>
+        <div class="service-price-note">Once-off · Government supplier registration</div>
+        <a href="https://wa.me/27670113108?text=Hi%20AutoComply%2C%20I%20need%20CSD%20and%20tender%20registration%20for%20my%20business." class="service-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg> Get started →</a>
+      </div>
+      <div class="service-card">
+        <span class="service-ico">🔐</span>
+        <div class="service-cat">Compliance · POPIA</div>
+        <div class="service-name">POPIA Documentation Setup</div>
+        <div class="service-desc">Every business that collects customer or employee information must address POPIA obligations. We handle the documentation and Information Officer registration so your business is set up correctly from the start.</div>
+        <ul class="service-items"><li>Information Officer registration with the Regulator</li><li>POPIA compliance manual and data register</li><li>Privacy notice and consent form templates</li><li>Data breach response procedure</li><li>Staff POPIA awareness guide</li></ul>
+        <div class="service-price">R2,000</div>
+        <div class="service-price-note">Once-off · Includes IO registration and full documentation</div>
+        <a href="https://wa.me/27670113108?text=Hi%20AutoComply%2C%20I%20need%20POPIA%20documentation%20setup%20for%20my%20business." class="service-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg> Get started →</a>
+      </div>
+      <div class="service-card">
+        <span class="service-ico">📚</span>
+        <div class="service-cat">HR · Custom</div>
+        <div class="service-name">Custom HR Policy Manual</div>
+        <div class="service-desc">We build a complete employer policy manual tailored to your business — your industry, your headcount, your working environment. Not a generic template pack. A document that carries your name and your rules.</div>
+        <ul class="service-items"><li>Up to 15 workplace policies customised to your business</li><li>Disciplinary code aligned to your industry and roles</li><li>Leave policy configured to your work schedule</li><li>Staff acknowledgement form and implementation guide</li><li>PDF and editable Word format delivered</li></ul>
+        <div class="service-price">R2,500</div>
+        <div class="service-price-note">Custom build · 5–7 business day turnaround</div>
+        <a href="https://wa.me/27670113108?text=Hi%20AutoComply%2C%20I%20need%20a%20custom%20HR%20Policy%20Manual%20for%20my%20business." class="service-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg> Get started →</a>
+      </div>
+    
+      <div class="service-card">
+        <span class="service-ico">🏛️</span>
+        <div class="service-cat">Labour · Registration</div>
+        <div class="service-name">UIF &amp; COIDA Registration</div>
+        <div class="service-desc">Every employer must register for UIF contributions and COIDA workplace injury cover before hiring their first staff member. Most skip it until something goes wrong. We handle both registrations on your behalf.</div>
+        <ul class="service-items"><li>UIF registration with the Department of Labour</li><li>COIDA registration with the Compensation Fund</li><li>Employer reference numbers provided</li><li>Guidance on monthly contribution obligations</li><li>Both registrations completed in one service</li></ul>
+        <div class="service-price">R450</div>
+        <div class="service-price-note">Once-off · Both UIF and COIDA included</div>
+        <a href="https://wa.me/27670113108?text=Hi%20AutoComply%2C%20I%20need%20UIF%20and%20COIDA%20registration%20for%20my%20business." class="service-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg> Get started →</a>
+      </div>
+      <div class="service-card">
+        <span class="service-ico">📜</span>
+        <div class="service-cat">B-BBEE · Renewal</div>
+        <div class="service-name">B-BBEE Affidavit Renewal</div>
+        <div class="service-desc">Your B-BBEE affidavit expires every 12 months. An expired affidavit means you cannot tender, cannot be added to supplier databases, and risk losing contracts. We handle the renewal before you lose out.</div>
+        <ul class="service-items"><li>Turnover and ownership verification for current year</li><li>Updated affidavit prepared and signed</li><li>Commissioner of Oaths signing guidance</li><li>Reminder set for following year renewal</li><li>Same-day turnaround available</li></ul>
+        <div class="service-price">R350</div>
+        <div class="service-price-note">Annual renewal · New affidavit available on separate card</div>
+        <a href="https://wa.me/27670113108?text=Hi%20AutoComply%2C%20I%20need%20to%20renew%20my%20B-BBEE%20affidavit." class="service-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg> Get started →</a>
+      </div>
+      <div class="service-card">
+        <span class="service-ico">🔍</span>
+        <div class="service-cat">HR · Compliance</div>
+        <div class="service-name">HR Compliance Audit</div>
+        <div class="service-desc">We review your existing employment contracts, HR policies, and records against current BCEA, LRA, and NMW requirements. You get a clear report of what is missing, what is non-compliant, and exactly what to fix.</div>
+        <ul class="service-items"><li>Employment contract review against BCEA requirements</li><li>Policy gap analysis — what is missing or outdated</li><li>NMW compliance check for all staff categories</li><li>Leave records and UIF deduction verification</li><li>Written audit report with prioritised action list</li></ul>
+        <div class="service-price">R1,500–R3,000</div>
+        <div class="service-price-note">1–5 staff R1,500 · 6–15 staff R2,200 · 16–30 staff R3,000</div>
+        <a href="https://wa.me/27670113108?text=Hi%20AutoComply%2C%20I%20need%20an%20HR%20compliance%20audit%20for%20my%20business." class="service-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg> Get started →</a>
+      </div>
+
+      <div class="service-card">
+        <span class="service-ico">🤝</span>
+        <div class="service-cat">Referrals · Partners</div>
+        <div class="service-name">Professional Referrals</div>
+        <div class="service-desc">We connect you with trusted providers for essential business services — banking, insurance, and funding — so you access the right solutions quickly and confidently. Access the services your business needs to grow.</div>
+        <ul class="service-items"><li>Business bank account referrals</li><li>Insurance &amp; risk cover connections</li><li>Funding &amp; loan introductions</li><li>Merchant / card machine setup</li><li>Trusted partner network</li></ul>
+        <div class="service-price">No charge</div>
+        <div class="service-price-note">Referral service only · AutoComply does not provide financial or insurance advice</div>
+        <a href="https://wa.me/27670113108?text=Hi%20AutoComply%2C%20I%20need%20a%20referral%20for%20a%20business%20service%20%E2%80%94%20please%20connect%20me%20with%20a%20trusted%20provider." class="service-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0;"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg> Get connected →</a>
+      </div>
+    
+
+      <div class="service-card">
+        <span class="service-ico">💻</span>
+        <div class="service-cat">IT · Digital Setup</div>
+        <div class="service-name">Simple IT Setup</div>
+        <div class="service-desc">We set up the essential digital infrastructure your business needs — domain, professional email, and secure hosting — so you operate professionally from day one. Perfect for new businesses getting set up.</div>
+        <ul class="service-items"><li>Domain registration (.co.za, .com)</li><li>Professional email setup (info@yourbusiness.co.za)</li><li>Secure hosting setup</li><li>Google Workspace / Microsoft 365 integration</li><li>Ongoing support options</li></ul>
+        <div class="service-price">From R950</div>
+        <div class="service-price-note">Once-off setup · Hosting and domain costs billed separately</div>
+        <a href="https://wa.me/27670113108?text=Hi%20AutoComply%2C%20I%20need%20help%20setting%20up%20my%20business%20domain%2C%20email%2C%20and%20hosting." class="service-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0;"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg> Get started →</a>
+      </div>
+    
+
+      <div class="service-card">
+        <span class="service-ico">🎨</span>
+        <div class="service-cat">Brand · Identity</div>
+        <div class="service-name">Business Branding Pack</div>
+        <div class="service-desc">Get your business looking professional from day one. A clean, consistent brand identity you can use on every platform.</div>
+        <ul class="service-items"><li>Logo design (AI-assisted + refined to your brief)</li><li>Colour palette and font pairing</li><li>Profile images sized for Facebook, WhatsApp, and Instagram</li><li>Basic one-page brand guide</li><li>Delivered in editable and ready-to-use formats</li></ul>
+        <div class="service-price">R699 – R1,200</div>
+        <div class="service-price-note">Once-off · Price depends on complexity</div>
+        <a href="https://wa.me/27670113108?text=Hi%20AutoComply%2C%20I%20need%20a%20business%20branding%20pack%20for%20my%20business." class="service-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg> Get started →</a>
+      </div>
+
+      <div class="service-card">
+        <span class="service-ico">📱</span>
+        <div class="service-cat">Digital · Social</div>
+        <div class="service-name">Social Media Setup Pack</div>
+        <div class="service-desc">We set up your business social media pages properly — so you look credible and ready to attract customers from day one.</div>
+        <ul class="service-items"><li>Facebook business page created and optimised</li><li>Instagram business account setup</li><li>Professional bio and descriptions written for you</li><li>Profile and cover images uploaded and sized correctly</li><li>Page settings and contact details configured</li></ul>
+        <div class="service-price">R450 – R850</div>
+        <div class="service-price-note">Once-off · Both platforms included</div>
+        <a href="https://wa.me/27670113108?text=Hi%20AutoComply%2C%20I%20need%20my%20social%20media%20pages%20set%20up%20for%20my%20business." class="service-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg> Get started →</a>
+      </div>
+
+      <div class="service-card">
+        <span class="service-ico">💬</span>
+        <div class="service-cat">Digital · Communication</div>
+        <div class="service-name">WhatsApp Business Setup</div>
+        <div class="service-desc">Turn WhatsApp into a proper business tool — professional profile, automated replies, and a service catalogue so customers get answers fast.</div>
+        <ul class="service-items"><li>WhatsApp Business profile configured</li><li>Business description, address, and hours added</li><li>Greeting and away message auto-replies set up</li><li>Product or service catalogue built</li><li>Quick reply templates for common questions</li></ul>
+        <div class="service-price">R250 – R500</div>
+        <div class="service-price-note">Once-off · Client must have a smartphone</div>
+        <a href="https://wa.me/27670113108?text=Hi%20AutoComply%2C%20I%20need%20my%20WhatsApp%20Business%20account%20set%20up." class="service-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg> Get started →</a>
+      </div>
+
+      <div class="service-card" style="border:1px solid rgba(26,86,219,.35);">
+        <span class="service-ico">🚀</span>
+        <div class="service-cat">Startup · Bundle</div>
+        <div class="service-name">Business Launch Pack</div>
+        <div class="service-desc">Everything you need to launch your business properly — legal, compliant, branded, and ready to get your first customers.</div>
+        <ul class="service-items"><li>Company registration (Pty Ltd)</li><li>UIF and COIDA registration</li><li>POPIA starter documentation</li><li>Basic branding pack</li><li>Social media setup (Facebook + Instagram)</li></ul>
+        <div class="service-price">R2,000 – R3,000</div>
+        <div class="service-price-note">Once-off · Full launch support · Contact us for exact quote</div>
+        <a href="https://wa.me/27670113108?text=Hi%20AutoComply%2C%20I%20am%20interested%20in%20the%20Business%20Launch%20Pack." class="service-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg> Get started →</a>
+      </div>
+
+      <div class="service-card">
+        <span class="service-ico">📣</span>
+        <div class="service-cat">Marketing · Content</div>
+        <div class="service-name">Content Starter Pack</div>
+        <div class="service-desc">Start posting like a professional with ready-to-use social media content tailored for your business and industry.</div>
+        <ul class="service-items"><li>10–20 social media post designs</li><li>Editable Canva templates you keep and reuse</li><li>Captions written and ready to copy-paste</li><li>Content matched to your industry and audience</li><li>Delivered within 5–7 business days</li></ul>
+        <div class="service-price">R199 – R499</div>
+        <div class="service-price-note">Digital product · Canva account required</div>
+        <a href="https://wa.me/27670113108?text=Hi%20AutoComply%2C%20I%20need%20a%20content%20starter%20pack%20for%20my%20business." class="service-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg> Get started →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="sdiv"><hr></div>
+
+<!-- ═══ LAUNCH BUNDLE ═══ -->
+<section class="section alt" id="bundle">
+  <div class="section-inner">
+    <div class="section-tag">Launch Bundle</div>
+    <h2 class="section-h">Registered, documented,<br>and ready to trade.</h2>
+    <p class="section-sub">Company registration, mandatory filings, and a complete template library — bundled together and priced to save.</p>
+    <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--sp-24);align-items:start;">
+      <div style="background:var(--navy);border-radius:16px;overflow:hidden;box-shadow:0 8px 32px rgba(11,22,40,.2);">
+        <div style="padding:24px 28px;border-bottom:1px solid rgba(255,255,255,.08);">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#60AEFF;margin-bottom:8px;">New Company Bundle</div>
+          <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:22px;font-weight:800;color:#fff;margin-bottom:4px;">Launch Ready</div>
+          <div style="font-size:13px;color:rgba(255,255,255,.45);">Four essentials. One price. Set up, registered, and ready to trade.</div>
+        </div>
+        <div style="padding:20px 28px;border-bottom:1px solid rgba(255,255,255,.08);">
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <div style="display:flex;align-items:flex-start;gap:10px;">
+              <span style="color:#60AEFF;font-weight:700;flex-shrink:0;margin-top:1px;">✓</span>
+              <div>
+                <div style="font-size:13.5px;font-weight:600;color:#fff;">Company Registration (Pty Ltd)</div>
+                <div style="font-size:12px;color:rgba(255,255,255,.4);">Name reservation, MOI, CIPC certificate + R175 govt fee</div>
+              </div>
+              <div style="margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:12px;color:rgba(255,255,255,.3);text-decoration:line-through;white-space:nowrap;">R 950</div>
+            </div>
+            <div style="display:flex;align-items:flex-start;gap:10px;">
+              <span style="color:#60AEFF;font-weight:700;flex-shrink:0;margin-top:1px;">✓</span>
+              <div>
+                <div style="font-size:13.5px;font-weight:600;color:#fff;">Beneficial Ownership Register</div>
+                <div style="font-size:12px;color:rgba(255,255,255,.4);">Mandatory CIPC filing for all registered companies</div>
+              </div>
+              <div style="margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:12px;color:rgba(255,255,255,.3);text-decoration:line-through;white-space:nowrap;">R 650</div>
+            </div>
+            <div style="display:flex;align-items:flex-start;gap:10px;">
+              <span style="color:#60AEFF;font-weight:700;flex-shrink:0;margin-top:1px;">✓</span>
+              <div>
+                <div style="font-size:13.5px;font-weight:600;color:#fff;">The South African Business System</div>
+                <div style="font-size:12px;color:rgba(255,255,255,.4);">HR Complete Pack (Value R599)<br>Complete Employer Policy Library (R799)<br>+ SA Business Starter Kit (R249)</div>
+              </div>
+              <div style="margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:12px;color:rgba(255,255,255,.3);text-decoration:line-through;white-space:nowrap;">R 1,647</div>
+            </div>
+            </div>
+          </div>
+        </div>
+      <div class="lr-right">
+        <div style="background:#fff;border:1px solid var(--border);border-radius:var(--r-md);padding:var(--sp-24);box-shadow:var(--shadow-sm);">
+          <div style="font-size:11px;font-family:'JetBrains Mono',monospace;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:var(--sp-8);">Bundle price · Save R1,048</div>
+          <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:40px;font-weight:800;color:var(--navy);line-height:1;margin-bottom:var(--sp-4);">R 2,199</div>
+          <div style="font-size:12.5px;color:var(--muted);margin-bottom:var(--sp-20);">R 3,247 individually · Plus R175 CIPC govt fee</div>
+          <a href="https://wa.me/27670113108" style="display:flex;align-items:center;justify-content:center;gap:8px;background:var(--blue);color:#fff;font-size:14px;font-weight:700;padding:14px 0;border-radius:var(--r-sm);text-decoration:none;box-shadow:0 2px 8px rgba(26,86,219,.3);">Get started on WhatsApp →</a>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:var(--sp-8);">
+          <div style="display:flex;align-items:flex-start;gap:var(--sp-12);">
+            <span style="width:20px;height:20px;background:var(--green-light);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;margin-top:1px;">✓</span>
+            <span style="font-size:13.5px;color:var(--navy);">Registered with CIPC — name reservation, MOI, certificate</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:var(--sp-12);">
+            <span style="width:20px;height:20px;background:var(--green-light);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;margin-top:1px;">✓</span>
+            <span style="font-size:13.5px;color:var(--navy);">Beneficial Ownership filed — mandatory for all registered companies</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:var(--sp-12);">
+            <span style="width:20px;height:20px;background:var(--green-light);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;margin-top:1px;">✓</span>
+            <span style="font-size:13.5px;color:var(--navy);">Complete template library — every business document you need</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="rg3" style="gap:var(--sp-16);margin-top:var(--sp-24);">
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r-md);padding:var(--sp-24);box-shadow:var(--shadow-sm);">
+          <div style="font-size:28px;margin-bottom:var(--sp-12);">🏢</div>
+          <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:15px;font-weight:700;color:var(--navy);margin-bottom:var(--sp-8);">Get registered</div>
+          <div style="font-size:13px;color:var(--muted);line-height:1.65;">Your company registered with CIPC and set up correctly from the start — documentation in order, ready to operate.</div>
+        </div>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r-md);padding:var(--sp-24);box-shadow:var(--shadow-sm);">
+          <div style="font-size:28px;margin-bottom:var(--sp-12);">🛡️</div>
+          <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:15px;font-weight:700;color:var(--navy);margin-bottom:var(--sp-8);">Hire with confidence</div>
+          <div style="font-size:13px;color:var(--muted);line-height:1.65;">Employment contracts and onboarding documents aligned with South African labour requirements — so your first hire is done properly.</div>
+        </div>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r-md);padding:var(--sp-24);box-shadow:var(--shadow-sm);">
+          <div style="font-size:28px;margin-bottom:var(--sp-12);">✅</div>
+          <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:15px;font-weight:700;color:var(--navy);margin-bottom:var(--sp-8);">Mandatory filing done</div>
+          <div style="font-size:13px;color:var(--muted);line-height:1.65;">Beneficial Ownership is required for all registered companies. Skip it and risk penalties. We file it as part of the bundle.</div>
+        </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ TEMPLATES ═══ -->
+<section id="templates" class="section">
+  <div class="section-inner">
+    <div class="section-tag">Business Templates &amp; Documents</div>
+    <h2 class="section-h">Templates for every stage<br>of your business.</h2>
+    <p class="section-sub">Professionally drafted for South African businesses. Customise in minutes — buy only what you need.</p>
+
+    <div class="cat-nav" id="tmplNav">
+      <button class="cat-btn active" onclick="filterTmpl('all',this)">All templates</button>
+      <button class="cat-btn" onclick="filterTmpl('starter',this)">🚀 Starter Packs</button>
+      <button class="cat-btn" onclick="filterTmpl('toolkit',this)">⚙️ Toolkits</button>
+      <button class="cat-btn" onclick="filterTmpl('hrpack',this)">👔 HR Packs</button>
+      <button class="cat-btn" onclick="filterTmpl('agreement',this)">🤝 Agreements</button>
+      <button class="cat-btn" onclick="filterTmpl('hrdoc',this)">📋 HR Documents</button>
+      <button class="cat-btn" onclick="filterTmpl('policy',this)">⚖️ Policies</button>
+    </div>
+
+    <div class="tools-grid" id="tmplGrid">
+      <a href="https://wa.me/27670113108?text=Hi%20AutoComply%2C%20I%20want%20to%20buy:%20SA%20Business%20Starter%20Kit" class="tool-card cat-marketing" data-tmpl="starter" target="_blank"><div class="tool-top"><span class="tool-ico">🚀</span><div class="tool-badges"><span class="badge badge-tmpl">R 249</span></div></div><div class="tool-name">SA Business Starter Kit</div><div class="tool-desc">Brand + client-facing documents to present your business professionally from day one. Company profile, proposals, invoices, service agreement.</div><div class="tool-link">Buy now</div></a>
+      <a href="https://wa.me/27670113108?text=Hi%20AutoComply%2C%20I%20want%20to%20buy:%20Financial%20Templates%20Pack" class="tool-card cat-marketing" data-tmpl="starter" target="_blank"><div class="tool-top"><span class="tool-ico">💰</span><div class="tool-badges"><span class="badge badge-tmpl">R 249</span></div></div><div class="tool-name">Financial Templates Pack</div><div class="tool-desc">Cash flow tracker, budget planner, expense log, income statement, and pricing worksheet — all in Excel format.</div><div class="tool-link">Buy now</div></a>
+      <a href="https://wa.me/27670113108?text=Hi%20AutoComply%2C%20I%20want%20to%20buy:%20Business%20Communication%20Pack" class="tool-card cat-marketing" data-tmpl="starter" target="_blank"><div class="tool-top"><span class="tool-ico">💬</span><div class="tool-badges"><span class="badge badge-tmpl">R 249</span></div></div><div class="tool-name">Business Communication Pack</div><div class="tool-desc">Email templates, meeting agenda, minute templates, follow-up scripts, and a professional quotation template.</div><div class="tool-link">Buy now</div></a>
+      <a href="https://wa.me/27670113108?text=Hi%20AutoComply%2C%20I%27m%20interested%20in%20the%20First-Time%20Entrepreneur%20Pack." class="tool-card cat-marketing" data-tmpl="starter" target="_blank"><div class="tool-top"><span class="tool-ico">🌱</span><div class="tool-badges"><span class="badge badge-tmpl">R 349</span></div></div><div class="tool-name">First-Time Entrepreneur Pack</div><div class="tool-desc">A practical starter pack for first-time business owners — get registered, compliant, and launch-ready without feeling overwhelmed.</div><div class="tool-link">Buy now</div></a>
+      <a href="https://wa.me/27670113108?text=Hi%20AutoComply%2C%20I%20want%20to%20buy:%20Operations%20Toolkit" class="tool-card cat-finance" data-tmpl="toolkit" target="_blank"><div class="tool-top"><span class="tool-ico">⚙️</span><div class="tool-badges"><span class="badge badge-tmpl">R 249</span></div></div><div class="tool-name">Operations Toolkit</div><div class="tool-desc">Weekly planner, staff task tracker, meeting minutes, KPI tracker, monthly sales tracker, and staff schedule — all Excel or Word.</div><div class="tool-link">Buy now</div></a>
+      <a href="https://wa.me/27670113108?text=Hi%20AutoComply%2C%20I%20want%20to%20buy:%20Stock%20%26%20Supplier%20Toolkit" class="tool-card cat-finance" data-tmpl="toolkit" target="_blank"><div class="tool-top"><span class="tool-ico">📦</span><div class="tool-badges"><span class="badge badge-tmpl">R 249</span></div></div><div class="tool-name">Stock &amp; Supplier Toolkit</div><div class="tool-desc">Supplier comparison sheet, stock receiving checklist, reorder level tracker, supplier register, and goods return template.</div><div class="tool-link">Buy now</div></a>
+      <a href="https://wa.me/27670113108?text=Hi%20AutoComply%2C%20I%20want%20to%20buy:%20Social%20Media%20%26%20Marketing%20Kit" class="tool-card cat-finance" data-tmpl="toolkit" target="_blank"><div class="tool-top"><span class="tool-ico">📱</span><div class="tool-badges"><span class="badge badge-tmpl">R 249</span></div></div><div class="tool-name">Social Media &amp; Marketing Kit</div><div class="tool-desc">Content calendar, caption swipe file, hashtag bank, brand voice guide, and a 30-day posting plan template.</div><div class="tool-link">Buy now</div></a>
+      <a href="https://wa.me/27670113108?text=Hi%20AutoComply%2C%20I%20want%20to%20buy:%20Business%20Setup%20Documents%20Pack" class="tool-card cat-finance" data-tmpl="toolkit" target="_blank"><div class="tool-top"><span class="tool-ico">🏢</span><div class="tool-badges"><span class="badge badge-tmpl">R 299</span></div></div><div class="tool-name">Business Setup Documents Pack</div><div class="tool-desc">Shareholders agreement, company resolutions, director consent, registered address letter, board minutes, and share certificate.</div><div class="tool-link">Buy now</div></a>
+      <a href="https://wa.me/27670113108?text=Hi%20AutoComply%2C%20I%20want%20to%20buy:%20HR%20Starter%20Pack" class="tool-card cat-hr" data-tmpl="hrpack" target="_blank"><div class="tool-top"><span class="tool-ico">👔</span><div class="tool-badges"><span class="badge badge-tmpl">R 299</span></div></div><div class="tool-name">HR Starter Pack</div><div class="tool-desc">Essential employment document templates — employment contract, letter of appointment, leave forms, disciplinary notice. For first-time employers.</div><div class="tool-link">Buy now</div></a>
+      <a href="https://wa.me/27670113108?text=Hi%20AutoComply%2C%20I%20want%20to%20buy:%20HR%20Discipline%20%26%20Dismissal%20Pack" class="tool-card cat-hr" data-tmpl="hrpack" target="_blank"><div class="tool-top"><span class="tool-ico">⚖️</span><div class="tool-badges"><span class="badge badge-tmpl">R 399</span></div></div><div class="tool-name">HR Discipline &amp; Dismissal Pack</div><div class="tool-desc">Formal hearing notices, outcome letters, dismissal letter, and CCMA preparation checklist. For businesses handling disciplinary processes.</div><div class="tool-link">Buy now</div></a>
+      <a href="https://wa.me/27670113108?text=Hi%20AutoComply%2C%20I%20want%20to%20buy:%20HR%20Complete%20Pack" class="tool-card cat-hr" data-tmpl="hrpack" target="_blank"><div class="tool-top"><span class="tool-ico">🏆</span><div class="tool-badges"><span class="badge badge-tmpl">R 599</span></div></div><div class="tool-name">HR Complete Pack</div><div class="tool-desc">Everything in both HR packs — CCMA checklist, leave forms, timesheet, and exit interview template — in one complete package.</div><div class="tool-link">Buy now</div></a>
+      <a href="https://wa.me/27670113108?text=Hi%20AutoComply%2C%20I%20want%20to%20buy:%20Complete%20Employer%20Policy%20Library" class="tool-card cat-hr" data-tmpl="hrpack" target="_blank"><div class="tool-top"><span class="tool-ico">📚</span><div class="tool-badges"><span class="badge badge-tmpl">R 799</span></div></div><div class="tool-name">Complete Employer Policy Library</div><div class="tool-desc">All 22 workplace policies in one purchase — disciplinary code, grievance, leave, sexual harassment, social media, health &amp; safety, and more.</div><div class="tool-link">Buy now</div></a>
+      <a href="https://wa.me/27670113108?text=Hi%20AutoComply%2C%20I%20want%20to%20buy:%20The%20South%20African%20Business%20System" class="tool-card cat-hr" data-tmpl="hrpack" target="_blank"><div class="tool-top"><span class="tool-ico">🇿🇦</span><div class="tool-badges"><span class="badge badge-tmpl">R 1,499</span></div></div><div class="tool-name">The South African Business System</div><div class="tool-desc">Every document pack in one purchase — all starter packs, all toolkits, all HR packs, and all 22 workplace policies.</div><div class="tool-link">Buy now</div></a>
+      <a href="https://wa.me/27670113108?text=Hi%20AutoComply%2C%20I%20want%20to%20buy:%20Employment%20Contract" class="tool-card cat-finance" data-tmpl="agreement" target="_blank"><div class="tool-top"><span class="tool-ico">📄</span><div class="tool-badges"><span class="badge badge-tmpl">R 450</span></div></div><div class="tool-name">Employment Contract</div><div class="tool-desc">For South African employers — permanent &amp; fixed-term</div><div class="tool-link">Buy now</div></a>
+      <a href="https://wa.me/27670113108?text=Hi%20AutoComply%2C%20I%20want%20to%20buy:%20Warning%20Letter%20Set" class="tool-card cat-finance" data-tmpl="agreement" target="_blank"><div class="tool-top"><span class="tool-ico">⚠️</span><div class="tool-badges"><span class="badge badge-tmpl">R 299</span></div></div><div class="tool-name">Warning Letter Set</div><div class="tool-desc">Verbal, written &amp; final written. Editable wording for each stage of the disciplinary process.</div><div class="tool-link">Buy now</div></a>
+      <a href="https://wa.me/27670113108?text=Hi%20AutoComply%2C%20I%20want%20to%20buy:%20Independent%20Contractor%20Agreement" class="tool-card cat-finance" data-tmpl="agreement" target="_blank"><div class="tool-top"><span class="tool-ico">🤝</span><div class="tool-badges"><span class="badge badge-tmpl">R 499</span></div></div><div class="tool-name">Independent Contractor Agreement</div><div class="tool-desc">Clearly defines the contractor relationship for SA tax purposes</div><div class="tool-link">Buy now</div></a>
+      <a href="https://wa.me/27670113108?text=Hi%20AutoComply%2C%20I%20want%20to%20buy:%20NDA%20—%20Non-Disclosure%20Agreement" class="tool-card cat-finance" data-tmpl="agreement" target="_blank"><div class="tool-top"><span class="tool-ico">🔒</span><div class="tool-badges"><span class="badge badge-tmpl">R 249</span></div></div><div class="tool-name">NDA — Non-Disclosure Agreement</div><div class="tool-desc">Mutual or one-way. Covers confidential business information, pricing, and trade secrets.</div><div class="tool-link">Buy now</div></a>
+      <a href="https://wa.me/27670113108?text=Hi%20AutoComply%2C%20I%20want%20to%20buy:%20Supplier%20/%20Service%20Agreement" class="tool-card cat-finance" data-tmpl="agreement" target="_blank"><div class="tool-top"><span class="tool-ico">📋</span><div class="tool-badges"><span class="badge badge-tmpl">R 399</span></div></div><div class="tool-name">Supplier / Service Agreement</div><div class="tool-desc">Scope of work, payment terms &amp; liability clauses. Suitable for any service provider or supplier.</div><div class="tool-link">Buy now</div></a>
+      <a href="https://wa.me/27670113108?text=Hi%20AutoComply%2C%20I%20want%20to%20buy:%20Staff%20Onboarding%20Pack" class="tool-card cat-hr" data-tmpl="hrdoc" target="_blank"><div class="tool-top"><span class="tool-ico">👋</span><div class="tool-badges"><span class="badge badge-tmpl">R 299</span></div></div><div class="tool-name">Staff Onboarding Pack</div><div class="tool-desc">Induction checklist, first-day documents, and setup guide. Gets new staff productive from day one.</div><div class="tool-link">Buy now</div></a>
+      <a href="https://wa.me/27670113108?text=Hi%20AutoComply%2C%20I%20want%20to%20buy:%20Shareholders%20Agreement" class="tool-card cat-hr" data-tmpl="agreement" target="_blank"><div class="tool-top"><span class="tool-ico">🤝</span><div class="tool-badges"><span class="badge badge-tmpl">R 750</span></div></div><div class="tool-name">Shareholders Agreement</div><div class="tool-desc">Covers share allocation, voting rights, deadlock resolution, and exit provisions between co-owners.</div><div class="tool-link">Buy now</div></a>
+      <a href="https://wa.me/27670113108?text=Hi%20AutoComply%2C%20I%20want%20to%20buy:%20Partnership%20Agreement" class="tool-card cat-hr" data-tmpl="agreement" target="_blank"><div class="tool-top"><span class="tool-ico">🤝</span><div class="tool-badges"><span class="badge badge-tmpl">R 650</span></div></div><div class="tool-name">Partnership Agreement</div><div class="tool-desc">Defines roles, profit-sharing, liability, dispute resolution, and exit procedures for business partnerships.</div><div class="tool-link">Buy now</div></a>
+      <a href="https://wa.me/27670113108?text=Hi%20AutoComply%2C%20I%20want%20to%20buy:%20Commercial%20Lease%20Agreement" class="tool-card cat-hr" data-tmpl="agreement" target="_blank"><div class="tool-top"><span class="tool-ico">🏢</span><div class="tool-badges"><span class="badge badge-tmpl">R 599</span></div></div><div class="tool-name">Commercial Lease Agreement</div><div class="tool-desc">Covers rental amount, deposit, notice period, maintenance obligations, and permitted use of premises.</div><div class="tool-link">Buy now</div></a>
+      <a href="https://wa.me/27670113108?text=Hi%20AutoComply%2C%20I%20want%20to%20buy:%20Director%20Service%20Agreement" class="tool-card cat-hr" data-tmpl="agreement" target="_blank"><div class="tool-top"><span class="tool-ico">👔</span><div class="tool-badges"><span class="badge badge-tmpl">R 599</span></div></div><div class="tool-name">Director Service Agreement</div><div class="tool-desc">Formally documents director duties, remuneration, restrictions, and termination provisions.</div><div class="tool-link">Buy now</div></a>
+      <a href="https://wa.me/27670113108?text=Hi%20AutoComply%2C%20I%20want%20to%20buy:%20Website%20T%26C%20%26%20Privacy%20Policy%20Bundle" class="tool-card cat-hr" data-tmpl="agreement" target="_blank"><div class="tool-top"><span class="tool-ico">🌐</span><div class="tool-badges"><span class="badge badge-tmpl">R 699</span></div></div><div class="tool-name">Website T&amp;C &amp; Privacy Policy Bundle</div><div class="tool-desc">Two-document set: website terms of use plus a POPIA-aligned privacy policy for your site visitors.</div><div class="tool-link">Buy now</div></a>
+      <a href="https://wa.me/27670113108?text=Hi%20AutoComply%2C%20I%20want%20to%20buy:%20Disciplinary%20Hearing%20Notice" class="tool-card cat-hr" data-tmpl="hrdoc" target="_blank"><div class="tool-top"><span class="tool-ico">⚖️</span><div class="tool-badges"><span class="badge badge-tmpl">R 199</span></div></div><div class="tool-name">Disciplinary Hearing Notice</div><div class="tool-desc">Formal notice to employee with charges listed. Includes editable fields for date, time, and venue.</div><div class="tool-link">Buy now</div></a>
+      <a href="https://wa.me/27670113108?text=Hi%20AutoComply%2C%20I%20want%20to%20buy:%20Hearing%20Outcome%20Letters" class="tool-card cat-hr" data-tmpl="hrdoc" target="_blank"><div class="tool-top"><span class="tool-ico">📋</span><div class="tool-badges"><span class="badge badge-tmpl">R 199</span></div></div><div class="tool-name">Hearing Outcome Letters</div><div class="tool-desc">Guilty &amp; not guilty outcome templates. Covers all standard disciplinary outcomes and next steps.</div><div class="tool-link">Buy now</div></a>
+      <a href="https://wa.me/27670113108?text=Hi%20AutoComply%2C%20I%20want%20to%20buy:%20Dismissal%20Letter%20Template" class="tool-card cat-hr" data-tmpl="hrdoc" target="_blank"><div class="tool-top"><span class="tool-ico">🚫</span><div class="tool-badges"><span class="badge badge-tmpl">R 299</span></div></div><div class="tool-name">Dismissal Letter Template</div><div class="tool-desc">Formal letter of dismissal after a completed disciplinary process. Aligned with BCEA notice requirements.</div><div class="tool-link">Buy now</div></a>
+      <a href="https://wa.me/27670113108?text=Hi%20AutoComply%2C%20I%20want%20to%20buy:%20CCMA%20Preparation%20Checklist" class="tool-card cat-hr" data-tmpl="hrdoc" target="_blank"><div class="tool-top"><span class="tool-ico">⚖️</span><div class="tool-badges"><span class="badge badge-tmpl">R 199</span></div></div><div class="tool-name">CCMA Preparation Checklist</div><div class="tool-desc">Step-by-step checklist to prepare for a CCMA conciliation hearing. Covers documents, witnesses, and procedures.</div><div class="tool-link">Buy now</div></a>
+      <a href="https://wa.me/27670113108?text=Hi%20AutoComply%2C%20I%20want%20to%20buy:%20Leave%20Application%20Forms" class="tool-card cat-hr" data-tmpl="hrdoc" target="_blank"><div class="tool-top"><span class="tool-ico">🏖️</span><div class="tool-badges"><span class="badge badge-tmpl">R 199</span></div></div><div class="tool-name">Leave Application Forms</div><div class="tool-desc">Annual, sick, family responsibility &amp; study leave. Includes manager approval and return-to-work fields.</div><div class="tool-link">Buy now</div></a>
+      <a href="https://wa.me/27670113108?text=Hi%20AutoComply%2C%20I%20want%20to%20buy:%20Timesheet%20Template" class="tool-card cat-hr" data-tmpl="hrdoc" target="_blank"><div class="tool-top"><span class="tool-ico">⏱️</span><div class="tool-badges"><span class="badge badge-tmpl">R 199</span></div></div><div class="tool-name">Timesheet Template</div><div class="tool-desc">Weekly staff hours tracker — Excel format. Records regular, overtime, and public holiday hours.</div><div class="tool-link">Buy now</div></a>
+      <a href="https://wa.me/27670113108?text=Hi%20AutoComply%2C%20I%20want%20to%20buy:%20Exit%20Interview%20Template" class="tool-card cat-hr" data-tmpl="hrdoc" target="_blank"><div class="tool-top"><span class="tool-ico">🚪</span><div class="tool-badges"><span class="badge badge-tmpl">R 199</span></div></div><div class="tool-name">Exit Interview Template</div><div class="tool-desc">Structured exit interview form for departing staff. Captures reasons for leaving and improvement feedback.</div><div class="tool-link">Buy now</div></a>
+      <a href="https://wa.me/27670113108?text=Hi%20AutoComply%2C%20I%20want%20to%20buy:%20Disciplinary%20Code" class="tool-card cat-compliance" data-tmpl="policy" target="_blank"><div class="tool-top"><span class="tool-ico">⚖️</span><div class="tool-badges"><span class="badge badge-tmpl">R 299</span></div></div><div class="tool-name">Disciplinary Code</div><div class="tool-desc">Full schedule of offences categorised by severity, with corresponding sanctions and progressive discipline steps.</div><div class="tool-link">Buy now</div></a>
+      <a href="https://wa.me/27670113108?text=Hi%20AutoComply%2C%20I%20want%20to%20buy:%20Grievance%20Procedure" class="tool-card cat-compliance" data-tmpl="policy" target="_blank"><div class="tool-top"><span class="tool-ico">😤</span><div class="tool-badges"><span class="badge badge-tmpl">R 249</span></div></div><div class="tool-name">Grievance Procedure</div><div class="tool-desc">Formal staff complaint process aligned with South African labour requirements.</div><div class="tool-link">Buy now</div></a>
+      <a href="https://wa.me/27670113108?text=Hi%20AutoComply%2C%20I%20want%20to%20buy:%20Leave%20Policy" class="tool-card cat-compliance" data-tmpl="policy" target="_blank"><div class="tool-top"><span class="tool-ico">🏖️</span><div class="tool-badges"><span class="badge badge-tmpl">R 249</span></div></div><div class="tool-name">Leave Policy</div><div class="tool-desc">Covers annual, sick, family responsibility, maternity, and study leave — entitlements and procedures.</div><div class="tool-link">Buy now</div></a>
+      <a href="https://wa.me/27670113108?text=Hi%20AutoComply%2C%20I%20want%20to%20buy:%20Poor%20Work%20Performance%20Policy%20%26%20PIP" class="tool-card cat-compliance" data-tmpl="policy" target="_blank"><div class="tool-top"><span class="tool-ico">📈</span><div class="tool-badges"><span class="badge badge-tmpl">R 299</span></div></div><div class="tool-name">Poor Work Performance Policy &amp; PIP</div><div class="tool-desc">Includes a performance improvement plan template and documents the full counselling-to-dismissal process.</div><div class="tool-link">Buy now</div></a>
+      <a href="https://wa.me/27670113108?text=Hi%20AutoComply%2C%20I%20want%20to%20buy:%20Alcohol%20in%20the%20Workplace%20Policy" class="tool-card cat-compliance" data-tmpl="policy" target="_blank"><div class="tool-top"><span class="tool-ico">🍺</span><div class="tool-badges"><span class="badge badge-tmpl">R 249</span></div></div><div class="tool-name">Alcohol in the Workplace Policy</div><div class="tool-desc">Essential for retail, hospitality &amp; construction</div><div class="tool-link">Buy now</div></a>
+      <a href="https://wa.me/27670113108?text=Hi%20AutoComply%2C%20I%20want%20to%20buy:%20Sexual%20Harassment%20Policy" class="tool-card cat-compliance" data-tmpl="policy" target="_blank"><div class="tool-top"><span class="tool-ico">🛑</span><div class="tool-badges"><span class="badge badge-tmpl">R 249</span></div></div><div class="tool-name">Sexual Harassment Policy</div><div class="tool-desc">Mandatory workplace policy. Defines prohibited conduct, the complaint process, and support for complainants.</div><div class="tool-link">Buy now</div></a>
+      <a href="https://wa.me/27670113108?text=Hi%20AutoComply%2C%20I%20want%20to%20buy:%20Company%20Vehicle%20Use%20Policy" class="tool-card cat-compliance" data-tmpl="policy" target="_blank"><div class="tool-top"><span class="tool-ico">🚗</span><div class="tool-badges"><span class="badge badge-tmpl">R 249</span></div></div><div class="tool-name">Company Vehicle Use Policy</div><div class="tool-desc">Covers driver eligibility, authorised use, fuel, maintenance responsibilities, and accident reporting.</div><div class="tool-link">Buy now</div></a>
+      <a href="https://wa.me/27670113108?text=Hi%20AutoComply%2C%20I%20want%20to%20buy:%20Cell%20Phone%20%26%20IT%20Usage%20Policy" class="tool-card cat-compliance" data-tmpl="policy" target="_blank"><div class="tool-top"><span class="tool-ico">📱</span><div class="tool-badges"><span class="badge badge-tmpl">R 249</span></div></div><div class="tool-name">Cell Phone &amp; IT Usage Policy</div><div class="tool-desc">Covers personal device use, company data security, prohibited activities, and consequences for misuse.</div><div class="tool-link">Buy now</div></a>
+      <a href="https://wa.me/27670113108?text=Hi%20AutoComply%2C%20I%20want%20to%20buy:%20Absenteeism%20Policy" class="tool-card cat-compliance" data-tmpl="policy" target="_blank"><div class="tool-top"><span class="tool-ico">🚫</span><div class="tool-badges"><span class="badge badge-tmpl">R 249</span></div></div><div class="tool-name">Absenteeism Policy</div><div class="tool-desc">Absence reporting procedures, escalation steps, and disciplinary consequences for persistent absenteeism.</div><div class="tool-link">Buy now</div></a>
+      <a href="https://wa.me/27670113108?text=Hi%20AutoComply%2C%20I%20want%20to%20buy:%20HIV/AIDS%20Policy" class="tool-card cat-compliance" data-tmpl="policy" target="_blank"><div class="tool-top"><span class="tool-ico">❤️</span><div class="tool-badges"><span class="badge badge-tmpl">R 249</span></div></div><div class="tool-name">HIV/AIDS Policy</div><div class="tool-desc">Covers workplace rights, non-disclosure, non-discrimination, and support procedures for affected employees.</div><div class="tool-link">Buy now</div></a>
+      <a href="https://wa.me/27670113108?text=Hi%20AutoComply%2C%20I%20want%20to%20buy:%20Narcotics%20%26%20Drug%20Use%20Policy" class="tool-card cat-compliance" data-tmpl="policy" target="_blank"><div class="tool-top"><span class="tool-ico">💊</span><div class="tool-badges"><span class="badge badge-tmpl">R 249</span></div></div><div class="tool-name">Narcotics &amp; Drug Use Policy</div><div class="tool-desc">Covers testing procedures, consequences, and employee support for substance-related workplace incidents.</div><div class="tool-link">Buy now</div></a>
+      <a href="https://wa.me/27670113108?text=Hi%20AutoComply%2C%20I%20want%20to%20buy:%20Workplace%20Bullying%20Policy" class="tool-card cat-compliance" data-tmpl="policy" target="_blank"><div class="tool-top"><span class="tool-ico">🛡️</span><div class="tool-badges"><span class="badge badge-tmpl">R 249</span></div></div><div class="tool-name">Workplace Bullying Policy</div><div class="tool-desc">Defines bullying, the reporting process, investigation steps, and consequences for offenders.</div><div class="tool-link">Buy now</div></a>
+      <a href="https://wa.me/27670113108?text=Hi%20AutoComply%2C%20I%20want%20to%20buy:%20Internet%20%26%20Email%20Use%20Policy" class="tool-card cat-compliance" data-tmpl="policy" target="_blank"><div class="tool-top"><span class="tool-ico">💻</span><div class="tool-badges"><span class="badge badge-tmpl">R 249</span></div></div><div class="tool-name">Internet &amp; Email Use Policy</div><div class="tool-desc">Covers acceptable use, personal use limits, monitoring rights, and consequences for misuse.</div><div class="tool-link">Buy now</div></a>
+      <a href="https://wa.me/27670113108?text=Hi%20AutoComply%2C%20I%20want%20to%20buy:%20Social%20Media%20Policy" class="tool-card cat-compliance" data-tmpl="policy" target="_blank"><div class="tool-top"><span class="tool-ico">📱</span><div class="tool-badges"><span class="badge badge-tmpl">R 249</span></div></div><div class="tool-name">Social Media Policy</div><div class="tool-desc">Governs employee conduct on personal and company social media platforms during and outside work hours.</div><div class="tool-link">Buy now</div></a>
+      <a href="https://wa.me/27670113108?text=Hi%20AutoComply%2C%20I%20want%20to%20buy:%20Dress%20Code%20Policy" class="tool-card cat-compliance" data-tmpl="policy" target="_blank"><div class="tool-top"><span class="tool-ico">👔</span><div class="tool-badges"><span class="badge badge-tmpl">R 249</span></div></div><div class="tool-name">Dress Code Policy</div><div class="tool-desc">Sets professional appearance standards appropriate to your workplace environment and client-facing roles.</div><div class="tool-link">Buy now</div></a>
+      <a href="https://wa.me/27670113108?text=Hi%20AutoComply%2C%20I%20want%20to%20buy:%20Health%20%26%20Safety%20Policy" class="tool-card cat-compliance" data-tmpl="policy" target="_blank"><div class="tool-top"><span class="tool-ico">🏥</span><div class="tool-badges"><span class="badge badge-tmpl">R 249</span></div></div><div class="tool-name">Health &amp; Safety Policy</div><div class="tool-desc">Documents your basic workplace health and safety obligations as a South African employer.</div><div class="tool-link">Buy now</div></a>
+      <a href="https://wa.me/27670113108?text=Hi%20AutoComply%2C%20I%20want%20to%20buy:%20Smoking%20Policy" class="tool-card cat-compliance" data-tmpl="policy" target="_blank"><div class="tool-top"><span class="tool-ico">🚭</span><div class="tool-badges"><span class="badge badge-tmpl">R 249</span></div></div><div class="tool-name">Smoking Policy</div><div class="tool-desc">Designates smoking areas, sets break rules, and confirms your compliance with smoking regulations.</div><div class="tool-link">Buy now</div></a>
+      <a href="https://wa.me/27670113108?text=Hi%20AutoComply%2C%20I%20want%20to%20buy:%20Overtime%20%26%20Working%20Hours%20Policy" class="tool-card cat-compliance" data-tmpl="policy" target="_blank"><div class="tool-top"><span class="tool-ico">⏰</span><div class="tool-badges"><span class="badge badge-tmpl">R 249</span></div></div><div class="tool-name">Overtime &amp; Working Hours Policy</div><div class="tool-desc">Covers overtime approval, maximum hours, compensation rates, and BCEA working hours requirements.</div><div class="tool-link">Buy now</div></a>
+      <a href="https://wa.me/27670113108?text=Hi%20AutoComply%2C%20I%20want%20to%20buy:%20Confidentiality%20Policy" class="tool-card cat-compliance" data-tmpl="policy" target="_blank"><div class="tool-top"><span class="tool-ico">🔒</span><div class="tool-badges"><span class="badge badge-tmpl">R 249</span></div></div><div class="tool-name">Confidentiality Policy</div><div class="tool-desc">Protects sensitive business information, client data, pricing, and trade secrets from unauthorised disclosure.</div><div class="tool-link">Buy now</div></a>
+      <a href="https://wa.me/27670113108?text=Hi%20AutoComply%2C%20I%20want%20to%20buy:%20Recruitment%20%26%20Selection%20Policy" class="tool-card cat-compliance" data-tmpl="policy" target="_blank"><div class="tool-top"><span class="tool-ico">🔍</span><div class="tool-badges"><span class="badge badge-tmpl">R 249</span></div></div><div class="tool-name">Recruitment &amp; Selection Policy</div><div class="tool-desc">Documents your fair hiring process, interview standards, and selection decision-making criteria.</div><div class="tool-link">Buy now</div></a>
+      <a href="https://wa.me/27670113108?text=Hi%20AutoComply%2C%20I%20want%20to%20buy:%20Performance%20Appraisal%20Policy" class="tool-card cat-compliance" data-tmpl="policy" target="_blank"><div class="tool-top"><span class="tool-ico">📈</span><div class="tool-badges"><span class="badge badge-tmpl">R 249</span></div></div><div class="tool-name">Performance Appraisal Policy</div><div class="tool-desc">Defines review cycles, assessment criteria, rating scales, and the feedback and improvement process.</div><div class="tool-link">Buy now</div></a>
+      <a href="https://wa.me/27670113108?text=Hi%20AutoComply%2C%20I%20want%20to%20buy:%20Workplace%20Standards%20Document" class="tool-card cat-compliance" data-tmpl="policy" target="_blank"><div class="tool-top"><span class="tool-ico">📋</span><div class="tool-badges"><span class="badge badge-tmpl">R 249</span></div></div><div class="tool-name">Workplace Standards Document</div><div class="tool-desc">Sets expectations for daily conduct, punctuality, housekeeping, and general workplace behaviour.</div><div class="tool-link">Buy now</div></a>
+    </div>
+
+    <p style="font-size:12.5px;color:var(--muted);text-align:center;margin-top:28px;line-height:1.7;">All templates are professionally drafted for South African businesses and must be adapted to your specific circumstances. <a href="https://wa.me/27670113108" style="color:var(--blue);font-weight:600;">Chat to us</a> if you need a custom version.</p>
+  </div>
+</section>
+
+<div class="sdiv"><hr></div>
+
+<!-- ═══ TOOLS ═══ -->
+<section class="section" id="tools">
+  <div class="section-inner">
+    <div class="section-tag">Free tools</div>
+    <h2 class="section-h">Everything you need to stay<br>compliant and organised.</h2>
+    <p class="section-sub">Filter by category. All tools are free, require no sign-up, and work offline once loaded.</p>
+
+    <div class="cat-nav" id="catNav">
+      <button class="cat-btn active" onclick="filterCat('all',this)">All tools</button>
+      <button class="cat-btn" onclick="filterCat('finance',this)">💰 Financial</button>
+      <button class="cat-btn" onclick="filterCat('compliance',this)">✅ Compliance</button>
+      <button class="cat-btn" onclick="filterCat('hr',this)">👔 HR &amp; Labour</button>
+      <button class="cat-btn" onclick="filterCat('marketing',this)">📣 Marketing</button>
+      <button class="cat-btn" onclick="filterCat('ai',this)">🤖 AI Tools</button>
+    </div>
+
+    <div class="tools-grid" id="toolsGrid">
+
+      <!-- ── FINANCIAL ── -->
+<a href="break-even-calculator-v1.html" class="tool-card cat-finance">
+        <div class="tool-top"><span class="tool-ico">📈</span><div class="tool-badges"><span class="badge badge-free">Free</span></div></div>
+        <div class="tool-name">Break-Even Calculator</div>
+        <div class="tool-desc">Enter fixed costs, variable cost per unit and selling price. Instantly see your break-even point, contribution margin, and target profit volume.</div>
+        <div class="tool-link">Open tool</div>
+      </a>
+<a href="cash-flow-planner-v1.html" class="tool-card cat-finance">
+        <div class="tool-top"><span class="tool-ico">💸</span><div class="tool-badges"><span class="badge badge-free">Free</span></div></div>
+        <div class="tool-name">12-Month Cash Flow Planner</div>
+        <div class="tool-desc">Plan your cash flow over 12 months with a live SVG chart. Monthly surplus/deficit alerts, gap detection, and annual KPIs.</div>
+        <div class="tool-link">Open tool</div>
+      </a>
+<a href="business-health-check-v1.html" class="tool-card cat-finance">
+        <div class="tool-top"><span class="tool-ico">🩺</span><div class="tool-badges"><span class="badge badge-free">Free</span><span class="badge badge-new">New</span></div></div>
+        <div class="tool-name">Business Health Check</div>
+        <div class="tool-desc">8 key financial inputs → scored health ring 0–100, colour-coded metric cards, and a prioritised action summary.</div>
+        <div class="tool-link">Open tool</div>
+      </a>
+<a href="vat-calculator-v1.html" class="tool-card cat-finance">
+        <div class="tool-top"><span class="tool-ico">🧮</span><div class="tool-badges"><span class="badge badge-free">Free</span></div></div>
+        <div class="tool-name">VAT Calculator 2026</div>
+        <div class="tool-desc">Bidirectional Ex-VAT ↔ Inc-VAT at 15%. Includes updated 2026 registration thresholds (R2.3m compulsory, R120k voluntary) and zero-rated item list.</div>
+        <div class="tool-link">Open tool</div>
+      </a>
+<a href="gp-markup-calculator-v1.html" class="tool-card cat-finance">
+        <div class="tool-top"><span class="tool-ico">📊</span><div class="tool-badges"><span class="badge badge-free">Free</span></div></div>
+        <div class="tool-name">GP &amp; Markup Calculator</div>
+        <div class="tool-desc">Two tabs: check GP% from cost + price, or calculate your selling price from cost + desired margin. Includes the markup vs GP explainer.</div>
+        <div class="tool-link">Open tool</div>
+      </a>
+<a href="business-loan-calculator-v1.html" class="tool-card cat-finance">
+        <div class="tool-top"><span class="tool-ico">🏦</span><div class="tool-badges"><span class="badge badge-free">Free</span></div></div>
+        <div class="tool-name">Business Loan Calculator</div>
+        <div class="tool-desc">Compare two loan scenarios side by side — monthly repayment, total interest, effective rate, and a full amortisation schedule.</div>
+        <div class="tool-link">Open tool</div>
+      </a>
+<a href="sales-target-calculator-v1.html" class="tool-card cat-finance">
+        <div class="tool-top"><span class="tool-ico">🎯</span><div class="tool-badges"><span class="badge badge-free">Free</span></div></div>
+        <div class="tool-name">Sales Target Calculator</div>
+        <div class="tool-desc">Enter revenue goal and deal size. Get daily, weekly, and monthly activity targets — with optional funnel breakdown by conversion rate.</div>
+        <div class="tool-link">Open tool</div>
+      </a>
+<a href="uif-calculator-v1.html" class="tool-card cat-finance">
+        <div class="tool-top"><span class="tool-ico">🛡️</span><div class="tool-badges"><span class="badge badge-free">Free</span></div></div>
+        <div class="tool-name">UIF Contribution Calculator</div>
+        <div class="tool-desc">Calculate UIF contributions with the R17,712 ceiling applied correctly. Shows employee + employer portions, annual totals, and team aggregate.</div>
+        <div class="tool-link">Open tool</div>
+      </a>
+
+      <!-- ── COMPLIANCE ── -->
+<a href="compliance-calendar-v1.html" class="tool-card cat-compliance">
+        <div class="tool-top"><span class="tool-ico">📅</span><div class="tool-badges"><span class="badge badge-free">Free</span><span class="badge badge-new">2026</span></div></div>
+        <div class="tool-name">Compliance Calendar 2026</div>
+        <div class="tool-desc">27 statutory deadlines for SA businesses — SARS, CIPC, UIF, COIDA and more. Filter by category, auto-highlighted upcoming dates.</div>
+        <div class="tool-link">Open tool</div>
+      </a>
+<a href="popia-self-assessment-v1.html" class="tool-card cat-compliance">
+        <div class="tool-top"><span class="tool-ico">🔐</span><div class="tool-badges"><span class="badge badge-free">Free</span><span class="badge badge-new">New</span></div></div>
+        <div class="tool-name">POPIA Self-Assessment</div>
+        <div class="tool-desc">30 questions across 8 POPIA sections. Get a scored compliance report with specific gaps and exactly what to do about each one.</div>
+        <div class="tool-link">Open tool</div>
+      </a>
+<a href="nmw-calculator-v1.html" class="tool-card cat-compliance">
+        <div class="tool-top"><span class="tool-ico">💵</span><div class="tool-badges"><span class="badge badge-free">Free</span><span class="badge badge-new">2026</span></div></div>
+        <div class="tool-name">NMW Calculator 2026</div>
+        <div class="tool-desc">Current rate: R30.23/hour from 1 March 2026. Calculate minimum pay for any worker type and check if a wage is compliant.</div>
+        <div class="tool-link">Open tool</div>
+      </a>
+<a href="business-name-availability-v1.html" class="tool-card cat-compliance">
+        <div class="tool-top"><span class="tool-ico">🏢</span><div class="tool-badges"><span class="badge badge-free">Free</span></div></div>
+        <div class="tool-name">Business Name Checker</div>
+        <div class="tool-desc">Checks 24 CIPC naming rules before you submit. Scores viability and flags restricted words, prohibited formats, and common rejection patterns.</div>
+        <div class="tool-link">Open tool</div>
+      </a>
+<a href="retrenchment-checklist-v1.html" class="tool-card cat-compliance">
+        <div class="tool-top"><span class="tool-ico">📋</span><div class="tool-badges"><span class="badge badge-free">Free</span><span class="badge badge-new">New</span></div></div>
+        <div class="tool-name">Retrenchment Checklist</div>
+        <div class="tool-desc">6-phase s.189 / 189A checklist with integrated severance calculator. Every LRA requirement from notice to post-retrenchment admin.</div>
+        <div class="tool-link">Open tool</div>
+      </a>
+
+      <!-- ── HR & LABOUR ── -->
+<a href="leave-calculator-v1.html" class="tool-card cat-hr">
+        <div class="tool-top"><span class="tool-ico">🏖️</span><div class="tool-badges"><span class="badge badge-free">Free</span><span class="badge badge-new">New</span></div></div>
+        <div class="tool-name">BCEA Leave Calculator</div>
+        <div class="tool-desc">Annual, sick, family responsibility, maternity and parental leave — calculated to BCEA standard. Pro-rata for new starters, two-phase sick leave cycle.</div>
+        <div class="tool-link">Open tool</div>
+      </a>
+<a href="autocomply-sop-manual.docx" class="tool-card cat-hr">
+        <div class="tool-top"><span class="tool-ico">📖</span><div class="tool-badges"><span class="badge badge-doc">Word doc</span></div></div>
+        <div class="tool-name">Operations SOP Manual</div>
+        <div class="tool-desc">Full step-by-step SOP system for CIPC registration, B-BBEE, Beneficial Ownership, and Annual Returns. Client scripts, error tables, QC checklists.</div>
+        <div class="tool-link">Open tool</div>
+      </a>
+
+      <!-- ── MARKETING ── -->
+<a href="payment-reminder-scripts-v1.html" class="tool-card cat-marketing">
+        <div class="tool-top"><span class="tool-ico">💬</span><div class="tool-badges"><span class="badge badge-free">Free</span></div></div>
+        <div class="tool-name">Payment Reminder Scripts</div>
+        <div class="tool-desc">4 escalation stages × WhatsApp + email format. Live template substitution — enter the details once, copy the ready-to-send messages.</div>
+        <div class="tool-link">Open tool</div>
+      </a>
+<a href="email-signature-generator-v1.html" class="tool-card cat-marketing">
+        <div class="tool-top"><span class="tool-ico">✍️</span><div class="tool-badges"><span class="badge badge-free">Free</span></div></div>
+        <div class="tool-name">Email Signature Generator</div>
+        <div class="tool-desc">3 professional styles, 9 input fields, email-safe HTML output with live preview. Includes Gmail and Outlook installation guides.</div>
+        <div class="tool-link">Open tool</div>
+      </a>
+<a href="hashtag-checker-v1.html" class="tool-card cat-marketing">
+        <div class="tool-top"><span class="tool-ico">#️⃣</span><div class="tool-badges"><span class="badge badge-free">Free</span></div></div>
+        <div class="tool-name">SA Hashtag Relevance Checker</div>
+        <div class="tool-desc">50+ SA-focused hashtags across 5 tiers. Platform fit bars, SA relevance score, and pattern inference for any hashtag you enter.</div>
+        <div class="tool-link">Open tool</div>
+      </a>
+<a href="social-media-content-calendar-v1.html" class="tool-card cat-marketing">
+        <div class="tool-top"><span class="tool-ico">📆</span><div class="tool-badges"><span class="badge badge-free">Free</span></div></div>
+        <div class="tool-name">Social Media Content Calendar</div>
+        <div class="tool-desc">240 SA-specific post ideas across 8 industries and 7 content pillars. Calendar grid + list view, copy all 30 month's ideas instantly.</div>
+        <div class="tool-link">Open tool</div>
+      </a>
+
+      <!-- ── AI TOOLS ── -->
+<a href="message-tone-rewriter-v1.html" class="tool-card cat-ai">
+        <div class="tool-top"><span class="tool-ico">✨</span><div class="tool-badges"><span class="badge badge-ai">AI Powered</span></div></div>
+        <div class="tool-name">Message Tone Rewriter</div>
+        <div class="tool-desc">Paste any message, choose a tone and situation — get a rewritten version for WhatsApp or email. 8 situations, 4 tone modes.</div>
+        <div class="tool-link">Open tool</div>
+      </a>
+<a href="follow-up-generator-v1.html" class="tool-card cat-ai">
+        <div class="tool-top"><span class="tool-ico">🔁</span><div class="tool-badges"><span class="badge badge-ai">AI Powered</span></div></div>
+        <div class="tool-name">Follow-Up Message Generator</div>
+        <div class="tool-desc">8 follow-up scenarios, timing selector, WhatsApp and email output. Never struggle to word a follow-up again.</div>
+        <div class="tool-link">Open tool</div>
+      </a>
+<a href="social-media-caption-generator-v1.html" class="tool-card cat-ai">
+        <div class="tool-top"><span class="tool-ico">📸</span><div class="tool-badges"><span class="badge badge-ai">AI Powered</span></div></div>
+        <div class="tool-name">Social Media Caption Generator</div>
+        <div class="tool-desc">4 platforms, 8 content types, 5 voice options. SA business context built in — generates captions with hooks, hashtags, and CTAs.</div>
+        <div class="tool-link">Open tool</div>
+      </a>
+<a href="linkedin-post-generator-v1.html" class="tool-card cat-ai">
+        <div class="tool-top"><span class="tool-ico">💼</span><div class="tool-badges"><span class="badge badge-ai">AI Powered</span></div></div>
+        <div class="tool-name">LinkedIn Post Generator</div>
+        <div class="tool-desc">6 post formats, live LinkedIn preview, hook analysis. Generates professional content tailored to your topic, industry, and audience.</div>
+        <div class="tool-link">Open tool</div>
+      </a>
+<a href="whatsapp-broadcast-generator-v1.html" class="tool-card cat-ai">
+        <div class="tool-top"><span class="tool-ico">📲</span><div class="tool-badges"><span class="badge badge-ai">AI Powered</span></div></div>
+        <div class="tool-name">WhatsApp Broadcast Generator</div>
+        <div class="tool-desc">3 categories, 15 message types, two variant outputs. SA-specific — personal [Name] opener, no hashtags, reply-based CTAs.</div>
+        <div class="tool-link">Open tool</div>
+      </a>
+<a href="bio-generator-v1.html" class="tool-card cat-ai">
+        <div class="tool-top"><span class="tool-ico">👤</span><div class="tool-badges"><span class="badge badge-ai">AI Powered</span></div></div>
+        <div class="tool-name">Bio &amp; About Generator</div>
+        <div class="tool-desc">One input set, 7 platform bios generated simultaneously — LinkedIn, Instagram, Facebook, WhatsApp Business, Google Business, and website.</div>
+        <div class="tool-link">Open tool</div>
+      </a>
+<a href="google-review-response-v1.html" class="tool-card cat-ai">
+        <div class="tool-top"><span class="tool-ico">⭐</span><div class="tool-badges"><span class="badge badge-ai">AI Powered</span></div></div>
+        <div class="tool-name">Google Review Response Generator</div>
+        <div class="tool-desc">Positive and negative modes, 3 negative strategies. Writes professional, brand-appropriate responses for any Google review.</div>
+        <div class="tool-link">Open tool</div>
+      </a>
+    </div>
+
+    <div class="feature-strip">
+      <div class="feature-item"><span class="feature-ico">🔒</span><div class="feature-title">Privacy first</div><div class="feature-desc">Nothing you enter is stored. Tools run entirely in your browser.</div></div>
+      <div class="feature-item"><span class="feature-ico">📱</span><div class="feature-title">Mobile optimised</div><div class="feature-desc">Every tool works on your phone. No pinch-to-zoom required.</div></div>
+      <div class="feature-item"><span class="feature-ico">⚖️</span><div class="feature-title">Legally current</div><div class="feature-desc">All rates and rules updated for 2026 legislation and gazette.</div></div>
+      <div class="feature-item"><span class="feature-ico">💾</span><div class="feature-title">Save offline</div><div class="feature-desc">Open any tool in Chrome and save the page for offline use.</div></div>
+    </div>
+  </div>
+</section>
+
+<div class="sdiv"><hr></div>
+
+<!-- ═══ WHY AUTOCOMPLY ═══ -->
+<section class="section navy-sec">
+  <div class="section-inner">
+    <div class="section-tag" style="background:rgba(255,255,255,.1);color:rgba(255,255,255,.6);">Why AutoComply</div>
+    <h2 class="section-h" style="color:#fff;">Practical business support,<br>built on real operational experience.</h2>
+    <p class="section-sub" style="color:rgba(255,255,255,.45);margin-bottom:32px;">We spent two decades managing the admin that never stops — while trying to actually run a business. AutoComply exists so you don't have to figure it all out alone.</p>
+    <div class="rg3" style="gap:16px;">
+      <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:24px;">
+        <div style="font-size:24px;margin-bottom:10px;">🏭</div>
+        <div style="font-size:14px;font-weight:700;color:#fff;margin-bottom:6px;">Running a business is hard enough.</div>
+        <div style="font-size:12.5px;color:rgba(255,255,255,.45);line-height:1.65;">We spent over 20 years managing staff, navigating regulations, and dealing with the admin that never stops — while trying to actually run a business. AutoComply exists so you don't have to figure it all out alone.</div>
+      </div>
+      <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:24px;">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:16px;font-weight:700;color:#fff;margin-bottom:10px;letter-spacing:2px;">ZA</div>
+        <div style="font-size:14px;font-weight:700;color:#fff;margin-bottom:6px;">Built for South Africa.</div>
+        <div style="font-size:12.5px;color:rgba(255,255,255,.45);line-height:1.65;">Not adapted from international templates. CIPC, SARS, UIF, COIDA, B-BBEE, BCEA — designed specifically for South African regulations, labour law, and business realities.</div>
+      </div>
+      <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:24px;">
+        <div style="font-size:24px;margin-bottom:10px;">⚡</div>
+        <div style="font-size:14px;font-weight:700;color:#fff;margin-bottom:6px;">Fast turnaround.</div>
+        <div style="font-size:12.5px;color:rgba(255,255,255,.45);line-height:1.65;">Company registration typically processed within 1–3 working days, subject to CIPC turnaround times. Templates available immediately after purchase.</div>
+      </div>
+      <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:24px;">
+        <div style="font-size:24px;margin-bottom:10px;">🌍</div>
+        <div style="font-size:14px;font-weight:700;color:#fff;margin-bottom:6px;">Nationwide service.</div>
+        <div style="font-size:12.5px;color:rgba(255,255,255,.45);line-height:1.65;">Fully digital. We work with businesses from Cape Town to Polokwane — no office visit required, no paperwork to courier.</div>
+      </div>
+      <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:24px;">
+        <div style="font-size:24px;margin-bottom:10px;">💰</div>
+        <div style="font-size:14px;font-weight:700;color:#fff;margin-bottom:6px;">Clear pricing. No surprises.</div>
+        <div style="font-size:12.5px;color:rgba(255,255,255,.45);line-height:1.65;">Government fees always passed through at cost. What you see is what you pay. No retainers, no hidden charges, no upsells you didn't ask for.</div>
+      </div>
+      <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:24px;">
+        <div style="font-size:24px;margin-bottom:10px;">🤝</div>
+        <div style="font-size:14px;font-weight:700;color:#fff;margin-bottom:6px;">Trusted referral network.</div>
+        <div style="font-size:12.5px;color:rgba(255,255,255,.45);line-height:1.65;">Need something outside our scope? We refer you to trusted professionals — lawyers, accountants, and tax practitioners. We don't take commissions.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ BIG CTA ═══ -->
+<div class="big-cta">
+  <div class="big-cta-inner">
+    <div class="big-cta-tag">Get in touch</div>
+    <h2 class="big-cta-h">Not sure where to start?<br>Send us a WhatsApp.</h2>
+    <p class="big-cta-sub">Tell us what you're trying to do — register a company, fix a compliance gap, handle a difficult employee situation — and we'll tell you exactly what you need and what it costs. No fluff, no sales pressure.</p>
+    <a href="https://wa.me/27670113108?text=Hi%20AutoComply%2C%20I%20need%20some%20help%20with%20my%20business." class="big-cta-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg> WhatsApp us now → +27 67 011 3108</a>
+  </div>
+</div>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand">Auto<span>Comply</span></div>
+        <div class="footer-tagline">Company registration, compliance &amp; business tools for South African SMEs — built by operators, for operators.</div>
+        <div class="footer-contact">
+          <a href="https://wa.me/27670113108">📱 067 011 3108</a><br>
+          <a href="mailto:info@autocomply.co.za">✉️ info@autocomply.co.za</a><br>
+          🌐 autocomply.co.za
+        </div>
+      </div>
+      <div>
+        <div class="footer-h">Financial Tools</div>
+        <ul class="footer-links">
+          <li><a href="break-even-calculator-v1.html">Break-Even Calculator</a></li>
+          <li><a href="cash-flow-planner-v1.html">Cash Flow Planner</a></li>
+          <li><a href="business-health-check-v1.html">Business Health Check</a></li>
+          <li><a href="vat-calculator-v1.html">VAT Calculator</a></li>
+          <li><a href="gp-markup-calculator-v1.html">GP &amp; Markup Calculator</a></li>
+          <li><a href="business-loan-calculator-v1.html">Loan Calculator</a></li>
+          <li><a href="sales-target-calculator-v1.html">Sales Target Calculator</a></li>
+          <li><a href="uif-calculator-v1.html">UIF Calculator</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-h">Compliance &amp; HR</div>
+        <ul class="footer-links">
+          <li><a href="nmw-calculator-v1.html">NMW Calculator 2026</a></li>
+          <li><a href="leave-calculator-v1.html">Leave Calculator</a></li>
+          <li><a href="retrenchment-checklist-v1.html">Retrenchment Checklist</a></li>
+          <li><a href="popia-self-assessment-v1.html">POPIA Assessment</a></li>
+          <li><a href="compliance-calendar-v1.html">Compliance Calendar</a></li>
+          <li><a href="business-name-availability-v1.html">Name Checker</a></li>
+          <li><a href="payment-reminder-scripts-v1.html">Payment Reminders</a></li>
+          <li><a href="email-signature-generator-v1.html">Email Signature</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-h">Marketing &amp; AI</div>
+        <ul class="footer-links">
+          <li><a href="social-media-content-calendar-v1.html">Content Calendar</a></li>
+          <li><a href="social-media-caption-generator-v1.html">Caption Generator</a></li>
+          <li><a href="linkedin-post-generator-v1.html">LinkedIn Posts</a></li>
+          <li><a href="whatsapp-broadcast-generator-v1.html">WhatsApp Broadcast</a></li>
+          <li><a href="google-review-response-v1.html">Review Responses</a></li>
+          <li><a href="bio-generator-v1.html">Bio Generator</a></li>
+          <li><a href="hashtag-checker-v1.html">Hashtag Checker</a></li>
+          <li><a href="message-tone-rewriter-v1.html">Tone Rewriter</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-copy">© 2026 AutoComply · South Africa</div>
+      <div class="footer-legal">Tools are provided for guidance only and do not constitute legal, financial, or tax advice. Rates and legislation are verified for 2026. Always consult a qualified professional for your specific situation. AutoComply is not a law firm.</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+window.filterTmpl = function(cat, btn){
+  document.querySelectorAll('#tmplNav .cat-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('#tmplGrid .tool-card').forEach(card=>{
+    card.style.display = (cat==='all'||card.dataset.tmpl===cat) ? '' : 'none';
+  });
+};
+
+window.filterCat = function(cat, btn){
+  document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.tool-card').forEach(card=>{
+    card.style.display = (cat==='all'||card.classList.contains('cat-'+cat)) ? '' : 'none';
+  });
+};
+</script>
+</body>
+</html>

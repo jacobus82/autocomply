@@ -62,6 +62,13 @@
     .nav-cta:hover{background:#047857!important;}
     .mob-menu-btn{display:none;background:none;border:none;cursor:pointer;color:rgba(255,255,255,.8);font-size:20px;padding:6px;}
     @media(max-width:680px){.nav-links{display:none;}.mob-menu-btn{display:block;}}
+    .mob-nav{display:none;background:var(--navy2);border-top:1px solid rgba(255,255,255,.07);padding:12px 0;}
+    .mob-nav.open{display:block;}
+    .mob-nav a{display:block;font-size:14px;font-weight:500;color:rgba(255,255,255,.7);padding:11px 24px;border-bottom:1px solid rgba(255,255,255,.05);transition:all .15s;}
+    .mob-nav a:last-child{border-bottom:none;}
+    .mob-nav a:hover{color:#fff;background:rgba(255,255,255,.06);}
+    .mob-nav .mob-cta{background:rgba(37,211,102,.15);color:#4ade80!important;font-weight:700;}
+    .mob-nav .mob-cta:hover{background:rgba(37,211,102,.25)!important;}
 
     /* ═══ HERO ═══ */
     .hero{background:var(--navy);padding:80px 24px 96px;position:relative;overflow:hidden;}
@@ -198,6 +205,13 @@
       <button class="mob-menu-btn" aria-label="Menu">&#9776;</button>
     </div>
   </nav>
+  <div class="mob-nav" id="mobNav">
+    <a href="index.html#tools">Free Tools</a>
+    <a href="index.html#templates">Templates</a>
+    <a href="index.html#services">Services</a>
+    <a href="digital-solutions.html" style="color:#60AEFF!important;font-weight:600;">&#127760; Digital Solutions</a>
+    <a href="https://wa.me/27670113108?text=Hi%2C%20I'd%20like%20to%20enquire%20about%20a%20website." target="_blank" rel="noopener" class="mob-cta">&#128172; Get a Website</a>
+  </div>
 
   <!-- HERO -->
   <section class="hero">
@@ -489,6 +503,19 @@
   </footer>
 
   <script>
+    // Mobile menu toggle
+    document.querySelector('.mob-menu-btn').addEventListener('click', function() {
+      const nav = document.getElementById('mobNav');
+      nav.classList.toggle('open');
+      this.textContent = nav.classList.contains('open') ? '✕' : '☰';
+    });
+    // Close menu when a link is clicked
+    document.querySelectorAll('.mob-nav a').forEach(link => {
+      link.addEventListener('click', () => {
+        document.getElementById('mobNav').classList.remove('open');
+        document.querySelector('.mob-menu-btn').textContent = '☰';
+      });
+    });
     document.getElementById('yr').textContent = new Date().getFullYear();
   </script>
 </body>

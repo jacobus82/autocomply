@@ -1,0 +1,1129 @@
+<!DOCTYPE html>
+<html lang="en-ZA">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Client Onboarding Form | AutoComply Digital Solutions</title>
+  <meta name="description" content="Complete your onboarding with AutoComply Digital Solutions. Provide your business details so we can get started on your project."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;700;800&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html{scroll-behavior:smooth;}
+    body{background:#F8FAFF;color:#0B1628;font-family:'Outfit',sans-serif;-webkit-font-smoothing:antialiased;font-size:15px;line-height:1.55;}
+    a{text-decoration:none;color:inherit;}
+
+    :root{
+      --navy:#0B1628;--navy2:#162035;
+      --blue:#1A56DB;--blue2:#1449B0;--blue-soft:#EEF3FF;
+      --green:#059669;--green-soft:#ECFDF5;
+      --amber:#D97706;--amber-soft:#FEF3C7;
+      --red:#DC2626;--red-soft:#FEE2E2;
+      --muted:#5A6A82;--muted2:#8A96A8;
+      --border:#DDE5F0;--bg:#F8FAFF;--surface:#fff;
+      --shadow-sm:0 1px 3px rgba(11,22,40,.06),0 2px 8px rgba(11,22,40,.06);
+      --shadow-md:0 2px 8px rgba(11,22,40,.08),0 8px 24px rgba(11,22,40,.08);
+    }
+
+    /* NAV */
+    nav{background:var(--navy);padding:0;border-bottom:1px solid rgba(255,255,255,.06);}
+    .nav-inner{max-width:900px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:60px;}
+    .brand{font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:800;color:#fff;letter-spacing:-.4px;}
+    .brand span{color:#60AEFF;}
+    .nav-sub{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.35);}
+
+    /* HERO */
+    .hero{background:var(--navy);padding:48px 24px 56px;position:relative;overflow:hidden;}
+    .hero::before{content:'';position:absolute;top:-80px;right:-80px;width:400px;height:400px;background:radial-gradient(circle,rgba(26,86,219,.18),transparent 65%);pointer-events:none;}
+    .hero-inner{max-width:900px;margin:0 auto;position:relative;z-index:1;}
+    .hero-tag{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+    .hero-tag::before{content:'';width:20px;height:1px;background:rgba(255,255,255,.3);}
+    .hero-h{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(24px,4vw,38px);font-weight:800;color:#fff;letter-spacing:-.5px;line-height:1.15;margin-bottom:12px;}
+    .hero-h em{color:#60AEFF;font-style:normal;}
+    .hero-sub{font-size:15.5px;color:rgba(255,255,255,.55);max-width:520px;line-height:1.65;}
+
+    /* PROGRESS */
+    .progress-wrap{background:var(--navy2);border-bottom:1px solid rgba(255,255,255,.06);padding:16px 24px;position:sticky;top:0;z-index:100;}
+    .progress-inner{max-width:900px;margin:0 auto;}
+    .progress-steps{display:flex;gap:0;align-items:center;}
+    .step-dot{display:flex;align-items:center;gap:8px;flex:1;}
+    .step-dot:last-child{flex:0;}
+    .dot{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;flex-shrink:0;transition:all .2s;}
+    .dot-inactive{background:rgba(255,255,255,.1);color:rgba(255,255,255,.35);}
+    .dot-active{background:var(--blue);color:#fff;box-shadow:0 0 0 3px rgba(26,86,219,.3);}
+    .dot-done{background:var(--green);color:#fff;}
+    .step-label{font-size:11px;font-weight:600;color:rgba(255,255,255,.35);white-space:nowrap;}
+    .step-label.active{color:rgba(255,255,255,.8);}
+    .step-label.done{color:rgba(255,255,255,.5);}
+    .step-line{flex:1;height:1px;background:rgba(255,255,255,.1);margin:0 8px;}
+    .step-line.done{background:var(--green);}
+    @media(max-width:600px){.step-label{display:none;}.step-line{margin:0 4px;}}
+
+    /* FORM CONTAINER */
+    .form-wrap{max-width:900px;margin:0 auto;padding:40px 24px 80px;}
+
+    /* SECTION */
+    .form-section{display:none;}
+    .form-section.active{display:block;}
+
+    .section-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:32px;margin-bottom:20px;box-shadow:var(--shadow-sm);}
+    .section-tag{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--blue);margin-bottom:8px;display:flex;align-items:center;gap:8px;}
+    .section-tag::before{content:'';width:14px;height:2px;background:var(--blue);border-radius:1px;flex-shrink:0;}
+    .section-h{font-family:'Bricolage Grotesque',sans-serif;font-size:22px;font-weight:800;color:var(--navy);letter-spacing:-.3px;margin-bottom:6px;}
+    .section-sub{font-size:13.5px;color:var(--muted);margin-bottom:28px;line-height:1.6;}
+
+    /* FIELDS */
+    .field-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+    .field-grid.cols-1{grid-template-columns:1fr;}
+    .field-grid.cols-3{grid-template-columns:1fr 1fr 1fr;}
+    @media(max-width:640px){.field-grid,.field-grid.cols-3{grid-template-columns:1fr;}}
+    .field{display:flex;flex-direction:column;gap:6px;}
+    .field.span-2{grid-column:1/-1;}
+    label{font-size:13px;font-weight:600;color:var(--navy);}
+    label .req{color:var(--red);margin-left:2px;}
+    label .opt{font-size:11px;font-weight:400;color:var(--muted2);margin-left:4px;}
+    input[type=text],input[type=email],input[type=tel],input[type=url],textarea,select{
+      width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:9px;
+      font-size:14px;font-family:'Outfit',sans-serif;color:var(--navy);background:var(--bg);
+      transition:border-color .15s,box-shadow .15s;outline:none;
+    }
+    input:focus,textarea:focus,select:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(26,86,219,.1);}
+    input.error,textarea.error,select.error{border-color:var(--red);box-shadow:0 0 0 3px rgba(220,38,38,.1);}
+    textarea{resize:vertical;min-height:90px;}
+    select{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%235A6A82' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:36px;}
+    .field-hint{font-size:11.5px;color:var(--muted2);margin-top:2px;line-height:1.5;}
+    .field-error{font-size:11.5px;color:var(--red);margin-top:2px;display:none;}
+    .field-error.show{display:block;}
+
+    /* RADIO / CHECK GROUP */
+    .radio-group,.check-group{display:flex;flex-wrap:wrap;gap:8px;}
+    .radio-opt,.check-opt{display:flex;align-items:center;gap:8px;padding:9px 14px;border:1.5px solid var(--border);border-radius:8px;cursor:pointer;transition:all .15s;font-size:13.5px;color:var(--navy);background:var(--bg);}
+    .radio-opt:hover,.check-opt:hover{border-color:var(--blue);background:var(--blue-soft);}
+    .radio-opt input,.check-opt input{display:none;}
+    .radio-opt.selected,.check-opt.selected{border-color:var(--blue);background:var(--blue-soft);color:var(--blue);font-weight:600;}
+    .radio-dot{width:16px;height:16px;border-radius:50%;border:2px solid var(--border);flex-shrink:0;transition:all .15s;display:flex;align-items:center;justify-content:center;}
+    .radio-opt.selected .radio-dot{border-color:var(--blue);background:var(--blue);}
+    .check-box{width:16px;height:16px;border-radius:4px;border:2px solid var(--border);flex-shrink:0;transition:all .15s;display:flex;align-items:center;justify-content:center;}
+    .check-opt.selected .check-box{border-color:var(--blue);background:var(--blue);}
+    .check-mark{display:none;color:#fff;font-size:10px;font-weight:700;}
+    .check-opt.selected .check-mark,.radio-opt.selected .radio-inner{display:block;}
+    .radio-inner{display:none;width:6px;height:6px;background:#fff;border-radius:50%;}
+
+    /* COLOUR PICKER ROW */
+    .colour-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+    .colour-swatch{width:36px;height:36px;border-radius:8px;border:2px solid var(--border);cursor:pointer;overflow:hidden;flex-shrink:0;}
+    .colour-swatch input[type=color]{width:52px;height:52px;margin:-8px;border:none;cursor:pointer;background:none;}
+    .colour-hex{flex:1;max-width:120px;}
+
+    /* FILE UPLOAD */
+    .upload-zone{border:2px dashed var(--border);border-radius:10px;padding:24px;text-align:center;cursor:pointer;transition:all .15s;background:var(--bg);}
+    .upload-zone:hover{border-color:var(--blue);background:var(--blue-soft);}
+    .upload-zone.dragover{border-color:var(--blue);background:var(--blue-soft);}
+    .upload-ico{font-size:28px;margin-bottom:8px;}
+    .upload-text{font-size:13px;color:var(--muted);margin-bottom:4px;}
+    .upload-text strong{color:var(--blue);}
+    .upload-hint{font-size:11px;color:var(--muted2);}
+    .upload-preview{margin-top:12px;display:flex;flex-wrap:wrap;gap:8px;}
+    .upload-file{display:flex;align-items:center;gap:8px;background:var(--green-soft);border:1px solid rgba(5,150,105,.2);border-radius:6px;padding:6px 10px;font-size:12px;color:var(--green);}
+    .upload-file button{background:none;border:none;cursor:pointer;color:var(--muted2);font-size:14px;line-height:1;padding:0;}
+
+    /* NOTE BOX */
+    .note-box{background:var(--blue-soft);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;padding:12px 16px;margin-bottom:20px;}
+    .note-box p{font-size:12.5px;color:var(--blue);line-height:1.6;}
+    .note-box.amber{background:var(--amber-soft);border-color:var(--amber);}
+    .note-box.amber p{color:var(--amber);}
+
+    /* BUTTONS */
+    .form-nav{display:flex;align-items:center;justify-content:space-between;margin-top:32px;gap:12px;}
+    .btn-prev{font-size:14px;font-weight:600;padding:12px 24px;border-radius:10px;background:var(--bg);color:var(--muted);border:1.5px solid var(--border);cursor:pointer;transition:all .15s;display:inline-flex;align-items:center;gap:8px;}
+    .btn-prev:hover{border-color:var(--navy);color:var(--navy);}
+    .btn-next{font-size:15px;font-weight:700;padding:13px 32px;border-radius:10px;background:var(--blue);color:#fff;border:none;cursor:pointer;transition:all .15s;display:inline-flex;align-items:center;gap:8px;letter-spacing:-.1px;}
+    .btn-next:hover{background:var(--blue2);transform:translateY(-1px);}
+    .btn-submit{font-size:15px;font-weight:700;padding:14px 36px;border-radius:10px;background:var(--green);color:#fff;border:none;cursor:pointer;transition:all .15s;display:inline-flex;align-items:center;gap:10px;}
+    .btn-submit:hover{background:#047857;transform:translateY(-1px);}
+
+    /* SUCCESS */
+    .success-wrap{display:none;text-align:center;padding:60px 24px;}
+    .success-wrap.show{display:block;}
+    .success-ico{font-size:60px;margin-bottom:20px;}
+    .success-h{font-family:'Bricolage Grotesque',sans-serif;font-size:28px;font-weight:800;color:var(--navy);margin-bottom:12px;}
+    .success-sub{font-size:16px;color:var(--muted);max-width:460px;margin:0 auto 32px;line-height:1.65;}
+    .summary-box{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:24px;max-width:600px;margin:0 auto 28px;text-align:left;}
+    .summary-box h3{font-size:13px;font-weight:700;color:var(--navy);margin-bottom:12px;font-family:'JetBrains Mono',monospace;letter-spacing:1px;text-transform:uppercase;}
+    .summary-row{display:flex;gap:12px;padding:6px 0;border-bottom:1px solid var(--border);font-size:13px;}
+    .summary-row:last-child{border-bottom:none;}
+    .summary-key{color:var(--muted);min-width:160px;flex-shrink:0;}
+    .summary-val{color:var(--navy);font-weight:500;word-break:break-word;}
+    .wa-btn{display:inline-flex;align-items:center;gap:9px;background:#25D366;color:#fff;font-size:15px;font-weight:700;padding:14px 28px;border-radius:10px;transition:all .15s;}
+    .wa-btn:hover{background:#22c55e;transform:translateY(-1px);}
+    .copy-btn{display:inline-flex;align-items:center;gap:8px;background:var(--bg);color:var(--navy);font-size:14px;font-weight:600;padding:12px 22px;border-radius:10px;border:1.5px solid var(--border);cursor:pointer;transition:all .15s;margin-top:12px;}
+    .copy-btn:hover{border-color:var(--navy);}
+
+    /* FOOTER */
+    footer{background:var(--navy);padding:24px;text-align:center;}
+    footer p{font-size:12.5px;color:rgba(255,255,255,.35);}
+    footer a{color:rgba(255,255,255,.55);}
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <div class="brand">Auto<span>Comply</span></div>
+    <div class="nav-sub">Digital Solutions</div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-tag">New Client Onboarding</div>
+    <h1 class="hero-h">Let's get your project <em>started</em></h1>
+    <p class="hero-sub">Complete this form so we can set up your project, gather everything we need, and hit your go-live target. It takes about 5–8 minutes.</p>
+  </div>
+</section>
+
+<!-- PROGRESS BAR -->
+<div class="progress-wrap">
+  <div class="progress-inner">
+    <div class="progress-steps" id="progressSteps">
+      <div class="step-dot">
+        <div class="dot dot-active" id="dot1">1</div>
+        <span class="step-label active" id="lbl1">Business Info</span>
+      </div>
+      <div class="step-line" id="line1"></div>
+      <div class="step-dot">
+        <div class="dot dot-inactive" id="dot2">2</div>
+        <span class="step-label" id="lbl2">Branding</span>
+      </div>
+      <div class="step-line" id="line2"></div>
+      <div class="step-dot">
+        <div class="dot dot-inactive" id="dot3">3</div>
+        <span class="step-label" id="lbl3">Services & Goals</span>
+      </div>
+      <div class="step-line" id="line3"></div>
+      <div class="step-dot">
+        <div class="dot dot-inactive" id="dot4">4</div>
+        <span class="step-label" id="lbl4">Digital Setup</span>
+      </div>
+      <div class="step-line" id="line4"></div>
+      <div class="step-dot">
+        <div class="dot dot-inactive" id="dot5">5</div>
+        <span class="step-label" id="lbl5">Review & Submit</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FORM -->
+<div class="form-wrap">
+
+  <!-- STEP 1: BUSINESS INFO -->
+  <div class="form-section active" id="section1">
+    <div class="section-card">
+      <div class="section-tag">Step 1 of 5</div>
+      <h2 class="section-h">Business Information</h2>
+      <p class="section-sub">Tell us about your business so we can set up your project correctly and ensure all your details appear accurately on your website.</p>
+
+      <div class="field-grid">
+        <div class="field">
+          <label>Business / Trading Name <span class="req">*</span></label>
+          <input type="text" id="bizName" placeholder="e.g. Thabo's Plumbing Services"/>
+          <div class="field-error" id="err-bizName">Please enter your business name</div>
+        </div>
+        <div class="field">
+          <label>Registration Number <span class="opt">(optional)</span></label>
+          <input type="text" id="regNum" placeholder="e.g. 2024/123456/07"/>
+          <div class="field-hint">Leave blank if you are not yet registered</div>
+        </div>
+        <div class="field">
+          <label>Industry / Type of Business <span class="req">*</span></label>
+          <select id="industry">
+            <option value="">Select your industry...</option>
+            <option>Retail</option>
+            <option>Food & Hospitality</option>
+            <option>Construction & Trades</option>
+            <option>Professional Services</option>
+            <option>Health & Wellness</option>
+            <option>Beauty & Hair</option>
+            <option>Transport & Logistics</option>
+            <option>Education & Training</option>
+            <option>Technology</option>
+            <option>Agriculture</option>
+            <option>Non-profit / NGO</option>
+            <option>Other</option>
+          </select>
+          <div class="field-error" id="err-industry">Please select your industry</div>
+        </div>
+        <div class="field">
+          <label>Business Location <span class="req">*</span></label>
+          <input type="text" id="location" placeholder="e.g. Lydenburg, Mpumalanga"/>
+          <div class="field-error" id="err-location">Please enter your location</div>
+        </div>
+        <div class="field">
+          <label>Primary Contact Name <span class="req">*</span></label>
+          <input type="text" id="contactName" placeholder="Your full name"/>
+          <div class="field-error" id="err-contactName">Please enter your name</div>
+        </div>
+        <div class="field">
+          <label>Role / Title <span class="opt">(optional)</span></label>
+          <input type="text" id="contactRole" placeholder="e.g. Owner, Manager, Director"/>
+        </div>
+        <div class="field">
+          <label>WhatsApp Number <span class="req">*</span></label>
+          <input type="tel" id="whatsapp" placeholder="e.g. 082 123 4567"/>
+          <div class="field-hint">This is how we'll communicate with you</div>
+          <div class="field-error" id="err-whatsapp">Please enter your WhatsApp number</div>
+        </div>
+        <div class="field">
+          <label>Email Address <span class="req">*</span></label>
+          <input type="email" id="email" placeholder="e.g. info@yourbusiness.co.za"/>
+          <div class="field-error" id="err-email">Please enter a valid email address</div>
+        </div>
+        <div class="field">
+          <label>Business Phone Number <span class="opt">(optional)</span></label>
+          <input type="tel" id="bizPhone" placeholder="e.g. 013 123 4567"/>
+        </div>
+        <div class="field">
+          <label>Physical Address <span class="opt">(optional)</span></label>
+          <input type="text" id="bizAddress" placeholder="Street, Suburb, City"/>
+          <div class="field-hint">Leave blank if you operate from home or online only</div>
+        </div>
+        <div class="field span-2">
+          <label>Brief Business Description <span class="req">*</span></label>
+          <textarea id="bizDesc" placeholder="In 2–3 sentences, describe what your business does and who your main clients or customers are..."></textarea>
+          <div class="field-hint">This will be used as the starting point for your website copy</div>
+          <div class="field-error" id="err-bizDesc">Please describe your business</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-card">
+      <div class="section-tag">Social Media & Online Presence</div>
+      <h2 class="section-h">Where Are You Online?</h2>
+      <p class="section-sub">Share your existing social media profiles and any current website so we can reference your existing presence and ensure consistency.</p>
+
+      <div class="field-grid">
+        <div class="field">
+          <label>Facebook Page URL <span class="opt">(optional)</span></label>
+          <input type="url" id="facebook" placeholder="https://facebook.com/yourbusiness"/>
+        </div>
+        <div class="field">
+          <label>Instagram Profile <span class="opt">(optional)</span></label>
+          <input type="url" id="instagram" placeholder="https://instagram.com/yourbusiness"/>
+        </div>
+        <div class="field">
+          <label>Current Website <span class="opt">(optional)</span></label>
+          <input type="url" id="currentSite" placeholder="https://yourbusiness.co.za"/>
+          <div class="field-hint">Leave blank if you don't have one yet</div>
+        </div>
+        <div class="field">
+          <label>Google Business Profile <span class="opt">(optional)</span></label>
+          <input type="url" id="googleBiz" placeholder="https://g.co/kgs/..."/>
+        </div>
+        <div class="field">
+          <label>WhatsApp Number for Website Button <span class="req">*</span></label>
+          <input type="tel" id="waWebsite" placeholder="e.g. 082 123 4567"/>
+          <div class="field-hint">The number clients will WhatsApp from your website</div>
+          <div class="field-error" id="err-waWebsite">Please enter the WhatsApp number for your website</div>
+        </div>
+        <div class="field">
+          <label>Google Maps Link <span class="opt">(optional)</span></label>
+          <input type="url" id="mapsLink" placeholder="https://maps.google.com/..."/>
+          <div class="field-hint">Right-click your business on Google Maps → Share → Copy link</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-nav">
+      <div></div>
+      <button class="btn-next" onclick="nextStep(1)">
+        Next — Branding
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5-5 5M6 12h12"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- STEP 2: BRANDING -->
+  <div class="form-section" id="section2">
+    <div class="section-card">
+      <div class="section-tag">Step 2 of 5</div>
+      <h2 class="section-h">Branding & Visual Identity</h2>
+      <p class="section-sub">Your website will be built using your brand colours, fonts, and logo. The more detail you give us here, the closer the first draft will be to your vision.</p>
+
+      <div class="note-box">
+        <p>&#128161; Don't worry if you don't have a logo yet — just let us know below and we can work with a text-based logo while you get one designed, or refer you to our branding service.</p>
+      </div>
+
+      <div class="field-grid cols-1" style="margin-bottom:20px;">
+        <div class="field">
+          <label>Do you have a logo? <span class="req">*</span></label>
+          <div class="radio-group" id="hasLogo">
+            <label class="radio-opt" onclick="selectRadio(this,'hasLogo')">
+              <input type="radio" name="hasLogo" value="Yes — I will upload it"/>
+              <span class="radio-dot"><span class="radio-inner"></span></span>
+              Yes — I'll upload it
+            </label>
+            <label class="radio-opt" onclick="selectRadio(this,'hasLogo')">
+              <input type="radio" name="hasLogo" value="Yes — I will send it via WhatsApp"/>
+              <span class="radio-dot"><span class="radio-inner"></span></span>
+              Yes — I'll send it via WhatsApp
+            </label>
+            <label class="radio-opt" onclick="selectRadio(this,'hasLogo')">
+              <input type="radio" name="hasLogo" value="No — use text logo for now"/>
+              <span class="radio-dot"><span class="radio-inner"></span></span>
+              No — use text logo for now
+            </label>
+            <label class="radio-opt" onclick="selectRadio(this,'hasLogo')">
+              <input type="radio" name="hasLogo" value="No — I need a logo designed"/>
+              <span class="radio-dot"><span class="radio-inner"></span></span>
+              No — I need a logo designed
+            </label>
+          </div>
+          <div class="field-error" id="err-hasLogo">Please select an option</div>
+        </div>
+      </div>
+
+      <div class="field" style="margin-bottom:20px;" id="logoUploadArea">
+        <label>Upload Your Logo <span class="opt">(PNG, SVG, or PDF — high resolution)</span></label>
+        <div class="upload-zone" id="logoZone" onclick="document.getElementById('logoFile').click()" ondragover="dragOver(event,'logoZone')" ondrop="dropFile(event,'logoFile','logoZone','logoPreview')">
+          <div class="upload-ico">🖼️</div>
+          <p class="upload-text"><strong>Click to upload</strong> or drag and drop your logo</p>
+          <p class="upload-hint">PNG, SVG, PDF, AI, EPS — minimum 500px wide</p>
+          <input type="file" id="logoFile" accept=".png,.svg,.pdf,.ai,.eps,.jpg,.jpeg" style="display:none" onchange="fileSelected(this,'logoPreview','logoZone')"/>
+        </div>
+        <div class="upload-preview" id="logoPreview"></div>
+        <div class="field-hint">If your logo has a transparent background (PNG or SVG), that is ideal. Do not resize or compress it.</div>
+      </div>
+
+      <div class="field-grid" style="margin-bottom:20px;">
+        <div class="field span-2">
+          <label>Brand Colours <span class="opt">(pick up to 3)</span></label>
+          <div class="field-hint" style="margin-bottom:10px;">If you know your brand hex codes, type them in. Otherwise use the colour pickers to choose your preferred colours.</div>
+          <div class="colour-row">
+            <div class="colour-swatch"><input type="color" id="colour1" value="#1A56DB" title="Primary colour"/></div>
+            <input type="text" class="colour-hex" id="colour1hex" placeholder="#1A56DB" value="#1A56DB" oninput="syncColour('colour1','colour1hex')"/>
+            <div class="colour-swatch"><input type="color" id="colour2" value="#0B1628" title="Secondary colour"/></div>
+            <input type="text" class="colour-hex" id="colour2hex" placeholder="#0B1628" value="#0B1628" oninput="syncColour('colour2','colour2hex')"/>
+            <div class="colour-swatch"><input type="color" id="colour3" value="#ffffff" title="Accent colour"/></div>
+            <input type="text" class="colour-hex" id="colour3hex" placeholder="#ffffff" value="#ffffff" oninput="syncColour('colour3','colour3hex')"/>
+          </div>
+          <div class="field-hint" style="margin-top:8px;">Not sure? Just describe your preferred style below — we'll take care of the design.</div>
+        </div>
+        <div class="field span-2">
+          <label>Design Style Preference <span class="req">*</span></label>
+          <div class="radio-group" id="designStyle">
+            <label class="radio-opt" onclick="selectRadio(this,'designStyle')">
+              <input type="radio" name="designStyle" value="Clean and minimal"/>
+              <span class="radio-dot"><span class="radio-inner"></span></span>
+              Clean & minimal
+            </label>
+            <label class="radio-opt" onclick="selectRadio(this,'designStyle')">
+              <input type="radio" name="designStyle" value="Bold and modern"/>
+              <span class="radio-dot"><span class="radio-inner"></span></span>
+              Bold & modern
+            </label>
+            <label class="radio-opt" onclick="selectRadio(this,'designStyle')">
+              <input type="radio" name="designStyle" value="Warm and friendly"/>
+              <span class="radio-dot"><span class="radio-inner"></span></span>
+              Warm & friendly
+            </label>
+            <label class="radio-opt" onclick="selectRadio(this,'designStyle')">
+              <input type="radio" name="designStyle" value="Corporate and professional"/>
+              <span class="radio-dot"><span class="radio-inner"></span></span>
+              Corporate & professional
+            </label>
+            <label class="radio-opt" onclick="selectRadio(this,'designStyle')">
+              <input type="radio" name="designStyle" value="Dark and premium"/>
+              <span class="radio-dot"><span class="radio-inner"></span></span>
+              Dark & premium
+            </label>
+            <label class="radio-opt" onclick="selectRadio(this,'designStyle')">
+              <input type="radio" name="designStyle" value="Bright and colourful"/>
+              <span class="radio-dot"><span class="radio-inner"></span></span>
+              Bright & colourful
+            </label>
+          </div>
+          <div class="field-error" id="err-designStyle">Please select a design style</div>
+        </div>
+        <div class="field span-2">
+          <label>Reference Websites <span class="opt">(optional)</span></label>
+          <textarea id="refSites" placeholder="List any websites you like the look of — e.g. https://example.com — and tell us what you like about them (colours, layout, feel, etc.)"></textarea>
+        </div>
+        <div class="field span-2">
+          <label>Photos and Images <span class="opt">(optional)</span></label>
+          <div class="upload-zone" id="photosZone" onclick="document.getElementById('photosFile').click()" ondragover="dragOver(event,'photosZone')" ondrop="dropFile(event,'photosFile','photosZone','photosPreview')">
+            <div class="upload-ico">📸</div>
+            <p class="upload-text"><strong>Click to upload</strong> business/team/product photos</p>
+            <p class="upload-hint">JPG or PNG — you can send additional photos via WhatsApp later</p>
+            <input type="file" id="photosFile" accept=".jpg,.jpeg,.png,.webp" multiple style="display:none" onchange="fileSelected(this,'photosPreview','photosZone')"/>
+          </div>
+          <div class="upload-preview" id="photosPreview"></div>
+          <div class="field-hint">Professional photos make a big difference — even good smartphone photos are fine. If you don't have any, we can use stock images.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-nav">
+      <button class="btn-prev" onclick="prevStep(2)">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 17l-5-5 5-5M6 12h12"/></svg>
+        Back
+      </button>
+      <button class="btn-next" onclick="nextStep(2)">
+        Next — Services & Goals
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5-5 5M6 12h12"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- STEP 3: SERVICES & GOALS -->
+  <div class="form-section" id="section3">
+    <div class="section-card">
+      <div class="section-tag">Step 3 of 5</div>
+      <h2 class="section-h">Your Services & Business Goals</h2>
+      <p class="section-sub">Help us understand what you sell, who your customers are, and what you want your website to achieve. This shapes the structure and copy of your site.</p>
+
+      <div class="field-grid cols-1">
+        <div class="field">
+          <label>List Your Main Products or Services <span class="req">*</span></label>
+          <textarea id="servicesList" style="min-height:120px;" placeholder="List each product or service on a new line. Include a short description if possible.&#10;&#10;e.g.&#10;Plumbing repairs — emergency call-outs, burst pipes, blockages&#10;Bathroom renovations — full renovations and tile installations&#10;Geyser installations — solar and electric geysers"></textarea>
+          <div class="field-hint">We will use this to structure your services page</div>
+          <div class="field-error" id="err-servicesList">Please list your products or services</div>
+        </div>
+        <div class="field">
+          <label>Who Are Your Main Customers? <span class="req">*</span></label>
+          <textarea id="targetCustomer" placeholder="Describe your ideal customer — e.g. homeowners in Mpumalanga needing emergency plumbing, small business owners in Gauteng, families looking for affordable catering..."></textarea>
+          <div class="field-error" id="err-targetCustomer">Please describe your target customers</div>
+        </div>
+        <div class="field">
+          <label>What Is the #1 Goal of Your Website? <span class="req">*</span></label>
+          <div class="radio-group" id="siteGoal">
+            <label class="radio-opt" onclick="selectRadio(this,'siteGoal')">
+              <input type="radio" name="siteGoal" value="Generate WhatsApp enquiries"/>
+              <span class="radio-dot"><span class="radio-inner"></span></span>
+              Generate WhatsApp enquiries
+            </label>
+            <label class="radio-opt" onclick="selectRadio(this,'siteGoal')">
+              <input type="radio" name="siteGoal" value="Generate phone call leads"/>
+              <span class="radio-dot"><span class="radio-inner"></span></span>
+              Generate phone call leads
+            </label>
+            <label class="radio-opt" onclick="selectRadio(this,'siteGoal')">
+              <input type="radio" name="siteGoal" value="Sell products online"/>
+              <span class="radio-dot"><span class="radio-inner"></span></span>
+              Sell products online
+            </label>
+            <label class="radio-opt" onclick="selectRadio(this,'siteGoal')">
+              <input type="radio" name="siteGoal" value="Take online bookings or appointments"/>
+              <span class="radio-dot"><span class="radio-inner"></span></span>
+              Take online bookings
+            </label>
+            <label class="radio-opt" onclick="selectRadio(this,'siteGoal')">
+              <input type="radio" name="siteGoal" value="Build credibility and look professional"/>
+              <span class="radio-dot"><span class="radio-inner"></span></span>
+              Build credibility
+            </label>
+            <label class="radio-opt" onclick="selectRadio(this,'siteGoal')">
+              <input type="radio" name="siteGoal" value="Share information and news"/>
+              <span class="radio-dot"><span class="radio-inner"></span></span>
+              Share information / news
+            </label>
+          </div>
+          <div class="field-error" id="err-siteGoal">Please select your primary goal</div>
+        </div>
+        <div class="field">
+          <label>Pages Needed on Your Website <span class="opt">(select all that apply)</span></label>
+          <div class="check-group" id="pagesNeeded">
+            <label class="check-opt" onclick="selectCheck(this,'pagesNeeded')">
+              <span class="check-box"><span class="check-mark">✓</span></span>
+              Home Page
+            </label>
+            <label class="check-opt" onclick="selectCheck(this,'pagesNeeded')">
+              <span class="check-box"><span class="check-mark">✓</span></span>
+              About Us
+            </label>
+            <label class="check-opt" onclick="selectCheck(this,'pagesNeeded')">
+              <span class="check-box"><span class="check-mark">✓</span></span>
+              Services / Products
+            </label>
+            <label class="check-opt" onclick="selectCheck(this,'pagesNeeded')">
+              <span class="check-box"><span class="check-mark">✓</span></span>
+              Portfolio / Gallery
+            </label>
+            <label class="check-opt" onclick="selectCheck(this,'pagesNeeded')">
+              <span class="check-box"><span class="check-mark">✓</span></span>
+              Testimonials
+            </label>
+            <label class="check-opt" onclick="selectCheck(this,'pagesNeeded')">
+              <span class="check-box"><span class="check-mark">✓</span></span>
+              Blog / News
+            </label>
+            <label class="check-opt" onclick="selectCheck(this,'pagesNeeded')">
+              <span class="check-box"><span class="check-mark">✓</span></span>
+              Pricing
+            </label>
+            <label class="check-opt" onclick="selectCheck(this,'pagesNeeded')">
+              <span class="check-box"><span class="check-mark">✓</span></span>
+              FAQ
+            </label>
+            <label class="check-opt" onclick="selectCheck(this,'pagesNeeded')">
+              <span class="check-box"><span class="check-mark">✓</span></span>
+              Contact Page
+            </label>
+            <label class="check-opt" onclick="selectCheck(this,'pagesNeeded')">
+              <span class="check-box"><span class="check-mark">✓</span></span>
+              Online Shop
+            </label>
+            <label class="check-opt" onclick="selectCheck(this,'pagesNeeded')">
+              <span class="check-box"><span class="check-mark">✓</span></span>
+              Booking / Appointment Page
+            </label>
+          </div>
+        </div>
+        <div class="field">
+          <label>Anything Specific You Want on Your Website? <span class="opt">(optional)</span></label>
+          <textarea id="extraNotes" placeholder="e.g. I want a gallery of my before-and-after work, a WhatsApp chat button on every page, a section showing our service areas on a map, a download link for our brochure..."></textarea>
+        </div>
+        <div class="field">
+          <label>What Are Your Competitors' Websites? <span class="opt">(optional)</span></label>
+          <input type="text" id="competitors" placeholder="e.g. www.competitorone.co.za, www.competitortwo.co.za"/>
+          <div class="field-hint">Knowing this helps us position your site to stand out</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-nav">
+      <button class="btn-prev" onclick="prevStep(3)">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 17l-5-5 5-5M6 12h12"/></svg>
+        Back
+      </button>
+      <button class="btn-next" onclick="nextStep(3)">
+        Next — Digital Setup
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5-5 5M6 12h12"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- STEP 4: DIGITAL SETUP -->
+  <div class="form-section" id="section4">
+    <div class="section-card">
+      <div class="section-tag">Step 4 of 5</div>
+      <h2 class="section-h">Domain & Digital Setup Details</h2>
+      <p class="section-sub">This section helps us set up your domain, hosting, and email correctly from day one. Be as specific as possible — it avoids delays.</p>
+
+      <div class="note-box amber">
+        <p>&#128274; Login credentials and passwords should NOT be entered here. We will request access securely via WhatsApp or encrypted link once your project starts.</p>
+      </div>
+
+      <div class="field-grid">
+        <div class="field">
+          <label>Domain Situation <span class="req">*</span></label>
+          <select id="domainStatus">
+            <option value="">Select...</option>
+            <option>I don't have a domain — please register one for me</option>
+            <option>I already have a domain — I will give you access</option>
+            <option>I'm not sure — please advise</option>
+          </select>
+          <div class="field-error" id="err-domainStatus">Please select your domain situation</div>
+        </div>
+        <div class="field">
+          <label>Preferred Domain Name <span class="opt">(optional)</span></label>
+          <input type="text" id="domainPref" placeholder="e.g. thabosplumbing.co.za"/>
+          <div class="field-hint">Give us 2–3 options in order of preference. We'll check availability.</div>
+        </div>
+        <div class="field">
+          <label>Current Domain Registrar <span class="opt">(if you have a domain)</span></label>
+          <input type="text" id="registrar" placeholder="e.g. Domains.co.za, Afrihost, GoDaddy, Namecheap"/>
+        </div>
+        <div class="field">
+          <label>Hosting Situation <span class="req">*</span></label>
+          <select id="hostingStatus">
+            <option value="">Select...</option>
+            <option>I don't have hosting — please set it up</option>
+            <option>I have existing hosting — I will give you access</option>
+            <option>I'm not sure — please advise</option>
+          </select>
+          <div class="field-error" id="err-hostingStatus">Please select your hosting situation</div>
+        </div>
+        <div class="field span-2">
+          <label>Email Setup <span class="req">*</span></label>
+          <div class="radio-group" id="emailSetup">
+            <label class="radio-opt" onclick="selectRadio(this,'emailSetup')">
+              <input type="radio" name="emailSetup" value="Set up new professional email — Google Workspace"/>
+              <span class="radio-dot"><span class="radio-inner"></span></span>
+              Set up new email — Google Workspace
+            </label>
+            <label class="radio-opt" onclick="selectRadio(this,'emailSetup')">
+              <input type="radio" name="emailSetup" value="Set up new professional email — Microsoft 365"/>
+              <span class="radio-dot"><span class="radio-inner"></span></span>
+              Set up new email — Microsoft 365
+            </label>
+            <label class="radio-opt" onclick="selectRadio(this,'emailSetup')">
+              <input type="radio" name="emailSetup" value="I already have professional email — just set up the website"/>
+              <span class="radio-dot"><span class="radio-inner"></span></span>
+              I already have professional email
+            </label>
+            <label class="radio-opt" onclick="selectRadio(this,'emailSetup')">
+              <input type="radio" name="emailSetup" value="I use Gmail / Yahoo / personal email — no change needed for now"/>
+              <span class="radio-dot"><span class="radio-inner"></span></span>
+              Using Gmail / personal email for now
+            </label>
+          </div>
+          <div class="field-error" id="err-emailSetup">Please select your email preference</div>
+        </div>
+        <div class="field span-2">
+          <label>Email Addresses Required <span class="opt">(if setting up new email)</span></label>
+          <textarea id="emailAddresses" placeholder="List each email address you need, one per line.&#10;&#10;e.g.&#10;info@thabosplumbing.co.za (main inbox)&#10;thabo@thabosplumbing.co.za (personal)&#10;accounts@thabosplumbing.co.za (billing)"></textarea>
+        </div>
+        <div class="field span-2">
+          <label>POPIA / Privacy Requirements</label>
+          <div class="check-group" id="popiaReqs">
+            <label class="check-opt" onclick="selectCheck(this,'popiaReqs')">
+              <span class="check-box"><span class="check-mark">✓</span></span>
+              Add Privacy Policy page
+            </label>
+            <label class="check-opt" onclick="selectCheck(this,'popiaReqs')">
+              <span class="check-box"><span class="check-mark">✓</span></span>
+              Add Terms of Use page
+            </label>
+            <label class="check-opt" onclick="selectCheck(this,'popiaReqs')">
+              <span class="check-box"><span class="check-mark">✓</span></span>
+              Add Cookie Consent Banner
+            </label>
+            <label class="check-opt" onclick="selectCheck(this,'popiaReqs')">
+              <span class="check-box"><span class="check-mark">✓</span></span>
+              I'm not sure — advise me
+            </label>
+          </div>
+          <div class="field-hint" style="margin-top:8px;">We include Privacy Policy and Terms of Use as standard. Tick all that apply.</div>
+        </div>
+        <div class="field">
+          <label>Information Officer Name <span class="opt">(for Privacy Policy)</span></label>
+          <input type="text" id="infoOfficer" placeholder="Full name of the person responsible for data"/>
+          <div class="field-hint">Usually the business owner. Required for the Privacy Policy page.</div>
+        </div>
+        <div class="field">
+          <label>Information Officer Email <span class="opt">(for Privacy Policy)</span></label>
+          <input type="email" id="infoOfficerEmail" placeholder="e.g. thabo@thabosplumbing.co.za"/>
+        </div>
+        <div class="field">
+          <label>Preferred Go-Live Date <span class="opt">(optional)</span></label>
+          <input type="text" id="goLiveDate" placeholder="e.g. end of June 2026, ASAP, no rush"/>
+          <div class="field-hint">We will confirm a realistic timeline based on your package and our availability</div>
+        </div>
+        <div class="field">
+          <label>Package Confirmed <span class="req">*</span></label>
+          <select id="packageConfirmed">
+            <option value="">Select your package...</option>
+            <option>Starter Presence — R349/month + R1,500 setup</option>
+            <option>Business Growth — R899/month + R4,500 setup</option>
+            <option>Premium Performance — R1,999/month + R15,000 setup</option>
+            <option>Email Setup only</option>
+            <option>Domain & Hosting only</option>
+            <option>Other / Custom — as per quote</option>
+          </select>
+          <div class="field-error" id="err-packageConfirmed">Please select your package</div>
+        </div>
+        <div class="field span-2">
+          <label>Anything Else We Should Know? <span class="opt">(optional)</span></label>
+          <textarea id="anythingElse" placeholder="Any specific requirements, deadlines, technical constraints, or other information that will help us set up your project correctly..."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-nav">
+      <button class="btn-prev" onclick="prevStep(4)">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 17l-5-5 5-5M6 12h12"/></svg>
+        Back
+      </button>
+      <button class="btn-next" onclick="nextStep(4)">
+        Review & Submit
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5-5 5M6 12h12"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- STEP 5: REVIEW -->
+  <div class="form-section" id="section5">
+    <div class="section-card">
+      <div class="section-tag">Step 5 of 5 — Final Review</div>
+      <h2 class="section-h">Review Your Details</h2>
+      <p class="section-sub">Check everything below before submitting. Once submitted, your details will be sent directly to our team via WhatsApp and we will be in touch within 2 hours during business hours.</p>
+
+      <div id="reviewContent" style="display:flex;flex-direction:column;gap:16px;"></div>
+
+      <div style="margin-top:24px;padding:16px;background:var(--green-soft);border:1px solid rgba(5,150,105,.2);border-radius:10px;">
+        <div style="display:flex;align-items:flex-start;gap:12px;">
+          <div style="font-size:20px;flex-shrink:0;">✅</div>
+          <div>
+            <div style="font-size:13.5px;font-weight:700;color:var(--green);margin-bottom:4px;">By submitting this form you confirm:</div>
+            <div style="font-size:12.5px;color:#065F46;line-height:1.6;">
+              The details provided are accurate to the best of your knowledge.
+              You are authorised to provide this information on behalf of the business.
+              You understand that work begins only after the setup fee has been received.
+              You agree to AutoComply's standard service terms and conditions.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-nav">
+      <button class="btn-prev" onclick="prevStep(5)">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 17l-5-5 5-5M6 12h12"/></svg>
+        Back & Edit
+      </button>
+      <button class="btn-submit" onclick="submitForm()">
+        <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Submit via WhatsApp
+      </button>
+    </div>
+  </div>
+
+  <!-- SUCCESS STATE -->
+  <div class="success-wrap" id="successWrap">
+    <div class="success-ico">🚀</div>
+    <h2 class="success-h">You're all set!</h2>
+    <p class="success-sub">Your onboarding details have been prepared and are ready to send to our team. Click the button below to open WhatsApp — your message is pre-filled and ready to send.</p>
+    <div id="summaryBox" class="summary-box"></div>
+    <a id="waFinalLink" href="#" target="_blank" rel="noopener" class="wa-btn">
+      <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Open WhatsApp & Send
+    </a>
+    <br/>
+    <button class="copy-btn" onclick="copyText()">
+      <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+      <span id="copyLabel">Copy all details to clipboard</span>
+    </button>
+  </div>
+
+</div>
+
+<footer>
+  <p>AutoComply Digital Solutions &bull; <a href="tel:+27670113108">067 011 3108</a> &bull; <a href="mailto:info@autocomply.co.za">info@autocomply.co.za</a> &bull; <a href="digital-solutions.html">autocomply.co.za/digital-solutions</a></p>
+</footer>
+
+<script>
+  let currentStep = 1;
+  const totalSteps = 5;
+  let waText = '';
+
+  // ── STEP NAVIGATION ──────────────────────────────────────────────────────
+  function nextStep(from) {
+    if (!validateStep(from)) return;
+    if (from === totalSteps - 1) buildReview();
+    goToStep(from + 1);
+  }
+  function prevStep(from) { goToStep(from - 1); }
+
+  function goToStep(n) {
+    document.getElementById('section' + currentStep).classList.remove('active');
+    currentStep = n;
+    document.getElementById('section' + n).classList.add('active');
+    updateProgress();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function updateProgress() {
+    for (let i = 1; i <= totalSteps; i++) {
+      const dot = document.getElementById('dot' + i);
+      const lbl = document.getElementById('lbl' + i);
+      if (i < currentStep) {
+        dot.className = 'dot dot-done'; dot.textContent = '✓';
+        lbl.className = 'step-label done';
+        if (i < totalSteps) document.getElementById('line' + i).className = 'step-line done';
+      } else if (i === currentStep) {
+        dot.className = 'dot dot-active'; dot.textContent = i;
+        lbl.className = 'step-label active';
+        if (i < totalSteps) document.getElementById('line' + i).className = 'step-line';
+      } else {
+        dot.className = 'dot dot-inactive'; dot.textContent = i;
+        lbl.className = 'step-label';
+        if (i < totalSteps) document.getElementById('line' + i).className = 'step-line';
+      }
+    }
+  }
+
+  // ── VALIDATION ────────────────────────────────────────────────────────────
+  const required = {
+    1: ['bizName','industry','location','contactName','whatsapp','email','bizDesc','waWebsite'],
+    2: ['hasLogo','designStyle'],
+    3: ['servicesList','targetCustomer','siteGoal'],
+    4: ['domainStatus','hostingStatus','emailSetup','packageConfirmed'],
+    5: []
+  };
+
+  function validateStep(step) {
+    let valid = true;
+    (required[step] || []).forEach(id => {
+      let val = '';
+      const el = document.getElementById(id);
+      if (el && (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA' || el.tagName === 'SELECT')) {
+        val = el.value.trim();
+      } else {
+        // radio group
+        val = getRadioValue(id);
+      }
+      const errEl = document.getElementById('err-' + id);
+      if (!val) {
+        valid = false;
+        if (el) el.classList.add('error');
+        if (errEl) errEl.classList.add('show');
+      } else {
+        if (el) el.classList.remove('error');
+        if (errEl) errEl.classList.remove('show');
+      }
+    });
+    if (!valid) {
+      const firstError = document.querySelector('.error, .field-error.show');
+      if (firstError) firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+    return valid;
+  }
+
+  // ── UI CONTROLS ───────────────────────────────────────────────────────────
+  function selectRadio(el, group) {
+    document.querySelectorAll('#' + group + ' .radio-opt').forEach(o => o.classList.remove('selected'));
+    el.classList.add('selected');
+    const errEl = document.getElementById('err-' + group);
+    if (errEl) errEl.classList.remove('show');
+  }
+
+  function selectCheck(el) {
+    el.classList.toggle('selected');
+  }
+
+  function getRadioValue(group) {
+    const sel = document.querySelector('#' + group + ' .radio-opt.selected');
+    return sel ? sel.querySelector('input').value : '';
+  }
+
+  function getCheckValues(group) {
+    const checked = document.querySelectorAll('#' + group + ' .check-opt.selected');
+    return Array.from(checked).map(el => el.textContent.trim().replace(/\s+/g, ' ')).join(', ');
+  }
+
+  function syncColour(pickerId, hexId) {
+    const hex = document.getElementById(hexId).value;
+    if (/^#[0-9A-Fa-f]{6}$/.test(hex)) {
+      document.getElementById(pickerId).value = hex;
+    }
+  }
+
+  document.querySelectorAll('input[type=color]').forEach(picker => {
+    picker.addEventListener('input', function() {
+      const hexId = this.id + 'hex';
+      const hexEl = document.getElementById(hexId);
+      if (hexEl) hexEl.value = this.value;
+    });
+  });
+
+  // ── FILE UPLOAD ────────────────────────────────────────────────────────────
+  function dragOver(e, zoneId) {
+    e.preventDefault();
+    document.getElementById(zoneId).classList.add('dragover');
+  }
+
+  function dropFile(e, inputId, zoneId, previewId) {
+    e.preventDefault();
+    document.getElementById(zoneId).classList.remove('dragover');
+    const files = e.dataTransfer.files;
+    if (files.length) {
+      const input = document.getElementById(inputId);
+      const dt = new DataTransfer();
+      for (let f of files) dt.items.add(f);
+      input.files = dt.files;
+      showPreview(files, previewId);
+    }
+  }
+
+  function fileSelected(input, previewId, zoneId) {
+    document.getElementById(zoneId).classList.remove('dragover');
+    showPreview(input.files, previewId);
+  }
+
+  function showPreview(files, previewId) {
+    const preview = document.getElementById(previewId);
+    preview.innerHTML = '';
+    Array.from(files).forEach(file => {
+      const div = document.createElement('div');
+      div.className = 'upload-file';
+      div.innerHTML = '📎 ' + file.name + ' <button onclick="this.parentElement.remove()" title="Remove">×</button>';
+      preview.appendChild(div);
+    });
+  }
+
+  // ── REVIEW BUILD ──────────────────────────────────────────────────────────
+  function v(id) {
+    const el = document.getElementById(id);
+    if (!el) return '—';
+    const val = el.value ? el.value.trim() : '';
+    return val || '—';
+  }
+
+  function buildReview() {
+    const sections = [
+      { title: '🏢 Business Information', rows: [
+        ['Business Name', v('bizName')],
+        ['Registration Number', v('regNum')],
+        ['Industry', v('industry')],
+        ['Location', v('location')],
+        ['Contact Name', v('contactName')],
+        ['Role', v('contactRole')],
+        ['WhatsApp', v('whatsapp')],
+        ['Email', v('email')],
+        ['Business Phone', v('bizPhone')],
+        ['Business Address', v('bizAddress')],
+        ['Business Description', v('bizDesc')],
+        ['Facebook', v('facebook')],
+        ['Instagram', v('instagram')],
+        ['Current Website', v('currentSite')],
+        ['WhatsApp for Website', v('waWebsite')],
+        ['Google Maps Link', v('mapsLink')],
+      ]},
+      { title: '🎨 Branding', rows: [
+        ['Has Logo?', getRadioValue('hasLogo')],
+        ['Brand Colours', v('colour1hex') + ', ' + v('colour2hex') + ', ' + v('colour3hex')],
+        ['Design Style', getRadioValue('designStyle')],
+        ['Reference Sites', v('refSites')],
+      ]},
+      { title: '📋 Services & Goals', rows: [
+        ['Services/Products', v('servicesList')],
+        ['Target Customers', v('targetCustomer')],
+        ['Website Goal', getRadioValue('siteGoal')],
+        ['Pages Needed', getCheckValues('pagesNeeded') || '—'],
+        ['Extra Notes', v('extraNotes')],
+        ['Competitors', v('competitors')],
+      ]},
+      { title: '⚙️ Digital Setup', rows: [
+        ['Domain Situation', v('domainStatus')],
+        ['Preferred Domain', v('domainPref')],
+        ['Registrar', v('registrar')],
+        ['Hosting Situation', v('hostingStatus')],
+        ['Email Setup', getRadioValue('emailSetup')],
+        ['Email Addresses', v('emailAddresses')],
+        ['POPIA Requirements', getCheckValues('popiaReqs') || '—'],
+        ['Information Officer', v('infoOfficer')],
+        ['IO Email', v('infoOfficerEmail')],
+        ['Go-Live Date', v('goLiveDate')],
+        ['Package', v('packageConfirmed')],
+        ['Additional Notes', v('anythingElse')],
+      ]},
+    ];
+
+    const container = document.getElementById('reviewContent');
+    container.innerHTML = '';
+    sections.forEach(sec => {
+      const card = document.createElement('div');
+      card.style.cssText = 'border:1px solid var(--border);border-radius:12px;overflow:hidden;';
+      const head = document.createElement('div');
+      head.style.cssText = 'background:var(--blue-soft);padding:12px 18px;font-family:"JetBrains Mono",monospace;font-size:11px;font-weight:700;letter-spacing:1.5px;color:var(--blue);text-transform:uppercase;';
+      head.textContent = sec.title;
+      card.appendChild(head);
+      sec.rows.forEach((row, i) => {
+        if (row[1] === '—' || !row[1]) return;
+        const r = document.createElement('div');
+        r.style.cssText = 'display:flex;gap:12px;padding:9px 18px;border-top:1px solid var(--border);font-size:13px;' + (i % 2 === 0 ? 'background:var(--bg);' : '');
+        r.innerHTML = '<span style="color:var(--muted);min-width:160px;flex-shrink:0;">' + row[0] + '</span><span style="color:var(--navy);font-weight:500;word-break:break-word;">' + row[1].replace(/\n/g, '<br>') + '</span>';
+        card.appendChild(r);
+      });
+      container.appendChild(card);
+    });
+  }
+
+  // ── SUBMIT ─────────────────────────────────────────────────────────────────
+  function submitForm() {
+    const lines = [];
+    lines.push('*NEW CLIENT ONBOARDING — AutoComply Digital Solutions*');
+    lines.push('');
+    lines.push('*BUSINESS INFORMATION*');
+    lines.push('Business Name: ' + v('bizName'));
+    lines.push('Reg Number: ' + v('regNum'));
+    lines.push('Industry: ' + v('industry'));
+    lines.push('Location: ' + v('location'));
+    lines.push('Contact: ' + v('contactName') + (v('contactRole') !== '—' ? ' (' + v('contactRole') + ')' : ''));
+    lines.push('WhatsApp: ' + v('whatsapp'));
+    lines.push('Email: ' + v('email'));
+    lines.push('Biz Phone: ' + v('bizPhone'));
+    lines.push('Address: ' + v('bizAddress'));
+    lines.push('Description: ' + v('bizDesc'));
+    lines.push('');
+    lines.push('*ONLINE PRESENCE*');
+    lines.push('Facebook: ' + v('facebook'));
+    lines.push('Instagram: ' + v('instagram'));
+    lines.push('Current Site: ' + v('currentSite'));
+    lines.push('WA for Website: ' + v('waWebsite'));
+    lines.push('Google Maps: ' + v('mapsLink'));
+    lines.push('');
+    lines.push('*BRANDING*');
+    lines.push('Has Logo: ' + getRadioValue('hasLogo'));
+    lines.push('Colours: ' + v('colour1hex') + ' | ' + v('colour2hex') + ' | ' + v('colour3hex'));
+    lines.push('Style: ' + getRadioValue('designStyle'));
+    lines.push('Reference Sites: ' + v('refSites'));
+    lines.push('');
+    lines.push('*SERVICES & GOALS*');
+    lines.push('Services: ' + v('servicesList').replace(/\n/g, ' | '));
+    lines.push('Target Customers: ' + v('targetCustomer'));
+    lines.push('Website Goal: ' + getRadioValue('siteGoal'));
+    lines.push('Pages Needed: ' + (getCheckValues('pagesNeeded') || '—'));
+    lines.push('Extra Notes: ' + v('extraNotes'));
+    lines.push('Competitors: ' + v('competitors'));
+    lines.push('');
+    lines.push('*DIGITAL SETUP*');
+    lines.push('Domain: ' + v('domainStatus'));
+    lines.push('Preferred Domain: ' + v('domainPref'));
+    lines.push('Registrar: ' + v('registrar'));
+    lines.push('Hosting: ' + v('hostingStatus'));
+    lines.push('Email Setup: ' + getRadioValue('emailSetup'));
+    lines.push('Email Addresses: ' + v('emailAddresses').replace(/\n/g, ' | '));
+    lines.push('POPIA: ' + (getCheckValues('popiaReqs') || '—'));
+    lines.push('Info Officer: ' + v('infoOfficer') + ' | ' + v('infoOfficerEmail'));
+    lines.push('Go-Live: ' + v('goLiveDate'));
+    lines.push('Package: ' + v('packageConfirmed'));
+    lines.push('Additional Notes: ' + v('anythingElse'));
+
+    waText = lines.join('\n');
+
+    const encoded = encodeURIComponent(waText);
+    document.getElementById('waFinalLink').href = 'https://wa.me/27670113108?text=' + encoded;
+
+    // Build summary box
+    const sb = document.getElementById('summaryBox');
+    sb.innerHTML = '<h3>Submission Summary</h3>';
+    const summaryRows = [
+      ['Business', v('bizName')],
+      ['Contact', v('contactName')],
+      ['WhatsApp', v('whatsapp')],
+      ['Package', v('packageConfirmed')],
+      ['Domain', v('domainPref') !== '—' ? v('domainPref') : v('domainStatus')],
+      ['Go-Live', v('goLiveDate')],
+    ];
+    summaryRows.forEach(row => {
+      if (row[1] && row[1] !== '—') {
+        const r = document.createElement('div');
+        r.className = 'summary-row';
+        r.innerHTML = '<span class="summary-key">' + row[0] + '</span><span class="summary-val">' + row[1] + '</span>';
+        sb.appendChild(r);
+      }
+    });
+
+    // Show success
+    document.getElementById('section5').classList.remove('active');
+    const sw = document.getElementById('successWrap');
+    sw.classList.add('show');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function copyText() {
+    if (!waText) return;
+    navigator.clipboard.writeText(waText).then(() => {
+      document.getElementById('copyLabel').textContent = 'Copied! ✓';
+      setTimeout(() => { document.getElementById('copyLabel').textContent = 'Copy all details to clipboard'; }, 2500);
+    });
+  }
+</script>
+
+</body>
+</html>

@@ -260,6 +260,26 @@ footer a:hover{color:#fff;}
 .site-tool{font-size:.44rem;color:rgba(255,255,255,.65);padding:2px 0;}
 .site-footer-strip{background:#060E1C;padding:5px 14px;display:flex;gap:12px;}
 .site-footer-strip span{font-size:.42rem;color:rgba(255,255,255,.3);}
+
+/* DUAL PRICING SPLIT */
+.dual-pricing{display:grid;grid-template-columns:1fr 1fr;gap:0;margin-bottom:.9rem;border:1.5px solid var(--border);border-radius:10px;overflow:hidden}
+.border{border-color:#CBD5E1}
+.dp-col{padding:.85rem .9rem}
+.dp-col.std{background:#F8FAFC;border-right:1px solid #CBD5E1}
+.dp-col.flex{background:#FFFDF0}
+.dp-lbl{font-size:.63rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-bottom:.35rem}
+.dp-lbl.std{color:var(--blue)}
+.dp-lbl.flex{color:#B45309}
+.dp-price{font-family:'Sora',sans-serif;font-size:1.5rem;font-weight:800;color:var(--dark);line-height:1}
+.dp-price span{font-size:.78rem;font-weight:400;color:var(--muted)}
+.dp-note{font-size:.65rem;color:var(--muted);margin-top:.2rem;line-height:1.4}
+.dp-chip{display:inline-block;font-size:.6rem;font-weight:700;padding:.18rem .5rem;border-radius:3px;margin-top:.3rem}
+.dp-chip.green{background:#ECFDF5;color:var(--green)}
+.dp-chip.amber{background:#FFFBEB;color:#92400E}
+.dp-annual{font-size:.67rem;font-weight:600;margin-top:.28rem}
+.dp-annual.g{color:var(--green)}
+.dp-annual.a{color:#92400E}
+
 </style>
 </head>
 <body>
@@ -467,32 +487,32 @@ footer a:hover{color:#fff;}
           <div class="pkg-best">Best for new businesses getting online</div>
         </div>
         <div class="pkg-body">
-          <div class="billing-block">
-            <div class="billing-label">Monthly — Flexible</div>
-            <div class="billing-price">R349<span>/month</span></div>
-            <div class="billing-note">3-month minimum &nbsp;&bull;&nbsp; Setup: R1,500</div>
-          </div>
-          <div class="billing-sep"></div>
-          <div class="billing-block">
-            <div class="annual-label">Annual — Best Value</div><br>
-            <div class="annual-price">R3,490<span>/year</span></div>
-            <div class="save-badge">Save R698 per year</div>
-            <div class="annual-equiv">= R291/month &nbsp;&bull;&nbsp; Setup: R1,500</div>
+          <div class="dual-pricing">
+            <div class="dp-col std">
+              <div class="dp-lbl std">Standard</div>
+              <div class="dp-price">R349<span>/mo</span></div>
+              <div class="dp-note">3-month minimum</div>
+              <div class="dp-chip green">+ R1,500 setup</div>
+              <div class="dp-annual g">Annual: R3,490/yr &middot; Save R698</div>
+            </div>
+            <div class="dp-col flex">
+              <div class="dp-lbl flex">Flex &middot; No Setup</div>
+              <div class="dp-price">R499<span>/mo</span></div>
+              <div class="dp-note">6-month minimum</div>
+              <div class="dp-chip amber">No upfront fee</div>
+              <div class="dp-annual a">Save R1,500 upfront</div>
+            </div>
           </div>
           <ul class="pkg-features">
-            <li>1–3 page professional website</li>
+            <li>1&ndash;3 page professional website</li>
             <li>Mobile-responsive design</li>
             <li>Contact form + Google Maps</li>
             <li>SSL certificate included</li>
             <li>Basic on-page SEO</li>
             <li>Monthly hosting &amp; maintenance</li>
           </ul>
-          <a href="https://wa.me/27670113108?text=Hi%2C%20I%27m%20interested%20in%20the%20Starter%20Presence%20website%20package%20(R349%2Fmo)." target="_blank" rel="noopener" class="pkg-cta">
-            <svg class="wa-svg" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-            Get Started
-          </a>
-        </div>
-        <div class="pkg-footer">Hosting &bull; SSL &bull; Domain &bull; Support</div>
+          <a href="https://wa.me/27670113108?text=Hi%2C%20I%27m%20interested%20in%20the%20Starter%20Presence%20website%20package." target="_blank" rel="noopener" class="pkg-cta"><svg class="wa-svg" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg> Get Started</a>
+        </div><div class="pkg-footer">Hosting &bull; SSL &bull; Domain &bull; Support</div>
       </div>
 
       <!-- BUSINESS GROWTH (FEATURED) -->
@@ -503,17 +523,21 @@ footer a:hover{color:#fff;}
           <div class="pkg-best">Best for SMEs wanting more leads &amp; visibility</div>
         </div>
         <div class="pkg-body">
-          <div class="billing-block">
-            <div class="billing-label">Monthly — Flexible</div>
-            <div class="billing-price">R899<span>/month</span></div>
-            <div class="billing-note">3-month minimum &nbsp;&bull;&nbsp; Setup: R4,500</div>
-          </div>
-          <div class="billing-sep"></div>
-          <div class="billing-block">
-            <div class="annual-label">Annual — Best Value</div><br>
-            <div class="annual-price">R8,990<span>/year</span></div>
-            <div class="save-badge">Save R1,798 per year</div>
-            <div class="annual-equiv">= R749/month &nbsp;&bull;&nbsp; Setup: R4,500</div>
+          <div class="dual-pricing">
+            <div class="dp-col std">
+              <div class="dp-lbl std">Standard</div>
+              <div class="dp-price">R899<span>/mo</span></div>
+              <div class="dp-note">3-month minimum</div>
+              <div class="dp-chip green">+ R4,500 setup</div>
+              <div class="dp-annual g">Annual: R8,990/yr &middot; Save R1,798</div>
+            </div>
+            <div class="dp-col flex">
+              <div class="dp-lbl flex">Flex &middot; No Setup</div>
+              <div class="dp-price">R1,099<span>/mo</span></div>
+              <div class="dp-note">6-month minimum</div>
+              <div class="dp-chip amber">No upfront fee</div>
+              <div class="dp-annual a">Save R4,500 upfront</div>
+            </div>
           </div>
           <ul class="pkg-features">
             <li>Up to 8 pages, custom branded design</li>
@@ -525,12 +549,8 @@ footer a:hover{color:#fff;}
             <li>Monthly hosting, backups &amp; updates</li>
             <li>Monthly performance report</li>
           </ul>
-          <a href="https://wa.me/27670113108?text=Hi%2C%20I%27m%20interested%20in%20the%20Business%20Growth%20website%20package%20(R899%2Fmo)." target="_blank" rel="noopener" class="pkg-cta">
-            <svg class="wa-svg" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-            Choose Business Growth
-          </a>
-        </div>
-        <div class="pkg-footer">Everything in Starter + Blog + Analytics + Reports</div>
+          <a href="https://wa.me/27670113108?text=Hi%2C%20I%27m%20interested%20in%20the%20Business%20Growth%20website%20package." target="_blank" rel="noopener" class="pkg-cta"><svg class="wa-svg" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg> Get Started</a>
+        </div><div class="pkg-footer">Everything in Starter + Blog + Analytics + Reports</div>
       </div>
 
       <!-- PREMIUM -->
@@ -540,17 +560,21 @@ footer a:hover{color:#fff;}
           <div class="pkg-best">Best for established businesses going all-in</div>
         </div>
         <div class="pkg-body">
-          <div class="billing-block">
-            <div class="billing-label">Monthly — Flexible</div>
-            <div class="billing-price">R1,999<span>/month</span></div>
-            <div class="billing-note">3-month minimum &nbsp;&bull;&nbsp; Setup: R15,000</div>
-          </div>
-          <div class="billing-sep"></div>
-          <div class="billing-block">
-            <div class="annual-label">Annual — Best Value</div><br>
-            <div class="annual-price">R19,990<span>/year</span></div>
-            <div class="save-badge">Save R3,998 per year</div>
-            <div class="annual-equiv">= R1,666/month &nbsp;&bull;&nbsp; Setup: R15,000</div>
+          <div class="dual-pricing">
+            <div class="dp-col std">
+              <div class="dp-lbl std">Standard</div>
+              <div class="dp-price">R1,999<span>/mo</span></div>
+              <div class="dp-note">3-month minimum</div>
+              <div class="dp-chip green">+ R15,000 setup</div>
+              <div class="dp-annual g">Annual: R19,990/yr &middot; Save R3,998</div>
+            </div>
+            <div class="dp-col flex">
+              <div class="dp-lbl flex">Flex &middot; No Setup</div>
+              <div class="dp-price">R2,999<span>/mo</span></div>
+              <div class="dp-note">6-month minimum</div>
+              <div class="dp-chip amber">No upfront fee</div>
+              <div class="dp-annual a">Save R15,000 upfront</div>
+            </div>
           </div>
           <ul class="pkg-features">
             <li>Unlimited pages</li>
@@ -562,16 +586,12 @@ footer a:hover{color:#fff;}
             <li>Priority support</li>
             <li>Hosting, backups &amp; security monitoring</li>
           </ul>
-          <a href="https://wa.me/27670113108?text=Hi%2C%20I%27m%20interested%20in%20the%20Premium%20Performance%20website%20package%20(R1%2C999%2Fmo)." target="_blank" rel="noopener" class="pkg-cta">
-            <svg class="wa-svg" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-            Enquire About Premium
-          </a>
-        </div>
-        <div class="pkg-footer">Everything in Growth + E-commerce + Priority Support</div>
+          <a href="https://wa.me/27670113108?text=Hi%2C%20I%27m%20interested%20in%20the%20Premium%20Performance%20website%20package." target="_blank" rel="noopener" class="pkg-cta"><svg class="wa-svg" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg> Get Started</a>
+        </div><div class="pkg-footer">Everything in Growth + E-commerce + Priority Support</div>
       </div>
 
     </div>
-    <p class="pricing-note">All prices exclude VAT &bull; 3-month minimum on monthly plans &bull; Annual plans save up to 17% &bull; Setup fee is once-off</p>
+    <p class="pricing-note">All prices exclude VAT. Standard: 3-month minimum, setup fee once-off and non-refundable, annual plans save up to 17%. Flex: no setup fee, 6-month minimum commitment, higher monthly rate applies.</p>
 
     <!-- ADD-ONS -->
     <div style="margin-top:2.5rem;text-align:center;">
